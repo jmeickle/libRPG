@@ -1,0 +1,16 @@
+Iterations
+
+It   Rev    Classes coded                                          Features
+1           Map, Party                                             Party walking around on rendered map, controlled by player input
+2           Map, MapObject, MapArea (f)                            Map includes objects, obstacles, areas
+3           Map (f), MapObject (f)                                 Map includes monsters that are actively moving
+4           World (f), WorldMap (f), TeleportArea (f)              Connections between maps may be established
+5           State (f), LocalState (f)                              Map states are stored and loaded
+6           Party (f), Character (f), CharacterReserve (f)         Multiples parties can be formed, characters maybe be exchanged among them and the reserve
+7           Inventory (f), Item (f), Usable (f), UsableItem (f),
+            ItemFactory (f)
+8           UniquesInventory (f), UsableUniqueItem (f)
+9           Log (f), LogRoll (f)
+10          Menu
+
+(f) stands for final, meaning that should be when the class is fully working

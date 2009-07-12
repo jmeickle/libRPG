@@ -1,0 +1,58 @@
+branch
+tag
+trunk
+    life
+        life.py
+        maps
+            [map1].py
+            ... other map scripts
+        items
+            [items1].py
+            ... other item scripts
+        battle
+            [battle1].py
+            ... other battle scripts
+        pics
+            tilesets
+                ... pngs with tilesets
+            items
+                ... pngs with item pics
+            ... other folders organizing pictures
+        ... other game scripts and folders
+    librpg
+        menu.py
+        map.py
+        party.py
+        log.py
+        ... other librpg packages
+    test
+        maptest.py
+        menutest.py
+        ... other librpg test scripts
+    docs
+        about.txt
+        iterations.txt
+        repo.txt
+        faq.txt
+        reference
+            ... library reference
+        diagrams
+            librpg.jude
+            package_diagram.png
+            inventory_diagram.png
+            ... other png diagrams
+        tutorial
+            lesson01
+                lesson01.py
+                lesson01.html
+            lesson02
+                lesson02.py
+                lesson02.html
+            ... other lessons
+        ... other documentation
+    tools
+        mapeditor
+            mapeditor.py
+            ... other mapeditor scripts
+        ... other tools
+        

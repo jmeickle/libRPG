@@ -1,0 +1,32 @@
+To use the librpg module:
+
+    Add the path of the folder that contains the librpg/ folder to the PYTHONPATH environment variable.
+    
+    To set the PYTHONPATH variable in Windows:
+
+        1. Go to Control Panel -> System -> Advanced.
+        2. Click 'Environment Variables' button.
+        3. In the 'System Variables' panel that appears, click New and enter PYTHONPATH in the 'Variable Name' field. In the 'Variable Value' field add the full path (eg.: C:\development\python, if librpg is at C:\development\python\librpg) to the end of the value, separated from any other values with ';'.
+
+    To set the PYTHONPATH variable in Linux:
+    
+        Run the command:
+        export PYTHONPATH=$PYTHONPATH:[librpg folder path]
+        
+        Example, considering that librpg is at /home/username/development/python/librpg:
+        export PYTHONPATH=$PYTHONPATH:/home/username/development/python/librpg
+    
+librpg dependencies:
+    
+    - Python
+    - Pygame (for most modules)
+    
+MapEditor dependencies:
+
+    - Python
+    - Pygame
+    - Numpy
+    - PyGTK, PyCairo, PyGObject
+    - GTK
+    - Glade
+    

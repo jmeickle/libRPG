@@ -1,0 +1,138 @@
+##########
+# log.py #
+##########
+
+============
+Log (static)
+============
+
+Log is a static class that works as a logger and statistics collector, which keeps LogRolls, each specialized in a set of events. Once set up, the application may use Log.write() to write an entry to the appropriate LogRolls.
+
+-----
+Usage
+-----
+
+Do not instantiate Log, it is a class with only static attributes and methods.
+
+To create a LogRoll, use Log.create_roll() specifying the entry types that the roll should catch. To destroy a LogRoll, use destroy_roll().
+
+To write a LogEntry to all rolls that catch it, simply call Log.write().
+
+----------
+Attributes
+----------
+
+rolls: [LogRoll] (static, read-only)
+List of all LogRolls registered.
+
+index: {string -> [LogRoll]} (static, read-only)
+Maps entry types to a list of all LogRolls catching entries of that type.
+
+rolls_that_catch_all: [LogRoll] (static, read-only)
+List of all LogRolls that catch  any entry type.
+
+-------
+Methods
+-------
+
+create_roll(entry_types = ALL_LOG_ENTRIES: [string], capacity = LogRoll.UNLIMITED_CAPACITY: int) -> LogRoll (static)
+Creates a new LogRoll with the specified characteristics.
+
+destroy_roll(roll: LogRoll) (static)
+Destroys a LogRoll, stopping its logging.
+
+write(entry: LogEntry) (static)
+Write a LogEntry to all LogRolls that catch it.
+
+
+=======
+LogRoll
+=======
+
+A LogRoll receives all LogEntries that it was configured to catch and either stores them or logs them to a file.
+
+-----
+Usage
+-----
+
+To create a LogRoll, call Log.create_roll() passing a list of all entry types the roll should catch. To destroy it, call Log.destroy_roll().
+
+To write entries to the roll, let Log.write() do it automatically to all rolls that catch those entries.
+
+To see the contents of a LogRoll, print it.
+
+To write the contents of a LogRoll to a file, use log_to_file() or write_to_file(). If you used log_to_file(), the entries received will keep being written to that file until stop_logging_to_file() is called.
+
+----------
+Attributes
+----------
+
+capacity: int (read-only)
+Maximum number of LogEntries that the LogRoll can store. Defaults to infinite.
+
+entry_types: [string] (read-only)
+List of all entry types that the LogRoll stores.
+
+entries: [LogEntry] (read-only)
+List of the entries stored in the LogRoll.
+
+file: file (read-only)
+File open for writing the incoming entries to.
+
+-------
+Methods
+-------
+
+__init__(entry_types: [string], capacity = UNLIMITED_CAPACITY: int)
+Creates a LogRoll with the specified attributes.
+
+log_to_file(file: file)
+Writes all stored entries to the file and any new incoming entries, until stop_logging_to_file() is called or log_to_file() passing a different file.
+
+stop_logging_to_file()
+Stops writing to a file, if the LogRoll had executed log_to_file().
+
+clean()
+Erases all stored entries.
+
+write(entry: LogEntry)
+Stores entry or writes it immediately to a file.
+
+write_to_file(file: file)
+Writes all stored entries to the file but does not write subsequently added entries automatically.
+
+
+==================
+LogEntry (virtual)
+==================
+
+A LogEntry is one event to be logged to a LogRoll.
+
+-----
+Usage
+-----
+
+To use LogEntries, an entry class should be inherited from LogEntry (such as MyEntry). The constructor of that class should pass the class' name to LogEntry's constructor (LogEntry.__init__(self, "MyEntry")). It should also overload __str__() and __repr__(), being __str__() a function that returns the LogEntry as it should be printed to a file or to the screen, and __repr__() a short representation of the entry, to be printed as part of a list.
+
+----------
+Attributes
+----------
+
+entry_type: string (read-only)
+The entry type string of that entry.
+
+repr: string (private)
+Default repr string.
+
+-------
+Methods
+-------
+
+__init__(entry_type: string)
+Creates a LogEntry with the specified entry type.
+
+__repr__() (virtual)
+Should return a repr string of the entry.
+
+__str__() (virtual)
+Should return the string that the entry should be printed as.

@@ -1,0 +1,130 @@
+############
+# party.py #
+############
+
+=====
+Party
+=====
+
+A Party represents a group of characters that walk together in a map.
+
+-----
+Usage
+-----
+
+To create a Party, use the create_party() method from the CharacterReserve class.
+
+To add characters to a party, use the add_char() method, and to remove them, use remove_char().
+
+To destroy a Party, use the destroy_party() method from the CharacterReserve class.
+
+----------
+Attributes
+----------
+
+leader: Character (public)
+Character who is the current party leader.
+
+capacity: int (read-only)
+Maximum number of characters.
+
+reserve: CharacterReserve (read-only)
+CharacterReserve that contains the party's characters.
+
+chars: [Character] (read-only)
+List of characters in the party currently.
+
+-------
+Methods
+-------
+
+__init__(capacity: int, reserve: CharacterReserve) (internal)
+Creates a Party with the specified number of members, which can contain characters from the given CharacterReserve. Should only be called by CharacterReserve, use character_reserve.create_party() instead.
+
+add_char(char: Character) -> bool
+Adds a character to the party and returns whether the operation succeeded.
+
+remove_char(char: Character) -> bool
+Removes a specific character from the party and returns whether he was actually removed.
+
+get_image(avatar: PartyAvatar) -> PartyImage
+Returns the Image that generates the sprites to draw the party.
+
+
+================
+CharacterReserve
+================
+
+A CharacterReserve is a pool of Characters, from which one or more Parties may be created.
+
+-----
+Usage
+-----
+
+To add characters to a CharacterReserve, use the add_char() method. To remove them from the reserve, use remove_char().
+
+To create a new party from the CharacterReserve, use create_party(). To destroy parties, use destroy_party().
+
+----------
+Attributes
+----------
+
+chars: {Character->Party} (read-only)
+Maps the characters in the reserve currently to the party they are in.
+
+parties: [Party] (read-only)
+List of parties that contain the characters in this reserve.
+
+-------
+Methods
+-------
+
+__init__()
+Constructor.
+
+add_char(char: Character)
+Adds char to this reserve.
+
+remove_char(char: Character) -> Character
+Removes char from this reserve. Returns that char if he was removed, otherwise None is returned.
+
+create_party(capacity: int)
+Creates a Party for that CharacterReserve with the given capacity.
+
+destroy_party(party: Party) -> bool
+Removes a Party from a CharacterReserve and returns its characters to an avaliable state. Returns whether the operation succeeded.
+
+get_chars() -> [Character]
+Returns a list of all characters in the CharacterReserve.
+
+allocate_char(char: Character, party: Party) (internal)
+Allocates a Character to a Party. Should only be called by CharacterReserve, use party.add_char() instead.
+
+
+=========
+Character
+=========
+
+-----
+Usage
+-----
+
+----------
+Attributes
+----------
+
+name: string (public)
+The character's name as it should be displayed.
+
+image_file: string (read-only)
+The file with the character's sprites.
+
+image: ObjectImage (read-only)
+The character's sprites.
+
+-------
+Methods
+-------
+
+__init__(name: string, image_file: string)
+Creates a character.
