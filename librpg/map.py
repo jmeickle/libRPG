@@ -7,6 +7,7 @@ from mapobject import *
 from util import *
 from image import *
 from tile import *
+from config import *
 
 #=================================================================================
     
@@ -83,19 +84,18 @@ class MapView:
     Surface containing the static scenario tiles that are drawn at the upper level.
     """
     
-    SCREEN_WIDTH, SCREEN_HEIGHT = 640, 480
-    WIDTH_IN_TILES, HEIGHT_IN_TILES = SCREEN_WIDTH / Tile.SIZE, SCREEN_HEIGHT / Tile.SIZE
+    WIDTH_IN_TILES, HEIGHT_IN_TILES = graphics['ScreenWidth'] / graphics['TileSize'], graphics['ScreenHeight'] / graphics['TileSize']
     
     def __init__(self, map_model):
         self.map_model = map_model
         
-        self.screen = pygame.display.set_mode((MapView.SCREEN_WIDTH, MapView.SCREEN_HEIGHT))
+        self.screen = pygame.display.set_mode((graphics['ScreenWidth'], graphics['ScreenHeight']))
         self.init_background()
         self.init_foreground()
     
     def init_background(self):
-        background_width = self.map_model.width + MapView.SCREEN_WIDTH
-        background_height = self.map_model.height + MapView.SCREEN_HEIGHT
+        background_width = self.map_model.width + graphics['ScreenWidth']
+        background_height = self.map_model.height + graphics['ScreenHeight']
         self.background = pygame.Surface((background_width, background_height))
         
         BLACK = (0, 0, 0)
@@ -103,8 +103,8 @@ class MapView:
         
         for y in xrange(self.map_model.height):
             for x in xrange(self.map_model.width):
-                bg_x = MapView.SCREEN_WIDTH / 2 + x * Tile.SIZE
-                bg_y = MapView.SCREEN_HEIGHT / 2 + y * Tile.SIZE
+                bg_x = graphics['ScreenWidth'] / 2 + x * graphics['TileSize']
+                bg_y = graphics['ScreenHeight'] / 2 + y * graphics['TileSize']
                 terrain_tile_surface = self.map_model.terrain_layer.get(x, y).get_surface()
                 self.background.blit(terrain_tile_surface, (bg_x, bg_y))
                 
@@ -114,16 +114,16 @@ class MapView:
                     self.background.blit(scenario_tile_surface, (bg_x, bg_y))
 
     def init_foreground(self):
-        foreground_width = self.map_model.width + MapView.SCREEN_WIDTH
-        foreground_height = self.map_model.height + MapView.SCREEN_HEIGHT
+        foreground_width = self.map_model.width + graphics['ScreenWidth']
+        foreground_height = self.map_model.height + graphics['ScreenHeight']
         self.foreground = pygame.Surface((foreground_width, foreground_height), SRCALPHA, 32)
         
         for y in xrange(self.map_model.height):
             for x in xrange(self.map_model.width):
                 scenario_tile = self.map_model.scenario_layer.get(x, y)
                 if scenario_tile.obstacle == Tile.ABOVE:
-                    fg_x = MapView.SCREEN_WIDTH / 2 + x * Tile.SIZE
-                    fg_y = MapView.SCREEN_HEIGHT / 2 + y * Tile.SIZE
+                    fg_x = graphics['ScreenWidth'] / 2 + x * graphics['TileSize']
+                    fg_y = graphics['ScreenHeight'] / 2 + y * graphics['TileSize']
                     scenario_tile_surface = scenario_tile.get_surface()
                     self.foreground.blit(scenario_tile_surface, (fg_x, fg_y))
 
@@ -135,7 +135,7 @@ class MapView:
         if party_avatar:
             party_pos = party_avatar.position
             if party_avatar.movement_phase > 0:
-                offset = party_avatar.movement_phase * Tile.SIZE / party_avatar.speed
+                offset = party_avatar.movement_phase * graphics['TileSize'] / party_avatar.speed
                 if party_avatar.facing == Direction.UP:
                     y_offset = offset
                 elif party_avatar.facing == Direction.RIGHT:
@@ -147,12 +147,12 @@ class MapView:
         else:
             party_pos = Position(0, 0)
             
-        bg_area = pygame.Rect((party_pos.x * Tile.SIZE + x_offset, party_pos.y * Tile.SIZE + y_offset), (MapView.SCREEN_WIDTH, MapView.SCREEN_HEIGHT))
+        bg_area = pygame.Rect((party_pos.x * graphics['TileSize'] + x_offset, party_pos.y * graphics['TileSize'] + y_offset), (graphics['ScreenWidth'], graphics['ScreenHeight']))
         self.screen.blit(self.background, (0, 0), bg_area)
         
         # Draw the party avatar
         if party_avatar:
-            party_place = (MapView.SCREEN_WIDTH - ObjectImage.WIDTH + Tile.SIZE) / 2, (MapView.SCREEN_HEIGHT / 2 - ObjectImage.HEIGHT + Tile.SIZE)
+            party_place = (graphics['ScreenWidth'] - graphics['ObjectWidth'] + graphics['TileSize']) / 2, (graphics['ScreenHeight'] / 2 - graphics['ObjectHeight'] + graphics['TileSize'])
             self.screen.blit(party_avatar.get_surface(), pygame.Rect(party_place, ObjectImage.DIMENSIONS))
         
         # Draw the foreground

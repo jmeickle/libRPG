@@ -3,6 +3,7 @@ import csv
 import pygame
 
 from image import TileImage
+from config import *
 
 class Tile:
 
@@ -18,8 +19,6 @@ class Tile:
     """
 
     BELOW, OBSTACLE, COUNTER, ABOVE = 0, 1, 2, 3
-    
-    SIZE = 16
     
     def __init__(self, image):
         self.image = image
@@ -75,10 +74,10 @@ class Tileset:
     def load_image_file(self):
         self.image = pygame.image.load(self.image_file)
         width, height = self.image.get_width(), self.image.get_height()
-        assert width % Tile.SIZE == 0, 'Tileset file width is not a multiple of ' + str(16) + ': ' + self.image_file
-        assert height % Tile.SIZE == 0, 'Tileset file height is not a multiple of ' + str(16) + ': ' + self.image_file
+        assert width % graphics['TileSize'] == 0, 'Tileset file width is not a multiple of ' + str(graphics['TileSize']) + ': ' + self.image_file
+        assert height % graphics['TileSize'] == 0, 'Tileset file height is not a multiple of ' + str(graphics['TileSize']) + ': ' + self.image_file
         
-        tile_width, tile_height = width / Tile.SIZE, height / Tile.SIZE
+        tile_width, tile_height = width / graphics['TileSize'], height / graphics['TileSize']
         self.size = tile_width * tile_height
         
         print 'load_image_file', 'width=' + str(width), 'height=' + str(height), 'tile_width=' + str(tile_width), 'tile_height=' + str(tile_height)
@@ -86,7 +85,7 @@ class Tileset:
         self.tiles = []
         for i in xrange(self.size):
             x, y = i % tile_width, i / tile_width
-            self.tiles.append(Tile(TileImage(self.image.subsurface((x * Tile.SIZE, y * Tile.SIZE), (Tile.SIZE, Tile.SIZE)))))
+            self.tiles.append(Tile(TileImage(self.image.subsurface((x * graphics['TileSize'], y * graphics['TileSize']), (graphics['TileSize'], graphics['TileSize'])))))
         
     def load_boundaries_file(self):
         f = file(self.boundaries_file, "r")
