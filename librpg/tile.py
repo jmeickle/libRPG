@@ -26,8 +26,8 @@ class Tile:
         self.obstacle = -1
         self.open_directions = [None] * 4
     
-    def can_be_entered(self, direction):
-        return self.open_directions[direction-1]
+    def cannot_be_entered(self, direction):
+        return self.is_obstacle() or self.open_directions[direction-1]
 
     def is_counter(self):
         return self.obstacle == Tile.COUNTER

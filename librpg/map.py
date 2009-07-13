@@ -305,26 +305,39 @@ class MapModel:
         if object.movement_phase > 0:
             return False
             
-        object.facing = direction
         desired = object.position.step(direction)
-        if self.terrain_layer.valid_pos(desired) and not (object.is_obstacle and self.is_obstructed(desired)):
+        if not self.terrain_layer.valid_pos(desired):
+            return False
+
+        object.facing = direction
+        old_terrain = self.terrain_layer.get_pos(object.position)
+        new_terrain = self.terrain_layer.get_pos(desired)
+        old_scenario = self.scenario_layer.get_pos(object.position)
+        new_scenario = self.scenario_layer.get_pos(desired)
+        old_object = self.object_layer.get_pos(object.position)
+        new_object = self.object_layer.get_pos(desired)
+        if not (object.is_obstacle and (self.is_obstructed(new_terrain, new_scenario, new_object) or self.tile_boundaries_obstructed(old_terrain, new_terrain, old_scenario, new_scenario, direction))):
             # Move
-            self.move_object(object, object.position, desired)
+            self.move_object(object, old_object, new_object, desired)
             return True
         else:
             # Do not move
             return False
             
-    def is_obstructed(self, position):
-        return self.terrain_layer.get_pos(position).is_obstacle() or \
-               self.scenario_layer.get_pos(position).is_obstacle() or \
-               self.object_layer.get_pos(position).obstacle != None
+    def is_obstructed(self, new_terrain, new_scenario, new_object):
+        return (new_terrain.is_obstacle() and not new_scenario.is_below()) or \
+               new_scenario.is_obstacle() or \
+               new_object.obstacle != None
 
-    def move_object(self, object, old_pos, new_pos):
+    def tile_boundaries_obstructed(self, old_terrain, new_terrain, old_scenario, new_scenario, direction):
+        inverse = Direction.INVERSE[direction]
+        return old_terrain.cannot_be_entered(direction) or old_scenario.cannot_be_entered(direction) or new_terrain.cannot_be_entered(inverse) or new_scenario.cannot_be_entered(inverse)
+
+    def move_object(self, object, old_object, new_object, new_pos):
         object.movement_phase = object.speed - 1
         
-        self.object_layer.get_pos(old_pos).remove_object(object)
-        self.object_layer.get_pos(new_pos).add_object(object)
+        old_object.remove_object(object)
+        new_object.add_object(object)
         object.position = new_pos
 
     def __repr__(self):

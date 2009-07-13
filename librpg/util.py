@@ -28,7 +28,7 @@ class Position:
         return Position(self.x + amount, self.y)
 
     def step(self, direction, amount = 1):
-        return [None, self.up, self.down, self.left, self.right][direction](amount)
+        return [None, self.up, self.right, self.down, self.left][direction](amount)
         
     def __repr__(self):
         return "(" + str(self.x) + ", " + str(self.y) + ")"
@@ -41,9 +41,11 @@ class Position:
 class Direction:
     
     UP = 1
-    DOWN = 2
-    LEFT = 3
-    RIGHT = 4
+    RIGHT = 2
+    DOWN = 3
+    LEFT = 4
+    
+    INVERSE = {UP: DOWN, DOWN: UP, LEFT: RIGHT, RIGHT: LEFT}
 
 #=================================================================================
 
