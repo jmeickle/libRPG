@@ -202,8 +202,8 @@ class MapModel:
     scenario_layer: Matrix<Tile> (read-only)
     Matrix with the tiles that compose the scenario layer.
 
-    object_layer: Matrix<[MapObject, [MapObject]]> (read-only)
-    Matrix with the objects that each tile contains. Each cell of the matrix is a list of two elements, being the first the obstacle object in that tile and the second a list of all non-obstacle objects in that tile.
+    object_layer: Matrix<ObjectCell> (read-only)
+    Matrix with the objects that each tile contains.
 
     area_layer: Matrix<MapArea> (read-only)
     Matrix with the area to which each tile belongs.
@@ -237,7 +237,7 @@ class MapModel:
         self.object_layer = Matrix(self.width, self.height)
         for x in range(self.width):
             for y in range(self.height):
-                self.object_layer.set(x, y, [None, []])
+                self.object_layer.set(x, y, ObjectCell())
 
     def load_from_map_file(self):
         layout_file = open(self.map_file)
@@ -289,24 +289,14 @@ class MapModel:
         return result
 
     def add_object(self, object, position):
-        t = self.object_layer.get_pos(position)
-        if not object.is_obstacle():
-            t[1].append(object)
-        elif t[0] == None:
-            t[0] = object
-        else:
-            return False
+        self.object_layer.get_pos(position).add_object(object)
         self.objects.append(object)
         object.position, object.map = position, self
         return True
     
     def remove_object(self, object):
         self.objects.remove(object)
-        t = self.object_layer.get_pos(object.position)
-        if object.is_obstacle():
-            t[0] = None
-        else:
-            t[1].remove(object)
+        self.object_layer.get_pos(object.position).remove_object(object)
         result = object.position
         object.position, object.map = None, None
         return result
@@ -328,16 +318,13 @@ class MapModel:
     def is_obstructed(self, position):
         return self.terrain_layer.get_pos(position).is_obstacle() or \
                self.scenario_layer.get_pos(position).is_obstacle() or \
-               self.object_layer.get_pos(position)[0] != None
+               self.object_layer.get_pos(position).obstacle != None
 
     def move_object(self, object, old_pos, new_pos):
         object.movement_phase = object.speed - 1
-        if object.is_obstacle():
-            self.object_layer.get_pos(old_pos)[0] = None
-            self.object_layer.get_pos(new_pos)[0] = object
-        else:
-            self.object_layer.get_pos(old_pos)[1].remove(object)
-            self.object_layer.get_pos(new_pos)[1].append(object)
+        
+        self.object_layer.get_pos(old_pos).remove_object(object)
+        self.object_layer.get_pos(new_pos).add_object(object)
         object.position = new_pos
 
     def __repr__(self):
@@ -357,3 +344,29 @@ class MapModel:
         result += '+' + '-' * self.width + '+\n'
         return result
 
+
+#=================================================================================
+
+class ObjectCell:
+    
+    def __init__(self):
+        self.below = []
+        self.obstacle = None
+        self.above = []
+    
+    def add_object(self, object):
+        if object.is_obstacle():
+            self.obstacle = object
+        elif object.is_below():
+            self.below.append(object)
+        else:
+            self.above.append(object)
+    
+    def remove_object(self, object):
+        if object.is_obstacle():
+            self.obstacle = None
+        elif object.is_below():
+            self.below.remove(object)
+        else:
+            self.above.remove(object)
+            

@@ -81,3 +81,9 @@ Returns whether the tile is a counter - that is, if push key events may affect o
 
 is_obstacle() -> bool
 Returns whether the tile is an obstacle.
+
+is_below() -> bool
+Returns whether the tile is drawn below party level.
+
+is_above() -> bool
+Returns whether the tile is drawn above party level.

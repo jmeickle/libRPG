@@ -56,6 +56,12 @@ Returns whether the object is a counter - that is, if push key events may affect
 is_obstacle() -> bool
 Returns whether the object is an obstacle.
 
+is_below() -> bool
+Returns whether the tile is drawn below party level.
+
+is_above() -> bool
+Returns whether the tile is drawn above party level.
+
 get_surface() -> Surface
 Returns a surface with the image as the object should be drawn.
 

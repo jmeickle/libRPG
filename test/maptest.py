@@ -45,7 +45,7 @@ print 'Removed', party, pos
 print
 
 print 'Adding', str(p)
-m.map_model.add_party(p, Position(0, 0), Direction.RIGHT, MapObject.SLOW_SPEED)
+m.map_model.add_party(p, Position(0, 0), Direction.RIGHT, MapObject.NORMAL_SPEED)
 print 'Added'
 print
 

@@ -35,6 +35,12 @@ class Tile:
     def is_obstacle(self):
         return self.obstacle == Tile.OBSTACLE or self.obstacle == Tile.COUNTER
         
+    def is_below(self):
+        return self.obstacle == Tile.BELOW
+        
+    def is_above(self):
+        return self.obstacle == Tile.ABOVE
+    
     def get_surface(self):
         return self.image.get_surface()
         

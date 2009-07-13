@@ -52,6 +52,12 @@ class MapObject:
     def is_obstacle(self):
         return self.obstacle == MapObject.OBSTACLE or self.obstacle == MapObject.COUNTER
         
+    def is_below(self):
+        return self.obstacle == MapObject.BELOW
+        
+    def is_above(self):
+        return self.obstacle == MapObject.ABOVE
+    
     def get_surface(self):
         return self.image.get_surface(self)
         

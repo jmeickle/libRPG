@@ -62,8 +62,8 @@ Matrix with the tiles that compose the terrain layer.
 scenario_layer: Matrix<int> (read-only)
 Matrix with the ids of the tiles that compose the scenario layer.
 
-object_layer: Matrix<[MapObject, [MapObject]]> (read-only)
-Matrix with the objects that each tile contains. Each cell of the matrix is a list of two elements, being the first the obstacle object in that tile and the second a list of all non-obstacle objects in that tile.
+object_layer: Matrix<ObjectCell> (read-only)
+Matrix with the objects that each tile contains.
 
 area_layer: Matrix<MapArea> (read-only)
 Matrix with the area to which each tile belongs.
