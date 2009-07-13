@@ -11,15 +11,13 @@ class Tile:
     An TileImage containing the image for that tile.
 
     obstacle: int (read-only)
-    0 if a party or an object can move over this tile, 1 if it is considered an obstacle. If it is a counter - that is, if push key events may affect objects on the other side of it -, this attribute is set to 2.
+    0 if a party or an object can move over this tile, 3 if they can move under it, 1 if it is considered an obstacle. If it is a counter - that is, if push key events may affect objects on the other side of it -, this attribute is set to 2.
     
     open_directions: [bool] (read-only)
     4-position array with boolean values indicating if the tile is enterable by the given side.
     """
 
-    NON_OBSTACLE = 0
-    OBSTACLE = 1
-    COUNTER = 2
+    BELOW, OBSTACLE, COUNTER, ABOVE = 0, 1, 2, 3
     
     SIZE = 16
     

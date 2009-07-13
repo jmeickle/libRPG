@@ -144,7 +144,10 @@ screen: Surface (read-only)
 Screen surface to blit to.
 
 background: Surface (private)
-Surface containing the static terrain and scenario layers.
+Surface containing the static terrain and scenario layers that are drawn at the lower level.
+
+foreground: Surface (private)
+Surface containing the static scenario tiles that are drawn at the upper level.
 
 -------
 Methods
@@ -155,6 +158,9 @@ Creates the MapView for map_model.
 
 init_background() (internal)
 Draws the terrain and scenario layers to the background Surface.
+
+init_background() (internal)
+Draws the upper scenario layer to the foreground Surface.
 
 draw()
 Blits the map to the screen and flips the display.

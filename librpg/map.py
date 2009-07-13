@@ -69,10 +69,19 @@ class Map:
 
 class MapView:
 
-    # Read-Only Attributes:
-    # map_model - MapModel with the information to be drawn
-    # screen - screen Surface to draw onto
-    # background - Surface containing the static terrain and scenario layers
+    """
+    map_model: MapModel (read-only)
+    MapModel with the information to be drawn.
+
+    screen: Surface (read-only)
+    Screen surface to blit to.
+
+    background: Surface (private)
+    Surface containing the static terrain and scenario layers that are drawn at the lower level.
+
+    foreground: Surface (private)
+    Surface containing the static scenario tiles that are drawn at the upper level.
+    """
     
     SCREEN_WIDTH, SCREEN_HEIGHT = 640, 480
     WIDTH_IN_TILES, HEIGHT_IN_TILES = SCREEN_WIDTH / Tile.SIZE, SCREEN_HEIGHT / Tile.SIZE
@@ -82,6 +91,7 @@ class MapView:
         
         self.screen = pygame.display.set_mode((MapView.SCREEN_WIDTH, MapView.SCREEN_HEIGHT))
         self.init_background()
+        self.init_foreground()
     
     def init_background(self):
         background_width = self.map_model.width + MapView.SCREEN_WIDTH
@@ -93,11 +103,30 @@ class MapView:
         
         for y in xrange(self.map_model.height):
             for x in xrange(self.map_model.width):
-                tile_surface = self.map_model.terrain_layer.get(x, y).get_surface()
                 bg_x = MapView.SCREEN_WIDTH / 2 + x * Tile.SIZE
                 bg_y = MapView.SCREEN_HEIGHT / 2 + y * Tile.SIZE
-                self.background.blit(tile_surface, (bg_x, bg_y))
+                terrain_tile_surface = self.map_model.terrain_layer.get(x, y).get_surface()
+                self.background.blit(terrain_tile_surface, (bg_x, bg_y))
+                
+                scenario_tile = self.map_model.scenario_layer.get(x, y)
+                if scenario_tile.obstacle != Tile.ABOVE:
+                    scenario_tile_surface = scenario_tile.get_surface()
+                    self.background.blit(scenario_tile_surface, (bg_x, bg_y))
+
+    def init_foreground(self):
+        foreground_width = self.map_model.width + MapView.SCREEN_WIDTH
+        foreground_height = self.map_model.height + MapView.SCREEN_HEIGHT
+        self.foreground = pygame.Surface((foreground_width, foreground_height), SRCALPHA, 32)
         
+        for y in xrange(self.map_model.height):
+            for x in xrange(self.map_model.width):
+                scenario_tile = self.map_model.scenario_layer.get(x, y)
+                if scenario_tile.obstacle == Tile.ABOVE:
+                    fg_x = MapView.SCREEN_WIDTH / 2 + x * Tile.SIZE
+                    fg_y = MapView.SCREEN_HEIGHT / 2 + y * Tile.SIZE
+                    scenario_tile_surface = scenario_tile.get_surface()
+                    self.foreground.blit(scenario_tile_surface, (fg_x, fg_y))
+
     def draw(self):
         party_avatar = self.map_model.party_avatar
     
@@ -125,6 +154,9 @@ class MapView:
         if party_avatar:
             party_place = (MapView.SCREEN_WIDTH - ObjectImage.WIDTH + Tile.SIZE) / 2, (MapView.SCREEN_HEIGHT / 2 - ObjectImage.HEIGHT + Tile.SIZE)
             self.screen.blit(party_avatar.get_surface(), pygame.Rect(party_place, ObjectImage.DIMENSIONS))
+        
+        # Draw the foreground
+        self.screen.blit(self.foreground, (0, 0), bg_area)
         
         # Flip display
         pygame.display.flip()
@@ -195,7 +227,7 @@ class MapModel:
         self.scenario_tileset_files = scenario_tileset_files
         
         self.terrain_tileset = Tileset(self.terrain_tileset_files[0], self.terrain_tileset_files[1])
-        # self.scenario_tileset = Tileset(self.scenario_tileset_files[0], self.scenario_tileset_files[1])
+        self.scenario_tileset = Tileset(self.scenario_tileset_files[0], self.scenario_tileset_files[1])
         
         self.load_from_map_file()
         
@@ -230,8 +262,7 @@ class MapModel:
         for line in r:
             if len(line) == self.width:
                 for value, x in zip(line, xrange(self.width)):
-                    #self.scenario_layer.set(x, y, self.scenario_tileset.tiles[int(value)])
-                    self.scenario_layer.set(x, y, int(value))
+                    self.scenario_layer.set(x, y, self.scenario_tileset.tiles[int(value)])
                 y += 1
             if y >= self.height:
                 break
@@ -295,7 +326,9 @@ class MapModel:
             return False
             
     def is_obstructed(self, position):
-        return self.terrain_layer.get_pos(position).is_obstacle() or self.object_layer.get_pos(position)[0] != None
+        return self.terrain_layer.get_pos(position).is_obstacle() or \
+               self.scenario_layer.get_pos(position).is_obstacle() or \
+               self.object_layer.get_pos(position)[0] != None
 
     def move_object(self, object, old_pos, new_pos):
         object.movement_phase = object.speed - 1

@@ -13,7 +13,7 @@ class MapObject:
     Where on the map the MapObject is. None if it is not in any map.
 
     obstacle: int (read-only)
-    0 if a party or an object can move over this object, 1 if it is considered an obstacle. If it is a counter - that is, if push key events may affect objects on the other side of it -, this attribute is set to 2.
+    0 if a party or an object can move over this object, 3 if they can move under it, 1 if it is considered an obstacle. If it is a counter - that is, if push key events may affect objects on the other side of it -, this attribute is set to 2.
     
     facing: Direction (public)
     Direction that the object is facing.
@@ -25,7 +25,7 @@ class MapObject:
     0 if still, 1 to speed if in the middle of a movement.
     """
     
-    NON_OBSTACLE, OBSTACLE, COUNTER = 0, 1, 2
+    BELOW, OBSTACLE, COUNTER, ABOVE = 0, 1, 2, 3
     
     VERY_FAST_SPEED, FAST_SPEED, NORMAL_SPEED, SLOW_SPEED, VERY_SLOW_SPEED = 3, 4, 6, 10, 15
     SPEEDS = [VERY_FAST_SPEED, FAST_SPEED, NORMAL_SPEED, SLOW_SPEED, VERY_SLOW_SPEED]
