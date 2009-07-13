@@ -28,7 +28,6 @@ class ObjectImage(Image):
     This class represents a MapObject image, which may include simple animation cycles and movement animation.
     """
 
-    DIMENSIONS = (graphics['ObjectWidth'], graphics['ObjectHeight'])
     DIRECTION_TO_INDEX_MAP = {Direction.UP: 0, Direction.RIGHT: 1, Direction.DOWN: 2, Direction.LEFT: 3}
 
     ANIMATION_MAPS = dict((speed, [OBJECT_IMAGE_BASIC_ANIMATION_MAP[(phase*4)/speed] for phase in range(speed)]) for speed in MapObject.SPEEDS)
@@ -42,7 +41,7 @@ class ObjectImage(Image):
             phases = []
             self.frames.append(phases)
             for x in range(3):
-                phases.append(self.surface.subsurface(pygame.Rect((x * graphics['ObjectWidth'], y * graphics['ObjectHeight']), ObjectImage.DIMENSIONS)))
+                phases.append(self.surface.subsurface(pygame.Rect((x * GraphicsConfig.OBJECT_WIDTH, y * GraphicsConfig.OBJECT_HEIGHT), (GraphicsConfig.OBJECT_WIDTH, GraphicsConfig.OBJECT_HEIGHT))))
 
     def get_surface(self, object = None, facing = None, phase = None):
         if object != None:

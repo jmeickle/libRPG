@@ -1,6 +1,6 @@
-graphics = {}
-graphics['ScreenWidth'] = 640
-graphics['ScreenHeight'] = 480
-graphics['TileSize'] = 16
-graphics['ObjectHeight'] = 32
-graphics['ObjectWidth'] = 24
+class GraphicsConfig:
+    SCREEN_WIDTH = 640
+    SCREEN_HEIGHT = 480
+    TILE_SIZE = 16
+    OBJECT_HEIGHT = 32
+    OBJECT_WIDTH = 24
