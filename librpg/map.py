@@ -21,7 +21,7 @@ class Map:
     
     FPS = 30
     
-    def __init__(self, map_model, local_state = None):
+    def __init__(self, map_model, local_state=None):
         self.map_model = map_model
         self.map_model.initialize(local_state)
         self.map_view = MapView(self.map_model)
@@ -272,13 +272,13 @@ class MapModel:
         pass
         
     def add_party(self, party, position, facing = Direction.DOWN, speed = MapObject.NORMAL_SPEED):
-        assert self.party == None, 'Map already has a party'
+        assert self.party is None, 'Map already has a party'
         self.party = party
         self.party_avatar = PartyAvatar(party, facing, speed)
         self.add_object(self.party_avatar, position)
     
     def remove_party(self):
-        if self.party == None:
+        if self.party is None:
             return None, None
         result = self.party, self.party_avatar.position
         self.remove_object(self.party_avatar)
@@ -325,7 +325,7 @@ class MapModel:
     def is_obstructed(self, new_terrain, new_scenario, new_object):
         return (new_terrain.is_obstacle() and not new_scenario.is_below()) or \
                new_scenario.is_obstacle() or \
-               new_object.obstacle != None
+               new_object.obstacle is not None
 
     def tile_boundaries_obstructed(self, old_terrain, new_terrain, old_scenario, new_scenario, direction):
         inverse = Direction.INVERSE[direction]
@@ -353,7 +353,7 @@ class MapModel:
         for y in range(self.height):
             result += '|'
             for x in range(self.width):
-                if self.party_avatar != None and self.party_avatar.position == Position(x, y):
+                if self.party_avatar is not None and self.party_avatar.position == Position(x, y):
                     result += 'P'
                 else:
                     result += ' '

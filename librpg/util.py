@@ -8,26 +8,26 @@ class Position:
     # x - horizontal position
     # y - vertical position
 
-    def __init__(self, x = 0, y = 0):
+    def __init__(self, x=0, y=0):
         self.x = x
         self.y = y
     
     def __add__(self, pos):
         return Position(self.x + pos.x, self.y + pos.y)
         
-    def up(self, amount = 1):
+    def up(self, amount=1):
         return Position(self.x, self.y - amount)
         
-    def down(self, amount = 1):
+    def down(self, amount=1):
         return Position(self.x, self.y + amount)
         
-    def left(self, amount = 1):
+    def left(self, amount=1):
         return Position(self.x - amount, self.y)
         
-    def right(self, amount = 1):
+    def right(self, amount=1):
         return Position(self.x + amount, self.y)
 
-    def step(self, direction, amount = 1):
+    def step(self, direction, amount=1):
         return [None, self.up, self.right, self.down, self.left][direction](amount)
         
     def __repr__(self):

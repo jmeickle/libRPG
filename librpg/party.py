@@ -25,7 +25,7 @@ class Party:
         else:
             self.reserve.allocate_char(char, self)
             self.chars.append(char)
-            if self.leader == None:
+            if self.leader is None:
                 self.leader = char
             return True
     
@@ -74,7 +74,7 @@ class CharacterReserve:
     
     def remove_char(self, char):
         if self.chars.has_key(char):
-            if self.chars[char] != None:
+            if self.chars[char] is not None:
                 self.chars[char].remove_char(char)
             del self.chars[char]
             return char
@@ -119,7 +119,7 @@ class Character:
     The character's sprites.
     """
     
-    def __init__(self, name, image_file = None):
+    def __init__(self, name, image_file=None):
         self.name, self.image_file = name, image_file
         if image_file:
             self.image = ObjectImage(pygame.image.load(self.image_file))

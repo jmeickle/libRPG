@@ -4,7 +4,7 @@ class LogRoll:
 
     UNLIMITED_CAPACITY = -1
 
-    def __init__(self, entry_types, capacity = UNLIMITED_CAPACITY):
+    def __init__(self, entry_types, capacity=UNLIMITED_CAPACITY):
         self.capacity = capacity
         self.entry_types = entry_types
         self.entries = []
@@ -21,7 +21,7 @@ class LogRoll:
         self.entries = []
         
     def write(self, entry):
-        if self.file != None:
+        if self.file is not None:
             self.file.write(str(entry) + "\n")
         elif self.capacity == LogRoll.UNLIMITED_CAPACITY or self.capacity > len(self.entries):
             self.entries.append(entry)
@@ -53,7 +53,7 @@ class Log:
     # List of rolls that catch all entries
     rolls_that_catch_all = []
 
-    def create_roll(self, entry_types = ALL_LOG_ENTRIES, capacity = LogRoll.UNLIMITED_CAPACITY):
+    def create_roll(self, entry_types=ALL_LOG_ENTRIES, capacity=LogRoll.UNLIMITED_CAPACITY):
         roll = LogRoll(entry_types, capacity)
         
         if (entry_types == Log.ALL_LOG_ENTRIES):

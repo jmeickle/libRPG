@@ -18,14 +18,14 @@ class OrdinaryInventory(Inventory):
     # items - dictionary mapping itemIds to their amounts contained
     # maxItemPile - maximum amount of identical items in a pile
        
-    def __init__(self, maxWeight = None, maxItemPile = 99):
+    def __init__(self, maxWeight=None, maxItemPile=99):
         Inventory.__init__(self, maxWeight)
         self.items = {}
         self.maxItemPile = maxItemPile
         
-    def addItem(self, item, amount = 1):
+    def addItem(self, item, amount=1):
         #check for overweight problems
-        if self.maxWeight != None:
+        if self.maxWeight is not None:
             availableWeight = self.maxWeight - self.weight
             amountThatFits = availableWeight / item.weight
         else:
@@ -39,7 +39,7 @@ class OrdinaryInventory(Inventory):
         self.uncheckedAddItem(item.id, finalAmount, item.weight)
         return finalAmount
         
-    def removeItem(self, item, amount = 1):
+    def removeItem(self, item, amount=1):
         amountContained = self.getAmountById(item.id)
         if amountContained > amount:
             self.items[item.id] -= amount
@@ -82,7 +82,7 @@ class OrdinaryInventory(Inventory):
     def clear(self):
         self.items = {}
     
-    def getOrderedList(self, itemFactory, comparisonFunction, extractFunction = None):
+    def getOrderedList(self, itemFactory, comparisonFunction, extractFunction=None):
         return sorted(map(itemFactory, self.items.keys()), comparisonFunction, extractFunction)
 
     def getItemsWithAmounts(self, itemFactory):
@@ -101,7 +101,7 @@ class UniquesInventory(Inventory):
         
     def addItem(self, item):
         #check for overweight problems
-        if self.maxWeight != None and self.maxWeight - self.weight >= item.weight:
+        if self.maxWeight is not None and self.maxWeight - self.weight >= item.weight:
             self.uncheckedAddItem(item)
             return True
         else:
@@ -109,7 +109,7 @@ class UniquesInventory(Inventory):
             
     def removeItem(self, item):
         if item in self.items:
-            self.uncheckeRemoveItem(item)
+            self.uncheckedRemoveItem(item)
             return True
         else:
             return False
@@ -124,7 +124,7 @@ class UniquesInventory(Inventory):
         self.items.remove(item)
         self.weight -= item.weight
         
-    def getOrderedList(self, comparisonFunction = None):
+    def getOrderedList(self, comparisonFunction=None):
         return sorted(self.items, comparisonFunction)
 
     def clear(self):
@@ -137,14 +137,14 @@ class UniquesInventory(Inventory):
 
 class Item:
     
-    def __init__(self, weight = 0):
+    def __init__(self, weight=0):
         self.weight = weight
     
 #=================================================================================
 
 class OrdinaryItem(Item):
     
-    def __init__(self, id, weight = 0):
+    def __init__(self, id, weight=0):
         Item.__init__(self, weight)
         self.id = id
     
@@ -155,7 +155,7 @@ class OrdinaryItem(Item):
 
 class UniqueItem(Item):
     
-    def __init__(self, weight = 0):
+    def __init__(self, weight=0):
         Item.__init__(self, weight)
 
 #=================================================================================
@@ -170,14 +170,14 @@ class UsableItem(Item):
 
 class UsableOrdinaryItem(UsableItem, OrdinaryItem):
     
-    def __init__(self, id, weight = 0):
+    def __init__(self, id, weight=0):
         OrdinaryItem.__init__(self, id, weight)
 
 #=================================================================================
 
 class UsableUniqueItem(UsableItem, UniqueItem):
     
-    def __init__(self, weight = 0):
+    def __init__(self, weight=0):
         UniqueItem.__init__(self, weight)
 
 #=================================================================================
