@@ -3,6 +3,7 @@ import csv
 import pygame
 from pygame.locals import *
 
+import librpg
 from mapobject import *
 from util import *
 from image import *
@@ -59,9 +60,10 @@ class Map:
                 elif event.key == K_ESCAPE:
                     return False
             elif event.type == KEYUP:
-                direction = Map.KEY_TO_DIRECTION[event.key]
-                if event.key in Map.KEY_TO_DIRECTION.keys() and direction in self.map_model.party_movement:
-                    self.map_model.party_movement.remove(direction)
+                if event.key in Map.KEY_TO_DIRECTION.keys():
+                    direction = Map.KEY_TO_DIRECTION[event.key]
+                    if Map.KEY_TO_DIRECTION[event.key] in self.map_model.party_movement:
+                        self.map_model.party_movement.remove(direction)
         return True
         
     def flow_object_movement(self):
@@ -90,7 +92,8 @@ class MapView:
     def __init__(self, map_model):
         self.map_model = map_model
         
-        self.screen = pygame.display.set_mode(graphics_config.screen_dimensions)
+        #self.screen = pygame.display.set_mode(graphics_config.screen_dimensions)
+        self.screen = librpg.screen
         self.init_background()
         self.init_foreground()
     

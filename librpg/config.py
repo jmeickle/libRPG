@@ -1,3 +1,7 @@
+import pygame
+
+import librpg
+
 class GraphicsConfig(object):
 
     DEFAULT_SCREEN_WIDTH = 640
@@ -18,12 +22,14 @@ class GraphicsConfig(object):
         
     def set_screen_width(self, new_value):
         self._screen_width = new_value
+        librpg.screen = pygame.display.set_mode(self.screen_dimensions)
     
     def get_screen_height(self):
         return self._screen_height
         
     def set_screen_height(self, new_value):
         self._screen_height = new_value
+        librpg.screen = pygame.display.set_mode(self.screen_dimensions)
     
     def get_screen_dimensions(self):
         return (self.screen_width, self.screen_height)
