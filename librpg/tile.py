@@ -74,10 +74,10 @@ class Tileset:
     def load_image_file(self):
         self.image = pygame.image.load(self.image_file)
         width, height = self.image.get_width(), self.image.get_height()
-        assert width % GraphicsConfig.TILE_SIZE == 0, 'Tileset file width is not a multiple of ' + str(GraphicsConfig.TILE_SIZE) + ': ' + self.image_file
-        assert height % GraphicsConfig.TILE_SIZE == 0, 'Tileset file height is not a multiple of ' + str(GraphicsConfig.TILE_SIZE) + ': ' + self.image_file
+        assert width % graphics_config.tile_size == 0, 'Tileset file width is not a multiple of ' + str(graphics_config.tile_size) + ': ' + self.image_file
+        assert height % graphics_config.tile_size == 0, 'Tileset file height is not a multiple of ' + str(graphics_config.tile_size) + ': ' + self.image_file
         
-        tile_width, tile_height = width / GraphicsConfig.TILE_SIZE, height / GraphicsConfig.TILE_SIZE
+        tile_width, tile_height = width / graphics_config.tile_size, height / graphics_config.tile_size
         self.size = tile_width * tile_height
         
         print 'load_image_file', 'width=' + str(width), 'height=' + str(height), 'tile_width=' + str(tile_width), 'tile_height=' + str(tile_height)
@@ -85,7 +85,7 @@ class Tileset:
         self.tiles = []
         for i in xrange(self.size):
             x, y = i % tile_width, i / tile_width
-            self.tiles.append(Tile(TileImage(self.image.subsurface((x * GraphicsConfig.TILE_SIZE, y * GraphicsConfig.TILE_SIZE), (GraphicsConfig.TILE_SIZE, GraphicsConfig.TILE_SIZE)))))
+            self.tiles.append(Tile(TileImage(self.image.subsurface((x * graphics_config.tile_size, y * graphics_config.tile_size), (graphics_config.tile_size, graphics_config.tile_size)))))
         
     def load_boundaries_file(self):
         f = file(self.boundaries_file, "r")

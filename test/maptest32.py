@@ -7,9 +7,10 @@ import pygame
 
 pygame.init()
 
-GraphicsConfig.TILE_SIZE = 32
-GraphicsConfig.OBJECT_HEIGHT = 32
-GraphicsConfig.OBJECT_WIDTH = 32
+graphics_config.screen_width = 480
+graphics_config.tile_size = 32
+graphics_config.object_height = 32
+graphics_config.object_width = 32
 
 m = Map(MapModel('maptest32.map', ('lower_tileset32.png', 'lower_tileset32.bnd'), ('upper_tileset32.png', 'upper_tileset32.bnd')))
 

@@ -41,7 +41,7 @@ class ObjectImage(Image):
             phases = []
             self.frames.append(phases)
             for x in range(3):
-                phases.append(self.surface.subsurface(pygame.Rect((x * GraphicsConfig.OBJECT_WIDTH, y * GraphicsConfig.OBJECT_HEIGHT), (GraphicsConfig.OBJECT_WIDTH, GraphicsConfig.OBJECT_HEIGHT))))
+                phases.append(self.surface.subsurface(pygame.Rect((x * graphics_config.object_width, y * graphics_config.object_height), (graphics_config.object_width, graphics_config.object_height))))
 
     def get_surface(self, object=None, facing=None, phase=None):
         if object is not None:

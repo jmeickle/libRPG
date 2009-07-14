@@ -87,13 +87,13 @@ class MapView:
     def __init__(self, map_model):
         self.map_model = map_model
         
-        self.screen = pygame.display.set_mode((GraphicsConfig.SCREEN_WIDTH, GraphicsConfig.SCREEN_HEIGHT))
+        self.screen = pygame.display.set_mode(graphics_config.screen_dimensions)
         self.init_background()
         self.init_foreground()
     
     def init_background(self):
-        background_width = GraphicsConfig.TILE_SIZE * self.map_model.width + GraphicsConfig.SCREEN_WIDTH
-        background_height = GraphicsConfig.TILE_SIZE * self.map_model.height + GraphicsConfig.SCREEN_HEIGHT
+        background_width = graphics_config.tile_size * self.map_model.width + graphics_config.screen_width
+        background_height = graphics_config.tile_size * self.map_model.height + graphics_config.screen_height
         self.background = pygame.Surface((background_width, background_height))
         
         BLACK = (0, 0, 0)
@@ -101,8 +101,8 @@ class MapView:
         
         for y in xrange(self.map_model.height):
             for x in xrange(self.map_model.width):
-                bg_x = GraphicsConfig.SCREEN_WIDTH / 2 + x * GraphicsConfig.TILE_SIZE
-                bg_y = GraphicsConfig.SCREEN_HEIGHT / 2 + y * GraphicsConfig.TILE_SIZE
+                bg_x = graphics_config.screen_width / 2 + x * graphics_config.tile_size
+                bg_y = graphics_config.screen_height / 2 + y * graphics_config.tile_size
                 terrain_tile_surface = self.map_model.terrain_layer.get(x, y).get_surface()
                 self.background.blit(terrain_tile_surface, (bg_x, bg_y))
                 
@@ -112,16 +112,16 @@ class MapView:
                     self.background.blit(scenario_tile_surface, (bg_x, bg_y))
 
     def init_foreground(self):
-        foreground_width = GraphicsConfig.TILE_SIZE * self.map_model.width + GraphicsConfig.SCREEN_WIDTH
-        foreground_height = GraphicsConfig.TILE_SIZE * self.map_model.height + GraphicsConfig.SCREEN_HEIGHT
+        foreground_width = graphics_config.tile_size * self.map_model.width + graphics_config.screen_width
+        foreground_height = graphics_config.tile_size * self.map_model.height + graphics_config.screen_height
         self.foreground = pygame.Surface((foreground_width, foreground_height), SRCALPHA, 32)
         
         for y in xrange(self.map_model.height):
             for x in xrange(self.map_model.width):
                 scenario_tile = self.map_model.scenario_layer.get(x, y)
                 if scenario_tile.obstacle == Tile.ABOVE:
-                    fg_x = GraphicsConfig.SCREEN_WIDTH / 2 + x * GraphicsConfig.TILE_SIZE
-                    fg_y = GraphicsConfig.SCREEN_HEIGHT / 2 + y * GraphicsConfig.TILE_SIZE
+                    fg_x = graphics_config.screen_width / 2 + x * graphics_config.tile_size
+                    fg_y = graphics_config.screen_height / 2 + y * graphics_config.tile_size
                     scenario_tile_surface = scenario_tile.get_surface()
                     self.foreground.blit(scenario_tile_surface, (fg_x, fg_y))
 
@@ -133,7 +133,7 @@ class MapView:
         if party_avatar:
             party_pos = party_avatar.position
             if party_avatar.movement_phase > 0:
-                offset = party_avatar.movement_phase * GraphicsConfig.TILE_SIZE / party_avatar.speed
+                offset = party_avatar.movement_phase * graphics_config.tile_size / party_avatar.speed
                 if party_avatar.facing == Direction.UP:
                     y_offset = offset
                 elif party_avatar.facing == Direction.RIGHT:
@@ -145,13 +145,13 @@ class MapView:
         else:
             party_pos = Position(0, 0)
             
-        bg_area = pygame.Rect((party_pos.x * GraphicsConfig.TILE_SIZE + x_offset, party_pos.y * GraphicsConfig.TILE_SIZE + y_offset), (GraphicsConfig.SCREEN_WIDTH, GraphicsConfig.SCREEN_HEIGHT))
+        bg_area = pygame.Rect((party_pos.x * graphics_config.tile_size + x_offset, party_pos.y * graphics_config.tile_size + y_offset), (graphics_config.screen_width, graphics_config.screen_height))
         self.screen.blit(self.background, (0, 0), bg_area)
         
         # Draw the party avatar
         if party_avatar:
-            party_place = (GraphicsConfig.SCREEN_WIDTH - GraphicsConfig.OBJECT_WIDTH + GraphicsConfig.TILE_SIZE) / 2, (GraphicsConfig.SCREEN_HEIGHT / 2 - GraphicsConfig.OBJECT_HEIGHT + GraphicsConfig.TILE_SIZE)
-            self.screen.blit(party_avatar.get_surface(), pygame.Rect(party_place, (GraphicsConfig.OBJECT_WIDTH, GraphicsConfig.OBJECT_HEIGHT)))
+            party_place = (graphics_config.screen_width - graphics_config.object_width + graphics_config.tile_size) / 2, (graphics_config.screen_height / 2 - graphics_config.object_height + graphics_config.tile_size)
+            self.screen.blit(party_avatar.get_surface(), pygame.Rect(party_place, (graphics_config.object_width, graphics_config.object_height)))
         
         # Draw the foreground
         self.screen.blit(self.foreground, (0, 0), bg_area)
