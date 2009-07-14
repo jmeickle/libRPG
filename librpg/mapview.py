@@ -62,33 +62,33 @@ class MapView:
                     self.foreground.blit(scenario_tile_surface, (fg_x, fg_y))
 
     def draw(self):
-        camera_mode = graphics_config.camera_mode
+        camera_mode = graphics_config.camera_mode()
     
         party_avatar = self.map_model.party_avatar
     
         # Draw the background
-        x_offset, y_offset = 0, 0
+        party_x_offset, party_y_offset = 0, 0
         if party_avatar:
             party_pos = party_avatar.position
             if party_avatar.movement_phase > 0:
                 offset = party_avatar.movement_phase * graphics_config.tile_size / party_avatar.speed
                 if party_avatar.facing == Direction.UP:
-                    y_offset = offset
+                    party_y_offset = offset
                 elif party_avatar.facing == Direction.RIGHT:
-                    x_offset = -offset
+                    party_x_offset = -offset
                 elif party_avatar.facing == Direction.DOWN:
-                    y_offset = -offset
+                    party_y_offset = -offset
                 elif party_avatar.facing == Direction.LEFT:
-                    x_offset = offset
+                    party_x_offset = offset
         else:
             party_pos = Position(0, 0)
-        bg_topleft = camera_mode.calc_bg_slice_topleft(party_pos, x_offset, y_offset)
+        bg_topleft = camera_mode.calc_bg_slice_topleft(party_pos, party_x_offset, party_y_offset)
         bg_rect = pygame.Rect(bg_topleft, (graphics_config.screen_width, graphics_config.screen_height))
         self.screen.blit(self.background, (0, 0), bg_rect)
         
         # Draw the party avatar
         if party_avatar:
-            party_topleft = camera_mode.calc_object_topleft(party_pos)
+            party_topleft = camera_mode.calc_object_topleft(bg_topleft, party_pos, party_x_offset, party_y_offset)
             party_rect = pygame.Rect(party_topleft, (graphics_config.object_width, graphics_config.object_height))
             self.screen.blit(party_avatar.get_surface(), party_rect)
         

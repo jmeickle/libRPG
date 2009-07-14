@@ -40,6 +40,6 @@ class GraphicsConfig(object):
     screen_dimensions = property(get_screen_dimensions)
 
 graphics_config = GraphicsConfig()
-from camera import PartyCentricCameraMode
-graphics_config.camera_mode = PartyCentricCameraMode()
 
+from camera import PartyCentricCameraMode as DEFAULT_CAMERA_MODE
+graphics_config.camera_mode = DEFAULT_CAMERA_MODE

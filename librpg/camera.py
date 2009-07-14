@@ -2,12 +2,15 @@ from config import graphics_config
 
 class CameraMode:
     
+    def calc_object_topleft(self, bg_slice_topleft, object_pos, object_x_offset, object_y_offset):
+        object_pixel_x = object_pos.x * graphics_config.tile_size - (graphics_config.object_width - graphics_config.tile_size) / 2
+        object_pixel_y = object_pos.y * graphics_config.tile_size - (graphics_config.object_height - graphics_config.tile_size)
+        x = graphics_config.screen_width / 2 + object_pixel_x - bg_slice_topleft[0] + object_x_offset
+        y = graphics_config.screen_height / 2 + object_pixel_y - bg_slice_topleft[1] + object_y_offset
+        return (x, y)
+        
     # Abstract
-    def calc_object_topleft(self, object_pos):
-        raise NotImplementedError, 'CameraMode.calc_object_topleft() is abstract'
-    
-    # Abstract
-    def calc_bg_slice_topleft(self, party_pos, x_offset, y_offset):
+    def calc_bg_slice_topleft(self, party_pos, party_x_offset, party_y_offset):
         raise NotImplementedError, 'CameraMode.calc_bg_slice_topleft() is abstract'
     
 #=================================================================================
@@ -24,19 +27,13 @@ class PartyConfinementCameraMode(CameraMode):
         self.vertical_tolerance = vertical_tolerance
         self.horizontal_tolerance = horizontal_tolerance
 
-    def calc_object_topleft(self, object_pos):
-        if self.vertical_tolerance != 0 or self.horizontal_tolerance != 0:
-            raise NotImplementedError, 'PartyConfinementCameraMode not implemented yet.'
-        result = (graphics_config.screen_width - graphics_config.object_width + graphics_config.tile_size) / 2, (graphics_config.screen_height / 2 - graphics_config.object_height + graphics_config.tile_size)
-        return result
-        
-    def calc_bg_slice_topleft(self, party_pos, x_offset, y_offset):
+    def calc_bg_slice_topleft(self, party_pos, party_x_offset=0, party_y_offset=0):
         if self.vertical_tolerance != 0 or self.horizontal_tolerance != 0:
             raise NotImplementedError, 'PartyConfinementCameraMode not implemented yet.'
 
-        result = (party_pos.x * graphics_config.tile_size + x_offset, party_pos.y * graphics_config.tile_size + y_offset)
-        
-        return result
+        x = party_pos.x * graphics_config.tile_size + party_x_offset
+        y = party_pos.y * graphics_config.tile_size + party_y_offset
+        return (x, y)
         
 #=================================================================================
 
@@ -60,9 +57,6 @@ class ScreenConfinementCameraMode(CameraMode):
     In this camera mode, the camera will never show the black area beyond the map. It will keep the party at the center of the screen while it is far from the border. When the party approaches the border, the camera will stop to avoid showing the black area.
     
     """
-    
-    def calc_object_topleft(self, object_pos):
-        pass
-        
-    def calc_bg_slice_topleft(self, party_pos, x_offset, y_offset):
+      
+    def calc_bg_slice_topleft(self, party_pos, party_x_offset, party_y_offset):
         pass
