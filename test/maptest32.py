@@ -7,7 +7,8 @@ import pygame
 
 pygame.init()
 
-graphics_config.screen_width = 480
+graphics_config.screen_width = 300
+graphics_config.screen_height = 400
 graphics_config.tile_size = 32
 graphics_config.object_height = 32
 graphics_config.object_width = 32

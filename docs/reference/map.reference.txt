@@ -121,51 +121,6 @@ try_to_move_party(direction: int) -> boolean
 Tries to move the party to the specified direction (Direction.UP, Direction.DOWN, Direction.LEFT or Direction.RIGHT, imported from librpg.util). Return whether the party could be moved.
 
 
-=======
-MapView
-=======
-
-The MapView displays the MapModel whenever its draw() method is called. It is the View component of the MVC model.
-
------
-Usage
------
-
-The MapView class is used by the Map controller class internally, so the programmer does not have to worry about it.
-
-----------
-Attributes
-----------
-
-map_model: MapModel (read-only)
-MapModel with the information to be drawn.
-
-screen: Surface (read-only)
-Screen surface to blit to.
-
-background: Surface (private)
-Surface containing the static terrain and scenario layers that are drawn at the lower level.
-
-foreground: Surface (private)
-Surface containing the static scenario tiles that are drawn at the upper level.
-
--------
-Methods
--------
-
-__init__(map_model: MapModel)
-Creates the MapView for map_model.
-
-init_background() (internal)
-Draws the terrain and scenario layers to the background Surface.
-
-init_background() (internal)
-Draws the upper scenario layer to the foreground Surface.
-
-draw()
-Blits the map to the screen and flips the display.
-
-
 ===
 Map
 ===
