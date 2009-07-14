@@ -1,7 +1,7 @@
 import pygame
 
 import librpg
-#from mapview import *
+from camera import PartyCentricCameraMode
 
 class GraphicsConfig(object):
 

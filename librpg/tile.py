@@ -3,7 +3,7 @@ import csv
 import pygame
 
 from image import TileImage
-from config import *
+from config import graphics_config
 
 class Tile:
 
