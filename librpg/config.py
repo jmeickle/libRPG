@@ -10,9 +10,7 @@ class GraphicsConfig(object):
     DEFAULT_TILE_SIZE = 16
     DEFAULT_OBJECT_HEIGHT = 32
     DEFAULT_OBJECT_WIDTH = 24
-    DEFAULT_FIXED_CAMERA_WHERE_POSSIBLE = True
-    DEFAULT_VERTICAL_CAMERA_TOLERANCE = 0
-    DEFAULT_HORIZONTAL_CAMERA_TOLERANCE = 0
+    DEFAULT_CAMERA_MODE = PartyCentricCameraMode()
     
     def __init__(self):
         self._screen_width = GraphicsConfig.DEFAULT_SCREEN_WIDTH
@@ -20,9 +18,7 @@ class GraphicsConfig(object):
         self.tile_size = GraphicsConfig.DEFAULT_TILE_SIZE
         self.object_height = GraphicsConfig.DEFAULT_OBJECT_HEIGHT
         self.object_width = GraphicsConfig.DEFAULT_OBJECT_WIDTH
-        self.fixed_camera_where_possible = GraphicsConfig.DEFAULT_FIXED_CAMERA_WHERE_POSSIBLE # Whether, when in a small map, the camera will stay fixed.
-        self.vertical_camera_tolerance = GraphicsConfig.DEFAULT_VERTICAL_CAMERA_TOLERANCE # How many pixels the party can move away from the center of the screen before the camera starts to follow.
-        self.horizontal_camera_tolerance = GraphicsConfig.DEFAULT_HORIZONTAL_CAMERA_TOLERANCE
+        self.camera_mode = GraphicsConfig.DEFAULT_CAMERA_MODE
         
     def get_screen_width(self):
         return self._screen_width
