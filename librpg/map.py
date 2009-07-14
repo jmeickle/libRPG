@@ -243,9 +243,9 @@ class MapModel:
     def tile_boundaries_obstructed(self, old_terrain, new_terrain, old_scenario, new_scenario, direction):
         inverse = Direction.INVERSE[direction]
         if (old_scenario.cannot_be_entered(direction) or
-           (old_terrain.cannot_be_entered(inverse) and not old_scenario.is_below())):
+           (old_terrain.cannot_be_entered(direction) and not old_scenario.is_below())):
             return True
-        if (new_scenario.cannot_be_entered(direction) or
+        if (new_scenario.cannot_be_entered(inverse) or
            (new_terrain.cannot_be_entered(inverse) and not new_scenario.is_below())):
             return True
         return False

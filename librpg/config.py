@@ -1,7 +1,6 @@
 import pygame
 
 import librpg
-from camera import PartyCentricCameraMode
 
 class GraphicsConfig(object):
 
@@ -10,7 +9,6 @@ class GraphicsConfig(object):
     DEFAULT_TILE_SIZE = 16
     DEFAULT_OBJECT_HEIGHT = 32
     DEFAULT_OBJECT_WIDTH = 24
-    DEFAULT_CAMERA_MODE = PartyCentricCameraMode()
     
     def __init__(self):
         self._screen_width = GraphicsConfig.DEFAULT_SCREEN_WIDTH
@@ -18,7 +16,7 @@ class GraphicsConfig(object):
         self.tile_size = GraphicsConfig.DEFAULT_TILE_SIZE
         self.object_height = GraphicsConfig.DEFAULT_OBJECT_HEIGHT
         self.object_width = GraphicsConfig.DEFAULT_OBJECT_WIDTH
-        self.camera_mode = GraphicsConfig.DEFAULT_CAMERA_MODE
+        self.camera_mode = None # Has to be None here to avoid circular import problems
         
     def get_screen_width(self):
         return self._screen_width
@@ -42,3 +40,6 @@ class GraphicsConfig(object):
     screen_dimensions = property(get_screen_dimensions)
 
 graphics_config = GraphicsConfig()
+from camera import PartyCentricCameraMode
+graphics_config.camera_mode = PartyCentricCameraMode()
+

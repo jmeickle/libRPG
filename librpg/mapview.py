@@ -62,6 +62,8 @@ class MapView:
                     self.foreground.blit(scenario_tile_surface, (fg_x, fg_y))
 
     def draw(self):
+        camera_mode = graphics_config.camera_mode
+    
         party_avatar = self.map_model.party_avatar
     
         # Draw the background
@@ -80,17 +82,18 @@ class MapView:
                     x_offset = offset
         else:
             party_pos = Position(0, 0)
-            
-        bg_area = pygame.Rect((party_pos.x * graphics_config.tile_size + x_offset, party_pos.y * graphics_config.tile_size + y_offset), (graphics_config.screen_width, graphics_config.screen_height))
-        self.screen.blit(self.background, (0, 0), bg_area)
+        bg_topleft = camera_mode.calc_bg_slice_topleft(party_pos, x_offset, y_offset)
+        bg_rect = pygame.Rect(bg_topleft, (graphics_config.screen_width, graphics_config.screen_height))
+        self.screen.blit(self.background, (0, 0), bg_rect)
         
         # Draw the party avatar
         if party_avatar:
-            party_place = (graphics_config.screen_width - graphics_config.object_width + graphics_config.tile_size) / 2, (graphics_config.screen_height / 2 - graphics_config.object_height + graphics_config.tile_size)
-            self.screen.blit(party_avatar.get_surface(), pygame.Rect(party_place, (graphics_config.object_width, graphics_config.object_height)))
+            party_topleft = camera_mode.calc_object_topleft(party_pos)
+            party_rect = pygame.Rect(party_topleft, (graphics_config.object_width, graphics_config.object_height))
+            self.screen.blit(party_avatar.get_surface(), party_rect)
         
         # Draw the foreground
-        self.screen.blit(self.foreground, (0, 0), bg_area)
+        self.screen.blit(self.foreground, (0, 0), bg_rect)
         
         # Flip display
         pygame.display.flip()
