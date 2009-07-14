@@ -112,8 +112,8 @@ class MapView:
                     self.background.blit(scenario_tile_surface, (bg_x, bg_y))
 
     def init_foreground(self):
-        foreground_width = self.map_model.width + GraphicsConfig.SCREEN_WIDTH
-        foreground_height = self.map_model.height + GraphicsConfig.SCREEN_HEIGHT
+        foreground_width = GraphicsConfig.TILE_SIZE * self.map_model.width + GraphicsConfig.SCREEN_WIDTH
+        foreground_height = GraphicsConfig.TILE_SIZE * self.map_model.height + GraphicsConfig.SCREEN_HEIGHT
         self.foreground = pygame.Surface((foreground_width, foreground_height), SRCALPHA, 32)
         
         for y in xrange(self.map_model.height):
@@ -329,7 +329,13 @@ class MapModel:
 
     def tile_boundaries_obstructed(self, old_terrain, new_terrain, old_scenario, new_scenario, direction):
         inverse = Direction.INVERSE[direction]
-        return old_terrain.cannot_be_entered(direction) or old_scenario.cannot_be_entered(direction) or new_terrain.cannot_be_entered(inverse) or new_scenario.cannot_be_entered(inverse)
+        if (old_scenario.cannot_be_entered(direction) or
+           (old_terrain.cannot_be_entered(inverse) and not old_scenario.is_below())):
+            return True
+        if (new_scenario.cannot_be_entered(direction) or
+           (new_terrain.cannot_be_entered(inverse) and not new_scenario.is_below())):
+            return True
+        return False
 
     def move_object(self, object, old_object, new_object, new_pos):
         object.movement_phase = object.speed - 1

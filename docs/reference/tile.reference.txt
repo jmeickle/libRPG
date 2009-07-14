@@ -74,7 +74,7 @@ __init__(image: TileImage)
 Creates a Tile with the specified image and blank attributes.
 
 cannot_be_entered(direction: Direction) -> bool
-Returns whether an object coming from the passes direction may enter the Tile. If it is an obstacle, it will return True for any direction.
+Returns whether an object coming from the passes direction may enter the Tile.
 
 is_counter() -> bool
 Returns whether the tile is a counter - that is, if push key events may affect objects on the other side of it.

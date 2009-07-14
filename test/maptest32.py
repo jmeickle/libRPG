@@ -20,7 +20,7 @@ p = r.create_party(3)
 p.add_char(a)
 
 print 'Adding', str(p)
-m.map_model.add_party(p, Position(0, 0), Direction.RIGHT, MapObject.NORMAL_SPEED)
+m.map_model.add_party(p, Position(0, 0))
 print 'Added'
 print
 
