@@ -37,8 +37,8 @@ class Map:
             
             pos = self.map_model.party_avatar.position
             keep_going = self.process_input()
-            if self.map_model.party_movement:
-                moved = self.map_model.try_to_move_object(self.map_model.party_avatar, self.map_model.party_movement)
+            if len(self.map_model.party_movement) > 0:
+                moved = self.map_model.try_to_move_object(self.map_model.party_avatar, self.map_model.party_movement[0])
                     
             # debug
             if pos != self.map_model.party_avatar.position:
@@ -53,12 +53,15 @@ class Map:
                 return False
             elif event.type == KEYDOWN:
                 if event.key in Map.KEY_TO_DIRECTION.keys():
-                    self.map_model.party_movement = Map.KEY_TO_DIRECTION[event.key]
+                    direction = Map.KEY_TO_DIRECTION[event.key]
+                    if not direction in self.map_model.party_movement:
+                        self.map_model.party_movement.append(direction)
                 elif event.key == K_ESCAPE:
                     return False
             elif event.type == KEYUP:
-                if event.key in Map.KEY_TO_DIRECTION.keys() and Map.KEY_TO_DIRECTION[event.key] == self.map_model.party_movement:
-                    self.map_model.party_movement = None
+                direction = Map.KEY_TO_DIRECTION[event.key]
+                if event.key in Map.KEY_TO_DIRECTION.keys() and direction in self.map_model.party_movement:
+                    self.map_model.party_movement.remove(direction)
         return True
         
     def flow_object_movement(self):
@@ -217,7 +220,7 @@ class MapModel:
     """
     
     def __init__(self, map_file, terrain_tileset_files, scenario_tileset_files):
-        self.party, self.party_avatar, self.party_movement = None, None, None
+        self.party, self.party_avatar, self.party_movement = None, None, []
         
         self.map_file = map_file
         
@@ -303,11 +306,12 @@ class MapModel:
         if object.movement_phase > 0:
             return False
             
+        object.facing = direction
+        
         desired = object.position.step(direction)
         if not self.terrain_layer.valid_pos(desired):
             return False
 
-        object.facing = direction
         old_terrain = self.terrain_layer.get_pos(object.position)
         new_terrain = self.terrain_layer.get_pos(desired)
         old_scenario = self.scenario_layer.get_pos(object.position)
