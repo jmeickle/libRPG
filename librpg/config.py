@@ -42,4 +42,4 @@ class GraphicsConfig(object):
 graphics_config = GraphicsConfig()
 
 from camera import PartyCentricCameraMode as DEFAULT_CAMERA_MODE
-graphics_config.camera_mode = DEFAULT_CAMERA_MODE
+graphics_config.camera_mode = DEFAULT_CAMERA_MODE()

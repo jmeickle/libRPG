@@ -2,6 +2,7 @@ from librpg.map import *
 from librpg.util import *
 from librpg.party import *
 from librpg.config import *
+from librpg.camera import *
 
 import pygame
 
@@ -12,6 +13,10 @@ graphics_config.screen_height = 400
 graphics_config.tile_size = 32
 graphics_config.object_height = 32
 graphics_config.object_width = 32
+
+#graphics_config.camera_mode = FixedCameraMode(0, 0)
+graphics_config.camera_mode = PartyConfinementCameraMode(40, 50)
+#graphics_config.camera_mode = ScreenConfinementCameraMode()
 
 m = Map(MapModel('maptest32.map', ('lower_tileset32.png', 'lower_tileset32.bnd'), ('upper_tileset32.png', 'upper_tileset32.bnd')))
 

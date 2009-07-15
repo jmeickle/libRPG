@@ -62,7 +62,7 @@ class MapView:
                     self.foreground.blit(scenario_tile_surface, (fg_x, fg_y))
 
     def draw(self):
-        camera_mode = graphics_config.camera_mode()
+        camera_mode = graphics_config.camera_mode
     
         party_avatar = self.map_model.party_avatar
     
