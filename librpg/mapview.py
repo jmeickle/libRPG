@@ -74,30 +74,22 @@ class MapView:
         party_avatar = self.map_model.party_avatar
     
         # Draw the background
-        party_x_offset, party_y_offset = 0, 0
         if party_avatar:
             party_pos = party_avatar.position
-            if party_avatar.movement_phase > 0:
-                offset = party_avatar.movement_phase * graphics_config.tile_size / party_avatar.speed
-                if party_avatar.facing == Direction.UP:
-                    party_y_offset = offset
-                elif party_avatar.facing == Direction.RIGHT:
-                    party_x_offset = -offset
-                elif party_avatar.facing == Direction.DOWN:
-                    party_y_offset = -offset
-                elif party_avatar.facing == Direction.LEFT:
-                    party_x_offset = offset
+            party_x_offset, party_y_offset = self.calc_object_movement_offset(party_avatar)
         else:
             party_pos = Position(0, 0)
+            party_x_offset, party_y_offset = 0, 0
         bg_topleft = self.camera_mode.calc_bg_slice_topleft(party_pos, party_x_offset, party_y_offset)
         bg_rect = pygame.Rect(bg_topleft, graphics_config.screen_dimensions)
         self.screen.blit(self.background, (0, 0), bg_rect)
         
-        # Draw the party avatar
-        if party_avatar:
-            party_topleft = self.camera_mode.calc_object_topleft(bg_topleft, party_pos, party_x_offset, party_y_offset)
-            party_rect = pygame.Rect(party_topleft, graphics_config.object_dimensions)
-            self.screen.blit(party_avatar.get_surface(), party_rect)
+        # Draw the map objects
+        for obj in self.map_model.objects:
+            obj_x_offset, obj_y_offset = self.calc_object_movement_offset(obj)
+            obj_topleft = self.camera_mode.calc_object_topleft(bg_topleft, obj.position, obj_x_offset, obj_y_offset)
+            obj_rect = pygame.Rect(obj_topleft, graphics_config.object_dimensions)
+            self.screen.blit(obj.get_surface(), obj_rect)
         
         # Draw the foreground
         self.screen.blit(self.foreground, (0, 0), bg_rect)
@@ -105,3 +97,18 @@ class MapView:
         # Flip display
         pygame.display.flip()
 
+    def calc_object_movement_offset(self, obj):
+        
+        obj_x_offset, obj_y_offset = 0, 0
+        if obj.movement_phase > 0:
+            offset = obj.movement_phase * graphics_config.tile_size / obj.speed
+            if obj.facing == Direction.UP:
+                obj_y_offset = offset
+            elif obj.facing == Direction.RIGHT:
+                obj_x_offset = -offset
+            elif obj.facing == Direction.DOWN:
+                obj_y_offset = -offset
+            elif obj.facing == Direction.LEFT:
+                obj_x_offset = offset
+        return obj_x_offset, obj_y_offset
+        

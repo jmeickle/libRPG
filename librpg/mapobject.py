@@ -41,27 +41,34 @@ class MapObject:
 
     # Virtual
     def activate(self, party):
+    
         pass
         
     # Virtual
     def collide_with_party(self, party):
+    
         pass
         
     def is_counter(self):
+    
         return self.obstacle == MapObject.COUNTER
 
     def is_obstacle(self):
+    
         return self.obstacle == MapObject.OBSTACLE or self.obstacle == MapObject.COUNTER
         
     def is_below(self):
+    
         return self.obstacle == MapObject.BELOW
         
     def is_above(self):
+    
         return self.obstacle == MapObject.ABOVE
     
     def get_surface(self):
+    
         return self.image.get_surface(self)
-        
+    
 #=================================================================================
 
 class PartyAvatar(MapObject):
