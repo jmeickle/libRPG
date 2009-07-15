@@ -42,8 +42,8 @@ class MapView:
         
         for y in xrange(self.map_model.height):
             for x in xrange(self.map_model.width):
-                bg_x = graphics_config.screen_width / 2 + x * graphics_config.tile_size
-                bg_y = graphics_config.screen_height / 2 + y * graphics_config.tile_size
+                bg_x = graphics_config.map_border_width + x * graphics_config.tile_size
+                bg_y = graphics_config.map_border_height + y * graphics_config.tile_size
                 terrain_tile_surface = self.map_model.terrain_layer.get(x, y).get_surface()
                 self.background.blit(terrain_tile_surface, (bg_x, bg_y))
                 
@@ -61,8 +61,8 @@ class MapView:
             for x in xrange(self.map_model.width):
                 scenario_tile = self.map_model.scenario_layer.get(x, y)
                 if scenario_tile.obstacle == Tile.ABOVE:
-                    fg_x = graphics_config.screen_width / 2 + x * graphics_config.tile_size
-                    fg_y = graphics_config.screen_height / 2 + y * graphics_config.tile_size
+                    fg_x = graphics_config.map_border_width + x * graphics_config.tile_size
+                    fg_y = graphics_config.map_border_height + y * graphics_config.tile_size
                     scenario_tile_surface = scenario_tile.get_surface()
                     self.foreground.blit(scenario_tile_surface, (fg_x, fg_y))
 
@@ -87,13 +87,13 @@ class MapView:
         else:
             party_pos = Position(0, 0)
         bg_topleft = self.camera_mode.calc_bg_slice_topleft(party_pos, party_x_offset, party_y_offset)
-        bg_rect = pygame.Rect(bg_topleft, (graphics_config.screen_width, graphics_config.screen_height))
+        bg_rect = pygame.Rect(bg_topleft, graphics_config.screen_dimensions)
         self.screen.blit(self.background, (0, 0), bg_rect)
         
         # Draw the party avatar
         if party_avatar:
             party_topleft = self.camera_mode.calc_object_topleft(bg_topleft, party_pos, party_x_offset, party_y_offset)
-            party_rect = pygame.Rect(party_topleft, (graphics_config.object_width, graphics_config.object_height))
+            party_rect = pygame.Rect(party_topleft, graphics_config.object_dimensions)
             self.screen.blit(party_avatar.get_surface(), party_rect)
         
         # Draw the foreground

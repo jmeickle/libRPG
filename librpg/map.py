@@ -28,7 +28,16 @@ class Map:
         self.map_view = MapView(self.map_model)
         
     def gameloop(self):
-        self.map_view.draw()
+        # Locals for optimization
+        map_model = self.map_model
+        map_view_draw = self.map_view.draw
+        party_avatar = map_model.party_avatar
+        party_movement = map_model.party_movement
+        map_model_try_to_move_object = map_model.try_to_move_object
+        self.party_movement_append = party_movement.append
+        self.party_movement_remove = party_movement.remove
+    
+        map_view_draw()
         
         clock = pygame.time.Clock()
         keep_going = True
@@ -36,16 +45,16 @@ class Map:
             clock.tick(Map.FPS)
             self.flow_object_movement()
             
-            pos = self.map_model.party_avatar.position
+            pos = party_avatar.position
             keep_going = self.process_input()
-            if len(self.map_model.party_movement) > 0:
-                moved = self.map_model.try_to_move_object(self.map_model.party_avatar, self.map_model.party_movement[0])
+            if party_movement:
+                moved = map_model_try_to_move_object(party_avatar, party_movement[0])
                     
             # debug
-            if pos != self.map_model.party_avatar.position:
-                print self.map_model
+            if pos != party_avatar.position:
+                print map_model
                 
-            self.map_view.draw()
+            map_view_draw()
             
     def process_input(self):
         for event in pygame.event.get():
@@ -53,17 +62,15 @@ class Map:
             if event.type == QUIT:
                 return False
             elif event.type == KEYDOWN:
-                if event.key in Map.KEY_TO_DIRECTION.keys():
-                    direction = Map.KEY_TO_DIRECTION[event.key]
-                    if not direction in self.map_model.party_movement:
-                        self.map_model.party_movement.append(direction)
+                direction = Map.KEY_TO_DIRECTION.get(event.key)
+                if direction is not None and not direction in self.map_model.party_movement:
+                    self.party_movement_append(direction)
                 elif event.key == K_ESCAPE:
                     return False
             elif event.type == KEYUP:
-                if event.key in Map.KEY_TO_DIRECTION.keys():
-                    direction = Map.KEY_TO_DIRECTION[event.key]
-                    if Map.KEY_TO_DIRECTION[event.key] in self.map_model.party_movement:
-                        self.map_model.party_movement.remove(direction)
+                direction = Map.KEY_TO_DIRECTION.get(event.key)
+                if direction is not None and direction in self.map_model.party_movement:
+                    self.party_movement_remove(direction)
         return True
         
     def flow_object_movement(self):
@@ -145,9 +152,10 @@ class MapModel:
         
         self.objects = []
         self.object_layer = Matrix(self.width, self.height)
+        object_layer_set = self.object_layer.set
         for x in range(self.width):
             for y in range(self.height):
-                self.object_layer.set(x, y, ObjectCell())
+                object_layer_set(x, y, ObjectCell())
 
     def load_from_map_file(self):
         layout_file = open(self.map_file)
@@ -183,7 +191,7 @@ class MapModel:
     def initialize(self, local_state):
         pass
         
-    def add_party(self, party, position, facing = Direction.DOWN, speed = MapObject.NORMAL_SPEED):
+    def add_party(self, party, position, facing=Direction.DOWN, speed=MapObject.NORMAL_SPEED):
         assert self.party is None, 'Map already has a party'
         self.party = party
         self.party_avatar = PartyAvatar(party, facing, speed)
@@ -217,15 +225,16 @@ class MapModel:
             
         object.facing = direction
         
+        old_pos = object.position
         desired = object.position.step(direction)
         if not self.terrain_layer.valid_pos(desired):
             return False
 
-        old_terrain = self.terrain_layer.get_pos(object.position)
+        old_terrain = self.terrain_layer.get_pos(old_pos)
         new_terrain = self.terrain_layer.get_pos(desired)
-        old_scenario = self.scenario_layer.get_pos(object.position)
+        old_scenario = self.scenario_layer.get_pos(old_pos)
         new_scenario = self.scenario_layer.get_pos(desired)
-        old_object = self.object_layer.get_pos(object.position)
+        old_object = self.object_layer.get_pos(old_pos)
         new_object = self.object_layer.get_pos(desired)
         if not (object.is_obstacle and (self.is_obstructed(new_terrain, new_scenario, new_object) or self.tile_boundaries_obstructed(old_terrain, new_terrain, old_scenario, new_scenario, direction))):
             # Move
@@ -283,20 +292,24 @@ class ObjectCell:
         self.below = []
         self.obstacle = None
         self.above = []
+        
+        # Reduce the access time of these functions,
+        self.below_append, self.below_remove = self.below.append, self.below.remove
+        self.above_append, self.above_remove = self.above.append, self.above.remove
     
     def add_object(self, object):
         if object.is_obstacle():
             self.obstacle = object
         elif object.is_below():
-            self.below.append(object)
+            self.below_append(object)
         else:
-            self.above.append(object)
+            self.above_append(object)
     
     def remove_object(self, object):
         if object.is_obstacle():
             self.obstacle = None
         elif object.is_below():
-            self.below.remove(object)
+            self.below_remove(object)
         else:
-            self.above.remove(object)
+            self.above_remove(object)
             

@@ -7,10 +7,10 @@ class CameraMode:
         pass
     
     def calc_object_topleft(self, bg_slice_topleft, object_pos, object_x_offset, object_y_offset):
-        object_pixel_x = object_pos.x * graphics_config.tile_size - (graphics_config.object_width - graphics_config.tile_size) / 2
-        object_pixel_y = object_pos.y * graphics_config.tile_size - (graphics_config.object_height - graphics_config.tile_size)
-        x = graphics_config.screen_width / 2 + object_pixel_x - bg_slice_topleft[0] + object_x_offset
-        y = graphics_config.screen_height / 2 + object_pixel_y - bg_slice_topleft[1] + object_y_offset
+        object_pixel_x = object_pos.x * graphics_config.tile_size + graphics_config.object_x_adjustment
+        object_pixel_y = object_pos.y * graphics_config.tile_size + graphics_config.object_y_adjustment
+        x = graphics_config.map_border_width + object_pixel_x - bg_slice_topleft[0] + object_x_offset
+        y = graphics_config.map_border_height + object_pixel_y - bg_slice_topleft[1] + object_y_offset
         return (x, y)
         
     # Abstract
@@ -94,8 +94,8 @@ class ScreenConfinementCameraMode(CameraMode):
     
         self.map_width_in_pixels = graphics_config.tile_size * map_model.width
         self.map_height_in_pixels = graphics_config.tile_size * map_model.height
-        self.x_max = self.map_width_in_pixels - graphics_config.screen_width / 2
-        self.y_max = self.map_height_in_pixels - graphics_config.screen_height / 2
+        self.x_max = self.map_width_in_pixels - graphics_config.map_border_width
+        self.y_max = self.map_height_in_pixels - graphics_config.map_border_height
     
     def calc_bg_slice_topleft(self, party_pos, party_x_offset, party_y_offset):
         
@@ -104,15 +104,15 @@ class ScreenConfinementCameraMode(CameraMode):
         
         if self.map_width_in_pixels <= graphics_config.screen_width:
             x = self.map_width_in_pixels / 2
-        elif x < graphics_config.screen_width / 2:
-            x = graphics_config.screen_width / 2
+        elif x < graphics_config.map_border_width:
+            x = graphics_config.map_border_width
         elif x > self.x_max:
             x = self.x_max
             
         if self.map_height_in_pixels <= graphics_config.screen_height:
             y = self.map_height_in_pixels / 2
-        elif y < graphics_config.screen_height / 2:
-            y = graphics_config.screen_height / 2
+        elif y < graphics_config.map_border_height:
+            y = graphics_config.map_border_height
         elif y > self.y_max:
             y = self.y_max
             
@@ -133,4 +133,4 @@ class FixedCameraMode(CameraMode):
         self.y = y
         
     def calc_bg_slice_topleft(self, party_pos, party_x_offset, party_y_offset):
-        return graphics_config.screen_width / 2 + self.x * graphics_config.tile_size, graphics_config.screen_height / 2 + self.y * graphics_config.tile_size
+        return graphics_config.map_border_width + self.x * graphics_config.tile_size, graphics_config.map_border_height + self.y * graphics_config.tile_size
