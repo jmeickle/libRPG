@@ -79,7 +79,7 @@ List of parties that contain the characters in this reserve.
 Methods
 -------
 
-__init__()
+__init__(chars=[]: [Character])
 Constructor.
 
 add_char(char: Character)
@@ -88,8 +88,8 @@ Adds char to this reserve.
 remove_char(char: Character) -> Character
 Removes char from this reserve. Returns that char if he was removed, otherwise None is returned.
 
-create_party(capacity: int)
-Creates a Party for that CharacterReserve with the given capacity.
+create_party(capacity: int, chars=[]: [Character])
+Creates a Party for that CharacterReserve with the given capacity, and containing the given characters initially.
 
 destroy_party(party: Party) -> bool
 Removes a Party from a CharacterReserve and returns its characters to an avaliable state. Returns whether the operation succeeded.

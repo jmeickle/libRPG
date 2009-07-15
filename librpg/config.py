@@ -29,6 +29,14 @@ class GraphicsConfig(object):
         self.calc_object_x_adjustment()
         self.calc_object_y_adjustment()
         
+    def config(self, **kv):
+    
+        for key, value in kv.iteritems():
+            if hasattr(self, key):
+                setattr(self, key, value)
+            else:
+                raise Exception('GraphicsConfig.config() does not take ' + key + ' as parameter.')
+        
     def get_screen_width(self):
     
         return self._screen_width

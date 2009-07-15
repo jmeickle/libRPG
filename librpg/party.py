@@ -70,10 +70,13 @@ class CharacterReserve:
     # chars - maps the characters in the reserve currently to the party they are in
     # parties - list of parties that contain the characters in this reserve
     
-    def __init__(self):
+    def __init__(self, chars=[]):
     
         self.chars = {}
         self.parties = []
+        
+        for char in chars:
+            self.add_char(char)
     
     def add_char(self, char):
     
@@ -89,10 +92,14 @@ class CharacterReserve:
         else:
             return None
     
-    def create_party(self, capacity):
+    def create_party(self, capacity, chars=[]):
     
         party = Party(capacity, self)
         self.parties.append(party)
+        
+        for char in chars:
+            party.add_char(char)
+        
         return party
     
     def destroy_party(self, party):
