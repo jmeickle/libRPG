@@ -21,26 +21,33 @@ class Tile:
     BELOW, OBSTACLE, COUNTER, ABOVE = 0, 1, 2, 3
     
     def __init__(self, image):
+    
         self.image = image
         self.obstacle = -1
         self.open_directions = [None] * 4
     
     def cannot_be_entered(self, direction):
+    
         return self.open_directions[direction-1]
 
     def is_counter(self):
+    
         return self.obstacle == Tile.COUNTER
 
     def is_obstacle(self):
+    
         return self.obstacle == Tile.OBSTACLE or self.obstacle == Tile.COUNTER
         
     def is_below(self):
+    
         return self.obstacle == Tile.BELOW
         
     def is_above(self):
+    
         return self.obstacle == Tile.ABOVE
     
     def get_surface(self):
+    
         return self.image.get_surface()
         
 #=================================================================================
@@ -65,6 +72,7 @@ class Tileset:
     """
     
     def __init__(self, image_file, boundaries_file):
+    
         self.image_file = image_file
         self.load_image_file()
         
@@ -72,6 +80,7 @@ class Tileset:
         self.load_boundaries_file()
 
     def load_image_file(self):
+    
         self.image = pygame.image.load(self.image_file)
         width, height = self.image.get_width(), self.image.get_height()
         assert width % graphics_config.tile_size == 0, 'Tileset file width is not a multiple of ' + str(graphics_config.tile_size) + ': ' + self.image_file
@@ -88,6 +97,7 @@ class Tileset:
             self.tiles.append(Tile(TileImage(self.image.subsurface((x * graphics_config.tile_size, y * graphics_config.tile_size), (graphics_config.tile_size, graphics_config.tile_size)))))
         
     def load_boundaries_file(self):
+    
         f = file(self.boundaries_file, "r")
         r = csv.reader(f, delimiter=',')
 

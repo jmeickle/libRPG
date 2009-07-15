@@ -4,9 +4,11 @@ class CameraMode:
     
     # Virtual
     def attach_to_map(self, map_model):
+    
         pass
     
     def calc_object_topleft(self, bg_slice_topleft, object_pos, object_x_offset, object_y_offset):
+    
         object_pixel_x = object_pos.x * graphics_config.tile_size + graphics_config.object_x_adjustment
         object_pixel_y = object_pos.y * graphics_config.tile_size + graphics_config.object_y_adjustment
         x = graphics_config.map_border_width + object_pixel_x - bg_slice_topleft[0] + object_x_offset
@@ -15,6 +17,7 @@ class CameraMode:
         
     # Abstract
     def calc_bg_slice_topleft(self, party_pos, party_x_offset, party_y_offset):
+    
         raise NotImplementedError, 'CameraMode.calc_bg_slice_topleft() is abstract'
     
 #=================================================================================
@@ -28,11 +31,13 @@ class PartyConfinementCameraMode(CameraMode):
     """
 
     def __init__(self, vertical_tolerance, horizontal_tolerance):
+    
         self.vertical_tolerance = vertical_tolerance
         self.horizontal_tolerance = horizontal_tolerance
         self.current_place = None
 
     def attach_to_map(self, map_model):
+    
         self.current_place = None
     
     def calc_bg_slice_topleft(self, party_pos, party_x_offset, party_y_offset):
@@ -129,8 +134,10 @@ class FixedCameraMode(CameraMode):
     """
     
     def __init__(self, x, y):
+    
         self.x = x
         self.y = y
         
     def calc_bg_slice_topleft(self, party_pos, party_x_offset, party_y_offset):
+    
         return graphics_config.map_border_width + self.x * graphics_config.tile_size, graphics_config.map_border_height + self.y * graphics_config.tile_size

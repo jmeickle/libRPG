@@ -31,6 +31,7 @@ class MapObject:
     SPEEDS = [VERY_FAST_SPEED, FAST_SPEED, NORMAL_SPEED, SLOW_SPEED, VERY_SLOW_SPEED]
     
     def __init__(self, obstacle, image=None, facing=Direction.DOWN, speed=NORMAL_SPEED):
+    
         assert obstacle in range(0, 3), 'MapObject cannot be created with an obstacle value of ' + str(obstacle)
         self.obstacle = obstacle
         
@@ -66,6 +67,7 @@ class MapObject:
 class PartyAvatar(MapObject):
     
     def __init__(self, party, facing=Direction.DOWN, speed=MapObject.NORMAL_SPEED):
+    
         MapObject.__init__(self, MapObject.OBSTACLE, party.get_image(self), facing, speed)
         self.party = party
         

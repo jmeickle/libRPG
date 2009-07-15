@@ -7,6 +7,7 @@ class Inventory:
     # maxWeight - maximum total weight the inventory can hold
     
     def __init__(self, maxWeight = None):
+    
         self.weight = 0
         self.maxWeight = maxWeight
 
@@ -19,11 +20,13 @@ class OrdinaryInventory(Inventory):
     # maxItemPile - maximum amount of identical items in a pile
        
     def __init__(self, maxWeight=None, maxItemPile=99):
+    
         Inventory.__init__(self, maxWeight)
         self.items = {}
         self.maxItemPile = maxItemPile
         
     def addItem(self, item, amount=1):
+    
         #check for overweight problems
         if self.maxWeight is not None:
             availableWeight = self.maxWeight - self.weight
@@ -40,6 +43,7 @@ class OrdinaryInventory(Inventory):
         return finalAmount
         
     def removeItem(self, item, amount=1):
+    
         amountContained = self.getAmountById(item.id)
         if amountContained > amount:
             self.items[item.id] -= amount
@@ -54,6 +58,7 @@ class OrdinaryInventory(Inventory):
         
     # Private
     def uncheckedAddItem(self, itemId, amount, itemWeight):
+    
         if amount > 0:
             if self.containsById(itemId):
                 self.items[itemId] += amount
@@ -62,30 +67,38 @@ class OrdinaryInventory(Inventory):
             self.weight += amount * itemWeight
         
     def contains(self, item):
+    
         return self.containsById(item.id)
     
     def containsById(self, itemId):
+    
         return itemId in self.items
 
     def getAmount(self, item):
+    
         return self.getAmountById(item.id)
             
     def getAmountById(self, itemId):
+    
         if self.containsById(itemId):
             return self.items[itemId]
         else:
             return 0
 
     def getPileCount(self):
+    
         return len(self.items)
         
     def clear(self):
+    
         self.items = {}
     
     def getOrderedList(self, itemFactory, comparisonFunction, extractFunction=None):
+    
         return sorted(map(itemFactory, self.items.keys()), comparisonFunction, extractFunction)
 
     def getItemsWithAmounts(self, itemFactory):
+    
         result = {}
         for itemId, amount in self.items.iteritems():
             result[itemFactory(itemId)] = amount
@@ -96,10 +109,12 @@ class OrdinaryInventory(Inventory):
 class UniquesInventory(Inventory):
     
     def __init__(self, maxWeight = None):
+    
         Inventory.__init__(self, maxWeight)
         self.items = []
         
     def addItem(self, item):
+    
         #check for overweight problems
         if self.maxWeight is not None and self.maxWeight - self.weight >= item.weight:
             self.uncheckedAddItem(item)
@@ -108,6 +123,7 @@ class UniquesInventory(Inventory):
             return False
             
     def removeItem(self, item):
+    
         if item in self.items:
             self.uncheckedRemoveItem(item)
             return True
@@ -116,21 +132,26 @@ class UniquesInventory(Inventory):
         
     # Private
     def uncheckedAddItem(self, item):
+    
         self.items.append(item)
         self.weight += item.weight
         
     # Private
     def uncheckedRemoveItem(self, item):
+    
         self.items.remove(item)
         self.weight -= item.weight
         
     def getOrderedList(self, comparisonFunction=None):
+    
         return sorted(self.items, comparisonFunction)
 
     def clear(self):
+    
         self.items = []
     
     def getItemCount(self):
+    
         return len(self.items)
 
 #=================================================================================
@@ -138,6 +159,7 @@ class UniquesInventory(Inventory):
 class Item:
     
     def __init__(self, weight=0):
+    
         self.weight = weight
     
 #=================================================================================
@@ -145,10 +167,12 @@ class Item:
 class OrdinaryItem(Item):
     
     def __init__(self, id, weight=0):
+    
         Item.__init__(self, weight)
         self.id = id
     
     def __repr__(self):
+    
         return "OrdinaryItem id=" + str(self.id)
 
 #=================================================================================
@@ -156,6 +180,7 @@ class OrdinaryItem(Item):
 class UniqueItem(Item):
     
     def __init__(self, weight=0):
+    
         Item.__init__(self, weight)
 
 #=================================================================================
@@ -164,6 +189,7 @@ class UsableItem(Item):
     
     # Abstract
     def use(self):
+    
         pass
     
 #=================================================================================
@@ -171,6 +197,7 @@ class UsableItem(Item):
 class UsableOrdinaryItem(UsableItem, OrdinaryItem):
     
     def __init__(self, id, weight=0):
+    
         OrdinaryItem.__init__(self, id, weight)
 
 #=================================================================================
@@ -178,6 +205,7 @@ class UsableOrdinaryItem(UsableItem, OrdinaryItem):
 class UsableUniqueItem(UsableItem, UniqueItem):
     
     def __init__(self, weight=0):
+    
         UniqueItem.__init__(self, weight)
 
 #=================================================================================

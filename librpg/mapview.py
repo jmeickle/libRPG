@@ -24,6 +24,7 @@ class MapView:
     """
     
     def __init__(self, map_model):
+    
         self.map_model = map_model
         
         self.screen = librpg.screen
@@ -33,6 +34,7 @@ class MapView:
         self.camera_mode.attach_to_map(self.map_model)
     
     def init_background(self):
+    
         background_width = graphics_config.tile_size * self.map_model.width + graphics_config.screen_width
         background_height = graphics_config.tile_size * self.map_model.height + graphics_config.screen_height
         self.background = pygame.Surface((background_width, background_height))
@@ -53,6 +55,7 @@ class MapView:
                     self.background.blit(scenario_tile_surface, (bg_x, bg_y))
 
     def init_foreground(self):
+    
         foreground_width = graphics_config.tile_size * self.map_model.width + graphics_config.screen_width
         foreground_height = graphics_config.tile_size * self.map_model.height + graphics_config.screen_height
         self.foreground = pygame.Surface((foreground_width, foreground_height), SRCALPHA, 32)

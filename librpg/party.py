@@ -14,12 +14,14 @@ class Party:
     
     # Called only by CharacterReserve, use CharacterReserve.create_party()
     def __init__(self, capacity, reserve):
+    
         self.capacity = capacity
         self.reserve = reserve
         self.chars = []
         self.leader = None
         
     def add_char(self, char):
+    
         if char not in self.reserve.get_chars() or len(self.chars) >= self.capacity:
             return False
         else:
@@ -30,6 +32,7 @@ class Party:
             return True
     
     def remove_char(self, char):
+    
         if char in self.chars:
             self.reserve.allocate_char(char, None)
             self.chars.remove(char)
@@ -43,6 +46,7 @@ class Party:
             return False
     
     def __repr__(self):
+    
         if len(self.chars) == 0:
             return '(Empty party)'
         else:
@@ -54,6 +58,7 @@ class Party:
             return s
 
     def get_image(self, avatar):
+    
         assert self.leader, 'A Party with no characters may not be displayed'
         return self.leader.image
 
@@ -66,13 +71,16 @@ class CharacterReserve:
     # parties - list of parties that contain the characters in this reserve
     
     def __init__(self):
+    
         self.chars = {}
         self.parties = []
     
     def add_char(self, char):
+    
         self.chars[char] = None
     
     def remove_char(self, char):
+    
         if self.chars.has_key(char):
             if self.chars[char] is not None:
                 self.chars[char].remove_char(char)
@@ -82,11 +90,13 @@ class CharacterReserve:
             return None
     
     def create_party(self, capacity):
+    
         party = Party(capacity, self)
         self.parties.append(party)
         return party
     
     def destroy_party(self, party):
+    
         if party not in self.parties:
             return False
         for char in party.chars:
@@ -95,13 +105,16 @@ class CharacterReserve:
         return True
     
     def get_chars(self):
+    
         return self.chars.keys()
     
     # Used only by Party
     def allocate_char(self, char, party):
+    
         self.chars[char] = party
         
     def __repr__(self):
+    
         return self.chars.__repr__()
 
 #=================================================================================
@@ -120,6 +133,7 @@ class Character:
     """
     
     def __init__(self, name, image_file=None):
+    
         self.name, self.image_file = name, image_file
         if image_file:
             self.image = ObjectImage(pygame.image.load(self.image_file))
@@ -127,4 +141,5 @@ class Character:
             self.image = None
         
     def __repr__(self):
+    
         return self.name

@@ -23,11 +23,13 @@ class Map:
     FPS = 30
     
     def __init__(self, map_model, local_state=None):
+    
         self.map_model = map_model
         self.map_model.initialize(local_state)
         self.map_view = MapView(self.map_model)
         
     def gameloop(self):
+    
         # Locals for optimization
         map_model = self.map_model
         map_view_draw = self.map_view.draw
@@ -57,6 +59,7 @@ class Map:
             map_view_draw()
             
     def process_input(self):
+    
         for event in pygame.event.get():
             # print event
             if event.type == QUIT:
@@ -74,6 +77,7 @@ class Map:
         return True
         
     def flow_object_movement(self):
+    
         for o in self.map_model.objects:
             if o.movement_phase > 0:
                 o.movement_phase -= 1
@@ -136,6 +140,7 @@ class MapModel:
     """
     
     def __init__(self, map_file, terrain_tileset_files, scenario_tileset_files):
+    
         self.party, self.party_avatar, self.party_movement = None, None, []
         
         self.map_file = map_file
@@ -158,6 +163,7 @@ class MapModel:
                 object_layer_set(x, y, ObjectCell())
 
     def load_from_map_file(self):
+    
         layout_file = open(self.map_file)
         r = csv.reader(layout_file, delimiter=',')
 
@@ -192,12 +198,14 @@ class MapModel:
         pass
         
     def add_party(self, party, position, facing=Direction.DOWN, speed=MapObject.NORMAL_SPEED):
+    
         assert self.party is None, 'Map already has a party'
         self.party = party
         self.party_avatar = PartyAvatar(party, facing, speed)
         self.add_object(self.party_avatar, position)
     
     def remove_party(self):
+    
         if self.party is None:
             return None, None
         result = self.party, self.party_avatar.position
@@ -207,12 +215,14 @@ class MapModel:
         return result
 
     def add_object(self, object, position):
+    
         self.object_layer.get_pos(position).add_object(object)
         self.objects.append(object)
         object.position, object.map = position, self
         return True
     
     def remove_object(self, object):
+    
         self.objects.remove(object)
         self.object_layer.get_pos(object.position).remove_object(object)
         result = object.position
@@ -220,6 +230,7 @@ class MapModel:
         return result
         
     def try_to_move_object(self, object, direction):
+    
         if object.movement_phase > 0:
             return False
             
@@ -245,11 +256,13 @@ class MapModel:
             return False
             
     def is_obstructed(self, new_terrain, new_scenario, new_object):
+    
         return (new_terrain.is_obstacle() and not new_scenario.is_below()) or \
                new_scenario.is_obstacle() or \
                new_object.obstacle is not None
 
     def tile_boundaries_obstructed(self, old_terrain, new_terrain, old_scenario, new_scenario, direction):
+    
         inverse = Direction.INVERSE[direction]
         if (old_scenario.cannot_be_entered(direction) or
            (old_terrain.cannot_be_entered(direction) and not old_scenario.is_below())):
@@ -260,6 +273,7 @@ class MapModel:
         return False
 
     def move_object(self, object, old_object, new_object, new_pos):
+    
         object.movement_phase = object.speed - 1
         
         old_object.remove_object(object)
@@ -267,9 +281,11 @@ class MapModel:
         object.position = new_pos
 
     def __repr__(self):
+    
         return '(Map width=' + str(self.width) + ' height=' + str(self.height) + ' file=' + self.map_file + ')'
         
     def __str__(self):
+    
         result = ''
         result += '+' + '-' * self.width + '+\n'
         for y in range(self.height):
@@ -289,6 +305,7 @@ class MapModel:
 class ObjectCell:
     
     def __init__(self):
+    
         self.below = []
         self.obstacle = None
         self.above = []
@@ -298,6 +315,7 @@ class ObjectCell:
         self.above_append, self.above_remove = self.above.append, self.above.remove
     
     def add_object(self, object):
+    
         if object.is_obstacle():
             self.obstacle = object
         elif object.is_below():
@@ -306,6 +324,7 @@ class ObjectCell:
             self.above_append(object)
     
     def remove_object(self, object):
+    
         if object.is_obstacle():
             self.obstacle = None
         elif object.is_below():
