@@ -29,6 +29,9 @@ Surface containing the static terrain and scenario layers that are drawn at the 
 
 foreground: Surface (private)
 Surface containing the static scenario tiles that are drawn at the upper level.
+    
+camera_mode: CameraMode (private)
+CameraMode to calculate the map focus.
 
 -------
 Methods

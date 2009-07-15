@@ -3,7 +3,7 @@ from config import graphics_config
 class CameraMode:
     
     # Virtual
-    def attach_to_map(self):
+    def attach_to_map(self, map_model):
         pass
     
     def calc_object_topleft(self, bg_slice_topleft, object_pos, object_x_offset, object_y_offset):
@@ -32,12 +32,10 @@ class PartyConfinementCameraMode(CameraMode):
         self.horizontal_tolerance = horizontal_tolerance
         self.current_place = None
 
-    def attach_to_map(self):
+    def attach_to_map(self, map_model):
         self.current_place = None
     
-    def calc_bg_slice_topleft(self, party_pos, party_x_offset=0, party_y_offset=0):
-        #if self.vertical_tolerance != 0 or self.horizontal_tolerance != 0:
-        #    raise NotImplementedError, 'PartyConfinementCameraMode not implemented yet.'
+    def calc_bg_slice_topleft(self, party_pos, party_x_offset, party_y_offset):
         
         proj_x = party_pos.x * graphics_config.tile_size + graphics_config.tile_size / 2 + party_x_offset
         proj_y = party_pos.y * graphics_config.tile_size + graphics_config.tile_size / 2 + party_y_offset
@@ -76,7 +74,7 @@ class PartyCentricCameraMode(CameraMode):
     
     """
     
-    def calc_bg_slice_topleft(self, party_pos, party_x_offset=0, party_y_offset=0):
+    def calc_bg_slice_topleft(self, party_pos, party_x_offset, party_y_offset):
         
         x = party_pos.x * graphics_config.tile_size + graphics_config.tile_size / 2 + party_x_offset
         y = party_pos.y * graphics_config.tile_size + graphics_config.tile_size / 2 + party_y_offset
@@ -91,9 +89,34 @@ class ScreenConfinementCameraMode(CameraMode):
     In this camera mode, the camera will never show the black area beyond the map. It will keep the party at the center of the screen while it is far from the border. When the party approaches the border, the camera will stop to avoid showing the black area.
     
     """
-      
+    
+    def attach_to_map(self, map_model):
+    
+        self.map_width_in_pixels = graphics_config.tile_size * map_model.width
+        self.map_height_in_pixels = graphics_config.tile_size * map_model.height
+        self.x_max = self.map_width_in_pixels - graphics_config.screen_width / 2
+        self.y_max = self.map_height_in_pixels - graphics_config.screen_height / 2
+    
     def calc_bg_slice_topleft(self, party_pos, party_x_offset, party_y_offset):
-        pass
+        
+        x = party_pos.x * graphics_config.tile_size + graphics_config.tile_size / 2 + party_x_offset
+        y = party_pos.y * graphics_config.tile_size + graphics_config.tile_size / 2 + party_y_offset
+        
+        if self.map_width_in_pixels <= graphics_config.screen_width:
+            x = self.map_width_in_pixels / 2
+        elif x < graphics_config.screen_width / 2:
+            x = graphics_config.screen_width / 2
+        elif x > self.x_max:
+            x = self.x_max
+            
+        if self.map_height_in_pixels <= graphics_config.screen_height:
+            y = self.map_height_in_pixels / 2
+        elif y < graphics_config.screen_height / 2:
+            y = graphics_config.screen_height / 2
+        elif y > self.y_max:
+            y = self.y_max
+            
+        return (x, y)
 
 #=================================================================================
 
@@ -101,7 +124,7 @@ class FixedCameraMode(CameraMode):
 
     """
     
-    
+    The camera will not move in this mode, but stay fixed, at the given (x, y) position. x and y are in tiles, from the top left corner of the map.
     
     """
     

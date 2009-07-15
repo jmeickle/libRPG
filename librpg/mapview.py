@@ -18,6 +18,9 @@ class MapView:
 
     foreground: Surface (private)
     Surface containing the static scenario tiles that are drawn at the upper level.
+    
+    camera_mode: CameraMode (private)
+    CameraMode to calculate the map focus.
     """
     
     def __init__(self, map_model):
@@ -26,6 +29,8 @@ class MapView:
         self.screen = librpg.screen
         self.init_background()
         self.init_foreground()
+        self.camera_mode = graphics_config.camera_mode
+        self.camera_mode.attach_to_map(self.map_model)
     
     def init_background(self):
         background_width = graphics_config.tile_size * self.map_model.width + graphics_config.screen_width
@@ -62,7 +67,6 @@ class MapView:
                     self.foreground.blit(scenario_tile_surface, (fg_x, fg_y))
 
     def draw(self):
-        camera_mode = graphics_config.camera_mode
     
         party_avatar = self.map_model.party_avatar
     
@@ -82,13 +86,13 @@ class MapView:
                     party_x_offset = offset
         else:
             party_pos = Position(0, 0)
-        bg_topleft = camera_mode.calc_bg_slice_topleft(party_pos, party_x_offset, party_y_offset)
+        bg_topleft = self.camera_mode.calc_bg_slice_topleft(party_pos, party_x_offset, party_y_offset)
         bg_rect = pygame.Rect(bg_topleft, (graphics_config.screen_width, graphics_config.screen_height))
         self.screen.blit(self.background, (0, 0), bg_rect)
         
         # Draw the party avatar
         if party_avatar:
-            party_topleft = camera_mode.calc_object_topleft(bg_topleft, party_pos, party_x_offset, party_y_offset)
+            party_topleft = self.camera_mode.calc_object_topleft(bg_topleft, party_pos, party_x_offset, party_y_offset)
             party_rect = pygame.Rect(party_topleft, (graphics_config.object_width, graphics_config.object_height))
             self.screen.blit(party_avatar.get_surface(), party_rect)
         
