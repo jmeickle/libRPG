@@ -9,6 +9,8 @@ class GraphicsConfig(object):
     DEFAULT_TILE_SIZE = 16
     DEFAULT_OBJECT_HEIGHT = 32
     DEFAULT_OBJECT_WIDTH = 24
+    DEFAULT_DISPLAY_MODE = 0
+    #DEFAULT_DISPLAY_MODE = pygame.HWSURFACE | pygame.DOUBLEBUF | pygame.FULLSCREEN
     
     def __init__(self):
     
@@ -18,6 +20,7 @@ class GraphicsConfig(object):
         self._object_height = GraphicsConfig.DEFAULT_OBJECT_HEIGHT
         self._object_width = GraphicsConfig.DEFAULT_OBJECT_WIDTH
         self.camera_mode = None # Has to be None here to avoid circular import problems
+        self.display_mode = GraphicsConfig.DEFAULT_DISPLAY_MODE
         
         self.calc_screen_dimensions()
         self.calc_object_dimensions()
@@ -35,7 +38,7 @@ class GraphicsConfig(object):
         self._screen_width = new_value
         self.calc_map_border_width()
         self.calc_screen_dimensions()
-        librpg.screen = pygame.display.set_mode(self.screen_dimensions)
+        librpg.screen = pygame.display.set_mode(self.screen_dimensions, graphics_config.display_mode)
     
     def get_screen_height(self):
     
@@ -46,7 +49,7 @@ class GraphicsConfig(object):
         self._screen_height = new_value
         self.calc_map_border_height()
         self.calc_screen_dimensions()
-        librpg.screen = pygame.display.set_mode(self.screen_dimensions)
+        librpg.screen = pygame.display.set_mode(self.screen_dimensions, graphics_config.display_mode)
     
     def get_object_width(self):
     
