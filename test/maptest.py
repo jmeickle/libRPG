@@ -1,14 +1,10 @@
-from librpg.map import *
-from librpg.util import *
-from librpg.party import *
+import librpg
 
-import pygame
-
-pygame.init()
+librpg.init()
 
 librpg.graphics_config.config(screen_width=200, screen_height=200, scale=3)
 
-m = Map(MapModel('maptest.map', ('lower_tileset.png', 'lower_tileset.bnd'), ('upper_tileset.png', 'upper_tileset.bnd')))
+m = librpg.map.Map(librpg.map.MapModel('maptest.map', ('lower_tileset.png', 'lower_tileset.bnd'), ('upper_tileset.png', 'upper_tileset.bnd')))
 
 print m.map_model
 
@@ -18,20 +14,20 @@ print m.map_model.terrain_layer
 print 'Scenario layer:'
 print m.map_model.scenario_layer
 
-r = CharacterReserve()
-a = Character('Andy', 'char_alex.png')
+r = librpg.party.CharacterReserve()
+a = librpg.party.Character('Andy', 'char_alex.png')
 r.add_char(a)
 p = r.create_party(3)
 p.add_char(a)
 
 print 'Adding', str(p)
-m.map_model.add_party(p, Position(0, 0))
+m.map_model.add_party(p, librpg.util.Position(0, 0))
 print 'Added'
 print
 
 print 'Trying to add', str(p), 'again'
 try:
-    m.map_model.add_party(p, Position(0, 0))
+    m.map_model.add_party(p, librpg.util.Position(0, 0))
 except AssertionError:
     print 'Ooops, map already had a party'
 print
@@ -47,7 +43,7 @@ print 'Removed', party, pos
 print
 
 print 'Adding', str(p)
-m.map_model.add_party(p, Position(0, 0), Direction.RIGHT, MapObject.NORMAL_SPEED)
+m.map_model.add_party(p, librpg.util.Position(0, 0), librpg.util.Direction.RIGHT, librpg.mapobject.MapObject.NORMAL_SPEED)
 print 'Added'
 print
 

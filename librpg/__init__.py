@@ -16,3 +16,12 @@ def init_virtual_screen(screen_dimensions, final_screen, scale):
 
 real_screen = init_real_screen(graphics_config.real_screen_dimensions, graphics_config.display_mode)
 screen = init_virtual_screen(graphics_config.screen_dimensions, real_screen, graphics_config.scale)
+
+import party
+import map
+import mapobject
+import camera
+import image
+import log
+import item
+import util

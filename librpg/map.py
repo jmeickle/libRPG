@@ -68,6 +68,8 @@ class Map:
                 direction = Map.KEY_TO_DIRECTION.get(event.key)
                 if direction is not None and not direction in self.map_model.party_movement:
                     self.party_movement_append(direction)
+                elif event.key == K_SPACE or event.key == K_RETURN:
+                    self.map_model.party_action()
                 elif event.key == K_ESCAPE:
                     return False
             elif event.type == KEYUP:
@@ -250,9 +252,16 @@ class MapModel:
         if not (object.is_obstacle and (self.is_obstructed(new_terrain, new_scenario, new_object) or self.tile_boundaries_obstructed(old_terrain, new_terrain, old_scenario, new_scenario, direction))):
             # Move
             self.move_object(object, old_object, new_object, desired)
+            if object is self.party_avatar:
+                for obj in new_object.below:
+                    obj.collide_with_party(self.party)
+                for obj in new_object.above:
+                    obj.collide_with_party(self.party)
             return True
         else:
-            # Do not move
+            # Do not move, something is on the way
+            if object is self.party_avatar and new_object.obstacle is not None:
+                new_object.obstacle.collide_with_party(self.party)
             return False
             
     def is_obstructed(self, new_terrain, new_scenario, new_object):
@@ -280,6 +289,30 @@ class MapModel:
         new_object.add_object(object)
         object.position = new_pos
 
+    def party_action(self):
+    
+        old_pos = self.party_avatar.position
+        desired = old_pos.step(self.party_avatar.facing)
+        
+        # Activate object that the party is looking at
+        if self.terrain_layer.valid_pos(desired):
+            obj_in_front = self.object_layer.get_pos(desired).obstacle
+            if obj_in_front is not None:
+               obj_in_front.activate(self.party)
+            if self.terrain_layer.valid_pos(desired.step(self.party_avatar.facing)):
+                # Counter attribute
+                obj_across = self.object_layer.get_pos(desired).obstacle
+                if obj_across is not None:
+                    obj_across.activate(self.party)
+
+        # Activate objects that the party is standing on or under
+        old_object = self.object_layer.get_pos(old_pos)
+        for obj in old_object.below:
+            obj.collide_with_party(self.party)
+        for obj in old_object.above:
+            obj.collide_with_party(self.party)
+        
+        
     def __repr__(self):
     
         return '(Map width=' + str(self.width) + ' height=' + str(self.height) + ' file=' + self.map_file + ')'

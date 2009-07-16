@@ -1,10 +1,6 @@
 import sys
 
 import librpg
-from librpg.map import *
-from librpg.util import *
-from librpg.party import *
-from librpg.camera import *
 
 librpg.init()
 
@@ -29,14 +25,14 @@ else:
     print 'Pass a number from 1 to 5 for the screen and camera mode.'
     exit()
 
-m = Map(MapModel('maptest32.map', ('lower_tileset32.png', 'lower_tileset32.bnd'), ('upper_tileset32.png', 'upper_tileset32.bnd')))
+m = librpg.map.Map(librpg.map.MapModel('maptest32.map', ('lower_tileset32.png', 'lower_tileset32.bnd'), ('upper_tileset32.png', 'upper_tileset32.bnd')))
 
-a = Character('Andy', 'char_alex32.png')
-r = CharacterReserve([a])
+a = librpg.party.Character('Andy', 'char_alex32.png')
+r = librpg.party.CharacterReserve([a])
 p = r.create_party(3, [a])
 
 print 'Adding', str(p)
-m.map_model.add_party(p, Position(0, 0))
+m.map_model.add_party(p, librpg.util.Position(0, 0))
 print 'Added'
 print
 
