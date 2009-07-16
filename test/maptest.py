@@ -6,6 +6,8 @@ import pygame
 
 pygame.init()
 
+librpg.graphics_config.config(screen_width=200, screen_height=200, scale=3)
+
 m = Map(MapModel('maptest.map', ('lower_tileset.png', 'lower_tileset.bnd'), ('upper_tileset.png', 'upper_tileset.bnd')))
 
 print m.map_model

@@ -1,14 +1,16 @@
 import pygame
 
 import librpg
+import virtual_screen
 
 class GraphicsConfig(object):
 
-    DEFAULT_SCREEN_WIDTH = 640
-    DEFAULT_SCREEN_HEIGHT = 480
+    DEFAULT_SCREEN_WIDTH = 320
+    DEFAULT_SCREEN_HEIGHT = 240
     DEFAULT_TILE_SIZE = 16
     DEFAULT_OBJECT_HEIGHT = 32
     DEFAULT_OBJECT_WIDTH = 24
+    DEFAULT_SCALE = 2
     DEFAULT_DISPLAY_MODE = 0
     #DEFAULT_DISPLAY_MODE = pygame.HWSURFACE | pygame.DOUBLEBUF | pygame.FULLSCREEN
     
@@ -19,6 +21,7 @@ class GraphicsConfig(object):
         self._tile_size = GraphicsConfig.DEFAULT_TILE_SIZE
         self._object_height = GraphicsConfig.DEFAULT_OBJECT_HEIGHT
         self._object_width = GraphicsConfig.DEFAULT_OBJECT_WIDTH
+        self._scale = GraphicsConfig.DEFAULT_SCALE
         self.camera_mode = None # Has to be None here to avoid circular import problems
         self.display_mode = GraphicsConfig.DEFAULT_DISPLAY_MODE
         
@@ -31,12 +34,22 @@ class GraphicsConfig(object):
         
     def config(self, **kv):
     
+        scheduled = {}
+    
         for key, value in kv.iteritems():
             if hasattr(self, key):
-                setattr(self, key, value)
+                print 'attr=', key
+                if key != 'display_mode':
+                    setattr(self, key, value)
+                else:
+                    scheduled[key] = value
             else:
                 raise Exception('GraphicsConfig.config() does not take ' + key + ' as parameter.')
-        
+                
+        for key, value in scheduled.iteritems():
+            print 'scheduled_attr=', key
+            setattr(self, key, value)        
+
     def get_screen_width(self):
     
         return self._screen_width
@@ -46,7 +59,7 @@ class GraphicsConfig(object):
         self._screen_width = new_value
         self.calc_map_border_width()
         self.calc_screen_dimensions()
-        librpg.screen = pygame.display.set_mode(self.screen_dimensions, graphics_config.display_mode)
+        self.recreate_screeens()
     
     def get_screen_height(self):
     
@@ -57,7 +70,7 @@ class GraphicsConfig(object):
         self._screen_height = new_value
         self.calc_map_border_height()
         self.calc_screen_dimensions()
-        librpg.screen = pygame.display.set_mode(self.screen_dimensions, graphics_config.display_mode)
+        self.recreate_screeens()
     
     def get_object_width(self):
     
@@ -89,6 +102,19 @@ class GraphicsConfig(object):
         self.calc_object_x_adjustment()
         self.calc_object_y_adjustment()
     
+    def get_scale(self):
+    
+        return self._scale
+    
+    def set_scale(self, new_value):
+    
+        self._scale = new_value
+        self.recreate_screeens()
+        
+    def get_real_screen_dimensions(self):
+    
+        return (self.screen_dimensions[0] * self.scale, self.screen_dimensions[1] * self.scale)
+    
     def calc_screen_dimensions(self):
     
         self.screen_dimensions = (self._screen_width, self._screen_height)
@@ -113,11 +139,18 @@ class GraphicsConfig(object):
     
         self.object_y_adjustment = - (self._object_height - self._tile_size)
     
+    def recreate_screeens(self):
+    
+        librpg.screen = librpg.init_virtual_screen(self.screen_dimensions, librpg.real_screen, self.scale)
+        librpg.real_screen = librpg.init_real_screen(self.real_screen_dimensions, self.display_mode)
+    
     screen_width = property(get_screen_width, set_screen_width)
     screen_height = property(get_screen_height, set_screen_height)
     object_width = property(get_object_width, set_object_width)
     object_height = property(get_object_height, set_object_height)
     tile_size = property(get_tile_size, set_tile_size)
+    scale = property(get_scale, set_scale)
+    real_screen_dimensions = property(get_real_screen_dimensions)
 
 graphics_config = GraphicsConfig()
 

@@ -1,19 +1,33 @@
+import sys
+
+if len(sys.argv) < 2:
+    print 'Pass a number from 1 to 5 for the screen and camera mode.'
+    exit()
+
+import librpg
 from librpg.map import *
 from librpg.util import *
 from librpg.party import *
-from librpg.config import *
 from librpg.camera import *
 
-import pygame
+librpg.init()
 
-pygame.init()
+librpg.graphics_config.config(tile_size=32, object_height=32, object_width=32)
 
-graphics_config.config(tile_size=32, object_height=32, object_width=32)
-
-#graphics_config.config(camera_mode=FixedCameraMode(0, 0), screen_width=480, screen_height=480)
-#graphics_config.config(camera_mode=PartyConfinementCameraMode(40, 50), screen_width=300, screen_height=400)
-#graphics_config.config(camera_mode=ScreenConfinementCameraMode(), screen_width=200, screen_height=200)
-#graphics_config.config(camera_mode=ScreenConfinementCameraMode(), screen_width=400, screen_height=400)
+mode = int(sys.argv[1])
+if mode == 1:
+    pass
+elif mode == 2:
+    librpg.graphics_config.config(camera_mode=FixedCameraMode(50, 50), screen_width=480, screen_height=480, scale=1)
+elif mode == 3:
+    librpg.graphics_config.config(camera_mode=PartyConfinementCameraMode(50, 40), screen_width=400, screen_height=300)
+elif mode == 4:
+    librpg.graphics_config.config(camera_mode=ScreenConfinementCameraMode(), screen_width=200, screen_height=200, scale=3)
+elif mode == 5:
+    librpg.graphics_config.config(camera_mode=ScreenConfinementCameraMode(), screen_width=400, screen_height=400)
+else:
+    print 'Pass a number from 1 to 5 for the screen and camera mode.'
+    exit()
 
 m = Map(MapModel('maptest32.map', ('lower_tileset32.png', 'lower_tileset32.bnd'), ('upper_tileset32.png', 'upper_tileset32.bnd')))
 

@@ -95,7 +95,7 @@ class MapView:
         self.screen.blit(self.foreground, (0, 0), bg_rect)
         
         # Flip display
-        pygame.display.flip()
+        self.screen.flip()
 
     def calc_object_movement_offset(self, obj):
         

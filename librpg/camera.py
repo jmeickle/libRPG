@@ -140,4 +140,4 @@ class FixedCameraMode(CameraMode):
         
     def calc_bg_slice_topleft(self, party_pos, party_x_offset, party_y_offset):
     
-        return graphics_config.map_border_width + self.x * graphics_config.tile_size, graphics_config.map_border_height + self.y * graphics_config.tile_size
+        return graphics_config.map_border_width - self.x, graphics_config.map_border_height - self.y
