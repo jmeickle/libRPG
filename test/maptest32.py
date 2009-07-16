@@ -1,9 +1,5 @@
 import sys
 
-if len(sys.argv) < 2:
-    print 'Pass a number from 1 to 5 for the screen and camera mode.'
-    exit()
-
 import librpg
 from librpg.map import *
 from librpg.util import *
@@ -13,6 +9,10 @@ from librpg.camera import *
 librpg.init()
 
 librpg.graphics_config.config(tile_size=32, object_height=32, object_width=32)
+
+if len(sys.argv) < 2:
+    print 'Pass a number from 1 to 5 for the screen and camera mode.'
+    exit()
 
 mode = int(sys.argv[1])
 if mode == 1:

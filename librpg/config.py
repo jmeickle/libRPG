@@ -38,7 +38,6 @@ class GraphicsConfig(object):
     
         for key, value in kv.iteritems():
             if hasattr(self, key):
-                print 'attr=', key
                 if key != 'display_mode':
                     setattr(self, key, value)
                 else:
@@ -47,7 +46,6 @@ class GraphicsConfig(object):
                 raise Exception('GraphicsConfig.config() does not take ' + key + ' as parameter.')
                 
         for key, value in scheduled.iteritems():
-            print 'scheduled_attr=', key
             setattr(self, key, value)        
 
     def get_screen_width(self):

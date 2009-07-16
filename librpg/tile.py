@@ -89,8 +89,6 @@ class Tileset:
         tile_width, tile_height = width / graphics_config.tile_size, height / graphics_config.tile_size
         self.size = tile_width * tile_height
         
-        print 'load_image_file', 'width=' + str(width), 'height=' + str(height), 'tile_width=' + str(tile_width), 'tile_height=' + str(tile_height)
-        
         self.tiles = []
         for i in xrange(self.size):
             x, y = i % tile_width, i / tile_width

@@ -27,7 +27,6 @@ class MapView:
     
         self.map_model = map_model
         
-        self.screen = librpg.screen
         self.init_background()
         self.init_foreground()
         self.camera_mode = graphics_config.camera_mode
@@ -82,20 +81,20 @@ class MapView:
             party_x_offset, party_y_offset = 0, 0
         bg_topleft = self.camera_mode.calc_bg_slice_topleft(party_pos, party_x_offset, party_y_offset)
         bg_rect = pygame.Rect(bg_topleft, graphics_config.screen_dimensions)
-        self.screen.blit(self.background, (0, 0), bg_rect)
+        librpg.screen.blit(self.background, (0, 0), bg_rect)
         
         # Draw the map objects
         for obj in self.map_model.objects:
             obj_x_offset, obj_y_offset = self.calc_object_movement_offset(obj)
             obj_topleft = self.camera_mode.calc_object_topleft(bg_topleft, obj.position, obj_x_offset, obj_y_offset)
             obj_rect = pygame.Rect(obj_topleft, graphics_config.object_dimensions)
-            self.screen.blit(obj.get_surface(), obj_rect)
+            librpg.screen.blit(obj.get_surface(), obj_rect)
         
         # Draw the foreground
-        self.screen.blit(self.foreground, (0, 0), bg_rect)
+        librpg.screen.blit(self.foreground, (0, 0), bg_rect)
         
         # Flip display
-        self.screen.flip()
+        librpg.screen.flip()
 
     def calc_object_movement_offset(self, obj):
         
