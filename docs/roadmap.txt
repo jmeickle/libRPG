@@ -1,0 +1,31 @@
+##################
+# Librpg Roadmap #
+##################
+
+Version 0.1 (jul 12, 2009)
+
+The Party walks around a rendered map from tiles, controlled by player input. The map has a terrain and a scenario layer with obstacle tiles, but no objects in the map yet.
+
+Version 0.2
+
+The map includes interactive MapObjects. Most graphic options are implemented, including various camera modes and scaling. The MapObjects can move.
+
+Version 0.3
+
+A World with a few connected maps is available for the Party to walk around. The local state of the maps is saved for when the party comes back to that map. Original graphics to allow for distribution under LGPL. First released version.
+
+Version 0.4
+
+An inventory stores the party's items, which are taken from map events. The items are created by an item factory. Log system working and tested registers events.
+
+Version 0.5
+
+Generic menu is implemented. Party management, save and inventory sample menus done.
+
+Version 0.6
+
+Assynchronous events and configurable keys implemented. Example displays a mana bar on the screen, and binds keys to spells castable on the map.
+
+Version 1.0
+
+API reevaluation. Tutorial with examples. Complete API reference. Map editor application available.
