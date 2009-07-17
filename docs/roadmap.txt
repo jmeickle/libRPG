@@ -28,4 +28,4 @@ Assynchronous events and configurable keys implemented. Example displays a mana 
 
 Version 1.0
 
-API reevaluation. Tutorial with examples. Complete API reference. Map editor application available.
+API reevaluation. Tutorial with examples. Complete API reference. Map editor application available. Module containing a common poll of useful classes (Chest, NPC, etc).
