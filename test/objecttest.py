@@ -9,7 +9,7 @@ from librpg.mapobject import MapObject
 from librpg.util import Position, Direction
 from librpg.party import Character, CharacterReserve
 from librpg.image import ObjectImage
-from librpg.movement import Step
+from librpg.movement import Step, MovementQueue, Face
 
 class ObjectTestNPC(MapObject):
 
@@ -20,8 +20,7 @@ class ObjectTestNPC(MapObject):
     def activate(self, party, direction):
     
         print 'Activated NPC'
-        for i in xrange(3):
-            self.schedule_movement(Step(direction))
+        self.schedule_movement(MovementQueue([Step(direction)] * 3 + [Face(librpg.util.Direction.INVERSE[direction])]))
         
     def collide_with_party(self, party, direction):
     

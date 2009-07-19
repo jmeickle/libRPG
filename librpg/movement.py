@@ -6,8 +6,10 @@ class Movement:
         
 class MovementQueue(Movement, list):
 
-    def __init__(self):
+    def __init__(self, contents=None):
         list.__init__(self)
+        if contents:
+            self.extend(contents)
         
     def flow(self, obj):
         if len(self) == 0:
@@ -28,5 +30,14 @@ class Step(Movement):
         
     def flow(self, obj):
         obj.map.try_to_move_object(obj, self.direction)
+        return True
+
+class Face(Movement):
+
+    def __init__(self, direction):
+        self.direction = direction
+        
+    def flow(self, obj):
+        obj.facing = self.direction
         return True
         
