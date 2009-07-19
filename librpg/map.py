@@ -81,8 +81,7 @@ class Map:
     def flow_object_movement(self):
     
         for o in self.map_model.objects:
-            if o.movement_phase > 0:
-                o.movement_phase -= 1
+            o.flow()
 
 #=================================================================================
 
@@ -254,14 +253,14 @@ class MapModel:
             self.move_object(object, old_object, new_object, desired)
             if object is self.party_avatar:
                 for obj in new_object.below:
-                    obj.collide_with_party(self.party)
+                    obj.collide_with_party(self.party, direction)
                 for obj in new_object.above:
-                    obj.collide_with_party(self.party)
+                    obj.collide_with_party(self.party, direction)
             return True
         else:
             # Do not move, something is on the way
             if object is self.party_avatar and new_object.obstacle is not None:
-                new_object.obstacle.collide_with_party(self.party)
+                new_object.obstacle.collide_with_party(self.party, direction)
             return False
             
     def is_obstructed(self, new_terrain, new_scenario, new_object):
@@ -298,20 +297,20 @@ class MapModel:
         if self.terrain_layer.valid_pos(desired):
             obj_in_front = self.object_layer.get_pos(desired).obstacle
             if obj_in_front is not None:
-               obj_in_front.activate(self.party)
+               obj_in_front.activate(self.party, self.party_avatar.facing)
             across_pos = desired.step(self.party_avatar.facing)
             if self.terrain_layer.valid_pos(across_pos):
                 # Counter attribute
                 obj_across = self.object_layer.get_pos(across_pos).obstacle
                 if obj_across is not None:
-                    obj_across.activate(self.party)
+                    obj_across.activate(self.party, self.party_avatar.facing)
 
         # Activate objects that the party is standing on or under
         old_object = self.object_layer.get_pos(old_pos)
         for obj in old_object.below:
-            obj.activate(self.party)
+            obj.activate(self.party, self.party_avatar.facing)
         for obj in old_object.above:
-            obj.activate(self.party)
+            obj.activate(self.party, self.party_avatar.facing)
         
     def __repr__(self):
     

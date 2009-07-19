@@ -9,6 +9,7 @@ from librpg.mapobject import MapObject
 from librpg.util import Position, Direction
 from librpg.party import Character, CharacterReserve
 from librpg.image import ObjectImage
+from librpg.movement import Step
 
 class ObjectTestNPC(MapObject):
 
@@ -16,14 +17,16 @@ class ObjectTestNPC(MapObject):
     
         MapObject.__init__(self, MapObject.OBSTACLE, ObjectImage(pygame.image.load('char_alex32.png')))
         
-    def activate(self, party):
+    def activate(self, party, direction):
     
         print 'Activated NPC'
+        for i in xrange(3):
+            self.schedule_movement(Step(direction))
         
-    def collide_with_party(self, party):
+    def collide_with_party(self, party, direction):
     
         print 'Collided NPC'
-
+        self.schedule_movement(Step(direction))
 
 class ObjectTestChest(MapObject):
 
@@ -33,7 +36,7 @@ class ObjectTestChest(MapObject):
         self.closed = True
         self.facing = Direction.UP
         
-    def activate(self, party):
+    def activate(self, party, direction):
     
         if self.closed:
             self.closed = False
@@ -41,6 +44,7 @@ class ObjectTestChest(MapObject):
             self.facing = Direction.LEFT
         else:
             print 'Chest is closed'
+
 
 class ObjectTestMap(MapModel):
     

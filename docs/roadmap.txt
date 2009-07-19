@@ -16,7 +16,7 @@ A World with a few connected maps is available for the Party to walk around. The
 
 Version 0.4
 
-An inventory stores the party's items, which are taken from map events. The items are created by an item factory. Log system working and tested registers events.
+An inventory stores the party's items, which are taken from map events. The items are created by an item factory. Log system working and tested. Animated tiles implemented.
 
 Version 0.5
 
@@ -24,7 +24,7 @@ Generic menu is implemented. Party management, save and inventory sample menus d
 
 Version 0.6
 
-Assynchronous events and configurable keys implemented. Example displays a mana bar on the screen, and binds keys to spells castable on the map.
+Assynchronous events and configurable keys implemented. Example displays a mana bar on the screen, and binds keys to spells castable on the map. Also, random events happen on the map every once in a while. Support for random animations.
 
 Version 1.0
 

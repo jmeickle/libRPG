@@ -1,4 +1,5 @@
 from util import Direction
+from movement import MovementQueue
 
 class MapObject:
 
@@ -35,17 +36,17 @@ class MapObject:
         assert obstacle in range(0, 3), 'MapObject cannot be created with an obstacle value of ' + str(obstacle)
         self.obstacle = obstacle
         
-        self.image, self.movement_phase, self.facing, self.speed = image, 0, facing, speed
+        self.image, self.movement_phase, self.facing, self.speed, self.scheduled_movement = image, 0, facing, speed, MovementQueue()
         
         self.map, self.position = None, None
 
     # Virtual
-    def activate(self, party):
+    def activate(self, party, direction):
     
         pass
         
     # Virtual
-    def collide_with_party(self, party):
+    def collide_with_party(self, party, direction):
     
         pass
         
@@ -68,7 +69,18 @@ class MapObject:
     def get_surface(self):
     
         return self.image.get_surface(self)
+        
+    def flow(self):
+
+        if self.movement_phase > 0:
+            self.movement_phase -= 1
+        else:
+            self.scheduled_movement.flow(self)
     
+    def schedule_movement(self, movement):
+        
+        self.scheduled_movement.append(movement)
+        
 #=================================================================================
 
 class PartyAvatar(MapObject):
