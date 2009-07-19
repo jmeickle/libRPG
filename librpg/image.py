@@ -48,7 +48,10 @@ class ObjectImage(Image):
     def get_surface(self, object=None, facing=None, phase=None):
     
         if object is not None:
-            return self.frames[ObjectImage.DIRECTION_TO_INDEX_MAP[object.facing]][ObjectImage.ANIMATION_MAPS[object.speed][object.movement_phase]]
+            if object.sliding:
+                return self.frames[ObjectImage.DIRECTION_TO_INDEX_MAP[object.facing]][1]
+            else:
+                return self.frames[ObjectImage.DIRECTION_TO_INDEX_MAP[object.facing]][ObjectImage.ANIMATION_MAPS[object.speed][object.movement_phase]]
         elif facing is not None and phase is not None:
             return self.frames[ObjectImage.DIRECTION_TO_INDEX_MAP[facing]][ObjectImage.ANIMATION_MAPS[MapObject.NORMAL_SPEED][phase]]
         else:

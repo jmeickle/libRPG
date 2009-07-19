@@ -9,7 +9,7 @@ from librpg.mapobject import MapObject
 from librpg.util import Position, Direction
 from librpg.party import Character, CharacterReserve
 from librpg.image import ObjectImage
-from librpg.movement import Step, MovementQueue, Face
+from librpg.movement import Step, Face, Wait, Slide
 
 class ObjectTestNPC(MapObject):
 
@@ -20,12 +20,15 @@ class ObjectTestNPC(MapObject):
     def activate(self, party, direction):
     
         print 'Activated NPC'
-        self.schedule_movement(MovementQueue([Step(direction)] * 3 + [Face(librpg.util.Direction.INVERSE[direction])]))
+        for i in xrange(3):
+            self.schedule_movement(Step(direction))
+        self.schedule_movement(Face(librpg.util.Direction.INVERSE[direction]))
         
     def collide_with_party(self, party, direction):
     
         print 'Collided NPC'
-        self.schedule_movement(Step(direction))
+        self.schedule_movement(Slide(direction))
+
 
 class ObjectTestChest(MapObject):
 
@@ -40,9 +43,15 @@ class ObjectTestChest(MapObject):
         if self.closed:
             self.closed = False
             print 'Opened chest and added item'
-            self.facing = Direction.LEFT
+            self.schedule_movement(Face(Direction.RIGHT))
+            self.schedule_movement(Wait(2))
+            self.schedule_movement(Face(Direction.DOWN))
+            self.schedule_movement(Wait(2))
+            self.schedule_movement(Face(Direction.LEFT))
         else:
-            print 'Chest is closed'
+            print 'Chest is open, closing'
+            self.schedule_movement(Face(Direction.UP))
+            self.closed = True
 
 
 class ObjectTestMap(MapModel):

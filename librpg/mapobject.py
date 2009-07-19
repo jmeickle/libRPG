@@ -36,7 +36,8 @@ class MapObject:
         assert obstacle in range(0, 3), 'MapObject cannot be created with an obstacle value of ' + str(obstacle)
         self.obstacle = obstacle
         
-        self.image, self.movement_phase, self.facing, self.speed, self.scheduled_movement = image, 0, facing, speed, MovementQueue()
+        self.image, self.movement_phase, self.facing, self.speed = image, 0, facing, speed
+        self.scheduled_movement, self.sliding = MovementQueue(), False
         
         self.map, self.position = None, None
 

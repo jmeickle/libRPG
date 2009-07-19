@@ -230,7 +230,7 @@ class MapModel:
         object.position, object.map = None, None
         return result
         
-    def try_to_move_object(self, object, direction):
+    def try_to_move_object(self, object, direction, slide=False):
     
         if object.movement_phase > 0:
             return False
@@ -250,7 +250,7 @@ class MapModel:
         new_object = self.object_layer.get_pos(desired)
         if not (object.is_obstacle and (self.is_obstructed(new_terrain, new_scenario, new_object) or self.tile_boundaries_obstructed(old_terrain, new_terrain, old_scenario, new_scenario, direction))):
             # Move
-            self.move_object(object, old_object, new_object, desired)
+            self.move_object(object, old_object, new_object, desired, slide)
             if object is self.party_avatar:
                 for obj in new_object.below:
                     obj.collide_with_party(self.party, direction)
@@ -280,9 +280,10 @@ class MapModel:
             return True
         return False
 
-    def move_object(self, object, old_object, new_object, new_pos):
+    def move_object(self, object, old_object, new_object, new_pos, slide):
     
         object.movement_phase = object.speed - 1
+        object.sliding = slide
         
         old_object.remove_object(object)
         new_object.add_object(object)

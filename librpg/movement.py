@@ -41,3 +41,24 @@ class Face(Movement):
         obj.facing = self.direction
         return True
         
+class Wait(Movement):
+
+    def __init__(self, delay):
+        self.delay = delay
+        
+    def flow(self, obj):
+        self.delay -= 1
+        if self.delay == 0:
+            return True
+        else:
+            return False
+
+class Slide(Movement):
+
+    def __init__(self, direction):
+        self.direction = direction
+        
+    def flow(self, obj):
+        obj.map.try_to_move_object(obj, self.direction, slide=True)
+        return True
+        
