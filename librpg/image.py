@@ -1,8 +1,8 @@
 import pygame
 
 from util import Direction
-from mapobject import *
 from config import *
+from movement import SPEEDS, NORMAL_SPEED
 
 class Image:
 
@@ -10,7 +10,7 @@ class Image:
     
         self.surface = surface
         
-    def get_surface(self):
+    def get_surface(self, object=None):
     
         return self.surface
 
@@ -32,7 +32,7 @@ class ObjectImage(Image):
 
     DIRECTION_TO_INDEX_MAP = {Direction.UP: 0, Direction.RIGHT: 1, Direction.DOWN: 2, Direction.LEFT: 3}
 
-    ANIMATION_MAPS = dict((speed, [OBJECT_IMAGE_BASIC_ANIMATION_MAP[(phase*4)/speed] for phase in range(speed)]) for speed in MapObject.SPEEDS)
+    ANIMATION_MAPS = dict((speed, [OBJECT_IMAGE_BASIC_ANIMATION_MAP[(phase*4)/speed] for phase in range(speed)]) for speed in SPEEDS)
     
     def __init__(self, surface):
     
@@ -53,7 +53,7 @@ class ObjectImage(Image):
             else:
                 return self.frames[ObjectImage.DIRECTION_TO_INDEX_MAP[object.facing]][ObjectImage.ANIMATION_MAPS[object.speed][object.movement_phase]]
         elif facing is not None and phase is not None:
-            return self.frames[ObjectImage.DIRECTION_TO_INDEX_MAP[facing]][ObjectImage.ANIMATION_MAPS[MapObject.NORMAL_SPEED][phase]]
+            return self.frames[ObjectImage.DIRECTION_TO_INDEX_MAP[facing]][ObjectImage.ANIMATION_MAPS[NORMAL_SPEED][phase]]
         else:
             raise Exception('object_image.get_surface() must either be called with object set OR with facing and phase parameters.')
     

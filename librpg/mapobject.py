@@ -1,5 +1,8 @@
+import pygame
+
 from util import Direction
-from movement import MovementQueue
+from movement import MovementQueue, NORMAL_SPEED
+from image import ObjectImage
 
 class MapObject:
 
@@ -28,26 +31,29 @@ class MapObject:
     
     BELOW, OBSTACLE, COUNTER, ABOVE = 0, 1, 2, 3
     
-    VERY_FAST_SPEED, FAST_SPEED, NORMAL_SPEED, SLOW_SPEED, VERY_SLOW_SPEED = 3, 4, 6, 10, 15
-    SPEEDS = [VERY_FAST_SPEED, FAST_SPEED, NORMAL_SPEED, SLOW_SPEED, VERY_SLOW_SPEED]
-    
-    def __init__(self, obstacle, image=None, facing=Direction.DOWN, speed=NORMAL_SPEED):
+    def __init__(self, obstacle, image=None, facing=Direction.DOWN, speed=NORMAL_SPEED, image_file=None):
     
         assert obstacle in range(0, 3), 'MapObject cannot be created with an obstacle value of ' + str(obstacle)
-        self.obstacle = obstacle
-        
-        self.image, self.movement_phase, self.facing, self.speed = image, 0, facing, speed
-        self.scheduled_movement, self.sliding = MovementQueue(), False
+        assert (image is None or image_file is None), 'Only one of (image, image_file) can be specified.'
         
         self.map, self.position = None, None
+        self.obstacle = obstacle
+        
+        self.movement_phase, self.facing, self.speed = 0, facing, speed
+        self.scheduled_movement, self.sliding = MovementQueue(), False
+        
+        if image is not None:
+            self.image = image
+        elif image_file is not None:
+            self.image = ObjectImage(pygame.image.load(image_file))
 
     # Virtual
-    def activate(self, party, direction):
+    def activate(self, party_avatar, direction):
     
         pass
         
     # Virtual
-    def collide_with_party(self, party, direction):
+    def collide_with_party(self, party_avatar, direction):
     
         pass
         
@@ -86,8 +92,20 @@ class MapObject:
 
 class PartyAvatar(MapObject):
     
-    def __init__(self, party, facing=Direction.DOWN, speed=MapObject.NORMAL_SPEED):
+    def __init__(self, party, facing=Direction.DOWN, speed=NORMAL_SPEED):
     
         MapObject.__init__(self, MapObject.OBSTACLE, party.get_image(self), facing, speed)
         self.party = party
         
+#=================================================================================
+
+class ScenarioMapObject(MapObject):
+
+    def __init__(self, map, scenario_index, obstacle=None, facing=Direction.DOWN, speed=NORMAL_SPEED):
+    
+        tile = map.scenario_tileset.tiles[scenario_index]
+        if obstacle is None:
+            MapObject.__init__(self, tile.obstacle, tile.image, facing, speed)
+        else:
+            MapObject.__init__(self, obstacle, tile.image, facing, speed)
+            

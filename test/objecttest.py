@@ -5,7 +5,7 @@ librpg.init()
 librpg.graphics_config.config(tile_size=32, object_height=32, object_width=32)
 
 from librpg.map import MapModel, Map
-from librpg.mapobject import MapObject
+from librpg.mapobject import MapObject, ScenarioMapObject
 from librpg.util import Position, Direction
 from librpg.party import Character, CharacterReserve
 from librpg.image import ObjectImage
@@ -15,18 +15,32 @@ class ObjectTestNPC(MapObject):
 
     def __init__(self):
     
-        MapObject.__init__(self, MapObject.OBSTACLE, ObjectImage(pygame.image.load('char_alex32.png')))
+        MapObject.__init__(self, MapObject.OBSTACLE, image_file='char_alex32.png')
         
-    def activate(self, party, direction):
+    def activate(self, party_avatar, direction):
     
         print 'Activated NPC'
+        for i in xrange(2):
+            party_avatar.schedule_movement(Step(librpg.util.Direction.INVERSE[direction]))
+        party_avatar.schedule_movement(Face(direction))
+        
+        
+class ObjectTestRock(ScenarioMapObject):
+
+    def __init__(self, map):
+    
+        ScenarioMapObject.__init__(self, map, 3)
+        
+    def activate(self, party_avatar, direction):
+    
+        print 'Activated Rock'
         for i in xrange(3):
             self.schedule_movement(Step(direction))
         self.schedule_movement(Face(librpg.util.Direction.INVERSE[direction]))
         
-    def collide_with_party(self, party, direction):
+    def collide_with_party(self, party_avatar, direction):
     
-        print 'Collided NPC'
+        print 'Collided Rock'
         self.schedule_movement(Slide(direction))
 
 
@@ -34,11 +48,11 @@ class ObjectTestChest(MapObject):
 
     def __init__(self):
 
-        MapObject.__init__(self, MapObject.OBSTACLE, ObjectImage(pygame.image.load('chest.png')))
+        MapObject.__init__(self, MapObject.OBSTACLE, image_file='chest.png')
         self.closed = True
         self.facing = Direction.UP
         
-    def activate(self, party, direction):
+    def activate(self, party_avatar, direction):
     
         if self.closed:
             self.closed = False
@@ -64,6 +78,8 @@ class ObjectTestMap(MapModel):
     
         self.add_object(ObjectTestNPC(), Position(2, 2))
         self.add_object(ObjectTestChest(), Position(8, 4))
+        self.add_object(ObjectTestRock(self), Position(7, 2))
+
 
 a = librpg.party.Character('Andy', 'char_alex32.png')
 r = librpg.party.CharacterReserve([a])

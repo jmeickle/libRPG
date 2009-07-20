@@ -9,6 +9,7 @@ from util import *
 from image import *
 from tile import *
 from config import *
+from movement import Step, NORMAL_SPEED
 
 #=================================================================================
     
@@ -35,7 +36,6 @@ class Map:
         map_view_draw = self.map_view.draw
         party_avatar = map_model.party_avatar
         party_movement = map_model.party_movement
-        map_model_try_to_move_object = map_model.try_to_move_object
         self.party_movement_append = party_movement.append
         self.party_movement_remove = party_movement.remove
     
@@ -45,13 +45,15 @@ class Map:
         keep_going = True
         while keep_going:
             clock.tick(Map.FPS)
-            self.flow_object_movement()
             
+            self.flow_object_movement()
+                    
             pos = party_avatar.position
             keep_going = self.process_input()
-            if party_movement:
-                moved = map_model_try_to_move_object(party_avatar, party_movement[0])
-                    
+            if party_movement and not party_avatar.scheduled_movement and not party_avatar.movement_phase:
+                party_avatar.schedule_movement(Step(party_movement[0]))
+                #moved = map_model.try_to_move_object(party_avatar, party_movement[0])
+                
             # debug
             if pos != party_avatar.position:
                 print map_model
@@ -81,7 +83,10 @@ class Map:
     def flow_object_movement(self):
     
         for o in self.map_model.objects:
-            o.flow()
+            if o is not self.map_model.party_avatar:
+                o.flow()
+                
+        self.map_model.party_avatar.flow()
 
 #=================================================================================
 
@@ -198,7 +203,7 @@ class MapModel:
     def initialize(self, local_state):
         pass
         
-    def add_party(self, party, position, facing=Direction.DOWN, speed=MapObject.NORMAL_SPEED):
+    def add_party(self, party, position, facing=Direction.DOWN, speed=NORMAL_SPEED):
     
         assert self.party is None, 'Map already has a party'
         self.party = party
@@ -253,14 +258,14 @@ class MapModel:
             self.move_object(object, old_object, new_object, desired, slide)
             if object is self.party_avatar:
                 for obj in new_object.below:
-                    obj.collide_with_party(self.party, direction)
+                    obj.collide_with_party(self.party_avatar, direction)
                 for obj in new_object.above:
-                    obj.collide_with_party(self.party, direction)
+                    obj.collide_with_party(self.party_avatar, direction)
             return True
         else:
             # Do not move, something is on the way
             if object is self.party_avatar and new_object.obstacle is not None:
-                new_object.obstacle.collide_with_party(self.party, direction)
+                new_object.obstacle.collide_with_party(self.party_avatar, direction)
             return False
             
     def is_obstructed(self, new_terrain, new_scenario, new_object):
@@ -298,20 +303,20 @@ class MapModel:
         if self.terrain_layer.valid_pos(desired):
             obj_in_front = self.object_layer.get_pos(desired).obstacle
             if obj_in_front is not None:
-               obj_in_front.activate(self.party, self.party_avatar.facing)
+               obj_in_front.activate(self.party_avatar, self.party_avatar.facing)
             across_pos = desired.step(self.party_avatar.facing)
-            if self.terrain_layer.valid_pos(across_pos):
+            if (obj_in_front.is_counter() or self.scenario_layer.get_pos(desired).is_counter()) and self.terrain_layer.valid_pos(across_pos):
                 # Counter attribute
                 obj_across = self.object_layer.get_pos(across_pos).obstacle
                 if obj_across is not None:
-                    obj_across.activate(self.party, self.party_avatar.facing)
+                    obj_across.activate(self.party_avatar, self.party_avatar.facing)
 
         # Activate objects that the party is standing on or under
         old_object = self.object_layer.get_pos(old_pos)
         for obj in old_object.below:
-            obj.activate(self.party, self.party_avatar.facing)
+            obj.activate(self.party_avatar, self.party_avatar.facing)
         for obj in old_object.above:
-            obj.activate(self.party, self.party_avatar.facing)
+            obj.activate(self.party_avatar, self.party_avatar.facing)
         
     def __repr__(self):
     
