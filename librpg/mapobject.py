@@ -1,7 +1,7 @@
 import pygame
 
 from util import Direction
-from movement import MovementQueue, NORMAL_SPEED
+from movement import MovementQueue, MovementCycle, NORMAL_SPEED
 from image import ObjectImage
 
 class MapObject:
@@ -40,7 +40,7 @@ class MapObject:
         self.obstacle = obstacle
         
         self.movement_phase, self.facing, self.speed = 0, facing, speed
-        self.scheduled_movement, self.sliding = MovementQueue(), False
+        self.scheduled_movement, self.movement_behavior, self.sliding = MovementQueue(), MovementCycle(), False
         
         if image is not None:
             self.image = image
@@ -82,7 +82,9 @@ class MapObject:
         if self.movement_phase > 0:
             self.movement_phase -= 1
         else:
-            self.scheduled_movement.flow(self)
+            no_scheduled_movement = self.scheduled_movement.flow(self)
+            if no_scheduled_movement:
+                self.movement_behavior.flow(self)
     
     def schedule_movement(self, movement):
         

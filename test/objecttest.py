@@ -9,13 +9,14 @@ from librpg.mapobject import MapObject, ScenarioMapObject
 from librpg.util import Position, Direction
 from librpg.party import Character, CharacterReserve
 from librpg.image import ObjectImage
-from librpg.movement import Step, Face, Wait, Slide
+from librpg.movement import MovementCycle, Step, Face, Wait, Slide
 
 class ObjectTestNPC(MapObject):
 
     def __init__(self):
     
         MapObject.__init__(self, MapObject.OBSTACLE, image_file='char_alex32.png')
+        self.movement_behavior.movements.extend([Wait(30), Step(Direction.UP), Wait(30), Step(Direction.DOWN)])
         
     def activate(self, party_avatar, direction):
     

@@ -26,6 +26,24 @@ class MovementQueue(Movement, list):
             return True
         else:
             return False
+        
+class MovementCycle(Movement):
+
+    def __init__(self, contents=None):
+        if contents is not None:
+            self.movements = contents
+        else:
+            self.movements = []
+        self.current = 0
+        
+    def flow(self, obj):
+        if len(self.movements) == 0:
+            return False
+        current = self.movements[self.current]
+        should_skip = current.flow(obj)
+        if should_skip:
+            self.current = (self.current + 1) % len(self.movements)
+        return False
 
 class Step(Movement):
 
@@ -48,11 +66,13 @@ class Face(Movement):
 class Wait(Movement):
 
     def __init__(self, delay):
+        self.initial_delay = delay
         self.delay = delay
         
     def flow(self, obj):
         self.delay -= 1
         if self.delay == 0:
+            self.delay = self.initial_delay
             return True
         else:
             return False
