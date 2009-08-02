@@ -48,10 +48,11 @@ class MapView:
                 terrain_tile_surface = self.map_model.terrain_layer.get(x, y).get_surface()
                 self.background.blit(terrain_tile_surface, (bg_x, bg_y))
                 
-                scenario_tile = self.map_model.scenario_layer.get(x, y)
-                if scenario_tile.obstacle != Tile.ABOVE:
-                    scenario_tile_surface = scenario_tile.get_surface()
-                    self.background.blit(scenario_tile_surface, (bg_x, bg_y))
+                for i in range(self.map_model.scenario_number):
+                    scenario_tile = self.map_model.scenario_layer[i].get(x, y)
+                    if scenario_tile.obstacle != Tile.ABOVE:
+                        scenario_tile_surface = scenario_tile.get_surface()
+                        self.background.blit(scenario_tile_surface, (bg_x, bg_y))
 
     def init_foreground(self):
     
@@ -61,12 +62,13 @@ class MapView:
         
         for y in xrange(self.map_model.height):
             for x in xrange(self.map_model.width):
-                scenario_tile = self.map_model.scenario_layer.get(x, y)
-                if scenario_tile.obstacle == Tile.ABOVE:
-                    fg_x = graphics_config.map_border_width + x * graphics_config.tile_size
-                    fg_y = graphics_config.map_border_height + y * graphics_config.tile_size
-                    scenario_tile_surface = scenario_tile.get_surface()
-                    self.foreground.blit(scenario_tile_surface, (fg_x, fg_y))
+                for i in range(self.map_model.scenario_number):
+                    scenario_tile = self.map_model.scenario_layer[i].get(x, y)
+                    if scenario_tile.obstacle == Tile.ABOVE:
+                        fg_x = graphics_config.map_border_width + x * graphics_config.tile_size
+                        fg_y = graphics_config.map_border_height + y * graphics_config.tile_size
+                        scenario_tile_surface = scenario_tile.get_surface()
+                        self.foreground.blit(scenario_tile_surface, (fg_x, fg_y))
 
     def draw(self):
     

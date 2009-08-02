@@ -1,3 +1,6 @@
+import sys
+sys.path.append('..')
+
 from librpg.util import *
 
 m = Matrix(3, 4)

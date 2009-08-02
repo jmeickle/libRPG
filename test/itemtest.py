@@ -1,4 +1,6 @@
 #! /usr/bin/env python
+import sys
+sys.path.append('..')
 
 from librpg.item import *
 

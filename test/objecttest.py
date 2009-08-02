@@ -1,3 +1,6 @@
+import sys
+sys.path.append('..')
+
 import librpg
 import pygame
 
@@ -30,7 +33,7 @@ class ObjectTestRock(ScenarioMapObject):
 
     def __init__(self, map):
     
-        ScenarioMapObject.__init__(self, map, 3)
+        ScenarioMapObject.__init__(self, map, 0, 3)
         
     def activate(self, party_avatar, direction):
     
@@ -73,7 +76,7 @@ class ObjectTestMap(MapModel):
     
     def __init__(self):
     
-        MapModel.__init__(self, 'objecttest.map', ('lower_tileset32.png', 'lower_tileset32.bnd'), ('upper_tileset32.png', 'upper_tileset32.bnd'))
+        MapModel.__init__(self, 'objecttest.map', ('lower_tileset32.png', 'lower_tileset32.bnd'), [('upper_tileset32.png', 'upper_tileset32.bnd'),])
         
     def initialize(self, local_state):
     

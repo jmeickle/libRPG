@@ -1,4 +1,5 @@
 import csv
+import operator
 
 import pygame
 from pygame.locals import *
@@ -114,8 +115,8 @@ class MapModel:
     terrain_tileset_files: (string, string) (read-only)
     Pair of names of the files that contain the terrain tileset image and boundaries.
 
-    scenario_tileset_files: (string, string) (read-only)
-    Pair of names of the files that contain the scenario tileset image and boundaries.
+    scenario_tileset_files_list: [(string, string),...] (read-only)
+    List of pair of names of the files that contain the scenario tileset image and boundaries.
 
     terrain_tileset: TileSet (read-only)
     Tileset to draw terrain layer.
@@ -145,17 +146,17 @@ class MapModel:
     Local state to store persistent data about that map. It may be read after the gameloop() is broken.
     """
     
-    def __init__(self, map_file, terrain_tileset_files, scenario_tileset_files):
+    def __init__(self, map_file, terrain_tileset_files, scenario_tileset_files_list):
     
         self.party, self.party_avatar, self.party_movement = None, None, []
         
         self.map_file = map_file
         
         self.terrain_tileset_files = terrain_tileset_files
-        self.scenario_tileset_files = scenario_tileset_files
+        self.scenario_tileset_files_list = scenario_tileset_files_list
         
         self.terrain_tileset = Tileset(self.terrain_tileset_files[0], self.terrain_tileset_files[1])
-        self.scenario_tileset = Tileset(self.scenario_tileset_files[0], self.scenario_tileset_files[1])
+        self.scenario_tileset = [Tileset(i, j) for i,j in self.scenario_tileset_files_list]
         
         self.load_from_map_file()
         
@@ -174,10 +175,10 @@ class MapModel:
         r = csv.reader(layout_file, delimiter=',')
 
         first_line = r.next()
-        self.width, self.height = int(first_line[0]), int(first_line[1])
+        self.width, self.height, self.scenario_number = int(first_line[0]), int(first_line[1]), int(first_line[2])
 
         self.terrain_layer = Matrix(self.width, self.height)
-        self.scenario_layer = Matrix(self.width, self.height)
+        self.scenario_layer = [Matrix(self.width, self.height) for i in range(self.scenario_number)]
         
         y = 0
         for line in r:
@@ -187,15 +188,16 @@ class MapModel:
                 y += 1
             if y >= self.height:
                 break
-                
-        y = 0
-        for line in r:
-            if len(line) == self.width:
-                for value, x in zip(line, xrange(self.width)):
-                    self.scenario_layer.set(x, y, self.scenario_tileset.tiles[int(value)])
-                y += 1
-            if y >= self.height:
-                break
+        
+        for i in xrange(self.scenario_number):
+            y = 0
+            for line in r:
+                if len(line) == self.width:
+                    for value, x in zip(line, xrange(self.width)):
+                        self.scenario_layer[i].set(x, y, self.scenario_tileset[i].tiles[int(value)])
+                    y += 1
+                if y >= self.height:
+                    break
 
         layout_file.close()
 
@@ -249,11 +251,14 @@ class MapModel:
 
         old_terrain = self.terrain_layer.get_pos(old_pos)
         new_terrain = self.terrain_layer.get_pos(desired)
-        old_scenario = self.scenario_layer.get_pos(old_pos)
-        new_scenario = self.scenario_layer.get_pos(desired)
+        old_scenario = [self.scenario_layer[i].get_pos(old_pos) for i in range(self.scenario_number)]
+        new_scenario = [self.scenario_layer[i].get_pos(desired) for i in range(self.scenario_number)]
         old_object = self.object_layer.get_pos(old_pos)
         new_object = self.object_layer.get_pos(desired)
-        if not (object.is_obstacle and (self.is_obstructed(new_terrain, new_scenario, new_object) or self.tile_boundaries_obstructed(old_terrain, new_terrain, old_scenario, new_scenario, direction))):
+        
+        if not (object.is_obstacle
+            and (reduce(operator.__or__, [self.is_obstructed(new_terrain, new_scenario[i], new_object) for i in xrange(self.scenario_number)] )
+                or reduce(operator.__or__, [self.tile_boundaries_obstructed(old_terrain, new_terrain, old_scenario[i], new_scenario[i], direction) for i in xrange(self.scenario_number)]))):
             # Move
             self.move_object(object, old_object, new_object, desired, slide)
             if object is self.party_avatar:
@@ -305,9 +310,9 @@ class MapModel:
             if obj_in_front is not None:
                obj_in_front.activate(self.party_avatar, self.party_avatar.facing)
             across_pos = desired.step(self.party_avatar.facing)
-            if (((obj_in_front is not None and obj_in_front.is_counter()) or
-                self.scenario_layer.get_pos(desired).is_counter()) and
-                self.terrain_layer.valid_pos(across_pos)):
+            if (((obj_in_front is not None and obj_in_front.is_counter())
+                    or reduce(operator.__or__, [self.scenario_layer[i].get_pos(desired).is_counter() for i in range(self.scenario_number)]))
+                and self.terrain_layer.valid_pos(across_pos)):
                 # Counter attribute
                 obj_across = self.object_layer.get_pos(across_pos).obstacle
                 if obj_across is not None:

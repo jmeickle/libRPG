@@ -103,9 +103,9 @@ class PartyAvatar(MapObject):
 
 class ScenarioMapObject(MapObject):
 
-    def __init__(self, map, scenario_index, obstacle=None, facing=Direction.DOWN, speed=NORMAL_SPEED):
+    def __init__(self, map, scenario_number, scenario_index, obstacle=None, facing=Direction.DOWN, speed=NORMAL_SPEED):
     
-        tile = map.scenario_tileset.tiles[scenario_index]
+        tile = map.scenario_tileset[scenario_number].tiles[scenario_index]
         if obstacle is None:
             MapObject.__init__(self, tile.obstacle, tile.image, facing, speed)
         else:
