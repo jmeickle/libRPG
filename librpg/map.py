@@ -183,7 +183,7 @@ class MapModel:
         y = 0
         for line in r:
             if len(line) == self.width:
-                for value, x in zip(line, xrange(self.width)):
+                for x, value in enumerate(line):
                     self.terrain_layer.set(x, y, self.terrain_tileset.tiles[int(value)])
                 y += 1
             if y >= self.height:
@@ -193,7 +193,7 @@ class MapModel:
             y = 0
             for line in r:
                 if len(line) == self.width:
-                    for value, x in zip(line, xrange(self.width)):
+                    for x, value in enumerate(line):
                         self.scenario_layer[i].set(x, y, self.scenario_tileset[i].tiles[int(value)])
                     y += 1
                 if y >= self.height:

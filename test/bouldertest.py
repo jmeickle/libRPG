@@ -43,8 +43,8 @@ class BoulderMaze(MapModel):
         MapModel.__init__(self, 'bouldertest.map', ('lower_tileset32.png', 'lower_tileset32.bnd'), [('upper_tileset32.png', 'upper_tileset32.bnd')] )
         
     def initialize(self, local_state):
-        for line, y in zip(BoulderMaze.MAZE, xrange(len(BoulderMaze.MAZE))):
-            for cell, x in zip(line, xrange(len(line))):
+        for y, line in enumerate(BoulderMaze.MAZE):
+            for x, cell in enumerate(line):
                 if cell == 2:
                     self.add_object(Boulder(self), Position(x, y))
 
