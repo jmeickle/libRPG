@@ -115,8 +115,8 @@ class MapModel:
     terrain_tileset_files: (string, string) (read-only)
     Pair of names of the files that contain the terrain tileset image and boundaries.
 
-    scenario_tileset_files_list: [(string, string),...] (read-only)
-    List of pair of names of the files that contain the scenario tileset image and boundaries.
+    scenario_tileset_files_list: [(string, string)] (read-only)
+    List of pairs of names of the files that contain the scenario tileset image and boundaries.
 
     terrain_tileset: TileSet (read-only)
     Tileset to draw terrain layer.
@@ -156,7 +156,7 @@ class MapModel:
         self.scenario_tileset_files_list = scenario_tileset_files_list
         
         self.terrain_tileset = Tileset(self.terrain_tileset_files[0], self.terrain_tileset_files[1])
-        self.scenario_tileset = [Tileset(i, j) for i,j in self.scenario_tileset_files_list]
+        self.scenario_tileset = [Tileset(i, j) for i, j in self.scenario_tileset_files_list]
         
         self.load_from_map_file()
         
@@ -256,9 +256,8 @@ class MapModel:
         old_object = self.object_layer.get_pos(old_pos)
         new_object = self.object_layer.get_pos(desired)
         
-        if not (object.is_obstacle
-            and (reduce(operator.__or__, [self.is_obstructed(new_terrain, new_scenario[i], new_object) for i in xrange(self.scenario_number)] )
-                or reduce(operator.__or__, [self.tile_boundaries_obstructed(old_terrain, new_terrain, old_scenario[i], new_scenario[i], direction) for i in xrange(self.scenario_number)]))):
+        if not (object.is_obstacle()
+                and self.is_obstructed(old_terrain, old_scenario, new_terrain, new_scenario, new_object, direction)):
             # Move
             self.move_object(object, old_object, new_object, desired, slide)
             if object is self.party_avatar:
@@ -273,22 +272,25 @@ class MapModel:
                 new_object.obstacle.collide_with_party(self.party_avatar, direction)
             return False
             
-    def is_obstructed(self, new_terrain, new_scenario, new_object):
+    def is_obstructed(self, old_terrain, old_scenario_list, new_terrain, new_scenario_list, new_object, direction):
     
-        return (new_terrain.is_obstacle() and not new_scenario.is_below()) or \
-               new_scenario.is_obstacle() or \
-               new_object.obstacle is not None
-
-    def tile_boundaries_obstructed(self, old_terrain, new_terrain, old_scenario, new_scenario, direction):
-    
+        can_leave_old = False
+        for old_scenario in reversed(old_scenario_list):
+            if old_scenario.is_below() and not old_scenario.cannot_be_entered(direction):
+                can_leave_old = True
+        if (not can_leave_old) and old_terrain.cannot_be_entered(direction):
+            return True
+        
         inverse = Direction.INVERSE[direction]
-        if (old_scenario.cannot_be_entered(direction) or
-           (old_terrain.cannot_be_entered(direction) and not old_scenario.is_below())):
+        
+        if new_object.obstacle is not None:
             return True
-        if (new_scenario.cannot_be_entered(inverse) or
-           (new_terrain.cannot_be_entered(inverse) and not new_scenario.is_below())):
-            return True
-        return False
+        for new_scenario in reversed(new_scenario_list):
+            if new_scenario.is_obstacle():
+                return True
+            elif new_scenario.is_below() and not new_scenario.cannot_be_entered(inverse):
+                return False
+        return new_terrain.is_obstacle() or new_terrain.cannot_be_entered(inverse)
 
     def move_object(self, object, old_object, new_object, new_pos, slide):
     
