@@ -26,6 +26,10 @@ Version 0.6
 
 Assynchronous events and configurable keys implemented. Example displays a mana bar on the screen, and binds keys to spells castable on the map. Also, random events happen on the map every once in a while. Support for random animations.
 
+Version 0.7
+
+Basic battle API implemented for turn based battles.
+
 Version 1.0
 
 API reevaluation. Tutorial with examples. Complete API reference. Map editor application available. Module containing a common poll of useful classes (Chest, NPC, etc).
