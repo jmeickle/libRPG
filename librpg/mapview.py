@@ -95,6 +95,10 @@ class MapView:
         # Draw the foreground
         librpg.screen.blit(self.foreground, (0, 0), bg_rect)
         
+        #Messages
+        if self.map_model.message_queue != []:
+            print self.map_model.message_queue[0]
+        
         # Flip display
         librpg.screen.flip()
 

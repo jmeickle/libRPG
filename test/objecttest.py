@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import sys
 sys.path.append('..')
 
@@ -27,7 +30,8 @@ class ObjectTestNPC(MapObject):
         for i in xrange(2):
             party_avatar.schedule_movement(Step(librpg.util.Direction.INVERSE[direction]))
         party_avatar.schedule_movement(Face(direction))
-        
+        party_avatar.schedule_message("aiai!")
+        party_avatar.schedule_message("Fala sério tio, tah me batendo pq?!")
         
 class ObjectTestRock(ScenarioMapObject):
 
