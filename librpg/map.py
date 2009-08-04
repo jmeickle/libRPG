@@ -48,7 +48,7 @@ class Map:
             clock.tick(Map.FPS)
             
             self.map_model.object_messages()
-            
+                                
             self.flow_object_movement()
             
             pos = party_avatar.position
@@ -64,9 +64,8 @@ class Map:
             map_view_draw()
             
     def process_input(self):
-    
         for event in pygame.event.get():
-            # print event
+            print event
             if event.type == QUIT:
                 return False
             elif event.type == KEYDOWN:
@@ -82,10 +81,9 @@ class Map:
                     if event.key == K_SPACE or event.key == K_RETURN:
                         self.map_model.message_queue.pop(0)
             elif event.type == KEYUP:
-                if self.map_model.message_queue == []:
-                    direction = Map.KEY_TO_DIRECTION.get(event.key)
-                    if direction is not None and direction in self.map_model.party_movement:
-                        self.party_movement_remove(direction)
+                direction = Map.KEY_TO_DIRECTION.get(event.key)
+                if direction is not None and direction in self.map_model.party_movement:
+                    self.party_movement_remove(direction)
         return True
         
     def flow_object_movement(self):
@@ -337,10 +335,12 @@ class MapModel:
             obj.activate(self.party_avatar, self.party_avatar.facing)
 
     def object_messages(self):
-    
+        new = False
         for o in self.objects:
-            self.message_queue.extend(o.scheduled_message)
-            o.scheduled_message = []
+            if o.scheduled_message != []:
+                self.message_queue.extend(o.scheduled_message)
+                o.scheduled_message = []
+                new = True
             
     def __repr__(self):
     

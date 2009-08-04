@@ -16,6 +16,7 @@ from librpg.util import Position, Direction
 from librpg.party import Character, CharacterReserve
 from librpg.image import ObjectImage
 from librpg.movement import MovementCycle, Step, Face, Wait, Slide
+from librpg.dialog import Dialog
 
 class ObjectTestNPC(MapObject):
 
@@ -30,8 +31,8 @@ class ObjectTestNPC(MapObject):
         for i in xrange(2):
             party_avatar.schedule_movement(Step(librpg.util.Direction.INVERSE[direction]))
         party_avatar.schedule_movement(Face(direction))
-        party_avatar.schedule_message("aiai!")
-        party_avatar.schedule_message("Fala sério tio, tah me batendo pq?!")
+        party_avatar.schedule_message(Dialog(u"aiai!"))
+        party_avatar.schedule_message(Dialog(u"Fala sério tio, tah me batendo pq?!"))
         
 class ObjectTestRock(ScenarioMapObject):
 
