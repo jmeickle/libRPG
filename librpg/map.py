@@ -73,7 +73,10 @@ class Map:
                     elif event.key == K_ESCAPE:
                         return False
                 else:
-                    if event.key == K_SPACE or event.key == K_RETURN:
+                    direction = Map.KEY_TO_DIRECTION.get(event.key)
+                    if direction is not None and not direction in self.map_model.party_movement:
+                        self.party_movement_append(direction)
+                    elif event.key == K_SPACE or event.key == K_RETURN:
                         self.map_model.message_queue.pop(0)
             elif event.type == KEYUP:
                 direction = Map.KEY_TO_DIRECTION.get(event.key)
