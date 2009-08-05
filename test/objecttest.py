@@ -71,6 +71,7 @@ class ObjectTestChest(MapObject):
             self.schedule_movement(Face(Direction.DOWN))
             self.schedule_movement(Wait(2))
             self.schedule_movement(Face(Direction.LEFT))
+            party_avatar.schedule_message(Dialog(u"You got hookshot!"))
         else:
             print 'Chest is open, closing'
             self.schedule_movement(Face(Direction.UP))

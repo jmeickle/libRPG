@@ -39,7 +39,7 @@ class Map:
         party_movement = map_model.party_movement
         self.party_movement_append = party_movement.append
         self.party_movement_remove = party_movement.remove
-    
+        
         map_view_draw()
         
         clock = pygame.time.Clock()
@@ -47,8 +47,8 @@ class Map:
         while keep_going:
             clock.tick(Map.FPS)
             
-            self.map_model.object_messages()
-                                
+            self.map_model.messages()
+            
             self.flow_object_movement()
             
             pos = party_avatar.position
@@ -73,6 +73,7 @@ class Map:
                     direction = Map.KEY_TO_DIRECTION.get(event.key)
                     if direction is not None and not direction in self.map_model.party_movement:
                         self.party_movement_append(direction)
+                        print self.map_model.party_movement
                     elif event.key == K_SPACE or event.key == K_RETURN:
                         self.map_model.party_action()
                     elif event.key == K_ESCAPE:
@@ -334,13 +335,13 @@ class MapModel:
         for obj in old_object.above:
             obj.activate(self.party_avatar, self.party_avatar.facing)
 
-    def object_messages(self):
-        new = False
-        for o in self.objects:
-            if o.scheduled_message != []:
-                self.message_queue.extend(o.scheduled_message)
-                o.scheduled_message = []
-                new = True
+    def messages(self):
+        if self.party_avatar.scheduled_message != []:
+            self.message_queue.extend(self.party_avatar.scheduled_message)
+            self.party_avatar.scheduled_message = []
+            return True
+        else:
+            return False
             
     def __repr__(self):
     
