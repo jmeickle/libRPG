@@ -47,33 +47,27 @@ class Map:
         while keep_going:
             clock.tick(Map.FPS)
             
-            self.map_model.messages()
-            
             self.flow_object_movement()
             
             pos = party_avatar.position
             keep_going = self.process_input()
-            if party_movement and not party_avatar.scheduled_movement and not party_avatar.movement_phase:
+            
+            if party_movement and not party_avatar.scheduled_movement and not party_avatar.movement_phase and not map_model.message_queue:
                 party_avatar.schedule_movement(Step(party_movement[0]))
                 #moved = map_model.try_to_move_object(party_avatar, party_movement[0])
-                                
-            # debug
-            if pos != party_avatar.position:
-                print map_model
-                
+
             map_view_draw()
             
     def process_input(self):
         for event in pygame.event.get():
-            print event
+            #print event
             if event.type == QUIT:
                 return False
             elif event.type == KEYDOWN:
-                if self.map_model.message_queue == []:
+                if not self.map_model.message_queue:
                     direction = Map.KEY_TO_DIRECTION.get(event.key)
                     if direction is not None and not direction in self.map_model.party_movement:
                         self.party_movement_append(direction)
-                        print self.map_model.party_movement
                     elif event.key == K_SPACE or event.key == K_RETURN:
                         self.map_model.party_action()
                     elif event.key == K_ESCAPE:
@@ -335,14 +329,10 @@ class MapModel:
         for obj in old_object.above:
             obj.activate(self.party_avatar, self.party_avatar.facing)
 
-    def messages(self):
-        if self.party_avatar.scheduled_message != []:
-            self.message_queue.extend(self.party_avatar.scheduled_message)
-            self.party_avatar.scheduled_message = []
-            return True
-        else:
-            return False
-            
+    def schedule_message(self, message):
+    
+        self.message_queue.append(message)
+
     def __repr__(self):
     
         return '(Map width=' + str(self.width) + ' height=' + str(self.height) + ' file=' + self.map_file + ')'

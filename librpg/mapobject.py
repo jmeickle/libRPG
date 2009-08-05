@@ -42,8 +42,6 @@ class MapObject:
         self.movement_phase, self.facing, self.speed = 0, facing, speed
         self.scheduled_movement, self.movement_behavior, self.sliding = MovementQueue(), MovementCycle(), False
         
-        self.scheduled_message = []
-        
         if image is not None:
             self.image = image
         elif image_file is not None:
@@ -91,12 +89,7 @@ class MapObject:
     def schedule_movement(self, movement):
         
         self.scheduled_movement.append(movement)
-        
-    def schedule_message(self, message):
-        
-        self.scheduled_message.append(message)
-        
-        
+
 #=================================================================================
 
 class PartyAvatar(MapObject):

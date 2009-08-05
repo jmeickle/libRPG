@@ -95,8 +95,8 @@ class MapView:
         # Draw the foreground
         librpg.screen.blit(self.foreground, (0, 0), bg_rect)
         
-        #Messages
-        if self.map_model.message_queue != []:
+        # Show messages
+        if self.map_model.message_queue:
             surface, dim = self.map_model.message_queue[0].draw(bg_rect)
             librpg.screen.blit( surface, dim )
             

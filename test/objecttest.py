@@ -31,8 +31,8 @@ class ObjectTestNPC(MapObject):
         for i in xrange(2):
             party_avatar.schedule_movement(Step(librpg.util.Direction.INVERSE[direction]))
         party_avatar.schedule_movement(Face(direction))
-        party_avatar.schedule_message(Dialog(u"aiai!"))
-        party_avatar.schedule_message(Dialog(u"Fala sério tio, tah me batendo pq?!"))
+        self.map.schedule_message(Dialog(u"aiai!"))
+        self.map.schedule_message(Dialog(u"Fala sério tio, tah me batendo pq?!"))
         
 class ObjectTestRock(ScenarioMapObject):
 
@@ -71,7 +71,7 @@ class ObjectTestChest(MapObject):
             self.schedule_movement(Face(Direction.DOWN))
             self.schedule_movement(Wait(2))
             self.schedule_movement(Face(Direction.LEFT))
-            party_avatar.schedule_message(Dialog(u"You got hookshot!"))
+            self.map.schedule_message(Dialog(u"You got hookshot!"))
         else:
             print 'Chest is open, closing'
             self.schedule_movement(Face(Direction.UP))

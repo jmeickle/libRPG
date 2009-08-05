@@ -6,7 +6,7 @@ Version 0.1 (jul 12, 2009)
 
 The Party walks around a rendered map from tiles, controlled by player input. The map has a terrain and a scenario layer with obstacle tiles, but no objects in the map yet.
 
-Version 0.2
+Version 0.2 (ago 17, 2009)
 
 The map includes interactive MapObjects. Most graphic options are implemented, including various camera modes and scaling. The MapObjects can move.
 
