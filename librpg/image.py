@@ -1,8 +1,7 @@
 import pygame
 
-from util import Direction
+from locals import *
 from config import *
-from movement import SPEEDS, NORMAL_SPEED
 
 class Image:
 
@@ -30,7 +29,7 @@ class ObjectImage(Image):
     This class represents a MapObject image, which may include simple animation cycles and movement animation.
     """
 
-    DIRECTION_TO_INDEX_MAP = {Direction.UP: 0, Direction.RIGHT: 1, Direction.DOWN: 2, Direction.LEFT: 3}
+    DIRECTION_TO_INDEX_MAP = {UP: 0, RIGHT: 1, DOWN: 2, LEFT: 3}
 
     ANIMATION_MAPS = dict((speed, [OBJECT_IMAGE_BASIC_ANIMATION_MAP[(phase*4)/speed] for phase in range(speed)]) for speed in SPEEDS)
     
@@ -46,7 +45,7 @@ class ObjectImage(Image):
     
         Image.__init__(self, file_surface.subsurface((x * object_chunk_width, y * object_chunk_height), (object_chunk_width, object_chunk_height)))
         self.frames = []
-        for facing in [Direction.UP, Direction.RIGHT, Direction.DOWN, Direction.LEFT]:
+        for facing in [UP, RIGHT, DOWN, LEFT]:
             y = ObjectImage.DIRECTION_TO_INDEX_MAP[facing]
             phases = []
             self.frames.append(phases)

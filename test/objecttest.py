@@ -12,24 +12,25 @@ librpg.graphics_config.config(tile_size=32, object_height=32, object_width=32)
 
 from librpg.map import MapModel, Map
 from librpg.mapobject import MapObject, ScenarioMapObject
-from librpg.util import Position, Direction
+from librpg.util import Position
 from librpg.party import Character, CharacterReserve
 from librpg.image import ObjectImage
 from librpg.movement import MovementCycle, Step, ForcedStep, Face, Wait, Slide
 from librpg.dialog import Dialog
+from librpg.locals import *
 
 class ObjectTestNPC(MapObject):
 
     def __init__(self):
     
         MapObject.__init__(self, MapObject.OBSTACLE, image_file='actor1.png', image_index=1)
-        self.movement_behavior.movements.extend([Wait(30), ForcedStep(Direction.UP), Wait(30), ForcedStep(Direction.DOWN)])
+        self.movement_behavior.movements.extend([Wait(30), ForcedStep(UP), Wait(30), ForcedStep(DOWN)])
         
     def activate(self, party_avatar, direction):
     
         print 'Activated NPC'
         for i in xrange(2):
-            party_avatar.schedule_movement(Step(librpg.util.Direction.INVERSE[direction]))
+            party_avatar.schedule_movement(Step(librpg.locals.INVERSE[direction]))
         party_avatar.schedule_movement(Face(direction))
         self.map.schedule_message(Dialog(u"aiai!"))
         self.map.schedule_message(Dialog(u"Fala sério tio, tah me batendo pq?!"))
@@ -46,7 +47,7 @@ class ObjectTestRock(ScenarioMapObject):
         print 'Activated rock'
         for i in xrange(3):
             self.schedule_movement(Step(direction))
-        self.schedule_movement(Face(librpg.util.Direction.INVERSE[direction]))
+        self.schedule_movement(Face(librpg.locals.INVERSE[direction]))
         
     def collide_with_party(self, party_avatar, direction):
     
@@ -61,17 +62,17 @@ class ObjectTestChest(MapObject):
         MapObject.__init__(self, MapObject.OBSTACLE, image_file='chest2.png', image_index=5)
         self.closed = True
         self.filled = True
-        self.facing = Direction.UP
+        self.facing = UP
         
     def activate(self, party_avatar, direction):
     
         if self.closed:
             self.closed = False
-            self.schedule_movement(Face(Direction.RIGHT))
+            self.schedule_movement(Face(RIGHT))
             self.schedule_movement(Wait(2))
-            self.schedule_movement(Face(Direction.DOWN))
+            self.schedule_movement(Face(DOWN))
             self.schedule_movement(Wait(2))
-            self.schedule_movement(Face(Direction.LEFT))
+            self.schedule_movement(Face(LEFT))
             if self.filled:
                 print 'Opened chest and added item'
                 self.map.schedule_message(Dialog(u"You got Hookshot!"))
@@ -82,7 +83,7 @@ class ObjectTestChest(MapObject):
                 
         else:
             print 'Chest is open, closing'
-            self.schedule_movement(Face(Direction.UP))
+            self.schedule_movement(Face(UP))
             self.closed = True
 
 

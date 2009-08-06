@@ -46,7 +46,7 @@ print 'Removed', party, pos
 print
 
 print 'Adding', str(p)
-m.map_model.add_party(p, librpg.util.Position(0, 0), librpg.util.Direction.RIGHT, librpg.movement.NORMAL_SPEED)
+m.map_model.add_party(p, librpg.util.Position(0, 0), librpg.locals.RIGHT, librpg.locals.NORMAL_SPEED)
 print 'Added'
 print
 

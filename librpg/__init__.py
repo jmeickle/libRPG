@@ -25,3 +25,4 @@ import image
 import log
 import item
 import util
+from locals import *

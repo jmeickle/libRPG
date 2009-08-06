@@ -1,7 +1,7 @@
 import pygame
 
-from util import Direction
-from movement import MovementQueue, MovementCycle, NORMAL_SPEED
+from locals import *
+from movement import MovementQueue, MovementCycle
 from image import ObjectImage
 
 class MapObject:
@@ -31,7 +31,7 @@ class MapObject:
     
     BELOW, OBSTACLE, COUNTER, ABOVE = 0, 1, 2, 3
     
-    def __init__(self, obstacle, image=None, facing=Direction.DOWN, speed=NORMAL_SPEED, image_file=None, image_index=0):
+    def __init__(self, obstacle, image=None, facing=DOWN, speed=NORMAL_SPEED, image_file=None, image_index=0):
     
         assert obstacle in range(0, 4), 'MapObject cannot be created with an obstacle value of ' + str(obstacle)
         assert (image is None or image_file is None), 'Only one of (image, image_file) can be specified.'
@@ -94,7 +94,7 @@ class MapObject:
 
 class PartyAvatar(MapObject):
     
-    def __init__(self, party, facing=Direction.DOWN, speed=NORMAL_SPEED):
+    def __init__(self, party, facing=DOWN, speed=NORMAL_SPEED):
     
         MapObject.__init__(self, MapObject.OBSTACLE, party.get_image(self), facing, speed)
         self.party = party
@@ -103,7 +103,7 @@ class PartyAvatar(MapObject):
 
 class ScenarioMapObject(MapObject):
 
-    def __init__(self, map, scenario_number, scenario_index, obstacle=None, facing=Direction.DOWN, speed=NORMAL_SPEED):
+    def __init__(self, map, scenario_number, scenario_index, obstacle=None, facing=DOWN, speed=NORMAL_SPEED):
     
         tile = map.scenario_tileset[scenario_number].tiles[scenario_index]
         if obstacle is None:

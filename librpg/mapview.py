@@ -3,6 +3,7 @@ import librpg
 from map import *
 from config import *
 from tile import *
+from locals import *
 
 class MapView:
 
@@ -108,13 +109,13 @@ class MapView:
         obj_x_offset, obj_y_offset = 0, 0
         if obj.movement_phase > 0:
             offset = obj.movement_phase * graphics_config.tile_size / obj.speed
-            if obj.facing == Direction.UP:
+            if obj.facing == UP:
                 obj_y_offset = offset
-            elif obj.facing == Direction.RIGHT:
+            elif obj.facing == RIGHT:
                 obj_x_offset = -offset
-            elif obj.facing == Direction.DOWN:
+            elif obj.facing == DOWN:
                 obj_y_offset = -offset
-            elif obj.facing == Direction.LEFT:
+            elif obj.facing == LEFT:
                 obj_x_offset = offset
         return obj_x_offset, obj_y_offset
         

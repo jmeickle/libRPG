@@ -47,17 +47,6 @@ class Position:
 
 #=================================================================================
 
-class Direction:
-    
-    UP = 1
-    RIGHT = 2
-    DOWN = 3
-    LEFT = 4
-    
-    INVERSE = {UP: DOWN, DOWN: UP, LEFT: RIGHT, RIGHT: LEFT}
-
-#=================================================================================
-
 class Matrix:
 
     # Read-Only Attributes

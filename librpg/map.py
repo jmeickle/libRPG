@@ -10,7 +10,8 @@ from util import *
 from image import *
 from tile import *
 from config import *
-from movement import Step, NORMAL_SPEED
+from locals import *
+from movement import Step
 
 #=================================================================================
     
@@ -20,7 +21,7 @@ class Map:
     # map_view - MapView (View component of MVC)
     # map_model - MapModel (Model component of MVC)
     
-    KEY_TO_DIRECTION = {K_DOWN:Direction.DOWN, K_UP:Direction.UP, K_LEFT:Direction.LEFT, K_RIGHT:Direction.RIGHT}
+    KEY_TO_DIRECTION = {K_DOWN:DOWN, K_UP:UP, K_LEFT:LEFT, K_RIGHT:RIGHT}
     
     FPS = 30
     
@@ -210,7 +211,7 @@ class MapModel:
     def initialize(self, local_state):
         pass
         
-    def add_party(self, party, position, facing=Direction.DOWN, speed=NORMAL_SPEED):
+    def add_party(self, party, position, facing=DOWN, speed=NORMAL_SPEED):
     
         assert self.party is None, 'Map already has a party'
         self.party = party
@@ -286,7 +287,7 @@ class MapModel:
         if (not can_leave_old) and old_terrain.cannot_be_entered(direction):
             return True
         
-        inverse = Direction.INVERSE[direction]
+        inverse = INVERSE[direction]
         
         if new_object.obstacle is not None:
             return True
