@@ -139,11 +139,11 @@ class Character:
     The character's sprites.
     """
     
-    def __init__(self, name, image_file=None):
+    def __init__(self, name, image_file=None, index=0):
     
         self.name, self.image_file = name, image_file
         if image_file:
-            self.image = ObjectImage(pygame.image.load(self.image_file))
+            self.image = ObjectImage(self.image_file, index)
         else:
             self.image = None
         

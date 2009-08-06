@@ -28,7 +28,7 @@ else:
 
 m = librpg.map.Map(librpg.map.MapModel('maptest32.map', ('lower_tileset32.png', 'lower_tileset32.bnd'), [('upper_tileset32.png', 'upper_tileset32.bnd')]))
 
-a = librpg.party.Character('Andy', 'char_alex32.png')
+a = librpg.party.Character('Andy', 'actor1.png', 0)
 r = librpg.party.CharacterReserve([a])
 p = r.create_party(3, [a])
 

@@ -34,9 +34,17 @@ class ObjectImage(Image):
 
     ANIMATION_MAPS = dict((speed, [OBJECT_IMAGE_BASIC_ANIMATION_MAP[(phase*4)/speed] for phase in range(speed)]) for speed in SPEEDS)
     
-    def __init__(self, surface):
+    def __init__(self, filename, index=0):
     
-        Image.__init__(self, surface)
+        file_surface = pygame.image.load(filename)
+        
+        object_chunk_width, object_chunk_height = 3 * graphics_config.object_width, 4 * graphics_config.object_height
+        chunks_per_line = file_surface.get_width() / object_chunk_width
+        
+        x = index % chunks_per_line
+        y = index / chunks_per_line
+    
+        Image.__init__(self, file_surface.subsurface((x * object_chunk_width, y * object_chunk_height), (object_chunk_width, object_chunk_height)))
         self.frames = []
         for facing in [Direction.UP, Direction.RIGHT, Direction.DOWN, Direction.LEFT]:
             y = ObjectImage.DIRECTION_TO_INDEX_MAP[facing]

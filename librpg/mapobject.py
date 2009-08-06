@@ -31,7 +31,7 @@ class MapObject:
     
     BELOW, OBSTACLE, COUNTER, ABOVE = 0, 1, 2, 3
     
-    def __init__(self, obstacle, image=None, facing=Direction.DOWN, speed=NORMAL_SPEED, image_file=None):
+    def __init__(self, obstacle, image=None, facing=Direction.DOWN, speed=NORMAL_SPEED, image_file=None, image_index=0):
     
         assert obstacle in range(0, 4), 'MapObject cannot be created with an obstacle value of ' + str(obstacle)
         assert (image is None or image_file is None), 'Only one of (image, image_file) can be specified.'
@@ -45,7 +45,7 @@ class MapObject:
         if image is not None:
             self.image = image
         elif image_file is not None:
-            self.image = ObjectImage(pygame.image.load(image_file))
+            self.image = ObjectImage(image_file, image_index)
 
     # Virtual
     def activate(self, party_avatar, direction):

@@ -22,7 +22,7 @@ class ObjectTestNPC(MapObject):
 
     def __init__(self):
     
-        MapObject.__init__(self, MapObject.OBSTACLE, image_file='char_alex32.png')
+        MapObject.__init__(self, MapObject.OBSTACLE, image_file='actor1.png', image_index=1)
         self.movement_behavior.movements.extend([Wait(30), ForcedStep(Direction.UP), Wait(30), ForcedStep(Direction.DOWN)])
         
     def activate(self, party_avatar, direction):
@@ -58,7 +58,7 @@ class ObjectTestChest(MapObject):
 
     def __init__(self):
 
-        MapObject.__init__(self, MapObject.OBSTACLE, image_file='chest.png')
+        MapObject.__init__(self, MapObject.OBSTACLE, image_file='chest2.png', image_index=5)
         self.closed = True
         self.filled = True
         self.facing = Direction.UP
