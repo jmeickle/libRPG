@@ -33,7 +33,7 @@ class MapObject:
     
     def __init__(self, obstacle, image=None, facing=Direction.DOWN, speed=NORMAL_SPEED, image_file=None):
     
-        assert obstacle in range(0, 3), 'MapObject cannot be created with an obstacle value of ' + str(obstacle)
+        assert obstacle in range(0, 4), 'MapObject cannot be created with an obstacle value of ' + str(obstacle)
         assert (image is None or image_file is None), 'Only one of (image, image_file) can be specified.'
         
         self.map, self.position = None, None

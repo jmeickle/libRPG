@@ -85,4 +85,11 @@ class Slide(Movement):
     def flow(self, obj):
         obj.map.try_to_move_object(obj, self.direction, slide=True)
         return True
+
+class ForcedStep(Movement):
+
+    def __init__(self, direction):
+        self.direction = direction
         
+    def flow(self, obj):
+        return obj.map.try_to_move_object(obj, self.direction)
