@@ -14,7 +14,6 @@ from librpg.map import MapModel, Map
 from librpg.mapobject import MapObject, ScenarioMapObject
 from librpg.util import Position
 from librpg.party import Character, CharacterReserve
-from librpg.image import ObjectImage
 from librpg.movement import MovementCycle, Step, ForcedStep, Face, Wait, Slide
 from librpg.dialog import Dialog
 from librpg.locals import *
@@ -23,7 +22,7 @@ class ObjectTestNPC(MapObject):
 
     def __init__(self):
     
-        MapObject.__init__(self, MapObject.OBSTACLE, image_file='actor1.png', image_index=1)
+        MapObject.__init__(self, MapObject.OBSTACLE, image_file='actor1.png', image_index=7)
         self.movement_behavior.movements.extend([Wait(30), ForcedStep(UP), Wait(30), ForcedStep(DOWN)])
         
     def activate(self, party_avatar, direction):

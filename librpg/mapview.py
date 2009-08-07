@@ -87,11 +87,9 @@ class MapView:
         librpg.screen.blit(self.background, (0, 0), bg_rect)
         
         # Draw the map objects
-        for obj in self.map_model.objects:
-            obj_x_offset, obj_y_offset = self.calc_object_movement_offset(obj)
-            obj_topleft = self.camera_mode.calc_object_topleft(bg_topleft, obj.position, obj_x_offset, obj_y_offset)
-            obj_rect = pygame.Rect(obj_topleft, graphics_config.object_dimensions)
-            librpg.screen.blit(obj.get_surface(), obj_rect)
+        self.draw_object_layer(self.map_model.below_objects, bg_topleft)
+        self.draw_object_layer(self.map_model.obstacle_objects, bg_topleft)
+        self.draw_object_layer(self.map_model.above_objects, bg_topleft)
         
         # Draw the foreground
         librpg.screen.blit(self.foreground, (0, 0), bg_rect)
@@ -103,6 +101,22 @@ class MapView:
             
         # Flip display
         librpg.screen.flip()
+        
+    def draw_object_layer(self, object_layer, bg_topleft):
+    
+        if graphics_config.object_width <= graphics_config.tile_size and graphics_config.object_height <= graphics_config.tile_size:
+            for obj in object_layer:
+                obj_x_offset, obj_y_offset = self.calc_object_movement_offset(obj)
+                obj_topleft = self.camera_mode.calc_object_topleft(bg_topleft, obj.position, obj_x_offset, obj_y_offset)
+                obj_rect = pygame.Rect(obj_topleft, graphics_config.object_dimensions)
+                librpg.screen.blit(obj.get_surface(), obj_rect)
+        else:
+            # Todo: fix this
+            for obj in object_layer:
+                obj_x_offset, obj_y_offset = self.calc_object_movement_offset(obj)
+                obj_topleft = self.camera_mode.calc_object_topleft(bg_topleft, obj.position, obj_x_offset, obj_y_offset)
+                obj_rect = pygame.Rect(obj_topleft, graphics_config.object_dimensions)
+                librpg.screen.blit(obj.get_surface(), obj_rect)
 
     def calc_object_movement_offset(self, obj):
         

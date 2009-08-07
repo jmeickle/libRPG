@@ -166,7 +166,7 @@ class MapModel:
         
         self.local_state = None
         
-        self.objects = []
+        self.objects, self.below_objects, self.obstacle_objects, self.above_objects = [[] for i in range(4)]
         self.object_layer = Matrix(self.width, self.height)
         object_layer_set = self.object_layer.set
         for x in range(self.width):
@@ -231,13 +231,32 @@ class MapModel:
     def add_object(self, object, position):
     
         self.object_layer.get_pos(position).add_object(object)
+        
         self.objects.append(object)
+        if object.is_below():
+            self.below_objects.append(object)
+        elif object.is_obstacle():
+            self.obstacle_objects.append(object)
+        elif object.is_above():
+            self.above_objects.append(object)
+        else:
+            raise Exception('Object is neither below, obstacle or above')
+            
         object.position, object.map = position, self
         return True
     
     def remove_object(self, object):
     
         self.objects.remove(object)
+        if object.is_below():
+            self.below_objects.remove(object)
+        elif object.is_obstacle():
+            self.obstacle_objects.remove(object)
+        elif object.is_above():
+            self.above_objects.remove(object)
+        else:
+            raise Exception('Object is neither below, obstacle or above')
+            
         self.object_layer.get_pos(object.position).remove_object(object)
         result = object.position
         object.position, object.map = None, None
