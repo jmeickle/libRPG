@@ -32,8 +32,8 @@ class ObjectTestNPC(MapObject):
         for i in xrange(2):
             party_avatar.schedule_movement(Step(librpg.locals.INVERSE[direction]))
         party_avatar.schedule_movement(Face(direction))
-        self.map.schedule_message(Dialog(u"aiai!"))
-        self.map.schedule_message(Dialog(u"Fala sério tio, tah me batendo pq?!"))
+        self.map.schedule_message(Dialog(u"Ouch!"))
+        self.map.schedule_message(Dialog(u"Hey, why are you hitting me?!"))
 
 
 class ObjectTestRock(ScenarioMapObject):
@@ -111,6 +111,7 @@ class ObjectTestTowerLower(ScenarioMapObject):
     def activate(self, party_avatar, direction):
         
         print 'Activated lower tower object'
+        self.map.schedule_message(Dialog(u"The tower is creepy and" + ("\n" + (" bla" * 10)) * 10 + "."))
         
     def collide_with_party(self, party_avatar, direction):
     
