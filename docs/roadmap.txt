@@ -6,17 +6,17 @@ Version 0.1 (jul 12, 2009)
 
 The Party walks around a rendered map from tiles, controlled by player input. The map has a terrain and a scenario layer with obstacle tiles, but no objects in the map yet.
 
-Version 0.2 (ago 17, 2009)
+Version 0.2 (ago 8, 2009)
 
 The map includes interactive MapObjects. Most graphic options are implemented, including various camera modes and scaling. The MapObjects can move.
 
-Version 0.3
+Version 0.3 (ago 24, 2009)
 
-A World with a few connected maps is available for the Party to walk around. The local state of the maps is saved for when the party comes back to that map. Original graphics to allow for distribution under LGPL. First released version.
+A World with a few connected maps is available for the Party to walk around. The local state of the maps is saved for when the party comes back to that map.
 
 Version 0.4
 
-An inventory stores the party's items, which are taken from map events. The items are created by an item factory. Log system working and tested. Animated tiles implemented.
+An inventory stores the party's items, which are taken from map events. The items are created by an item factory. Log system working and tested. Animated tiles implemented. Original graphics to allow for distribution under LGPL. First released version.
 
 Version 0.5
 
