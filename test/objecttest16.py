@@ -8,7 +8,7 @@ import librpg
 import pygame
 
 librpg.init()
-librpg.graphics_config.config(tile_size=16, object_height=32, object_width=24)
+librpg.config.graphics_config.config(tile_size=16, object_height=32, object_width=24)
 
 from librpg.map import MapModel, Map
 from librpg.mapobject import MapObject, ScenarioMapObject

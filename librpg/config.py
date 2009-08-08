@@ -3,7 +3,33 @@ import pygame
 import librpg
 import virtual_screen
 
-class GraphicsConfig(object):
+class Config(object):
+
+    def __init__(self, late_attributions=None):
+    
+        if late_attributions == None:
+            self.late_attributions = []
+        else:
+            self.late_attributions = late_attributions
+
+    def config(self, **kv):
+    
+        scheduled = {}
+    
+        for key, value in kv.iteritems():
+            if hasattr(self, key):
+                if key not in self.late_attributions:
+                    setattr(self, key, value)
+                else:
+                    scheduled[key] = value
+            else:
+                raise Exception('config() does not take ' + key + ' as parameter.')
+                
+        for key, value in scheduled.iteritems():
+            setattr(self, key, value)        
+
+
+class GraphicsConfig(Config):
 
     DEFAULT_SCREEN_WIDTH = 400
     DEFAULT_SCREEN_HEIGHT = 300
@@ -15,7 +41,7 @@ class GraphicsConfig(object):
     #DEFAULT_DISPLAY_MODE = pygame.HWSURFACE | pygame.DOUBLEBUF | pygame.FULLSCREEN
     
     def __init__(self):
-    
+        Config.__init__(self, late_attributions=['display_mode'])
         self._screen_width = GraphicsConfig.DEFAULT_SCREEN_WIDTH
         self._screen_height = GraphicsConfig.DEFAULT_SCREEN_HEIGHT
         self._tile_size = GraphicsConfig.DEFAULT_TILE_SIZE
@@ -136,7 +162,26 @@ class GraphicsConfig(object):
     scale = property(get_scale, set_scale)
     real_screen_dimensions = property(get_real_screen_dimensions)
 
+class DialogConfig(Config):
+    
+    DEFAULT_FONT_NAME = 'Verdana'
+    DEFAULT_FONT_SIZE = 12
+    DEFAULT_BORDER_WIDTH = 15
+    DEFAULT_LINE_SPACING = 2
+    DEFAULT_BG_COLOR = (128, 0, 128, 128)
+    DEFAULT_FONT_COLOR = (255, 255, 255)
+    
+    def __init__(self):
+    
+        self.font_name = DialogConfig.DEFAULT_FONT_NAME
+        self.font_size = DialogConfig.DEFAULT_FONT_SIZE
+        self.border_width = DialogConfig.DEFAULT_BORDER_WIDTH
+        self.line_spacing = DialogConfig.DEFAULT_LINE_SPACING
+        self.bg_color = DialogConfig.DEFAULT_BG_COLOR
+        self.font_color = DialogConfig.DEFAULT_FONT_COLOR
+
 graphics_config = GraphicsConfig()
+dialog_config = DialogConfig()
 
 from camera import PartyCentricCameraMode as DEFAULT_CAMERA_MODE
 graphics_config.camera_mode = DEFAULT_CAMERA_MODE()
