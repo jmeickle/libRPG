@@ -45,7 +45,10 @@ class VirtualScreen(object):
 
 screen_container = VirtualScreen()
 
-
 def init(real_screen_dimensions, display_mode, screen_dimensions, scale):
     
     screen_container.create_screen(real_screen_dimensions, display_mode, screen_dimensions, scale)
+
+def get_screen():
+
+    return screen_container.screen
