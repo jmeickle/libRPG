@@ -3,6 +3,7 @@
 
 import sys
 sys.path.append('..')
+from random import choice
 
 import librpg
 import pygame
@@ -103,6 +104,16 @@ class ObjectTestTowerUpper(ScenarioMapObject):
 
 class ObjectTestTowerLower(ScenarioMapObject):
 
+    RANDOM_TEXTS = ['Life is 10 percent what you make it, and 90 percent how you take it. - Irving Berlin',
+                    'My imagination can picture no fairer happiness than to continue living for art. - Clara Schumann',
+                    'I used to jog but the ice cubes kept falling out of my glass. - David Lee Roth',
+                    'One does not fall in love; one grows into love, and love grows in him. - Karl A. Menninger',
+                    'Mother Nature is not sweet. - John Shelby Spong',
+                    'All major religious traditions carry basically the same message, that is love, compassion and forgiveness the important thing is they should be part of our daily lives. - Dalai Lama ',
+                    'A good compromise, a good piece of legislation, is like a good sentence; or a good piece of music. Everybody can recognize it. They say, \'Huh. It works. It makes sense.\' - Barack Obama',
+                    'We can\'t solve problems by using the same kind of thinking we used when we created them. - Albert Einstein',
+                    'When I am getting ready to reason with a man, I spend one-third of my time thinking about myself and what I am going to say and two-thirds about him and what he is going to say. - Abraham Lincoln']
+
     def __init__(self, map):
 
         ScenarioMapObject.__init__(self, map, 0, 8)
@@ -110,7 +121,7 @@ class ObjectTestTowerLower(ScenarioMapObject):
     def activate(self, party_avatar, direction):
         
         print 'Activated lower tower object'
-        self.map.schedule_message(MessageDialog(u"The tower is creepy and" + ("\n" + (" bla" * 10)) * 10 + "."))
+        self.map.schedule_message(MessageDialog(choice(ObjectTestTowerLower.RANDOM_TEXTS)))
         
     def collide_with_party(self, party_avatar, direction):
     
