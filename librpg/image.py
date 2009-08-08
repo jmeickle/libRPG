@@ -8,6 +8,7 @@ class Image:
     def __init__(self, surface):
     
         self.surface = surface
+        self.width, self.height = self.surface.get_width(), self.surface.get_height()
         
     def get_surface(self, object=None):
     
@@ -51,6 +52,8 @@ class ObjectImage(Image):
             self.frames.append(phases)
             for x in range(3):
                 phases.append(self.surface.subsurface(pygame.Rect((x * graphics_config.object_width, y * graphics_config.object_height), graphics_config.object_dimensions)))
+                
+        self.width, self.height = graphics_config.object_width, graphics_config.object_height
 
     def get_surface(self, object=None, facing=None, phase=None):
     
@@ -63,4 +66,3 @@ class ObjectImage(Image):
             return self.frames[ObjectImage.DIRECTION_TO_INDEX_MAP[facing]][ObjectImage.ANIMATION_MAPS[NORMAL_SPEED][phase]]
         else:
             raise Exception('object_image.get_surface() must either be called with object set OR with facing and phase parameters.')
-    

@@ -29,8 +29,6 @@ class GraphicsConfig(object):
         self.calc_object_dimensions()
         self.calc_map_border_width()
         self.calc_map_border_height()
-        self.calc_object_x_adjustment()
-        self.calc_object_y_adjustment()
         
     def config(self, **kv):
     
@@ -77,7 +75,6 @@ class GraphicsConfig(object):
     def set_object_width(self, new_value):
     
         self._object_width = new_value
-        self.calc_object_x_adjustment()
         self.calc_object_dimensions()
     
     def get_object_height(self):
@@ -87,7 +84,6 @@ class GraphicsConfig(object):
     def set_object_height(self, new_value):
     
         self._object_height = new_value
-        self.calc_object_y_adjustment()
         self.calc_object_dimensions()
     
     def get_tile_size(self):
@@ -97,8 +93,6 @@ class GraphicsConfig(object):
     def set_tile_size(self, new_value):
     
         self._tile_size = new_value
-        self.calc_object_x_adjustment()
-        self.calc_object_y_adjustment()
     
     def get_scale(self):
     
@@ -128,14 +122,6 @@ class GraphicsConfig(object):
     def calc_map_border_height(self):
     
         self.map_border_height = self._screen_height / 2        
-    
-    def calc_object_x_adjustment(self):
-    
-        self.object_x_adjustment = - (self._object_width - self._tile_size) / 2
-        
-    def calc_object_y_adjustment(self):
-    
-        self.object_y_adjustment = - (self._object_height - self._tile_size)
     
     def recreate_screeens(self):
     

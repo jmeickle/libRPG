@@ -7,10 +7,10 @@ class CameraMode:
     
         pass
     
-    def calc_object_topleft(self, bg_slice_topleft, object_pos, object_x_offset, object_y_offset):
-    
-        object_pixel_x = object_pos.x * graphics_config.tile_size + graphics_config.object_x_adjustment
-        object_pixel_y = object_pos.y * graphics_config.tile_size + graphics_config.object_y_adjustment
+    def calc_object_topleft(self, bg_slice_topleft, object_pos, object_width, object_height, object_x_offset, object_y_offset):
+
+        object_pixel_x = object_pos.x * graphics_config.tile_size - (object_width - graphics_config.tile_size) / 2
+        object_pixel_y = object_pos.y * graphics_config.tile_size - (object_height - graphics_config.tile_size)
         x = graphics_config.map_border_width + object_pixel_x - bg_slice_topleft[0] + object_x_offset
         y = graphics_config.map_border_height + object_pixel_y - bg_slice_topleft[1] + object_y_offset
         return (x, y)
