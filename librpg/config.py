@@ -151,8 +151,7 @@ class GraphicsConfig(Config):
     
     def recreate_screeens(self):
     
-        librpg.screen = librpg.init_virtual_screen(self.screen_dimensions, librpg.real_screen, self.scale)
-        librpg.real_screen = librpg.init_real_screen(self.real_screen_dimensions, self.display_mode)
+        virtual_screen.screen_container.create_screen(self.real_screen_dimensions, self.display_mode, self.screen_dimensions, self.scale)
     
     screen_width = property(get_screen_width, set_screen_width)
     screen_height = property(get_screen_height, set_screen_height)

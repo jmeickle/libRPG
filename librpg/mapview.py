@@ -84,7 +84,7 @@ class MapView:
             party_x_offset, party_y_offset = 0, 0
         bg_topleft = self.camera_mode.calc_bg_slice_topleft(party_pos, party_x_offset, party_y_offset)
         bg_rect = pygame.Rect(bg_topleft, graphics_config.screen_dimensions)
-        librpg.screen.blit(self.background, (0, 0), bg_rect)
+        virtual_screen.screen_container.screen.blit(self.background, (0, 0), bg_rect)
         
         # Draw the map objects
         self.draw_object_layer(self.map_model.below_objects, bg_topleft)
@@ -92,15 +92,15 @@ class MapView:
         self.draw_object_layer(self.map_model.above_objects, bg_topleft)
         
         # Draw the foreground
-        librpg.screen.blit(self.foreground, (0, 0), bg_rect)
+        virtual_screen.screen_container.screen.blit(self.foreground, (0, 0), bg_rect)
         
         # Show messages
         if self.map_model.message_queue:
             surface, dim = self.map_model.message_queue[0].draw(bg_rect)
-            librpg.screen.blit(surface, dim)
+            virtual_screen.screen_container.screen.blit(surface, dim)
             
         # Flip display
-        librpg.screen.flip()
+        virtual_screen.screen_container.screen.flip()
         
     def draw_object_layer(self, object_layer, bg_topleft):
     
@@ -111,7 +111,7 @@ class MapView:
             obj_x_offset, obj_y_offset = self.calc_object_movement_offset(obj)
             obj_topleft = self.camera_mode.calc_object_topleft(bg_topleft, obj.position, obj.image.width, obj.image.height, obj_x_offset, obj_y_offset)
             obj_rect = pygame.Rect(obj_topleft, graphics_config.object_dimensions)
-            librpg.screen.blit(obj.get_surface(), obj_rect)
+            virtual_screen.screen_container.screen.blit(obj.get_surface(), obj_rect)
 
     def calc_object_movement_offset(self, obj):
         
