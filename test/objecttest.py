@@ -12,7 +12,7 @@ librpg.graphics_config.config(tile_size=32, object_height=32, object_width=32)
 
 from librpg.map import MapModel, Map
 from librpg.mapobject import MapObject, ScenarioMapObject
-from librpg.util import Position
+from librpg.util import Position, inverse
 from librpg.party import Character, CharacterReserve
 from librpg.movement import MovementCycle, Step, ForcedStep, Face, Wait, Slide
 from librpg.dialog import Dialog
@@ -29,7 +29,7 @@ class ObjectTestNPC(MapObject):
     
         print 'Activated NPC'
         for i in xrange(2):
-            party_avatar.schedule_movement(Step(librpg.locals.INVERSE[direction]))
+            party_avatar.schedule_movement(Step(inverse(direction)))
         party_avatar.schedule_movement(Face(direction))
         self.map.schedule_message(Dialog(u"Ouch!"))
         self.map.schedule_message(Dialog(u"Hey, why are you hitting me?!"))
@@ -46,7 +46,7 @@ class ObjectTestRock(ScenarioMapObject):
         print 'Activated rock'
         for i in xrange(3):
             self.schedule_movement(Step(direction))
-        self.schedule_movement(Face(librpg.locals.INVERSE[direction]))
+        self.schedule_movement(Face(inverse(direction)))
         
     def collide_with_party(self, party_avatar, direction):
     

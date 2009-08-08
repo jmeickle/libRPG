@@ -306,16 +306,16 @@ class MapModel:
         if (not can_leave_old) and old_terrain.cannot_be_entered(direction):
             return True
         
-        inverse = INVERSE[direction]
+        inv = inverse(direction)
         
         if new_object.obstacle is not None:
             return True
         for new_scenario in reversed(new_scenario_list):
             if new_scenario.is_obstacle():
                 return True
-            elif new_scenario.is_below() and not new_scenario.cannot_be_entered(inverse):
+            elif new_scenario.is_below() and not new_scenario.cannot_be_entered(inv):
                 return False
-        return new_terrain.is_obstacle() or new_terrain.cannot_be_entered(inverse)
+        return new_terrain.is_obstacle() or new_terrain.cannot_be_entered(inv)
 
     def move_object(self, object, old_object, new_object, new_pos, slide):
     

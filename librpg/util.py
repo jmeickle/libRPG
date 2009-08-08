@@ -1,3 +1,5 @@
+from locals import *
+
 #=================================================================================
 
 class Position:
@@ -114,4 +116,9 @@ class Matrix:
     def valid_pos(self, pos):
     
         return self.valid(pos.x, pos.y)
-        
+
+#=================================================================================
+
+def inverse(dir):
+    
+    return {UP: DOWN, DOWN: UP, LEFT: RIGHT, RIGHT: LEFT}[dir]
