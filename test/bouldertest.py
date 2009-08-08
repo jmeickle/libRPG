@@ -24,6 +24,7 @@ class Boulder(ScenarioMapObject):
     
         self.schedule_movement(Slide(direction))
 
+
 class Victory(ScenarioMapObject):
 
     def __init__(self, map):
@@ -54,12 +55,14 @@ class BoulderMaze(MapModel):
         MapModel.__init__(self, 'bouldertest.map', ('lower_tileset32.png', 'lower_tileset32.bnd'), [('upper_tileset32.png', 'upper_tileset32.bnd')])
         
     def initialize(self, local_state):
+    
         for y, line in enumerate(BoulderMaze.MAZE):
             for x, cell in enumerate(line):
                 if cell == 2:
                     self.add_object(Boulder(self), Position(x, y))
                 elif cell == 3:
                     self.add_object(Victory(self), Position(x, y))
+
 
 a = librpg.party.Character('Andy', 'char_alex32.png')
 r = librpg.party.CharacterReserve([a])
