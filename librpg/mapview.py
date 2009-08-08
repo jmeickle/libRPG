@@ -104,19 +104,14 @@ class MapView:
         
     def draw_object_layer(self, object_layer, bg_topleft):
     
-        if graphics_config.object_width <= graphics_config.tile_size and graphics_config.object_height <= graphics_config.tile_size:
-            for obj in object_layer:
-                obj_x_offset, obj_y_offset = self.calc_object_movement_offset(obj)
-                obj_topleft = self.camera_mode.calc_object_topleft(bg_topleft, obj.position, obj.image.width, obj.image.height, obj_x_offset, obj_y_offset)
-                obj_rect = pygame.Rect(obj_topleft, graphics_config.object_dimensions)
-                librpg.screen.blit(obj.get_surface(), obj_rect)
-        else:
-            # Todo: fix this
-            for obj in object_layer:
-                obj_x_offset, obj_y_offset = self.calc_object_movement_offset(obj)
-                obj_topleft = self.camera_mode.calc_object_topleft(bg_topleft, obj.position, obj.image.width, obj.image.height, obj_x_offset, obj_y_offset)
-                obj_rect = pygame.Rect(obj_topleft, graphics_config.object_dimensions)
-                librpg.screen.blit(obj.get_surface(), obj_rect)
+        if graphics_config.object_width > graphics_config.tile_size or graphics_config.object_height > graphics_config.tile_size:
+            object_layer.sort(key=lambda x: x.position)
+
+        for obj in object_layer:
+            obj_x_offset, obj_y_offset = self.calc_object_movement_offset(obj)
+            obj_topleft = self.camera_mode.calc_object_topleft(bg_topleft, obj.position, obj.image.width, obj.image.height, obj_x_offset, obj_y_offset)
+            obj_rect = pygame.Rect(obj_topleft, graphics_config.object_dimensions)
+            librpg.screen.blit(obj.get_surface(), obj_rect)
 
     def calc_object_movement_offset(self, obj):
         
@@ -132,4 +127,3 @@ class MapView:
             elif obj.facing == LEFT:
                 obj_x_offset = offset
         return obj_x_offset, obj_y_offset
-        

@@ -41,9 +41,18 @@ class Position:
     
         return "(" + str(self.x) + ", " + str(self.y) + ")"
     
-    def __eq__(self, another):
+    def __cmp__(self, another):
     
-        return self.x == another.x and self.y == another.y
+        if self.y < another.y:
+            return -1
+        elif self.y > another.y:
+            return 1
+        elif self.x < another.x:
+            return -1
+        elif self.x > another.x:
+            return 1
+        else:
+            return 0
 
 #=================================================================================
 
