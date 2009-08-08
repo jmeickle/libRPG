@@ -281,8 +281,8 @@ class MapModel:
         old_object = self.object_layer.get_pos(old_pos)
         new_object = self.object_layer.get_pos(desired)
         
-        if not (object.is_obstacle()
-                and self.is_obstructed(old_terrain, old_scenario, new_terrain, new_scenario, new_object, direction)):
+        if not (object.is_obstacle() and
+                self.is_obstructed(old_terrain, old_scenario, new_terrain, new_scenario, new_object, direction)):
             # Move
             self.move_object(object, old_object, new_object, desired, slide)
             if object is self.party_avatar:
@@ -299,11 +299,11 @@ class MapModel:
             
     def is_obstructed(self, old_terrain, old_scenario_list, new_terrain, new_scenario_list, new_object, direction):
     
-        can_leave_old = False
+        cannot_leave_old = True
         for old_scenario in reversed(old_scenario_list):
             if old_scenario.is_below() and not old_scenario.cannot_be_entered(direction):
-                can_leave_old = True
-        if (not can_leave_old) and old_terrain.cannot_be_entered(direction):
+                cannot_leave_old = False
+        if cannot_leave_old and old_terrain.cannot_be_entered(direction):
             return True
         
         inv = inverse(direction)
@@ -337,9 +337,9 @@ class MapModel:
             if obj_in_front is not None:
                obj_in_front.activate(self.party_avatar, self.party_avatar.facing)
             across_pos = desired.step(self.party_avatar.facing)
-            if (((obj_in_front is not None and obj_in_front.is_counter())
-                    or any([layer.get_pos(desired).is_counter() for layer in self.scenario_layer]))
-                and self.terrain_layer.valid_pos(across_pos)):
+            if (self.terrain_layer.valid_pos(across_pos) and
+               ((obj_in_front is not None and obj_in_front.is_counter()) or
+               any([layer.get_pos(desired).is_counter() for layer in self.scenario_layer]))):
                 # Counter attribute
                 obj_across = self.object_layer.get_pos(across_pos).obstacle
                 if obj_across is not None:

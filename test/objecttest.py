@@ -15,7 +15,7 @@ from librpg.mapobject import MapObject, ScenarioMapObject
 from librpg.util import Position, inverse
 from librpg.party import Character, CharacterReserve
 from librpg.movement import MovementCycle, Step, ForcedStep, Face, Wait, Slide
-from librpg.dialog import Dialog
+from librpg.dialog import MessageDialog
 from librpg.locals import *
 
 class ObjectTestNPC(MapObject):
@@ -31,8 +31,8 @@ class ObjectTestNPC(MapObject):
         for i in xrange(2):
             party_avatar.schedule_movement(Step(inverse(direction)))
         party_avatar.schedule_movement(Face(direction))
-        self.map.schedule_message(Dialog(u"Ouch!"))
-        self.map.schedule_message(Dialog(u"Hey, why are you hitting me?!"))
+        self.map.schedule_message(MessageDialog(u"Ouch!"))
+        self.map.schedule_message(MessageDialog(u"Hey, why are you hitting me?!"))
 
 
 class ObjectTestRock(ScenarioMapObject):
@@ -74,11 +74,11 @@ class ObjectTestChest(MapObject):
             self.schedule_movement(Face(LEFT))
             if self.filled:
                 print 'Opened chest and added item'
-                self.map.schedule_message(Dialog(u"You got Hookshot!"))
+                self.map.schedule_message(MessageDialog(u"You got Hookshot!"))
                 self.filled = False
             else:
                 print 'Opened chest but it was empty'
-                self.map.schedule_message(Dialog(u"The chest is empty =("))
+                self.map.schedule_message(MessageDialog(u"The chest is empty =("))
                 
         else:
             print 'Chest is open, closing'
@@ -110,7 +110,7 @@ class ObjectTestTowerLower(ScenarioMapObject):
     def activate(self, party_avatar, direction):
         
         print 'Activated lower tower object'
-        self.map.schedule_message(Dialog(u"The tower is creepy and" + ("\n" + (" bla" * 10)) * 10 + "."))
+        self.map.schedule_message(MessageDialog(u"The tower is creepy and" + ("\n" + (" bla" * 10)) * 10 + "."))
         
     def collide_with_party(self, party_avatar, direction):
     

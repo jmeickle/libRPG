@@ -97,7 +97,7 @@ class MapView:
         # Show messages
         if self.map_model.message_queue:
             surface, dim = self.map_model.message_queue[0].draw(bg_rect)
-            librpg.screen.blit( surface, dim )
+            librpg.screen.blit(surface, dim)
             
         # Flip display
         librpg.screen.flip()
