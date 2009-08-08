@@ -12,9 +12,9 @@ librpg.graphics_config.config(tile_size=16, object_height=32, object_width=24)
 
 from librpg.map import MapModel, Map
 from librpg.mapobject import MapObject, ScenarioMapObject
-from librpg.util import Position
+from librpg.util import Position, inverse
 from librpg.party import Character, CharacterReserve
-from librpg.movement import Slide, Wait, ForcedStep
+from librpg.movement import Slide, Wait, ForcedStep, Face
 from librpg.dialog import Dialog
 from librpg.locals import *
 
@@ -23,7 +23,8 @@ class ObjectTestNPC(MapObject):
     def __init__(self, index):
     
         MapObject.__init__(self, MapObject.OBSTACLE, image_file='chara1.png', image_index=index)
-        self.movement_behavior.movements.extend([Wait(30), ForcedStep(UP), Wait(30), ForcedStep(DOWN)])
+        for dir in [LEFT, DOWN, RIGHT, UP]:
+            self.movement_behavior.movements.extend([Wait(30), ForcedStep(dir)])
 
 
 class ObjectTestRock(ScenarioMapObject):
@@ -36,7 +37,13 @@ class ObjectTestRock(ScenarioMapObject):
     
         print 'Collided rock'
         self.schedule_movement(Slide(direction))
+        
+    def activate(self, party_avatar, direction):
 
+        print 'Activated rock'
+        party_avatar.schedule_movement(Slide(inverse(direction)))
+        party_avatar.schedule_movement(Face(direction))
+        self.schedule_movement(ForcedStep(inverse(direction)))
 
 class ObjectTestMap(MapModel):
     

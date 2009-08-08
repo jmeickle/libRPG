@@ -338,7 +338,7 @@ class MapModel:
                obj_in_front.activate(self.party_avatar, self.party_avatar.facing)
             across_pos = desired.step(self.party_avatar.facing)
             if (((obj_in_front is not None and obj_in_front.is_counter())
-                    or reduce(operator.__or__, [self.scenario_layer[i].get_pos(desired).is_counter() for i in range(self.scenario_number)]))
+                    or any([layer.get_pos(desired).is_counter() for layer in self.scenario_layer]))
                 and self.terrain_layer.valid_pos(across_pos)):
                 # Counter attribute
                 obj_across = self.object_layer.get_pos(across_pos).obstacle
