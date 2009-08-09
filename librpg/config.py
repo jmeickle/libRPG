@@ -54,22 +54,6 @@ class GraphicsConfig(Config):
         self.calc_map_border_width()
         self.calc_map_border_height()
 
-    def config(self, **kv):
-        scheduled = {}
-
-        for key, value in kv.iteritems():
-            if hasattr(self, key):
-                if key != 'display_mode':
-                    setattr(self, key, value)
-                else:
-                    scheduled[key] = value
-            else:
-                raise Exception('GraphicsConfig.config() does not take %s as'
-                                ' parameter' % key)
-
-        for key, value in scheduled.iteritems():
-            setattr(self, key, value)
-
     def get_screen_width(self):
         return self._screen_width
 
