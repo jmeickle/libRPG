@@ -10,7 +10,7 @@ import pygame
 librpg.init()
 librpg.config.graphics_config.config(tile_size=16, object_height=32, object_width=24)
 
-from librpg.map import MapModel, Map
+from librpg.map import MapModel, MapController
 from librpg.mapobject import MapObject, ScenarioMapObject
 from librpg.util import Position, inverse
 from librpg.party import Character, CharacterReserve
@@ -72,5 +72,5 @@ r = librpg.party.CharacterReserve([a])
 
 model = ObjectTestMap()
 model.add_party(r.create_party(3, [a]), Position(8, 8))
-Map(model).gameloop()
+MapController(model).gameloop()
 exit()

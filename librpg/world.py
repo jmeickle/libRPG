@@ -1,4 +1,4 @@
-from map import MapModel, Map
+from map import MapModel, MapController
 from locals import *
 
 class World:
@@ -31,7 +31,7 @@ class World:
             map_model.add_party(self.party, position, prev_facing)
             map_model.party_movement = prev_party_movement
             self.scheduled_teleport = None
-            Map(map_model).gameloop()
+            MapController(map_model).gameloop()
             prev_facing = map_model.party_avatar.facing
             prev_party_movement = map_model.party_movement
             map_model.remove_party()

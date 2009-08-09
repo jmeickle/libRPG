@@ -11,7 +11,7 @@ import pygame
 librpg.init()
 librpg.config.graphics_config.config(tile_size=32, object_height=32, object_width=32)
 
-from librpg.map import MapModel, Map
+from librpg.map import MapModel, MapController
 from librpg.mapobject import MapObject, ScenarioMapObject
 from librpg.util import Position, inverse
 from librpg.party import Character, CharacterReserve
@@ -76,11 +76,11 @@ class ObjectTestChest(MapObject):
             self.map.sync_movement([self])
             if self.filled:
                 print 'Opened chest and added item'
-                self.map.schedule_message(MessageDialog(u"You got Hookshot!", block_movement=False))
+                self.map.schedule_message(MessageDialog(u"You got Hookshot!"))
                 self.filled = False
             else:
                 print 'Opened chest but it was empty'
-                self.map.schedule_message(MessageDialog(u"The chest is empty =(", block_movement=False))
+                self.map.schedule_message(MessageDialog(u"The chest is empty =("))
                 
         else:
             print 'Chest is open, closing'
@@ -165,5 +165,5 @@ r = librpg.party.CharacterReserve([a])
 
 model = ObjectTestMap()
 model.add_party(r.create_party(3, [a]), Position(0, 0))
-Map(model).gameloop()
+MapController(model).gameloop()
 exit()

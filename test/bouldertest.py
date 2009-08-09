@@ -7,7 +7,7 @@ import pygame
 librpg.init()
 librpg.config.graphics_config.config(tile_size=32, object_height=32, object_width=32)
 
-from librpg.map import MapModel, Map
+from librpg.map import MapModel, MapController
 from librpg.mapobject import ScenarioMapObject, MapObject
 from librpg.util import Position
 from librpg.party import Character, CharacterReserve
@@ -70,5 +70,5 @@ r = librpg.party.CharacterReserve([a])
 
 model = BoulderMaze()
 model.add_party(r.create_party(3, [a]), Position(4, 9))
-Map(model).gameloop()
+MapController(model).gameloop()
 exit()

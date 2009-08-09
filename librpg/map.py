@@ -15,7 +15,7 @@ from movement import Step
 
 #=================================================================================
     
-class Map:
+class MapController:
 
     # Read-Only Attributes:
     # map_view - MapView (View component of MVC)
@@ -46,7 +46,7 @@ class Map:
         
         self.clock = pygame.time.Clock()
         while map_model.keep_going:
-            self.clock.tick(Map.FPS)
+            self.clock.tick(MapController.FPS)
             
             if map_model.pause_delay > 0:
                 map_model.pause_delay -= 1
@@ -72,7 +72,7 @@ class Map:
                 self.map_model.leave()
             elif event.type == KEYDOWN:
                 if not self.map_model.current_message:
-                    direction = Map.KEY_TO_DIRECTION.get(event.key)
+                    direction = MapController.KEY_TO_DIRECTION.get(event.key)
                     if direction is not None and not direction in self.map_model.party_movement:
                         self.party_movement_append(direction)
                     elif event.key == K_SPACE or event.key == K_RETURN:
@@ -80,13 +80,13 @@ class Map:
                     elif event.key == K_ESCAPE:
                         self.map_model.leave()
                 else:
-                    direction = Map.KEY_TO_DIRECTION.get(event.key)
+                    direction = MapController.KEY_TO_DIRECTION.get(event.key)
                     if direction is not None and not direction in self.map_model.party_movement:
                         self.party_movement_append(direction)
                     elif event.key == K_SPACE or event.key == K_RETURN:
                         self.map_model.current_message = None
             elif event.type == KEYUP:
-                direction = Map.KEY_TO_DIRECTION.get(event.key)
+                direction = MapController.KEY_TO_DIRECTION.get(event.key)
                 if direction is not None and direction in self.map_model.party_movement:
                     self.party_movement_remove(direction)
 
@@ -115,7 +115,7 @@ class Map:
     def sync_movement(self, objects):
 
         while any([o.scheduled_movement for o in objects]):
-            self.clock.tick(Map.FPS)
+            self.clock.tick(MapController.FPS)
             for o in objects:
                 o.flow()
             self.map_view.draw()
@@ -126,7 +126,7 @@ class MapModel:
 
     """
     party: Party (read-only)
-    Active Party on this Map.
+    Active Party on this map.
 
     party_avatar: PartyAvatar (read-only)
     MapObject representation of the active Party.
