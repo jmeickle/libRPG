@@ -43,7 +43,7 @@ ok      0.3 Move collide_with_party trigger to when the Party stops at the next 
 ok      0.3 Create pause() method in MapModel
 ok      0.3 Remove GraphicsConfig.config and make sure that doesn't break anything
 ok      0.3 Design a good way to do synchronous movement
-        0.3 Rename Map to MapController
+ok      0.3 Rename Map to MapController
         0.3 Include local state system in the world module
         0.4 Improve message dialogs - split texts too big into more than 1 dialog
         0.4 Animated tiles (period | 12 allows (1, 2, 3, 4, 6, 12), one surface per phase)
