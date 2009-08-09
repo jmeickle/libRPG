@@ -41,8 +41,8 @@ ok      0.3 Write tests for teleports
 ok      0.3 Carry key down to next map when teleporting
 ok      0.3 Move collide_with_party trigger to when the Party stops at the next tile, rather than leaves the prev tile
 ok      0.3 Create pause() method in MapModel
-        0.3 Remove GraphicsConfig.config and make sure that doesn't break anything
-        0.3 Design a good way to do synchronous movement
+ok      0.3 Remove GraphicsConfig.config and make sure that doesn't break anything
+ok      0.3 Design a good way to do synchronous movement
         0.3 Rename MapModel to Map and Map to MapController?
         0.3 Include local state system in the world module
         0.4 Improve message dialogs - split texts too big into more than 1 dialog

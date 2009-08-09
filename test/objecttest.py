@@ -73,6 +73,7 @@ class ObjectTestChest(MapObject):
             self.schedule_movement(Face(DOWN))
             self.schedule_movement(Wait(2))
             self.schedule_movement(Face(LEFT))
+            self.map.sync_movement([self])
             if self.filled:
                 print 'Opened chest and added item'
                 self.map.schedule_message(MessageDialog(u"You got Hookshot!", block_movement=False))

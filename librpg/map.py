@@ -28,6 +28,7 @@ class Map:
     def __init__(self, map_model, local_state=None):
     
         self.map_model = map_model
+        self.map_model.controller = self
         self.map_model.initialize(local_state)
         self.map_view = MapView(self.map_model)
         
@@ -43,9 +44,9 @@ class Map:
         
         map_view_draw()
         
-        clock = pygame.time.Clock()
+        self.clock = pygame.time.Clock()
         while map_model.keep_going:
-            clock.tick(Map.FPS)
+            self.clock.tick(Map.FPS)
             
             if map_model.pause_delay > 0:
                 map_model.pause_delay -= 1
@@ -62,7 +63,7 @@ class Map:
                     party_avatar.schedule_movement(Step(party_movement[0]))
 
             map_view_draw()
-            
+
     def process_input(self):
     
         for event in pygame.event.get():
@@ -88,7 +89,7 @@ class Map:
                 direction = Map.KEY_TO_DIRECTION.get(event.key)
                 if direction is not None and direction in self.map_model.party_movement:
                     self.party_movement_remove(direction)
-        
+
     def flow_object_movement(self):
     
         party_avatar = self.map_model.party_avatar
@@ -110,6 +111,14 @@ class Map:
                 obj.collide_with_party(party_avatar, party_avatar.facing)
             for obj in self.map_model.object_layer.get_pos(party_avatar.position).above:
                 obj.collide_with_party(party_avatar, party_avatar.facing)
+
+    def sync_movement(self, objects):
+
+        while any([o.scheduled_movement for o in objects]):
+            self.clock.tick(Map.FPS)
+            for o in objects:
+                o.flow()
+            self.map_view.draw()
 
 #=================================================================================
 
@@ -398,6 +407,9 @@ class MapModel:
         result += '+' + '-' * self.width + '+\n'
         return result
 
+    def sync_movement(self, objects):
+    
+        self.controller.sync_movement(objects)
 
 #=================================================================================
 
