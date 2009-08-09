@@ -58,6 +58,7 @@ class Map:
             map_view_draw()
             
     def process_input(self):
+    
         for event in pygame.event.get():
             #print event
             if event.type == QUIT:
@@ -84,12 +85,26 @@ class Map:
         
     def flow_object_movement(self):
     
+        party_avatar = self.map_model.party_avatar
+        
         for o in self.map_model.objects:
-            if o is not self.map_model.party_avatar:
+            if o is not party_avatar:
                 o.flow()
-                
-        self.map_model.party_avatar.flow()
-            
+        
+        party_avatar.flow()
+        
+        self.trigger_collisions()
+
+    def trigger_collisions(self):
+    
+        party_avatar = self.map_model.party_avatar
+        if party_avatar.just_completed_movement:
+            party_avatar.just_completed_movement = False
+            for obj in self.map_model.object_layer.get_pos(party_avatar.position).below:
+                obj.collide_with_party(party_avatar, party_avatar.facing)
+            for obj in self.map_model.object_layer.get_pos(party_avatar.position).above:
+                obj.collide_with_party(party_avatar, party_avatar.facing)
+
 #=================================================================================
 
 class MapModel:
@@ -284,11 +299,6 @@ class MapModel:
                 self.is_obstructed(old_terrain, old_scenario, new_terrain, new_scenario, new_object, direction)):
             # Move
             self.move_object(object, old_object, new_object, desired, slide)
-            if object is self.party_avatar:
-                for obj in new_object.below:
-                    obj.collide_with_party(self.party_avatar, direction)
-                for obj in new_object.above:
-                    obj.collide_with_party(self.party_avatar, direction)
             return True
         else:
             # Do not move, something is on the way

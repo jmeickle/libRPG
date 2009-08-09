@@ -40,7 +40,7 @@ class MapObject:
         self.obstacle = obstacle
         
         self.movement_phase, self.facing, self.speed = 0, facing, speed
-        self.scheduled_movement, self.movement_behavior, self.sliding = MovementQueue(), MovementCycle(), False
+        self.scheduled_movement, self.movement_behavior, self.sliding, self.just_completed_movement = MovementQueue(), MovementCycle(), False, False
         
         if image is not None:
             self.image = image
@@ -79,13 +79,18 @@ class MapObject:
         
     def flow(self):
 
+        just_completed_movement = False
+        
+        if self.movement_phase == 1:
+            self.just_completed_movement = True
+            
         if self.movement_phase > 0:
             self.movement_phase -= 1
         else:
             no_scheduled_movement = self.scheduled_movement.flow(self)
             if no_scheduled_movement:
                 self.movement_behavior.flow(self)
-    
+
     def schedule_movement(self, movement):
         
         self.scheduled_movement.append(movement)
