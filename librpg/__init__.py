@@ -4,6 +4,7 @@ import virtual_screen
 import config
 import party
 import map
+import world
 import mapobject
 import camera
 import image
