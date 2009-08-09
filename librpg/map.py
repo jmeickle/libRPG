@@ -85,6 +85,8 @@ class Map:
         
     def flow_object_movement(self):
     
+        self.trigger_collisions()
+
         party_avatar = self.map_model.party_avatar
         
         for o in self.map_model.objects:
@@ -93,8 +95,6 @@ class Map:
         
         party_avatar.flow()
         
-        self.trigger_collisions()
-
     def trigger_collisions(self):
     
         party_avatar = self.map_model.party_avatar
