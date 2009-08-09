@@ -47,13 +47,19 @@ class Map:
         while map_model.keep_going:
             clock.tick(Map.FPS)
             
-            self.flow_object_movement()
-            
-            pos = party_avatar.position
-            self.process_input()
-            
-            if party_movement and not party_avatar.scheduled_movement and not party_avatar.movement_phase and not map_model.message_queue:
-                party_avatar.schedule_movement(Step(party_movement[0]))
+            if map_model.pause_delay > 0:
+                map_model.pause_delay -= 1
+            else:
+                if map_model.current_message is None or not map_model.current_message.block_movement:
+                    self.flow_object_movement()
+                
+                self.process_input()
+                
+                if map_model.current_message is None and map_model.message_queue:
+                    map_model.current_message = map_model.message_queue.pop(0)
+
+                if party_movement and not party_avatar.scheduled_movement and not party_avatar.movement_phase and map_model.current_message is None:
+                    party_avatar.schedule_movement(Step(party_movement[0]))
 
             map_view_draw()
             
@@ -64,7 +70,7 @@ class Map:
             if event.type == QUIT:
                 self.map_model.leave()
             elif event.type == KEYDOWN:
-                if not self.map_model.message_queue:
+                if not self.map_model.current_message:
                     direction = Map.KEY_TO_DIRECTION.get(event.key)
                     if direction is not None and not direction in self.map_model.party_movement:
                         self.party_movement_append(direction)
@@ -77,7 +83,7 @@ class Map:
                     if direction is not None and not direction in self.map_model.party_movement:
                         self.party_movement_append(direction)
                     elif event.key == K_SPACE or event.key == K_RETURN:
-                        self.map_model.message_queue.pop(0)
+                        self.map_model.current_message = None
             elif event.type == KEYUP:
                 direction = Map.KEY_TO_DIRECTION.get(event.key)
                 if direction is not None and direction in self.map_model.party_movement:
@@ -85,8 +91,6 @@ class Map:
         
     def flow_object_movement(self):
     
-        self.trigger_collisions()
-
         party_avatar = self.map_model.party_avatar
         
         for o in self.map_model.objects:
@@ -95,6 +99,8 @@ class Map:
         
         party_avatar.flow()
         
+        self.trigger_collisions()
+
     def trigger_collisions(self):
     
         party_avatar = self.map_model.party_avatar
@@ -185,9 +191,9 @@ class MapModel:
             for y in range(self.height):
                 object_layer_set(x, y, ObjectCell())
                 
-        self.message_queue = []
+        self.message_queue, self.current_message = [], None
         
-        self.keep_going = True
+        self.keep_going, self.pause_delay = True, 0
         
     def load_from_map_file(self):
     
@@ -368,7 +374,11 @@ class MapModel:
     def leave(self):
     
         self.keep_going = False
-        
+
+    def pause(self, length):
+    
+        self.pause_delay = length
+
     def __repr__(self):
     
         return '(Map width=' + str(self.width) + ' height=' + str(self.height) + ' file=' + self.map_file + ')'

@@ -96,8 +96,8 @@ class MapView:
         get_screen().blit(self.foreground, (0, 0), bg_rect)
         
         # Show messages
-        if self.map_model.message_queue:
-            surface, dim = self.map_model.message_queue[0].draw(bg_rect)
+        if self.map_model.current_message:
+            surface, dim = self.map_model.current_message.draw(bg_rect)
             get_screen().blit(surface, dim)
             
         # Flip display

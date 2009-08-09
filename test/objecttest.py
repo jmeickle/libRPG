@@ -32,8 +32,8 @@ class ObjectTestNPC(MapObject):
         for i in xrange(2):
             party_avatar.schedule_movement(Step(inverse(direction)))
         party_avatar.schedule_movement(Face(direction))
-        self.map.schedule_message(MessageDialog(u"Ouch!"))
-        self.map.schedule_message(MessageDialog(u"Hey, why are you hitting me?!"))
+        self.map.schedule_message(MessageDialog(u"Ouch!", block_movement=False))
+        self.map.schedule_message(MessageDialog(u"Hey, why are you hitting me?!", block_movement=False))
 
 
 class ObjectTestRock(ScenarioMapObject):
@@ -75,11 +75,11 @@ class ObjectTestChest(MapObject):
             self.schedule_movement(Face(LEFT))
             if self.filled:
                 print 'Opened chest and added item'
-                self.map.schedule_message(MessageDialog(u"You got Hookshot!"))
+                self.map.schedule_message(MessageDialog(u"You got Hookshot!", block_movement=False))
                 self.filled = False
             else:
                 print 'Opened chest but it was empty'
-                self.map.schedule_message(MessageDialog(u"The chest is empty =("))
+                self.map.schedule_message(MessageDialog(u"The chest is empty =(", block_movement=False))
                 
         else:
             print 'Chest is open, closing'

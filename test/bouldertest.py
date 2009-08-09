@@ -33,6 +33,7 @@ class Victory(ScenarioMapObject):
         
     def collide_with_party(self, party_avatar, direction):
     
+        self.map.pause(30)
         self.map.schedule_message(MessageDialog('Gratz! You won!'))
 
 

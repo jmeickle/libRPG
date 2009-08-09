@@ -7,10 +7,11 @@ from config import dialog_config as cfg
 
 class MessageDialog(object):
 
-    def __init__(self, text):
+    def __init__(self, text, block_movement=True):
     
         self.text = text
         self.surface = None
+        self.block_movement = block_movement
         
     def draw(self, bg_rect):
     
