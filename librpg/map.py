@@ -44,18 +44,16 @@ class Map:
         map_view_draw()
         
         clock = pygame.time.Clock()
-        keep_going = True
-        while keep_going:
+        while map_model.keep_going:
             clock.tick(Map.FPS)
             
             self.flow_object_movement()
             
             pos = party_avatar.position
-            keep_going = self.process_input()
+            self.process_input()
             
             if party_movement and not party_avatar.scheduled_movement and not party_avatar.movement_phase and not map_model.message_queue:
                 party_avatar.schedule_movement(Step(party_movement[0]))
-                #moved = map_model.try_to_move_object(party_avatar, party_movement[0])
 
             map_view_draw()
             
@@ -63,7 +61,7 @@ class Map:
         for event in pygame.event.get():
             #print event
             if event.type == QUIT:
-                return False
+                self.map_model.leave()
             elif event.type == KEYDOWN:
                 if not self.map_model.message_queue:
                     direction = Map.KEY_TO_DIRECTION.get(event.key)
@@ -72,7 +70,7 @@ class Map:
                     elif event.key == K_SPACE or event.key == K_RETURN:
                         self.map_model.party_action()
                     elif event.key == K_ESCAPE:
-                        return False
+                        self.map_model.leave()
                 else:
                     direction = Map.KEY_TO_DIRECTION.get(event.key)
                     if direction is not None and not direction in self.map_model.party_movement:
@@ -83,7 +81,6 @@ class Map:
                 direction = Map.KEY_TO_DIRECTION.get(event.key)
                 if direction is not None and direction in self.map_model.party_movement:
                     self.party_movement_remove(direction)
-        return True
         
     def flow_object_movement(self):
     
@@ -174,6 +171,8 @@ class MapModel:
                 object_layer_set(x, y, ObjectCell())
                 
         self.message_queue = []
+        
+        self.keep_going = True
         
     def load_from_map_file(self):
     
@@ -356,6 +355,10 @@ class MapModel:
     
         self.message_queue.append(message)
 
+    def leave(self):
+    
+        self.keep_going = False
+        
     def __repr__(self):
     
         return '(Map width=' + str(self.width) + ' height=' + str(self.height) + ' file=' + self.map_file + ')'
