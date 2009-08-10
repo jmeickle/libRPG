@@ -4,12 +4,20 @@ from librpg.locals import *
 
 class World(object):
 
-    def __init__(self, maps, initial_map, initial_position, state_file=None):
+    def __init__(self, maps, initial_map=None, initial_position=None,
+                 state_file=None):
+        assert (initial_map is not None and initial_position is not None)\
+               or state_file is not None,\
+               'World.__init__ cannot determine the party\'s starting position'
         self.maps = maps
         self.party = None
-        self.scheduled_teleport = (initial_map, initial_position)
         self.state_file = state_file
         self.state = State(state_file)
+        self.party_pos = self.state.load_local(PARTY_POSITION_LOCAL_STATE)
+        if self.party_pos is not None:
+            self.scheduled_teleport = (self.party_pos[0], self.party_pos[1])
+        else:
+            self.scheduled_teleport = (initial_map, initial_position)
 
     def create_map(self, map_id):
         created_map = self.maps[map_id]()
@@ -21,7 +29,7 @@ class World(object):
         self.scheduled_teleport = (map_id, position)
 
     def gameloop(self):
-        prev_facing = DOWN
+        prev_facing = None
         prev_party_movement = []
 
         while self.scheduled_teleport:
@@ -32,6 +40,11 @@ class World(object):
             map_model = self.create_map(map_id)
 
             # Use data that was stored
+            if prev_facing is None:
+                if self.party_pos is not None:
+                    prev_facing = self.party_pos[2]
+                else:
+                    prev_facing = DOWN
             map_model.add_party(self.party, position, prev_facing)
             map_model.party_movement = prev_party_movement
             local_state = self.state.load_local(map_id)
@@ -66,4 +79,8 @@ class WorldMap(MapModel):
 
     def save_world(self, filename):
         self.world.state.save_local(self.id, self.save())
+        party_local_state = (self.id, self.party_avatar.position,
+                             self.party_avatar.facing)
+        self.world.state.save_local(PARTY_POSITION_LOCAL_STATE,
+                                    party_local_state)
         self.world.save(filename)

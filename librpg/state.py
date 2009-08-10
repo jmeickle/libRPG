@@ -25,4 +25,3 @@ class State(object):
     # local_state must be serializable
     def save_local(self, feature, local_state):
         self.locals[feature] = local_state
-

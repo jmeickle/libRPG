@@ -11,7 +11,10 @@ a = librpg.party.Character('Andy', 'char_alex32.png')
 r = librpg.party.CharacterReserve([a])
 
 # Create world and run
-w = MyWorld()
+try:
+    w = MyWorld('save.sav')
+except IOError:
+    w = MyWorld()
 w.party = r.create_party(3, [a])
 w.gameloop()
 
