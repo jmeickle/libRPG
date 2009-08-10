@@ -59,10 +59,9 @@ class ObjectTestChest(MapObject):
 
     def __init__(self):
 
-        MapObject.__init__(self, MapObject.OBSTACLE, image_file='chest2.png', image_index=5)
+        MapObject.__init__(self, MapObject.OBSTACLE, image_file='chest2.png', image_index=5, facing=UP)
         self.closed = True
         self.filled = True
-        self.facing = UP
         
     def activate(self, party_avatar, direction):
     

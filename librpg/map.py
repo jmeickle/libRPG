@@ -256,6 +256,10 @@ class MapModel(object):
     def initialize(self, local_state):
         pass
 
+    # Virtual, should be implemented.
+    def save(self):
+        return None
+
     def add_party(self, party, position, facing=DOWN, speed=NORMAL_SPEED):
         assert self.party is None, 'Map already has a party'
         self.party = party

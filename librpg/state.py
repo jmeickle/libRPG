@@ -1,7 +1,4 @@
-try:
-    from __future__ import with_statement
-except ImportError:
-    pass # in case __future__ is now
+from __future__ import with_statement
 import pickle
 
 class State(object):
@@ -9,8 +6,10 @@ class State(object):
     # Read-Only Attibutes
     # locals - maps feature strings to local states
 
-    def __init__(self):
+    def __init__(self, filename=None):
         self.locals = {}
+        if filename is not None:
+            self.load(filename)
 
     def load(self, filename):
         with open(filename, "r") as file:
@@ -21,7 +20,7 @@ class State(object):
             pickle.dump(self.locals, file)
 
     def load_local(self, feature):
-        return self.locals[feature]
+        return self.locals.get(feature)
 
     # local_state must be serializable
     def save_local(self, feature, local_state):
