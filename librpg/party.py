@@ -48,8 +48,8 @@ class Party(object):
         if len(self.chars) == 0:
             return '(Empty party)'
         else:
-            chars = ', '.join([c for c in self.chars if c != self.leader])
-            return '(Leader: %s%s)' % (self.leader, chars)
+            chars = ', '.join([str(c) for c in self.chars if c != self.leader])
+            return '(Leader: %s, %s)' % (self.leader, chars)
 
     def get_image(self, avatar):
         assert self.leader, 'A Party with no characters may not be displayed'
