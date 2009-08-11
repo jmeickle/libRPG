@@ -50,9 +50,8 @@ ok      0.3 Make party position be loaded from save file
 ok      0.3 Implement MapAreas
 ok      0.3 Implement PositionList iterable for MapAreas to use
 ok      0.3 Implement librpg.world.TeleportArea
-        0.3 Implement __add__ in a PositionList base class
+ok      0.3 Implement __add__ in a PositionList base class
         0.3 Refactor message queue out of MapModel to decrease its complexity
-        0.3 Group files into submodules
         0.3 Optimize in-map teleports
         0.3 Fix obj.collide_with_party(party_avatar, party_avatar.facing) - cannot use facing, what is the party is knocked back?
         0.3 Update API docs
@@ -64,6 +63,7 @@ ok      0.3 Implement librpg.world.TeleportArea
         0.7 Define generic battle system
         ?   Add on_object_touch events
         ?   Image management module (store the last x loaded images and the y most used images)
+        ?   Group files into submodules
         1.0 Write file_types.txt
         1.0 Basic tutorial
         

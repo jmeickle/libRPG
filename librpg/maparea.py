@@ -19,7 +19,19 @@ class MapArea:
         pass
 
 
-class RectangleArea:
+class PositionList:
+
+    def __init__(self, iterable):
+        self.items = [x for x in iterable]
+
+    def __add__(self, iterable):
+        return PositionList([x for x in self] + [x for x in iterable])
+
+    def __getitem__(self, index):
+        return self.items[index]
+
+
+class RectangleArea(PositionList):
 
     def __init__(self, top_left, bottom_right):
         self.top = top_left[1]
