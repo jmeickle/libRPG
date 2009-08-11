@@ -1,5 +1,7 @@
 from librpg.map import MapModel, MapController
 from librpg.state import State
+from librpg.maparea import MapArea
+from librpg.util import Position
 from librpg.locals import *
 
 class World(object):
@@ -84,3 +86,29 @@ class WorldMap(MapModel):
         self.world.state.save_local(PARTY_POSITION_LOCAL_STATE,
                                     party_local_state)
         self.world.save(filename)
+
+
+class TeleportArea(MapArea):
+
+    def __init__(self, position, map_id=None):
+        MapArea.__init__(self)
+        self.map_id = map_id
+        self.position = position
+
+    def party_entered(self, party_avatar, position):
+        party_avatar.map.schedule_teleport(self.map_id,
+                                           self.position)
+
+
+class RelativeTeleportArea(MapArea):
+
+    def __init__(self, x_offset=0, y_offset=0, map_id=None):
+        MapArea.__init__(self)
+        self.map_id = map_id
+        self.x_offset = x_offset
+        self.y_offset = y_offset
+
+    def party_entered(self, party_avatar, position):
+        position = Position(position.x + self.x_offset, position.y + self.y_offset)
+        party_avatar.map.schedule_teleport(self.map_id,
+                                           position)

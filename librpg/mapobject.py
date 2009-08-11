@@ -48,6 +48,7 @@ class MapObject(object):
 
         self.map = None
         self.position = None
+        self.prev_positon = None
         self.obstacle = obstacle
 
         self.movement_phase = 0
@@ -58,6 +59,9 @@ class MapObject(object):
         self.sliding = False
         self.just_completed_movement = False
 
+        self.areas = []
+        self.prev_areas = []
+        
         if image is not None:
             self.image = image
         elif image_file is not None:

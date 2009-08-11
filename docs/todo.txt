@@ -47,11 +47,14 @@ ok      0.3 Rename Map to MapController
 ok      0.3 Save map state when teleporting from map to map
 ok      0.3 Save map state in save file
 ok      0.3 Make party position be loaded from save file
-        0.3 Implement MapAreas
-        0.3 Implement PositionList iterable for MapAreas to use
-        0.3 Implement librpg.world.TeleportArea
+ok      0.3 Implement MapAreas
+ok      0.3 Implement PositionList iterable for MapAreas to use
+ok      0.3 Implement librpg.world.TeleportArea
+        0.3 Implement __add__ in a PositionList base class
         0.3 Refactor message queue out of MapModel to decrease its complexity
         0.3 Group files into submodules
+        0.3 Optimize in-map teleports
+        0.3 Fix obj.collide_with_party(party_avatar, party_avatar.facing) - cannot use facing, what is the party is knocked back?
         0.3 Update API docs
         0.4 Improve message dialogs - split texts too big into more than 1 dialog
         0.4 Animated tiles (period | 12 allows (1, 2, 3, 4, 6, 12), one surface per phase)

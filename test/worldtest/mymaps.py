@@ -1,24 +1,12 @@
-from librpg.world import WorldMap
+from librpg.world import WorldMap, RelativeTeleportArea
 from librpg.mapobject import ScenarioMapObject, MapObject
+from librpg.maparea import RectangleArea, MapArea
 from librpg.util import Position
 from librpg.movement import Face, Wait
 from librpg.dialog import MessageDialog
 from librpg.locals import *
 
 SAVE_FILE = 'save.sav'
-
-class Teleport(ScenarioMapObject):
-
-    def __init__(self, map, map_id, position):
-       
-        ScenarioMapObject.__init__(self, map, 0, 0)
-        self.target_map_id = map_id
-        self.target_position = position
-        
-    def collide_with_party(self, party_avatar, direction):
-    
-        self.map.schedule_teleport(self.target_map_id, self.target_position)
-
 
 class SavePoint(ScenarioMapObject):
 
@@ -60,6 +48,20 @@ class Chest(MapObject):
             self.closed = True
 
 
+class AreaAroundWell(MapArea):
+
+    def party_entered(self, party_avatar, position):
+        print 'party_entered(%s, %s)' % (party_avatar, position)
+
+    def party_moved(self, party_avatar, left_position, entered_position,
+                    from_outside):
+        print 'party_moved(%s, %s, %s, %s)' % (party_avatar, left_position,
+                                               entered_position, from_outside)
+
+    def party_left(self, party_avatar, position):
+        print 'party_left(%s, %s)' % (party_avatar, position)
+
+    
 class Map1(WorldMap):
 
     def __init__(self):
@@ -70,8 +72,8 @@ class Map1(WorldMap):
 
     def initialize(self, local_state):
     
-        for y in range(10):
-            self.add_object(Teleport(self, 2, Position(1, y)), Position(9, y))
+        self.add_area(RelativeTeleportArea(x_offset=-8, map_id=2),
+                      RectangleArea((9, 0), (9, 9)))
 
         if local_state is not None:
             self.chest = Chest(local_state['chest_closed'])
@@ -95,10 +97,12 @@ class Map2(WorldMap):
                           [('upper_tileset32.png', 'upper_tileset32.bnd'),])
 
     def initialize(self, local_state):
-    
-        for y in range(10):
-            self.add_object(Teleport(self, 1, Position(8, y)), Position(0, y))
-            self.add_object(Teleport(self, 3, Position(1, y)), Position(9, y))
+        
+        self.add_area(RelativeTeleportArea(x_offset=+8, map_id=1),
+                      RectangleArea((0, 0), (0, 9)))
+                      
+        self.add_area(RelativeTeleportArea(x_offset=-8, map_id=3),
+                      RectangleArea((9, 0), (9, 9)))
 
         if local_state is not None:
             self.chest = Chest(local_state['chest_closed'])
@@ -107,6 +111,7 @@ class Map2(WorldMap):
         self.add_object(self.chest, Position(5, 5))
 
         self.add_object(SavePoint(self), Position(3, 4))
+        self.add_area(AreaAroundWell(), RectangleArea((2, 3), (4, 5)))
 
     def save(self):
 
@@ -122,6 +127,6 @@ class Map3(WorldMap):
                           [('upper_tileset32.png', 'upper_tileset32.bnd'),])
 
     def initialize(self, local_state):
-    
-        for y in range(10):
-            self.add_object(Teleport(self, 2, Position(8, y)), Position(0, y))
+
+        self.add_area(RelativeTeleportArea(x_offset=+8, map_id=2),
+                      RectangleArea((0, 0), (0, 9)))

@@ -106,12 +106,27 @@ class MapController(object):
         party_avatar = self.map_model.party_avatar
         if party_avatar.just_completed_movement:
             party_avatar.just_completed_movement = False
+
+            # Trigger below objects' collide_with_party()
             for obj in self.map_model.object_layer.\
                        get_pos(party_avatar.position).below:
                 obj.collide_with_party(party_avatar, party_avatar.facing)
+
+            # Trigger above objects' collide_with_party()
             for obj in self.map_model.object_layer.\
                        get_pos(party_avatar.position).above:
                 obj.collide_with_party(party_avatar, party_avatar.facing)
+
+            # Trigger areas' party_entered and party_moved()
+            for area in self.map_model.area_layer.get_pos(party_avatar.position):
+                if area not in party_avatar.prev_areas:
+                    coming_from_outside = True
+                    area.party_entered(party_avatar, party_avatar.position)
+                else:
+                    coming_from_outside = False
+                
+                area.party_moved(party_avatar, party_avatar.prev_position,
+                                 party_avatar.position, coming_from_outside)
 
     def sync_movement(self, objects):
 
@@ -210,6 +225,12 @@ class MapModel(object):
             for y in range(self.height):
                 object_layer_set(x, y, ObjectCell())
 
+        self.areas = []
+        self.area_layer = Matrix(self.width, self.height)
+        for x in range(self.width):
+            for y in range(self.height):
+                self.area_layer.set(x, y, [])
+
         self.message_queue = []
         self.current_message = None
 
@@ -288,7 +309,9 @@ class MapModel(object):
         else:
             raise Exception('Object is neither below, obstacle or above')
 
-        obj.position, obj.map = position, self
+        obj.position = position
+        obj.areas = self.area_layer.get_pos(position)
+        obj.map = self
         return True
 
     def remove_object(self, obj):
@@ -306,6 +329,18 @@ class MapModel(object):
         result = obj.position
         obj.position, obj.map = None, None
         return result
+
+    def add_area(self, area, positions):
+        self.areas.append(area)
+        for pos in positions:
+            self.area_layer.get_pos(pos).append(area)
+        area.area = positions
+
+    def remove_area(self, area, positions):
+        self.areas.remove(area)
+        for pos in area.area:
+            self.area_layer.get_pos(pos).remove(area)
+        area.area = list(set(area.area) - set(positions))
 
     def try_to_move_object(self, obj, direction, slide=False):
         if obj.movement_phase > 0:
@@ -332,6 +367,10 @@ class MapModel(object):
                                    new_scenario, new_object, direction)):
             # Move
             self.move_object(obj, old_object, new_object, desired, slide)
+            if obj is self.party_avatar:
+                for area in self.area_layer.get_pos(old_pos):
+                    if area not in self.area_layer.get_pos(desired):
+                        area.party_left(self.party_avatar, old_pos)
             return True
         else:
             # Do not move, something is on the way
@@ -370,7 +409,10 @@ class MapModel(object):
 
         old_object.remove_object(obj)
         new_object.add_object(obj)
+        obj.prev_position = obj.position
         obj.position = new_pos
+        obj.prev_areas = obj.areas
+        obj.areas = self.area_layer.get_pos(new_pos)
 
     def party_action(self):
 
