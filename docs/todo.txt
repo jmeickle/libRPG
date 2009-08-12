@@ -53,9 +53,11 @@ ok      0.3 Implement librpg.world.TeleportArea
 ok      0.3 Implement __add__ in a PositionList base class
 ok      0.3 Refactor message queue out of MapModel to decrease its complexity
 ok      0.3 Optimize in-map teleports
-        0.3 Consider context stack based menus
+        0.3 Design context stack based menus
+        0.3 Write context stack and integrate MessageDialog
         0.3 Update API docs
         0.3 Fix obj.collide_with_party(party_avatar, party_avatar.facing) - cannot use facing, what if the party is knocked back?
+        0.4 PEP-8 item.py
         0.4 Improve message dialogs - split texts too big into more than 1 dialog
         0.4 Animated tiles (period | 12 allows (1, 2, 3, 4, 6, 12), one surface per phase)
         0.5 Design Menu API
