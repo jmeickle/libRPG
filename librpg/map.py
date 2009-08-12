@@ -414,6 +414,19 @@ class MapModel(object):
         obj.prev_areas = obj.areas
         obj.areas = self.area_layer.get_pos(new_pos)
 
+    def teleport_object(self, obj, new_pos):
+
+        old_pos = obj.position
+        old_object = self.object_layer.get_pos(old_pos)
+        new_object = self.object_layer.get_pos(new_pos)
+        
+        old_object.remove_object(obj)
+        new_object.add_object(obj)
+        obj.prev_position = old_pos
+        obj.position = new_pos
+        obj.prev_areas = obj.areas
+        obj.areas = self.area_layer.get_pos(new_pos)
+
     def party_action(self):
 
         old_pos = self.party_avatar.position

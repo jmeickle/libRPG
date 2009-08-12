@@ -27,7 +27,7 @@ class World(object):
         created_map.id = map_id
         return created_map
 
-    def schedule_teleport(self, map_id, position):
+    def schedule_teleport(self, position, map_id):
         self.scheduled_teleport = (map_id, position)
 
     def gameloop(self):
@@ -75,9 +75,12 @@ class WorldMap(MapModel):
         self.world = None
         self.id = None
 
-    def schedule_teleport(self, map_id, position):
-        self.world.schedule_teleport(map_id, position)
-        self.leave()
+    def schedule_teleport(self, position, map_id=None):
+        if map_id is not None:
+            self.world.schedule_teleport(position, map_id)
+            self.leave()
+        else:
+            self.teleport_object(self.party_avatar, position)
 
     def save_world(self, filename):
         self.world.state.save_local(self.id, self.save())
@@ -96,8 +99,8 @@ class TeleportArea(MapArea):
         self.position = position
 
     def party_entered(self, party_avatar, position):
-        party_avatar.map.schedule_teleport(self.map_id,
-                                           self.position)
+        party_avatar.map.schedule_teleport(self.position,
+                                           self.map_id)
 
 
 class RelativeTeleportArea(MapArea):
@@ -110,5 +113,5 @@ class RelativeTeleportArea(MapArea):
 
     def party_entered(self, party_avatar, position):
         position = Position(position.x + self.x_offset, position.y + self.y_offset)
-        party_avatar.map.schedule_teleport(self.map_id,
-                                           position)
+        party_avatar.map.schedule_teleport(position,
+                                           self.map_id)

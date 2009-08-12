@@ -130,3 +130,8 @@ class Map3(WorldMap):
 
         self.add_area(RelativeTeleportArea(x_offset=+8, map_id=2),
                       RectangleArea((0, 0), (0, 9)))
+                      
+        self.add_area(RelativeTeleportArea(y_offset=+8),
+                      RectangleArea((0, 0), (9, 0)))
+        self.add_area(RelativeTeleportArea(y_offset=-8),
+                      RectangleArea((0, 9), (9, 9)))
