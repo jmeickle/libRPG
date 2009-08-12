@@ -12,6 +12,7 @@ from librpg.tile import *
 from librpg.config import *
 from librpg.locals import *
 from librpg.movement import Step
+from librpg.dialog import MessageQueue
 
 
 class MapController(object):
@@ -47,19 +48,16 @@ class MapController(object):
             if map_model.pause_delay > 0:
                 map_model.pause_delay -= 1
             else:
-                if map_model.current_message is None or\
-                   not map_model.current_message.block_movement:
+                if not map_model.message_queue.is_busy():
                     self.flow_object_movement()
 
                 self.process_input()
 
-                if map_model.current_message is None and\
-                   map_model.message_queue:
-                    map_model.current_message = map_model.message_queue.pop(0)
+                map_model.message_queue.pop_next()
 
                 if party_movement and not party_avatar.scheduled_movement and\
                    not party_avatar.movement_phase and\
-                   map_model.current_message is None:
+                   not map_model.message_queue.is_busy():
                     party_avatar.schedule_movement(Step(party_movement[0]))
 
             map_view_draw()
@@ -70,7 +68,7 @@ class MapController(object):
             if event.type == QUIT:
                 self.map_model.leave()
             elif event.type == KEYDOWN:
-                if not self.map_model.current_message:
+                if not self.map_model.message_queue.is_active():
                     direction = MapController.KEY_TO_DIRECTION.get(event.key)
                     if direction is not None and\
                        not direction in self.map_model.party_movement:
@@ -85,7 +83,7 @@ class MapController(object):
                        not direction in self.map_model.party_movement:
                         self.party_movement_append(direction)
                     elif event.key == K_SPACE or event.key == K_RETURN:
-                        self.map_model.current_message = None
+                        self.map_model.message_queue.close()
             elif event.type == KEYUP:
                 direction = MapController.KEY_TO_DIRECTION.get(event.key)
                 if direction is not None and\
@@ -231,8 +229,7 @@ class MapModel(object):
             for y in range(self.height):
                 self.area_layer.set(x, y, [])
 
-        self.message_queue = []
-        self.current_message = None
+        self.message_queue = MessageQueue()
 
         self.keep_going = True
         self.pause_delay = 0
@@ -457,7 +454,7 @@ class MapModel(object):
             obj.activate(self.party_avatar, self.party_avatar.facing)
 
     def schedule_message(self, message):
-        self.message_queue.append(message)
+        self.message_queue.push(message)
 
     def leave(self):
         self.keep_going = False

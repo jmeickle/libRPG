@@ -55,3 +55,30 @@ class MessageDialog(object):
                 cur_line += ' ' + word
         self.lines.append([last_y_offset, cur_line])
 
+
+class MessageQueue:
+
+    def __init__(self):
+        self.current = None
+        self.queue=[]
+    
+    def is_busy(self):
+        return self.current is not None and self.current.block_movement
+
+    def is_active(self):
+        return self.current is not None
+
+    def pop_next(self):
+        if self.current is None and self.queue:
+            self.current = self.queue.pop(0)
+
+    def close(self):
+        self.current = None
+
+    def push(self, message):
+        self.queue.append(message)
+
+    def blit(self, screen, bg_rect):
+        if self.current:
+            surface, dim = self.current.draw(bg_rect)
+            screen.blit(surface, dim)
