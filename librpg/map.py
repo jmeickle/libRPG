@@ -12,83 +12,82 @@ from librpg.tile import *
 from librpg.config import *
 from librpg.locals import *
 from librpg.movement import Step
+from librpg.context import Context
 from librpg.dialog import MessageQueue
 
 
-class MapController(object):
+class MapController(Context):
 
     # Read-Only Attributes:
     # map_view - MapView (View component of MVC)
     # map_model - MapModel (Model component of MVC)
 
     KEY_TO_DIRECTION = {K_DOWN:DOWN, K_UP:UP, K_LEFT:LEFT, K_RIGHT:RIGHT}
-    FPS = 30
 
     def __init__(self, map_model, local_state=None):
+        Context.__init__(self)
         self.map_model = map_model
         self.map_model.controller = self
         self.map_model.initialize(local_state)
         self.map_view = MapView(self.map_model)
+        self.moving_sync = False
 
-    def gameloop(self):
-        # Locals for optimization
+    def initialize(self):
         map_model = self.map_model
-        map_view_draw = self.map_view.draw
-        party_avatar = map_model.party_avatar
-        party_movement = map_model.party_movement
-        self.party_movement_append = party_movement.append
-        self.party_movement_remove = party_movement.remove
+        self.map_view_draw = self.map_view.draw
+        self.party_avatar = map_model.party_avatar
+        self.party_movement = map_model.party_movement
+        self.party_movement_append = self.party_movement.append
+        self.party_movement_remove = self.party_movement.remove
+        
+    def step(self):
+        if self.map_model.pause_delay > 0:
+            self.map_model.pause_delay -= 1
+            return
+            
+        if self.moving_sync:
+            sync_stopped = self.sync_movement_step()
+            if not sync_stopped:
+                return
 
-        map_view_draw()
+        if not self.map_model.message_queue.is_busy():
+            self.flow_object_movement()
 
-        self.clock = pygame.time.Clock()
-        while map_model.keep_going:
-            self.clock.tick(MapController.FPS)
+        self.map_model.message_queue.pop_next()
 
-            if map_model.pause_delay > 0:
-                map_model.pause_delay -= 1
-            else:
-                if not map_model.message_queue.is_busy():
-                    self.flow_object_movement()
+        if self.party_movement and not self.party_avatar.scheduled_movement\
+           and not self.party_avatar.movement_phase \
+           and not self.map_model.message_queue.is_busy():
+            self.party_avatar.schedule_movement(Step(self.party_movement[0]))
 
-                self.process_input()
-
-                map_model.message_queue.pop_next()
-
-                if party_movement and not party_avatar.scheduled_movement and\
-                   not party_avatar.movement_phase and\
-                   not map_model.message_queue.is_busy():
-                    party_avatar.schedule_movement(Step(party_movement[0]))
-
-            map_view_draw()
-
-    def process_input(self):
-        for event in pygame.event.get():
-            #print event
-            if event.type == QUIT:
-                self.map_model.leave()
-            elif event.type == KEYDOWN:
-                if not self.map_model.message_queue.is_active():
-                    direction = MapController.KEY_TO_DIRECTION.get(event.key)
-                    if direction is not None and\
-                       not direction in self.map_model.party_movement:
-                        self.party_movement_append(direction)
-                    elif event.key == K_SPACE or event.key == K_RETURN:
-                        self.map_model.party_action()
-                    elif event.key == K_ESCAPE:
-                        self.map_model.leave()
-                else:
-                    direction = MapController.KEY_TO_DIRECTION.get(event.key)
-                    if direction is not None and\
-                       not direction in self.map_model.party_movement:
-                        self.party_movement_append(direction)
-                    elif event.key == K_SPACE or event.key == K_RETURN:
-                        self.map_model.message_queue.close()
-            elif event.type == KEYUP:
+    def draw(self):
+        self.map_view_draw()
+        
+    def process_event(self, event):
+        if event.type == QUIT:
+            self.context_stack.stop()
+        elif event.type == KEYDOWN:
+            if not self.map_model.message_queue.is_active():
                 direction = MapController.KEY_TO_DIRECTION.get(event.key)
                 if direction is not None and\
-                   direction in self.map_model.party_movement:
-                    self.party_movement_remove(direction)
+                   not direction in self.map_model.party_movement:
+                    self.party_movement_append(direction)
+                elif event.key == K_SPACE or event.key == K_RETURN:
+                    self.map_model.party_action()
+                elif event.key == K_ESCAPE:
+                    self.context_stack.stop()
+            else:
+                direction = MapController.KEY_TO_DIRECTION.get(event.key)
+                if direction is not None and\
+                   not direction in self.map_model.party_movement:
+                    self.party_movement_append(direction)
+                elif event.key == K_SPACE or event.key == K_RETURN:
+                    self.map_model.message_queue.close()
+        elif event.type == KEYUP:
+            direction = MapController.KEY_TO_DIRECTION.get(event.key)
+            if direction is not None and\
+               direction in self.map_model.party_movement:
+                self.party_movement_remove(direction)
 
     def flow_object_movement(self):
         party_avatar = self.map_model.party_avatar
@@ -127,12 +126,16 @@ class MapController(object):
                                  party_avatar.position, coming_from_outside)
 
     def sync_movement(self, objects):
-
-        while any([o.scheduled_movement for o in objects]):
-            self.clock.tick(MapController.FPS)
-            for o in objects:
-                o.flow()
-            self.map_view.draw()
+        self.sync_objects = objects
+        self.moving_sync = True
+   
+    def sync_movement_step(self):
+        if all([not o.scheduled_movement for o in self.sync_objects]):
+            self.moving_sync = False
+            return True
+        for o in self.sync_objects:
+            o.flow()
+        return False
 
 
 class MapModel(object):
@@ -231,7 +234,6 @@ class MapModel(object):
 
         self.message_queue = MessageQueue()
 
-        self.keep_going = True
         self.pause_delay = 0
 
     def load_from_map_file(self):
@@ -455,9 +457,6 @@ class MapModel(object):
 
     def schedule_message(self, message):
         self.message_queue.push(message)
-
-    def leave(self):
-        self.keep_going = False
 
     def pause(self, length):
         self.pause_delay = length
