@@ -69,8 +69,5 @@ class BoulderMaze(MapModel):
 a = librpg.party.Character('Andy', 'char_alex32.png')
 r = librpg.party.CharacterReserve([a])
 
-model = BoulderMaze()
-model.add_party(r.create_party(3, [a]), Position(4, 9))
-get_context_stack().stack_context(MapController(model))
-get_context_stack().gameloop()
+librpg.world.MicroWorld(BoulderMaze(), r.create_party(3, [a]), Position(4, 9)).gameloop()
 exit()

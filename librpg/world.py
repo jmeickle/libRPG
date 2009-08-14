@@ -5,23 +5,33 @@ from librpg.util import Position
 from librpg.context import ContextStack, get_context_stack
 from librpg.locals import *
 
-class World(object):
+class BaseWorld(object):
 
-    def __init__(self, maps, initial_map=None, initial_position=None,
+    def __init__(self, initial_map=None, initial_position=None,
                  state_file=None):
         assert (initial_map is not None and initial_position is not None)\
                or state_file is not None,\
-               'World.__init__ cannot determine the party\'s starting position'
-        self.maps = maps
+               'BaseWorld.__init__ cannot determine the party\'s starting\
+               position'
         self.party = None
         self.state_file = state_file
         self.state = State(state_file)
         self.party_pos = self.state.load_local(PARTY_POSITION_LOCAL_STATE)
-        if self.party_pos is not None:
-            self.scheduled_teleport = (self.party_pos[0], self.party_pos[1])
-        else:
-            self.scheduled_teleport = (initial_map, initial_position)
+        if self.party_pos is None:
+            self.party_pos = (initial_map, initial_position, DOWN)
 
+    def save(self, filename):
+        self.state.save(filename)
+
+
+class World(BaseWorld):
+
+    def __init__(self, maps, initial_map=None, initial_position=None,
+                 state_file=None):
+        BaseWorld.__init__(self, initial_map, initial_position, state_file)
+        self.maps = maps
+        self.scheduled_teleport = (self.party_pos[0], self.party_pos[1])
+        
     def create_map(self, map_id):
         created_map = self.maps[map_id]()
         created_map.world = self
@@ -65,8 +75,35 @@ class World(object):
             prev_party_movement = map_model.party_movement
             map_model.remove_party()
 
-    def save(self, filename):
-        self.state.save(filename)
+
+class MicroWorld(BaseWorld):
+
+    TEH_MAP_ID = 42
+
+    def __init__(self, map, party, initial_position=None, state_file=None):
+        BaseWorld.__init__(self, MicroWorld.TEH_MAP_ID, initial_position, state_file)
+        self.only_map = map
+        self.party = party
+
+    def gameloop(self):
+    
+        # Create new map
+        map_id, position, facing = self.party_pos
+        assert map_id == MicroWorld.TEH_MAP_ID, 'The loaded map id is not TEH map id.'
+
+        # Use data that was stored
+        self.only_map.add_party(self.party, position, facing)
+        local_state = self.state.load_local(map_id)
+
+        # Transfer control to map
+        get_context_stack().stack_context(MapController(self.only_map,
+                                                        local_state))
+        get_context_stack().gameloop()
+
+        # Store data that we wish to carry
+        local_state = self.only_map.save()
+        self.state.save_local(map_id, local_state)
+        self.only_map.remove_party()
 
 
 class WorldMap(MapModel):
@@ -85,14 +122,6 @@ class WorldMap(MapModel):
         else:
             self.teleport_object(self.party_avatar, position)
 
-    def save_world(self, filename):
-        self.world.state.save_local(self.id, self.save())
-        party_local_state = (self.id, self.party_avatar.position,
-                             self.party_avatar.facing)
-        self.world.state.save_local(PARTY_POSITION_LOCAL_STATE,
-                                    party_local_state)
-        self.world.save(filename)
-
 
 class TeleportArea(MapArea):
 
@@ -102,8 +131,7 @@ class TeleportArea(MapArea):
         self.position = position
 
     def party_entered(self, party_avatar, position):
-        party_avatar.map.schedule_teleport(self.position,
-                                           self.map_id)
+        party_avatar.map.schedule_teleport(self.position, self.map_id)
 
 
 class RelativeTeleportArea(MapArea):

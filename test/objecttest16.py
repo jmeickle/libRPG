@@ -71,8 +71,5 @@ class ObjectTestMap(MapModel):
 a = librpg.party.Character('Andy', 'chara1.png', 3)
 r = librpg.party.CharacterReserve([a])
 
-model = ObjectTestMap()
-model.add_party(r.create_party(3, [a]), Position(8, 8))
-get_context_stack().stack_context(MapController(model))
-get_context_stack().gameloop()
+librpg.world.MicroWorld(ObjectTestMap(), r.create_party(3, [a]), Position(8, 8)).gameloop()
 exit()

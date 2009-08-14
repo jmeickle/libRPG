@@ -476,8 +476,16 @@ class MapModel(object):
         return result
 
     def sync_movement(self, objects):
-    
         self.controller.sync_movement(objects)
+
+    def save_world(self, filename):
+        self.world.state.save_local(self.id, self.save())
+        party_local_state = (self.id, self.party_avatar.position,
+                             self.party_avatar.facing)
+        self.world.state.save_local(PARTY_POSITION_LOCAL_STATE,
+                                    party_local_state)
+        self.world.save(filename)
+
 
 class ObjectCell(object):
 
