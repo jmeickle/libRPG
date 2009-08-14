@@ -1,3 +1,6 @@
+import pygame
+from pygame.locals import *
+
 # Direction constants
 UP = 1
 RIGHT = 2
@@ -17,3 +20,7 @@ PARTY_POSITION_LOCAL_STATE = '__PARTY_POSITION_LOCAL_STATE'
 # Frames per second
 
 FPS = 30
+
+# Future key config
+
+KEY_TO_DIRECTION = {K_DOWN:DOWN, K_UP:UP, K_LEFT:LEFT, K_RIGHT:RIGHT}

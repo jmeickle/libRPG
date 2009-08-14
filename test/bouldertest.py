@@ -13,7 +13,7 @@ from librpg.util import Position
 from librpg.party import Character, CharacterReserve
 from librpg.movement import Slide
 from librpg.dialog import MessageDialog
-from librpg.context import ContextStack
+from librpg.context import ContextStack, get_context_stack
 
 class Boulder(ScenarioMapObject):
 
@@ -71,7 +71,6 @@ r = librpg.party.CharacterReserve([a])
 
 model = BoulderMaze()
 model.add_party(r.create_party(3, [a]), Position(4, 9))
-context_stack = ContextStack()
-context_stack.stack_context(MapController(model))
-context_stack.gameloop()
+get_context_stack().stack_context(MapController(model))
+get_context_stack().gameloop()
 exit()

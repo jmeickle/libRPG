@@ -2,7 +2,7 @@ from librpg.map import MapModel, MapController
 from librpg.state import State
 from librpg.maparea import MapArea
 from librpg.util import Position
-from librpg.context import ContextStack
+from librpg.context import ContextStack, get_context_stack
 from librpg.locals import *
 
 class World(object):
@@ -21,7 +21,6 @@ class World(object):
             self.scheduled_teleport = (self.party_pos[0], self.party_pos[1])
         else:
             self.scheduled_teleport = (initial_map, initial_position)
-        self.context_stack = ContextStack()
 
     def create_map(self, map_id):
         created_map = self.maps[map_id]()
@@ -37,7 +36,7 @@ class World(object):
         prev_party_movement = []
 
         while self.scheduled_teleport:
-            print self.state.locals
+            # print self.state.locals
         
             # Create new map
             map_id, position = self.scheduled_teleport
@@ -55,9 +54,9 @@ class World(object):
 
             # Transfer control to map
             self.scheduled_teleport = None
-            self.context_stack.stack_context(MapController(map_model,
-                                                           local_state))
-            self.context_stack.gameloop()
+            get_context_stack().stack_context(MapController(map_model,
+                                                            local_state))
+            get_context_stack().gameloop()
 
             # Store data that we wish to carry
             local_state = map_model.save()

@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 
 from librpg.locals import *
+from librpg.virtual_screen import get_screen
 
 class ContextStack:
 
@@ -21,8 +22,7 @@ class ContextStack:
             self.stack.remove(context)
         except ValueError:
             return None
-        context.destroy()
-        context.context_stack = None
+        self.__destroyed_context(context)
         return context
 
     def stop(self):
@@ -30,7 +30,12 @@ class ContextStack:
 
     def __inserted_context(self, context):
         context.initialize()
-        context.context_stack = self
+
+    def __destroyed_context(self, context):
+        context.destroy()
+        for possible_child in self.stack:
+            if possible_child.parent is context:
+                self.remove_context(possible_child)
 
     def gameloop(self):
         self.keep_going = True
@@ -41,11 +46,14 @@ class ContextStack:
                 if context.active:
                     context.step()
                     context.draw()
+            get_screen().flip()
+            
+
             self.__process_events()
 
     def __process_events(self):
         for event in pygame.event.get():
-            #print event
+            # print event
             for context in reversed(self.stack):
                 consumed_event = context.process_event(event)
                 if consumed_event:
@@ -54,8 +62,9 @@ class ContextStack:
 
 class Context(object):
 
-    def __init__(self):
+    def __init__(self, parent=None):
         self.active = True
+        self.parent = parent
 
     # Virtual
     def process_event(self, event):
@@ -78,6 +87,11 @@ class Context(object):
         pass
 
     def stop(self):
-        removed = self.context_stack.remove_context(self)
+        removed = get_context_stack().remove_context(self)
         if removed is not None:
             self.destroy()
+
+context_stack = ContextStack()
+
+def get_context_stack():
+    return context_stack

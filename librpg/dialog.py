@@ -2,8 +2,11 @@
 
 import pygame
 from pygame.locals import *
-from config import dialog_config as cfg
 
+from librpg.config import dialog_config as cfg
+from librpg.config import graphics_config as g_cfg
+from librpg.virtual_screen import get_screen
+from librpg.context import Context
 
 class MessageDialog(object):
 
@@ -12,22 +15,23 @@ class MessageDialog(object):
         self.surface = None
         self.block_movement = block_movement
 
-    def draw(self, bg_rect):
+    def draw(self):
         if not self.surface:
             font = pygame.font.SysFont(cfg.font_name, cfg.font_size)
 
             # Create empty surface
-            self.surface = pygame.Surface((bg_rect.width, bg_rect.height / 2),
-                                          SRCALPHA, 32)
+            self.surface = pygame.Surface((g_cfg.screen_width,
+                                           g_cfg.screen_height / 2), SRCALPHA,
+                                           32)
 
             # Draw dialog background
             dim = pygame.Rect((cfg.border_width, cfg.border_width),
-                              (bg_rect.width - 2 * cfg.border_width,
-                               bg_rect.height / 2 - 2 * cfg.border_width))
+                              (g_cfg.screen_width - 2 * cfg.border_width,
+                               g_cfg.screen_height / 2 - 2 * cfg.border_width))
             pygame.draw.rect(self.surface, cfg.bg_color, dim)
 
             # Split into lines
-            self.build_lines(font, bg_rect.width)
+            self.build_lines(font, g_cfg.screen_width)
 
             # Draw message
             for line in self.lines:
@@ -35,8 +39,9 @@ class MessageDialog(object):
                                   (2 * cfg.border_width, 2 * cfg.border_width +
                                    line[0]))
 
-        return self.surface, pygame.Rect(0, bg_rect.height / 2, bg_rect.width,
-                                         bg_rect.height / 2)
+        return self.surface, pygame.Rect(0, g_cfg.screen_height / 2,
+                                         g_cfg.screen_width,
+                                         g_cfg.screen_height / 2)
 
     def build_lines(self, font, box_width):
         self.lines = []
@@ -56,11 +61,12 @@ class MessageDialog(object):
         self.lines.append([last_y_offset, cur_line])
 
 
-class MessageQueue:
+class MessageQueue(Context):
 
-    def __init__(self):
+    def __init__(self, parent=None):
+        Context.__init__(self, parent)
         self.current = None
-        self.queue=[]
+        self.queue = []
     
     def is_busy(self):
         return self.current is not None and self.current.block_movement
@@ -78,7 +84,21 @@ class MessageQueue:
     def push(self, message):
         self.queue.append(message)
 
-    def blit(self, screen, bg_rect):
+    def draw(self):
         if self.current:
-            surface, dim = self.current.draw(bg_rect)
-            screen.blit(surface, dim)
+            surface, dim = self.current.draw()
+            get_screen().blit(surface, dim)
+
+    def step(self):
+        self.pop_next()
+
+    def process_event(self, event):
+        if not self.current:
+            return False
+            
+        if event.type == KEYDOWN:
+            if event.key == K_SPACE or event.key == K_RETURN:
+                self.close()
+                return True
+
+        return False

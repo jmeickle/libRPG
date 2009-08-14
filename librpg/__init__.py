@@ -11,4 +11,3 @@ def init():
                         config.graphics_config.display_mode,
                         config.graphics_config.screen_dimensions,
                         config.graphics_config.scale)
-

@@ -38,9 +38,8 @@ print 'Added'
 print
 
 print 'Starting gameloop()'
-context_stack = librpg.context.ContextStack()
-context_stack.stack_context(m)
-context_stack.gameloop()
+librpg.context.get_context_stack().stack_context(m)
+librpg.context.get_context_stack().gameloop()
 print 'Finished gameloop()'
 
 exit()

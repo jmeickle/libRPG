@@ -16,7 +16,7 @@ from librpg.util import Position, inverse
 from librpg.party import Character, CharacterReserve
 from librpg.movement import Slide, Wait, ForcedStep, Face
 from librpg.dialog import MessageDialog
-from librpg.context import ContextStack
+from librpg.context import ContextStack, get_context_stack
 from librpg.locals import *
 
 class ObjectTestNPC(MapObject):
@@ -73,7 +73,6 @@ r = librpg.party.CharacterReserve([a])
 
 model = ObjectTestMap()
 model.add_party(r.create_party(3, [a]), Position(8, 8))
-context_stack = ContextStack()
-context_stack.stack_context(MapController(model))
-context_stack.gameloop()
+get_context_stack().stack_context(MapController(model))
+get_context_stack().gameloop()
 exit()

@@ -12,7 +12,7 @@ from librpg.tile import *
 from librpg.config import *
 from librpg.locals import *
 from librpg.movement import Step
-from librpg.context import Context
+from librpg.context import Context, get_context_stack
 from librpg.dialog import MessageQueue
 
 
@@ -22,8 +22,6 @@ class MapController(Context):
     # map_view - MapView (View component of MVC)
     # map_model - MapModel (Model component of MVC)
 
-    KEY_TO_DIRECTION = {K_DOWN:DOWN, K_UP:UP, K_LEFT:LEFT, K_RIGHT:RIGHT}
-
     def __init__(self, map_model, local_state=None):
         Context.__init__(self)
         self.map_model = map_model
@@ -31,6 +29,7 @@ class MapController(Context):
         self.map_model.initialize(local_state)
         self.map_view = MapView(self.map_model)
         self.moving_sync = False
+        self.message_queue = MessageQueue(self)
 
     def initialize(self):
         map_model = self.map_model
@@ -39,6 +38,7 @@ class MapController(Context):
         self.party_movement = map_model.party_movement
         self.party_movement_append = self.party_movement.append
         self.party_movement_remove = self.party_movement.remove
+        get_context_stack().stack_context(self.message_queue)
         
     def step(self):
         if self.map_model.pause_delay > 0:
@@ -50,14 +50,12 @@ class MapController(Context):
             if not sync_stopped:
                 return
 
-        if not self.map_model.message_queue.is_busy():
+        if not self.message_queue.is_busy():
             self.flow_object_movement()
 
-        self.map_model.message_queue.pop_next()
-
-        if self.party_movement and not self.party_avatar.scheduled_movement\
+        if self.party_movement and not self.party_avatar.scheduled_movement \
            and not self.party_avatar.movement_phase \
-           and not self.map_model.message_queue.is_busy():
+           and not self.message_queue.is_busy():
             self.party_avatar.schedule_movement(Step(self.party_movement[0]))
 
     def draw(self):
@@ -65,29 +63,27 @@ class MapController(Context):
         
     def process_event(self, event):
         if event.type == QUIT:
-            self.context_stack.stop()
+            get_context_stack().stop()
+            return True
         elif event.type == KEYDOWN:
-            if not self.map_model.message_queue.is_active():
-                direction = MapController.KEY_TO_DIRECTION.get(event.key)
-                if direction is not None and\
-                   not direction in self.map_model.party_movement:
-                    self.party_movement_append(direction)
-                elif event.key == K_SPACE or event.key == K_RETURN:
-                    self.map_model.party_action()
-                elif event.key == K_ESCAPE:
-                    self.context_stack.stop()
-            else:
-                direction = MapController.KEY_TO_DIRECTION.get(event.key)
-                if direction is not None and\
-                   not direction in self.map_model.party_movement:
-                    self.party_movement_append(direction)
-                elif event.key == K_SPACE or event.key == K_RETURN:
-                    self.map_model.message_queue.close()
+            direction = KEY_TO_DIRECTION.get(event.key)
+            if direction is not None and\
+               not direction in self.map_model.party_movement:
+                self.party_movement_append(direction)
+                return True
+            elif event.key == K_SPACE or event.key == K_RETURN:
+                self.map_model.party_action()
+                return True
+            elif event.key == K_ESCAPE:
+                get_context_stack().stop()
+                return True
         elif event.type == KEYUP:
-            direction = MapController.KEY_TO_DIRECTION.get(event.key)
+            direction = KEY_TO_DIRECTION.get(event.key)
             if direction is not None and\
                direction in self.map_model.party_movement:
                 self.party_movement_remove(direction)
+                return True
+        return False
 
     def flow_object_movement(self):
         party_avatar = self.map_model.party_avatar
@@ -231,8 +227,6 @@ class MapModel(object):
         for x in range(self.width):
             for y in range(self.height):
                 self.area_layer.set(x, y, [])
-
-        self.message_queue = MessageQueue()
 
         self.pause_delay = 0
 
@@ -456,7 +450,7 @@ class MapModel(object):
             obj.activate(self.party_avatar, self.party_avatar.facing)
 
     def schedule_message(self, message):
-        self.message_queue.push(message)
+        self.controller.message_queue.push(message)
 
     def pause(self, length):
         self.pause_delay = length

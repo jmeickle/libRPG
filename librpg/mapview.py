@@ -104,12 +104,6 @@ class MapView(object):
         # Draw the foreground
         get_screen().blit(self.foreground, (0, 0), bg_rect)
 
-        # Show messages
-        self.map_model.message_queue.blit(get_screen(), bg_rect)
-
-        # Flip display
-        get_screen().flip()
-
     def draw_object_layer(self, object_layer, bg_topleft):
         if graphics_config.object_width > graphics_config.tile_size or\
            graphics_config.object_height > graphics_config.tile_size:
