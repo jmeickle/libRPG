@@ -20,7 +20,7 @@ class ScaledScreen(pygame.Surface):
                                        display_mode)
 
     def init_virtual_screen(screen_dimensions, final_screen, scale):
-        return virtual_screen.ScaledScreen(screen_dimensions, final_screen,
+        return virtualscreen.ScaledScreen(screen_dimensions, final_screen,
                                            scale, depth=32)
 
 

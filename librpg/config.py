@@ -1,6 +1,6 @@
 import pygame
 
-from librpg import virtual_screen
+from librpg import virtualscreen
 
 
 class Config(object):
@@ -128,7 +128,7 @@ class GraphicsConfig(Config):
         self.map_border_height = self._screen_height / 2
 
     def recreate_screeens(self):
-        virtual_screen.screen_container.create_screen(self.real_screen_dimensions, self.display_mode, self.screen_dimensions, self.scale)
+        virtualscreen.screen_container.create_screen(self.real_screen_dimensions, self.display_mode, self.screen_dimensions, self.scale)
 
 
 class DialogConfig(Config):

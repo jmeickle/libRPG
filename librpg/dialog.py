@@ -5,7 +5,7 @@ from pygame.locals import *
 
 from librpg.config import dialog_config as cfg
 from librpg.config import graphics_config as g_cfg
-from librpg.virtual_screen import get_screen
+from librpg.virtualscreen import get_screen
 from librpg.context import Context
 
 class MessageDialog(object):

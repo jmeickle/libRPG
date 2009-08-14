@@ -2,7 +2,7 @@ from librpg.map import *
 from librpg.config import *
 from librpg.tile import *
 from librpg.locals import *
-from librpg.virtual_screen import get_screen
+from librpg.virtualscreen import get_screen
 
 class MapView(object):
 
