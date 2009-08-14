@@ -1,7 +1,7 @@
 from librpg.party import *
 from librpg.map import *
 
-class Life:
+class Life(object):
 
     def __init__(self):
         print 'Life object constructed'

@@ -4,7 +4,7 @@ from pygame.locals import *
 from librpg.locals import *
 from librpg.virtual_screen import get_screen
 
-class ContextStack:
+class ContextStack(object):
 
     def __init__(self):
         self.stack = []

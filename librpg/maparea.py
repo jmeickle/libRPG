@@ -1,6 +1,6 @@
 from librpg.util import Position
 
-class MapArea:
+class MapArea(object):
 
     def __init__(self):
         self.area = []
@@ -19,7 +19,7 @@ class MapArea:
         pass
 
 
-class PositionList:
+class PositionList(object):
 
     def __init__(self, iterable):
         self.items = [x for x in iterable]
