@@ -1,9 +1,8 @@
 import pygame
 
 from librpg import (virtual_screen, config, party, map, world, mapobject,
-                    camera, image, log, item, util)
-from librpg.locals import *
-
+                    camera, image, log, item, util, context, maparea, tile,
+                    dialog, mapview, menu, movement, state)
 
 def init():
     pygame.init()

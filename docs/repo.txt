@@ -30,10 +30,12 @@ trunk
         menutest.py
         ... other librpg test scripts
     docs
-        about.txt
-        iterations.txt
+        roadmap.txt
         repo.txt
         faq.txt
+        todo.txt
+        LICENSE.txt
+        README.txt
         reference
             ... library reference
         diagrams
