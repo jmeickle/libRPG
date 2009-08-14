@@ -1,3 +1,5 @@
+import gc
+
 from librpg.map import MapModel, MapController
 from librpg.state import State
 from librpg.maparea import MapArea
@@ -74,6 +76,8 @@ class World(BaseWorld):
             prev_facing = map_model.party_avatar.facing
             prev_party_movement = map_model.party_movement
             map_model.remove_party()
+            
+            gc.collect()
 
 
 class MicroWorld(BaseWorld):
