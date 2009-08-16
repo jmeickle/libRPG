@@ -6,10 +6,13 @@
 LibRPG documentation
 ====================
 
-A framework based on Pygame/Python for developing tile based old-school 2D tile-based RPGs. 
+A framework based on Pygame/Python for developing tile based old-school 2D
+tile-based RPGs. 
 
 ..  toctree::
 
+    installing
+    tutorial/index
     reference/index
 
 Indices and tables
