@@ -20,6 +20,8 @@ trunk
             ... other folders organizing pictures
         ... other game scripts and folders
     librpg
+        LICENSE.txt
+        README.txt
         menu.py
         map.py
         party.py
@@ -34,24 +36,22 @@ trunk
         repo.txt
         faq.txt
         todo.txt
-        LICENSE.txt
-        README.txt
         reference
-            ... library reference
-        diagrams
-            librpg.jude
-            package_diagram.png
-            inventory_diagram.png
-            ... other png diagrams
-        tutorial
-            lesson01
-                lesson01.py
-                lesson01.html
-            lesson02
-                lesson02.py
-                lesson02.html
-            ... other lessons
-        ... other documentation
+            make.bat
+            Makefile
+            source
+                index.rst
+                installing.rst
+                reference
+                    ... sphinx .rst files with library reference
+                tutorial
+                    lesson01
+                        lesson01.rst
+                        lesson01.py
+                    lesson02
+                        lesson01.rst
+                        lesson02.py
+                ... other lessons
     tools
         mapeditor
             mapeditor.py

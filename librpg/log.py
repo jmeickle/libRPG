@@ -16,17 +16,6 @@ class LogRoll(object):
     """
     A LogRoll receives all LogEntries that it was configured to catch and
     either stores them or logs them to a file.
-    
-    - To create a LogRoll, call Log.create_roll() passing a list of all
-      entry types the roll should catch. To destroy it, call
-      Log.destroy_roll().
-
-    - To write entries to the roll, let Log.write() do it automatically to
-      all rolls that catch those entries.
-
-    - To write the contents of a LogRoll to a file, use log_to_file() or
-      write_to_file(). If you used log_to_file(), the entries received will
-      keep being written to that file until stop_logging_to_file() is called.
     """
     
     UNLIMITED_CAPACITY = -1
@@ -37,7 +26,7 @@ class LogRoll(object):
 
     def __init__(self, entry_types, capacity=UNLIMITED_CAPACITY):
         """
-        Constructor.
+        *Constructor:*
         
         Initialize the LogRoll to catch the desires entry types
         (*entry_types* should be a list of entry_types) and to contain
@@ -102,16 +91,6 @@ class Log(object):
     which keeps LogRolls, each specialized in a set of events. Once set up,
     the application may use Log.write() to write an entry to the appropriate
     LogRolls.
-    
-    - Do not instantiate Log, it is a class with only static attributes and
-      methods.
-
-    - To create a LogRoll, use Log.create_roll() specifying the entry types
-      that the roll should catch. To destroy a LogRoll, use destroy_roll().
-
-    - To write a LogEntry to all rolls that catch it, simply call
-      Log.write().
-
     """
     
     ALL_LOG_ENTRIES = 1
@@ -192,12 +171,6 @@ class LogEntry(object):
 
     """
     A LogEntry is one event to be logged to a LogRoll.
-    
-    - To use LogEntries, an entry class should be inherited from LogEntry
-      (such as MyEntry). The constructor of that class should pass the class
-      name to LogEntry's constructor (LogEntry.__init__(self, "MyEntry")).
-      It should also overload __str__() a function that returns the LogEntry
-      as it should be printed to a file or to the screen.
     """
     
     def __init__(self, entry_type):

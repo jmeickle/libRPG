@@ -4,7 +4,37 @@
 .. automodule:: log
    :members:
 
-Example:
+Usage
+-----
+
+    - Do not instantiate Log, it is a class with only static attributes and
+      methods.
+
+    - To create a LogRoll, use Log.create_roll() specifying the entry types
+      that the roll should catch. To destroy a LogRoll, use destroy_roll().
+
+    - To write a LogEntry to all rolls that catch it, simply call
+      Log.write().
+
+    - To create a LogRoll, call Log.create_roll() passing a list of all
+      entry types the roll should catch. To destroy it, call
+      Log.destroy_roll().
+
+    - To write entries to the roll, let Log.write() do it automatically to
+      all rolls that catch those entries.
+
+    - To write the contents of a LogRoll to a file, use log_to_file() or
+      write_to_file(). If you used log_to_file(), the entries received will
+      keep being written to that file until stop_logging_to_file() is called.
+    
+    - To use LogEntries, an entry class should be inherited from LogEntry
+      (such as MyEntry). The constructor of that class should pass the class
+      name to LogEntry's constructor (LogEntry.__init__(self, "MyEntry")).
+      It should also overload __str__() a function that returns the LogEntry
+      as it should be printed to a file or to the screen.
+      
+Example
+-------
 
 ::
 
@@ -18,9 +48,6 @@ Example:
         def __str__(self):
             return "Added " + str(self.n)
         
-        def __repr__(self):
-            return "+" + str(self.n)
-            
     class SubtractedEntry(LogEntry):
         def __init__(self, n):
             LogEntry.__init__(self, "SubtractedEntry")
@@ -29,9 +56,6 @@ Example:
         def __str__(self):
             return "Subtracted " + str(self.n)
         
-        def __repr__(self):
-            return "-" + str(self.n)
-            
     a = Log().create_roll(["AddedEntry"])
     b = Log().create_roll(["SubtractedEntry"])
     c = Log().create_roll(["AddedEntry", "SubtractedEntry"])
@@ -39,8 +63,6 @@ Example:
 
     a.log_to_file(file("logtest.added.log", "w"))
     b.log_to_file(file("logtest.subtracted.log", "w"))
-
-    l=Log()
 
     Log().write(AddedEntry(1))
     Log().write(SubtractedEntry(2))
@@ -53,6 +75,3 @@ Example:
 
     Log().write(AddedEntry(7))
     Log().write(AddedEntry(8))
-
-    print d
-

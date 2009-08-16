@@ -1,3 +1,9 @@
+"""
+The :mod:`map` module is one of the main modules in LibRPG. It contains
+the definition of MapModel, which is the class representing a map in
+which a party will walk, act, etc.
+"""
+
 import csv
 import operator
 
@@ -137,63 +143,30 @@ class MapController(Context):
 class MapModel(object):
 
     """
-    party: Party (read-only)
-    Active Party on this map.
-
-    party_avatar: PartyAvatar (read-only)
-    MapObject representation of the active Party.
-
-    party_movement: Direction (private)
-    Direction to which the party is currently moving.
-
-    width: int (read-only)
-    Map width in tiles.
-
-    height: int (read-only)
-    Map height in tiles.
-
-    map_file: string (read-only)
-    Name of the file that contains the map layout.
-
-    terrain_tileset_files: (string, string) (read-only)
-    Pair of names of the files that contain the terrain tileset image
-    and boundaries.
-
-    scenario_tileset_files_list: [(string, string)] (read-only)
-    List of pairs of names of the files that contain the scenario
-    tileset image and boundaries.
-
-    terrain_tileset: TileSet (read-only)
-    Tileset to draw terrain layer.
-
-    scenario_tileset: Tileset (read-only)
-    Tileset to draw scenario layer.
-
-    terrain_layer: Matrix<Tile> (read-only)
-    Matrix with the tiles that compose the terrain layer.
-
-    scenario_layer: Matrix<Tile> (read-only)
-    Matrix with the tiles that compose the scenario layer.
-
-    object_layer: Matrix<ObjectCell> (read-only)
-    Matrix with the objects that each tile contains.
-
-    area_layer: Matrix<MapArea> (read-only)
-    Matrix with the area to which each tile belongs.
-
-    areas: [MapArea] (read-only)
-    All areas in the map.
-
-    objects: [MapObject] (read-only)
-    All objects in the map.
-
-    local_state: object (read-only)
-    Local state to store persistent data about that map. It may be read
-    after the gameloop() is broken.
+    The MapModel is the class that models a map's data and behaviour. It
+    is the Model component of the MVC pattern. MapModel is a class made to
+    be inherited, so that specific behavior (objects, areas, parallel
+    processes) may be added.
     """
 
     def __init__(self, map_file, terrain_tileset_files,
                  scenario_tileset_files_list):
+        """
+        *Constructor:*
+        
+        Initialize the MapModel with a layout defined by *map_file* (a .map
+        file).
+        
+        The terrain tileset is specified by *terrain_tileset_files*, which
+        is a tuple (tileset image filename, tileset boundaries filename).
+        Tileset image filename should be a bitmap file (.png typically)
+        and tileset boundaries filename) should be a .bnd file.
+        
+        The scenario tilesets are specified by
+        *scenario_tileset_files_list*, a list of tuples like the one passed
+        as *terrain_tileset_files*. Each will correspond to a scenario
+        layer.        
+        """
         self.party = None
         self.party_avatar = None
         self.party_movement = []
@@ -268,19 +241,37 @@ class MapModel(object):
 
     # Virtual, should be implemented.
     def initialize(self, local_state):
+        """
+        Put the map in an initial, virgin state if the *local_state*
+        specified is None. Puts the map in a state loaded from the
+        *local_state*, otherwise.
+        """
         pass
 
     # Virtual, should be implemented.
     def save(self):
+        """
+        Save the map's state to a local state and return it.
+        """
         return None
 
     def add_party(self, party, position, facing=DOWN, speed=NORMAL_SPEED):
+        """
+        Add a *party* (Party instance) to the Map at the given *position*.
+        Optionally, the starting *facing* and *speed* may be specified. The
+        defaults are *facing* down and normal *speed*.
+        """
         assert self.party is None, 'Map already has a party'
         self.party = party
         self.party_avatar = PartyAvatar(party, facing, speed)
         self.add_object(self.party_avatar, position)
 
     def remove_party(self):
+        """
+        Remove the party from the Map, returning a 2-tuple with it as first
+        element and its position as second element. Return (None, None) if
+        there is no party in the map.
+        """
         if self.party is None:
             return None, None
         result = self.party, self.party_avatar.position
@@ -290,6 +281,12 @@ class MapModel(object):
         return result
 
     def add_object(self, obj, position):
+        """
+        Add an object to the map at the specified position. Returns whether
+        the operation was successful (it can fail when the position is
+        occupied by an obstacle and the object to be added is also an
+        obstacle).
+        """
         self.object_layer.get_pos(position).add_object(obj)
 
         self.objects.append(obj)
@@ -308,6 +305,10 @@ class MapModel(object):
         return True
 
     def remove_object(self, obj):
+        """
+        Remove an object from the map and returns the Position where it was.
+        Return None if the object was not in the map.
+        """
         self.objects.remove(obj)
         if obj.is_below():
             self.below_objects.remove(obj)
@@ -324,18 +325,32 @@ class MapModel(object):
         return result
 
     def add_area(self, area, positions):
+        """
+        Add a MapArea to the map at the specified positions. *Positions*
+        should be an iterable that returns the Positions over which the
+        MapArea extends.
+        """
         self.areas.append(area)
         for pos in positions:
             self.area_layer.get_pos(pos).append(area)
         area.area = positions
 
     def remove_area(self, area, positions):
+        """
+        Remove a MapArea from the map at the specified positions.
+        *Positions* should be an iterable that returns the Positions from
+        which the area should be removed.
+        """
         self.areas.remove(area)
         for pos in area.area:
             self.area_layer.get_pos(pos).remove(area)
         area.area = list(set(area.area) - set(positions))
 
     def try_to_move_object(self, obj, direction, slide=False):
+        """
+        Try to move an object to the specified direction (UP, DOWN, LEFT or
+        RIGHT). Return whether the object could be moved.
+        """
         if obj.movement_phase > 0:
             return False
 
@@ -396,7 +411,6 @@ class MapModel(object):
         return new_terrain.is_obstacle() or new_terrain.cannot_be_entered(inv)
 
     def move_object(self, obj, old_object, new_object, new_pos, slide):
-
         obj.movement_phase = obj.speed - 1
         obj.sliding = slide
 
@@ -408,7 +422,6 @@ class MapModel(object):
         obj.areas = self.area_layer.get_pos(new_pos)
 
     def teleport_object(self, obj, new_pos):
-
         old_pos = obj.position
         old_object = self.object_layer.get_pos(old_pos)
         new_object = self.object_layer.get_pos(new_pos)
@@ -421,7 +434,6 @@ class MapModel(object):
         obj.areas = self.area_layer.get_pos(new_pos)
 
     def party_action(self):
-
         old_pos = self.party_avatar.position
         desired = old_pos.step(self.party_avatar.facing)
 
@@ -450,9 +462,16 @@ class MapModel(object):
             obj.activate(self.party_avatar, self.party_avatar.facing)
 
     def schedule_message(self, message):
+        """
+        Adds a Dialog to the message queue, displaying it as soon as the
+        messages that were previously there are done.
+        """
         self.controller.message_queue.push(message)
 
     def pause(self, length):
+        """
+        Stops movement and acting in the map for *length* frames.
+        """
         self.pause_delay = length
 
     def __repr__(self):
@@ -476,9 +495,17 @@ class MapModel(object):
         return result
 
     def sync_movement(self, objects):
+        """
+        Stops movement and acting in the map, except for the movement
+        already scheduled or in progress in the objects specified.
+        *objects* should be a list of those MapObjects.
+        """
         self.controller.sync_movement(objects)
 
     def save_world(self, filename):
+        """
+        Saves the game to the given file.
+        """
         self.world.state.save_local(self.id, self.save())
         party_local_state = (self.id, self.party_avatar.position,
                              self.party_avatar.facing)

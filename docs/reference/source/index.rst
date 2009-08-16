@@ -10,6 +10,7 @@ A framework based on Pygame/Python for developing tile based old-school 2D
 tile-based RPGs. 
 
 ..  toctree::
+    :maxdepth: 2
 
     installing
     tutorial/index
