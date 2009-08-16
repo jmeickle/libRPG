@@ -69,9 +69,6 @@ class MessageDialog(object):
 
 class ChoiceDialog(MessageDialog):
 
-    selected_color   = (255,0,0)
-    unselected_color = (255,0,255)
-
     def __init__(self, text, choices=[], block_movement=True):
         self.text = text
         self.choices = choices
@@ -106,17 +103,19 @@ class ChoiceDialog(MessageDialog):
             # Draw message
             for line in self.lines:
                 self.surface.blit(font.render(line[1], True, cfg.font_color),
-                                  (2 * cfg.border_width+line[0][0], 2 * cfg.border_width +
+                                  (2 * cfg.border_width+line[0][0],
+                                   2 * cfg.border_width +
                                    line[0][1]))
                                    
             for n, line in enumerate(self.choice_lines):
                 if n == self.selected:
-                    color = self.selected_color
+                    color = cfg.selected_font_color
                 else:
-                    color = self.unselected_color
+                    color = cfg.not_selected_font_color
                     
                 self.surface.blit(font.render(line[1], True, color),
-                                  (2 * cfg.border_width+line[0][0], 2 * cfg.border_width +
+                                  (2 * cfg.border_width+line[0][0],
+                                   2 * cfg.border_width +
                                    line[0][1]))
 
 
@@ -140,21 +139,22 @@ class ChoiceDialog(MessageDialog):
                 cur_line = word
             else:
                 cur_line += ' ' + word
-        self.lines.append([(0,last_y_offset), cur_line])
+        self.lines.append([(0, last_y_offset), cur_line])
 
         for choice in self.choices:
             width, height = font.size(choice)
             last_y_offset += height + cfg.line_spacing
-            self.choice_lines.append([(cfg.border_width,last_y_offset), choice])
+            self.choice_lines.append([(cfg.border_width, last_y_offset),
+                                      choice])
 
     def process_event(self, event):
         if event.key == K_SPACE or event.key == K_RETURN:
             return False
         elif event.key == K_UP:
-            self.selected = (self.selected-1)%len(self.choice_lines)
+            self.selected = (self.selected - 1) % len(self.choice_lines)
             self.update()
         elif event.key == K_DOWN:
-            self.selected = (self.selected+1)%len(self.choice_lines)
+            self.selected = (self.selected + 1) % len(self.choice_lines)
             self.update()
             
         return True

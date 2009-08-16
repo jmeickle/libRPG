@@ -112,7 +112,8 @@ class GraphicsConfig(Config):
     scale = property(get_scale, set_scale)
 
     def get_real_screen_dimensions(self):
-        return (self.screen_dimensions[0] * self.scale, self.screen_dimensions[1] * self.scale)
+        return (self.screen_dimensions[0] * self.scale,
+                self.screen_dimensions[1] * self.scale)
     real_screen_dimensions = property(get_real_screen_dimensions)
 
     def calc_screen_dimensions(self):
@@ -128,7 +129,11 @@ class GraphicsConfig(Config):
         self.map_border_height = self._screen_height / 2
 
     def recreate_screeens(self):
-        virtualscreen.screen_container.create_screen(self.real_screen_dimensions, self.display_mode, self.screen_dimensions, self.scale)
+        virtualscreen.screen_container.create_screen(
+                                                    self.real_screen_dimensions,
+                                                    self.display_mode,
+                                                    self.screen_dimensions,
+                                                    self.scale)
 
 
 class DialogConfig(Config):
@@ -139,6 +144,8 @@ class DialogConfig(Config):
     DEFAULT_LINE_SPACING = 2
     DEFAULT_BG_COLOR = (128, 0, 128, 128)
     DEFAULT_FONT_COLOR = (255, 255, 255)
+    DEFAULT_SELECTED_FONT_COLOR = (255, 0, 0)
+    DEFAULT_NOT_SELECTED_FONT_COLOR = (128, 128, 128)
 
     def __init__(self):
         self.font_name = DialogConfig.DEFAULT_FONT_NAME
@@ -147,6 +154,9 @@ class DialogConfig(Config):
         self.line_spacing = DialogConfig.DEFAULT_LINE_SPACING
         self.bg_color = DialogConfig.DEFAULT_BG_COLOR
         self.font_color = DialogConfig.DEFAULT_FONT_COLOR
+        self.selected_font_color = DialogConfig.DEFAULT_SELECTED_FONT_COLOR
+        self.not_selected_font_color = \
+                                    DialogConfig.DEFAULT_NOT_SELECTED_FONT_COLOR
 
 
 graphics_config = GraphicsConfig()
