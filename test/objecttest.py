@@ -16,7 +16,7 @@ from librpg.mapobject import MapObject, ScenarioMapObject
 from librpg.util import Position, inverse
 from librpg.party import Character, CharacterReserve
 from librpg.movement import MovementCycle, Step, ForcedStep, Face, Wait, Slide
-from librpg.dialog import MessageDialog
+from librpg.dialog import MessageDialog, ChoiceDialog
 from librpg.context import ContextStack, get_context_stack
 from librpg.locals import *
 
@@ -35,8 +35,8 @@ class ObjectTestNPC(MapObject):
         party_avatar.schedule_movement(Face(direction))
         self.map.schedule_message(MessageDialog(u"Ouch!", block_movement=False))
         self.map.schedule_message(MessageDialog(u"Hey, why are you hitting me?!", block_movement=False))
-
-
+        self.map.schedule_message(ChoiceDialog(u"Choose NOW:", ["choice 1", "choice 2"], block_movement=False))
+        
 class ObjectTestRock(ScenarioMapObject):
 
     def __init__(self, map):

@@ -60,6 +60,105 @@ class MessageDialog(object):
                 cur_line += ' ' + word
         self.lines.append([last_y_offset, cur_line])
 
+    def process_event(self, event):
+        if event.key == K_SPACE or event.key == K_RETURN:
+            return False
+        else:
+            return True
+
+
+class ChoiceDialog(MessageDialog):
+
+    selected_color   = (255,0,0)
+    unselected_color = (255,0,255)
+
+    def __init__(self, text, choices=[], block_movement=True):
+        self.text = text
+        self.choices = choices
+        self.surface = None
+        self.block_movement = block_movement
+        self.selected = 0
+    
+    def get(self):
+        return self.selected
+    
+    def update(self):
+        self.surface = None
+        
+    def draw(self):
+        if not self.surface:
+            font = pygame.font.SysFont(cfg.font_name, cfg.font_size)
+
+            # Create empty surface
+            self.surface = pygame.Surface((g_cfg.screen_width,
+                                           g_cfg.screen_height / 2), SRCALPHA,
+                                           32)
+
+            # Draw dialog background
+            dim = pygame.Rect((cfg.border_width, cfg.border_width),
+                              (g_cfg.screen_width - 2 * cfg.border_width,
+                               g_cfg.screen_height / 2 - 2 * cfg.border_width))
+            pygame.draw.rect(self.surface, cfg.bg_color, dim)
+
+            # Split into lines
+            self.build_lines(font, g_cfg.screen_width)
+
+            # Draw message
+            for line in self.lines:
+                self.surface.blit(font.render(line[1], True, cfg.font_color),
+                                  (2 * cfg.border_width+line[0][0], 2 * cfg.border_width +
+                                   line[0][1]))
+                                   
+            for n, line in enumerate(self.choice_lines):
+                if n == self.selected:
+                    color = self.selected_color
+                else:
+                    color = self.unselected_color
+                    
+                self.surface.blit(font.render(line[1], True, color),
+                                  (2 * cfg.border_width+line[0][0], 2 * cfg.border_width +
+                                   line[0][1]))
+
+
+        return self.surface, pygame.Rect(0, g_cfg.screen_height / 2,
+                                         g_cfg.screen_width,
+                                         g_cfg.screen_height / 2)
+
+    def build_lines(self, font, box_width):
+        self.lines = []
+        self.choice_lines = []
+        last_y_offset = 0
+        words = self.text.split()
+        cur_line = words[0]
+
+        for word in words[1:]:
+            projected_line = cur_line + ' ' + word
+            width, height = font.size(projected_line)
+            if width > box_width - 4 * cfg.border_width:
+                self.lines.append([last_y_offset, cur_line])
+                last_y_offset += height + cfg.line_spacing
+                cur_line = word
+            else:
+                cur_line += ' ' + word
+        self.lines.append([(0,last_y_offset), cur_line])
+
+        for choice in self.choices:
+            width, height = font.size(choice)
+            last_y_offset += height + cfg.line_spacing
+            self.choice_lines.append([(cfg.border_width,last_y_offset), choice])
+
+    def process_event(self, event):
+        if event.key == K_SPACE or event.key == K_RETURN:
+            return False
+        elif event.key == K_UP:
+            self.selected = (self.selected-1)%len(self.choice_lines)
+            self.update()
+        elif event.key == K_DOWN:
+            self.selected = (self.selected+1)%len(self.choice_lines)
+            self.update()
+            
+        return True
+
 
 class MessageQueue(Context):
 
@@ -97,8 +196,8 @@ class MessageQueue(Context):
             return False
             
         if event.type == KEYDOWN:
-            if event.key == K_SPACE or event.key == K_RETURN:
+            if not self.current.process_event(event):
                 self.close()
-                return True
-
+            return True
+                
         return False
