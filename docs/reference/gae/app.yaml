@@ -1,0 +1,13 @@
+application: librpg
+version: 1
+runtime: python
+api_version: 1
+
+default_expiration: "1d"
+
+handlers:
+- url: /html
+  static_dir: html
+
+- url: /.*
+  script: gae.py
