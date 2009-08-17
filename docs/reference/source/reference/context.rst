@@ -3,3 +3,4 @@
 
 .. automodule:: context
    :members:
+   :show-inheritance:

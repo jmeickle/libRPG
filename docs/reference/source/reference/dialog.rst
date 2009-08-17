@@ -3,3 +3,4 @@
 
 .. automodule:: dialog
    :members:
+   :show-inheritance:

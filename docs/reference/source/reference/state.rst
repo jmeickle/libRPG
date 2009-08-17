@@ -3,3 +3,4 @@
 
 .. automodule:: state
    :members:
+   :show-inheritance:

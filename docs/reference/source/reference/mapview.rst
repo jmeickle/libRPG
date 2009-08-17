@@ -3,3 +3,4 @@
 
 .. automodule:: mapview
    :members:
+   :show-inheritance:

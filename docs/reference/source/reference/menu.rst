@@ -3,3 +3,4 @@
 
 .. automodule:: menu
    :members:
+   :show-inheritance:

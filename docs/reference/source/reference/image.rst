@@ -3,3 +3,4 @@
 
 .. automodule:: image
    :members:
+   :show-inheritance:

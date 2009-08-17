@@ -3,3 +3,4 @@
 
 .. automodule:: movement
    :members:
+   :show-inheritance:

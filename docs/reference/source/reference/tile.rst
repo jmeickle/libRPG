@@ -3,3 +3,4 @@
 
 .. automodule:: tile
    :members:
+   :show-inheritance:

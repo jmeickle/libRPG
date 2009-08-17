@@ -3,3 +3,4 @@
 
 .. automodule:: world
    :members:
+   :show-inheritance:

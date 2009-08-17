@@ -3,3 +3,4 @@
 
 .. automodule:: camera
    :members:
+   :show-inheritance:

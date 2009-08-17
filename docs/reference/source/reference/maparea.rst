@@ -3,6 +3,7 @@
 
 .. automodule:: maparea
    :members:
+   :show-inheritance:
 
 Usage
 -----

@@ -3,3 +3,4 @@
 
 .. automodule:: party
    :members:
+   :show-inheritance:

@@ -3,6 +3,7 @@
 
 .. automodule:: log
    :members:
+   :show-inheritance:
 
 Usage
 -----

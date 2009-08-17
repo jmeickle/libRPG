@@ -3,6 +3,7 @@
 
 .. automodule:: mapobject
    :members:
+   :show-inheritance:
 
 Usage
 -----
