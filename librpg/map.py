@@ -242,6 +242,8 @@ class MapModel(object):
     # Virtual, should be implemented.
     def initialize(self, local_state):
         """
+        *Virtual*
+        
         Put the map in an initial, virgin state if the *local_state*
         specified is None. Puts the map in a state loaded from the
         *local_state*, otherwise.
@@ -251,6 +253,8 @@ class MapModel(object):
     # Virtual, should be implemented.
     def save(self):
         """
+        *Virtual*
+        
         Save the map's state to a local state and return it.
         """
         return None

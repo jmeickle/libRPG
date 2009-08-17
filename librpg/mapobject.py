@@ -7,40 +7,65 @@ from librpg.image import ObjectImage
 class MapObject(object):
 
     """
-    image: ObjectImage (read-only)
-    Image of the MapObject. If this field is None, the object will be
-    invisible.
-
-    map: MapModel (read-only)
-    The MapModel in which the MapObject was placed. None is if it not
-    placed in any map.
-
-    position: Position (read-only)
-    Where on the map the MapObject is. None if it is not in any map.
-
-    obstacle: int (read-only)
-    0 if a party or an object can move over this object, 3 if they can
-    move under it, 1 if it is considered an obstacle. If it is a
-    counter - that is, if push key events may affect objects on the
-    other side of it -, this attribute is set to 2.
-
-    facing: Direction (public)
-    Direction that the object is facing.
-
-    speed: int (public)
-    Object speed, in the number of frames to move that object by 1 tile.
-    Use VERY_FAST_SPEED, FAST_SPEED, NORMAL_SPEED, SLOW_SPEED and
-    VERY_SLOW_SPEED.
-
-    movement_phase: int (private)
-    0 if still, 1 to speed if in the middle of a movement.
+    MapObjects represent interactive objects on the map, such as NPCs,
+    chests and switches. For it to be interactive, overload its activate()
+    or collide_with_party() methods, which will be called as callbacks
+    when those events happen.
     """
 
     BELOW, OBSTACLE, COUNTER, ABOVE = 0, 1, 2, 3
 
     def __init__(self, obstacle, image=None, facing=DOWN, speed=NORMAL_SPEED,
                  image_file=None, image_index=0):
+        """
+        *Constructor*
+        
+        *obstacle* should be one of {BELOW, OBSTACLE, COUNTER, ABOVE}
+        indicating the vertical position of the object.
+        
+        If *image* or *image_file* are specified, the object will be
+        displayed with that image. *image* should be an ObjectImage and
+        *image_file* should be the filename of a bitmap with the intended
+        image. Only one of them may be specified. If *image_file* is
+        specified and the file holds more than one object image,
+        *image_index* has to be passed indicating which of them should
+        be loaded.
+        
+        *facing* is the object's starting facing, and *speed* is its
+        starting speed.
+        
+        :attr:`map`
+            MapModel in which the object is.
+        
+        :attr:`position`
+            Position of the object in the map.
 
+        :attr:`obstacle`
+            - BELOW if the object can be walked over
+            - OBSTACLE if the object will collide if another OBSTACLE object
+              tries to move to its tile.
+            - ABOVE if OBSTACLES would walk under the object
+            - COUNTER if it is an OBSTACLE and activate events coming from one
+              side will be routed to the position on the opposite side.
+              
+        :attr:`facing`
+            Direction that the object is facing.
+            
+        :attr:`speed`
+            Object speed, in the number of frames to move that object by 1 tile.
+            Use VERY_FAST_SPEED, FAST_SPEED, NORMAL_SPEED, SLOW_SPEED and
+            VERY_SLOW_SPEED.
+
+        :attr:`scheduled_movement`
+            MovementQueue with the Movements that are waiting for the object to
+            execute.
+
+        :attr:`movement_behavior`
+            MovementCycle with the Movements routinely executed by the object.
+        
+        :attr:`areas`
+            MapAreas in which the object currently is.
+        """
         assert obstacle in range(0, 4), ('MapObject cannot be created with an'
                                          ' `obstacle` as %s' % str(obstacle))
         assert (image is None or image_file is None),\
@@ -69,26 +94,63 @@ class MapObject(object):
 
     # Virtual
     def activate(self, party_avatar, direction):
+        """
+        *Virtual*
+        
+        Callback called when the player, through a PartyAvatar, activates
+        the object. This happens when he presses the action button and
+        is in the same tile as the object (for BELOW and ABOVE objects)
+        or facing the object (for OBSTACLE and COUNTER objects).
+        
+        For example, for a chest, this routine will award the party's
+        inventory some items, while for an NPC, this routine will trigger
+        a message dialog.
+        """
         pass
 
     # Virtual
     def collide_with_party(self, party_avatar, direction):
+        """
+        *Virtual*
+        
+        Callback called when the player, through a PartyAvatar, collides
+        with the object. This happens when he walks over the object
+        (for BELOW and ABOVE objects), when the party tries to move towards
+        the object (for OBSTACLE and COUNTER objects).
+        """
         pass
 
     def is_counter(self):
+        """
+        Return whether the object is a counter - that is, if activate
+        events coming from one side affect objects on the opposite side.
+        """
         return self.obstacle == MapObject.COUNTER
 
     def is_obstacle(self):
+        """
+        Return whether the object is an obstacle.
+        """
         return (self.obstacle == MapObject.OBSTACLE or
                 self.obstacle == MapObject.COUNTER)
 
     def is_below(self):
+        """
+        Return whether the tile is drawn below party level.
+        """
         return self.obstacle == MapObject.BELOW
 
     def is_above(self):
+        """
+        Return whether the tile is drawn above party level.
+        """
         return self.obstacle == MapObject.ABOVE
 
     def get_surface(self):
+        """
+        Return a pygame Surface with the image as the object should be
+        drawn.
+        """
         return self.image.get_surface(self)
 
     def flow(self):
@@ -105,10 +167,23 @@ class MapObject(object):
                 self.movement_behavior.flow(self)
 
     def schedule_movement(self, movement):
+        """
+        Enqueue a Movement for the object to execute after the ones
+        already requested.
+        """
         self.scheduled_movement.append(movement)
 
 
 class PartyAvatar(MapObject):
+    """
+    PartyAvatar is a MapObject that represents the Party in the map.
+    It is controlled by the player input, and triggers the *activate*
+    and *collide_with_party* callbacks that usually do the most
+    important interactions in the map.
+    
+    :attr:`party`
+        Party represented by the avatar.
+    """
 
     def __init__(self, party, facing=DOWN, speed=NORMAL_SPEED):
         MapObject.__init__(self, MapObject.OBSTACLE, party.get_image(self),
@@ -117,9 +192,22 @@ class PartyAvatar(MapObject):
 
 
 class ScenarioMapObject(MapObject):
+    """
+    ScenarioMapObject is a MapObject that has its image loaded from the
+    scenario layer tileset of the map.
+    """
 
     def __init__(self, map, scenario_number, scenario_index, obstacle=None,
                  facing=DOWN, speed=NORMAL_SPEED):
+        """
+        *Constructor.*
+        
+        *map* is the MapModel from which the scenario tile image will be
+        taken. *scenario_number* is the number of the scenario layer and
+        *scenario_index* is the tile index containing the image.
+        
+        *obstacle*, *facing* and *speed* are the same as in MapObject.
+        """
         tile = map.scenario_tileset[scenario_number].tiles[scenario_index]
         if obstacle is None:
             MapObject.__init__(self, tile.obstacle, tile.image, facing, speed)

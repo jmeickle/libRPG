@@ -17,7 +17,7 @@ When this is done, create a world and insert that MapModel into it. The way this
 
 - In case of a MicroWorld - which is a world with a single map -, instantiate the MapModel and pass it as parameter to the MicroWorld constructor, along with the Party::
 
-    MicroWorld(MyMapModel(), party, Position(1, 2))
+    world = MicroWorld(MyMapModel(), party, Position(1, 2))
 
 - In case of a World - which allows any amount of maps -, first define a unique map_id for that map. Pass it inside the *maps* parameter of the constructor, as a value associated to its map_id as key::
 
@@ -27,8 +27,11 @@ When this is done, create a world and insert that MapModel into it. The way this
                            maps={1: MyMapModel},
                            initial_map=1,
                            initial_position=Position(1, 2))
+    world = MyWorld()
     
-Then, with the world created, call its gameloop() method.
+Then, with the world created, call its gameloop() method::
+
+    world.gameloop()
 
 To add and remove objects from the map, use add_object() and remove_object(). To add and remove areas, use add_area() and remove_area().
 
