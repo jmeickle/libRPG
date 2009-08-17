@@ -11,11 +11,9 @@ SAVE_FILE = 'save.sav'
 class SavePoint(ScenarioMapObject):
 
     def __init__(self, map):
-       
         ScenarioMapObject.__init__(self, map, 0, 7)
 
     def activate(self, party_avatar, direction):
-    
         self.map.schedule_message(MessageDialog('You game will be saved to %s.'
                                   % SAVE_FILE, block_movement=True))
         self.map.save_world(SAVE_FILE)
@@ -26,7 +24,6 @@ class SavePoint(ScenarioMapObject):
 class Chest(MapObject):
 
     def __init__(self, closed=True):
-
         MapObject.__init__(self, MapObject.OBSTACLE, image_file='chest2.png',
                            image_index=6)
         if closed:
@@ -34,7 +31,6 @@ class Chest(MapObject):
         self.closed = closed
 
     def activate(self, party_avatar, direction):
-    
         if self.closed:
             self.closed = False
             self.schedule_movement(Face(RIGHT))
@@ -65,13 +61,11 @@ class AreaAroundWell(MapArea):
 class Map1(WorldMap):
 
     def __init__(self):
-    
         WorldMap.__init__(self, 'worldtest/map1.map',
                           ('lower_tileset32.png', 'lower_tileset32.bnd'),
                           [('upper_tileset32.png', 'upper_tileset32.bnd'),])
 
     def initialize(self, local_state):
-    
         self.add_area(RelativeTeleportArea(x_offset=-8, map_id=2),
                       RectangleArea((9, 0), (9, 9)))
 
@@ -84,20 +78,17 @@ class Map1(WorldMap):
         self.add_object(SavePoint(self), Position(6, 7))
 
     def save(self):
-    
         return {'chest_closed': self.chest.closed}
 
 
 class Map2(WorldMap):
 
     def __init__(self):
-    
         WorldMap.__init__(self, 'worldtest/map2.map',
                           ('lower_tileset32.png', 'lower_tileset32.bnd'),
                           [('upper_tileset32.png', 'upper_tileset32.bnd'),])
 
     def initialize(self, local_state):
-        
         self.add_area(RelativeTeleportArea(x_offset=+8, map_id=1),
                       RectangleArea((0, 0), (0, 9)))
                       
@@ -114,20 +105,17 @@ class Map2(WorldMap):
         self.add_area(AreaAroundWell(), RectangleArea((2, 3), (4, 5)))
 
     def save(self):
-
         return {'chest_closed': self.chest.closed}
 
 
 class Map3(WorldMap):
 
     def __init__(self):
-    
         WorldMap.__init__(self, 'worldtest/map3.map',
                           ('lower_tileset32.png', 'lower_tileset32.bnd'),
                           [('upper_tileset32.png', 'upper_tileset32.bnd'),])
 
     def initialize(self, local_state):
-
         self.add_area(RelativeTeleportArea(x_offset=+8, map_id=2),
                       RectangleArea((0, 0), (0, 9)))
                       

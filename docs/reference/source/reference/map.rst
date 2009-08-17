@@ -34,6 +34,3 @@ Then, with the world created, call its gameloop() method::
     world.gameloop()
 
 To add and remove objects from the map, use add_object() and remove_object(). To add and remove areas, use add_area() and remove_area().
-
-Examples
---------
