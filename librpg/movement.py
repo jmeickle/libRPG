@@ -17,15 +17,15 @@ class Movement(object):
     """
 
     def flow(self, obj):
-    """
-    *Abstract.*
-    
-    Manipulate the object to have it moved.
-    
-    Return True if the Movement is done and the next can be executed (right
-    after the MapObject's *movement_phase* becomes 0, that is, the object
-    stops. Return False if it requires more flow() calls to complete.
-    """
+        """
+        *Abstract.*
+        
+        Manipulate the object to have it moved.
+        
+        Return True if the Movement is done and the next can be executed (right
+        after the MapObject's *movement_phase* becomes 0, that is, the object
+        stops. Return False if it requires more flow() calls to complete.
+        """
         raise NotImplementedError, 'Movement.flow() is abstract'
 
 
