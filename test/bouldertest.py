@@ -2,18 +2,17 @@ import sys
 sys.path.append('..')
 
 import librpg
-import pygame
 
 librpg.init()
 librpg.config.graphics_config.config(tile_size=32, object_height=32, object_width=32)
 
-from librpg.map import MapModel, MapController
-from librpg.mapobject import ScenarioMapObject, MapObject
+from librpg.map import MapModel
+from librpg.mapobject import ScenarioMapObject
 from librpg.util import Position
 from librpg.party import Character, CharacterReserve
 from librpg.movement import Slide
 from librpg.dialog import MessageDialog
-from librpg.context import ContextStack, get_context_stack
+from librpg.world import MicroWorld
 
 class Boulder(ScenarioMapObject):
 
@@ -66,8 +65,11 @@ class BoulderMaze(MapModel):
                     self.add_object(Victory(self), Position(x, y))
 
 
-a = librpg.party.Character('Andy', 'char_alex32.png')
-r = librpg.party.CharacterReserve([a])
+andy = Character('Andy', 'char_alex32.png')
+reserve = CharacterReserve([andy])
+party = reserve.create_party(3, [andy])
 
-librpg.world.MicroWorld(BoulderMaze(), r.create_party(3, [a]), Position(4, 9)).gameloop()
+map_model = BoulderMaze()
+world = MicroWorld(map_model, party, Position(4, 9))
+world.gameloop()
 exit()
