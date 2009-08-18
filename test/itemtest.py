@@ -1,9 +1,6 @@
 #! /usr/bin/env python
-import sys
-sys.path.append('..')
 
 from librpg.item import *
-
 
 def addTest(id, amount):
     a = i.addItem(UsableOrdinaryItem(id), amount)

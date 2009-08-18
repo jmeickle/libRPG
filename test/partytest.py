@@ -1,6 +1,3 @@
-import sys
-sys.path.append('..')
-
 from librpg.party import *
 
 def test_add(p, r, char):

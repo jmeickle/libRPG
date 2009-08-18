@@ -1,6 +1,4 @@
 #! /usr/bin/env python
-import sys
-sys.path.append('..')
 
 import pygame
 from pygame.locals import *

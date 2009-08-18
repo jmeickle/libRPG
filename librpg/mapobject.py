@@ -1,3 +1,10 @@
+"""
+The :mod:`mapobject` module contains the definition of MapObject, which
+will provide interaction to your maps. It also contains PartyAvatar,
+which is the MapObject controlled by the player that represents the Party
+in the map.
+"""
+
 import pygame
 
 from librpg.locals import *

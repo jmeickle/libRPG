@@ -1,4 +1,8 @@
-#!/usr/bin/env python
+"""
+The :mod:`dialog` module contains Dialogs that can be displayed through
+the use of MessageQueue, which is built-in MapModels. These dialogs
+are a tool for displaying conversations, questions, etc.
+"""
 
 import pygame
 from pygame.locals import *
@@ -9,6 +13,13 @@ from librpg.virtualscreen import get_screen
 from librpg.context import Context
 
 class MessageDialog(object):
+    """
+    A MessageDialog is a simple message to be displayed on the screen.
+    
+    *text* is the string that will be displayed and *block_movement*
+    tells the map whether the movement in the map should be blocked while
+    the message is shown.
+    """
 
     def __init__(self, text, block_movement=True):
         self.text = text
@@ -68,7 +79,17 @@ class MessageDialog(object):
 
 
 class ChoiceDialog(MessageDialog):
-
+    """
+    A ChoiceDialog is a message that comes along a list of options from
+    which the player has to pick one option.
+    
+    *text* is the string that will be displayed and *block_movement*
+    tells the map whether the movement in the map should be blocked while
+    the message is shown.
+    
+    *choices* is a list of the options, which should be strings.
+    """
+    
     def __init__(self, text, choices=[], block_movement=True):
         self.text = text
         self.choices = choices

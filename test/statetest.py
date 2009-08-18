@@ -1,6 +1,3 @@
-import sys
-sys.path.append('..')
-
 from librpg.state import *
 
 s = State()
