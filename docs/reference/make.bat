@@ -23,6 +23,8 @@ if "%1" == "help" (
 	echo.  changes   to make an overview over all changed/added/deprecated items
 	echo.  linkcheck to check all external links for integrity
 	echo.  doctest   to run all doctests embedded in the documentation if enabled
+	echo.  server    to run a local server with the generated HTML
+	echo.  upload    to upload the generated HTML to Google App Engine
 	goto end
 )
 
@@ -106,6 +108,22 @@ if "%1" == "doctest" (
 	echo.
 	echo.Testing of doctests in the sources finished, look at the ^
 results in build/doctest/output.txt.
+	goto end
+)
+
+REM  for GAE
+
+if "%1" == "server" (
+	copy /Y gae\gae.py build
+	copy /Y gae\app.yaml build
+	C:\Python25\python.exe "C:\Arquivos de Programas\Google\google_appengine\dev_appserver.py" build
+	goto end
+)
+
+if "%1" == "upload" (
+	copy /Y gae\gae.py build
+	copy /Y gae\app.yaml build
+	C:\Python25\python.exe "C:\Arquivos de Programas\Google\google_appengine\appcfg.py" update build
 	goto end
 )
 
