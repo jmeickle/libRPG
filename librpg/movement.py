@@ -1,7 +1,7 @@
 """
 The :mod:`movement` module provides Movement objects that describe
 a MapObject's movements. These can be used both for one-time movement
-or for routinely movement.
+or for routine movement.
 """
 
 class Movement(object):
