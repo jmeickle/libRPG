@@ -1,3 +1,5 @@
+import os
+
 from librpg.locals import *
 
 
@@ -103,3 +105,10 @@ class Matrix(object):
 
 def inverse(direction):
     return {UP: DOWN, DOWN: UP, LEFT: RIGHT, RIGHT: LEFT}[direction]
+
+def lib_path(name):
+    """
+    Returns the absolute file path of a file, specified by a path relative
+    to the librpg module root directory.
+    """
+    return os.path.join(os.path.split(__file__)[0], name)

@@ -6,7 +6,7 @@ from random import choice
 import librpg
 import pygame
 
-librpg.init()
+librpg.init('Object Test')
 librpg.config.graphics_config.config(tile_size=32, object_height=32,
                                      object_width=32)
 
