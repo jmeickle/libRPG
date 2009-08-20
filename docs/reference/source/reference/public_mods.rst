@@ -20,10 +20,9 @@ Contents:
     image
     party
     log
-    mapview
-    tile
-    state
     virtualscreen
     util
 
-Modules Reference
+These are the modules intended for users to import and use. Inside each you
+will find a description, their complete class and function reference and how to
+use them.

@@ -14,7 +14,8 @@ tile-based RPGs.
 
     installing
     tutorial/index
-    reference/index
+    reference/public_mods
+    reference/internal_mods
 
 Indices and tables
 ==================
