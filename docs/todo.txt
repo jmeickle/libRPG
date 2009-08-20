@@ -64,16 +64,20 @@ ok      0.3 Make all classes inherit from object
         0.3 Allow create_map with variable arguments
         0.3 Fix obj.collide_with_party(party_avatar, party_avatar.facing) - cannot use facing, what if the party is knocked back?
         0.4 PEP-8 item.py
+        0.4 Write item module docs
         0.4 Improve message dialogs - split texts too big into more than 1 dialog
         0.4 Animated tiles (period | 12 allows (1, 2, 3, 4, 6, 12), one surface per phase)
         0.4 Configurable keys for MapModel
+        0.4 Support background music for maps
+        0.4 Put sound effects in standard resources and use them in tests. Evaluate the need for sfx wrappers.
+        0.4 Move build_lines to util module, so it can be used for menus later
         0.5 Design Menu API
         0.5 Define generic menu skin system
         0.6 Add gameloop hooks
         0.7 Define generic battle system
         ?   Add on_object_touch events
         ?   Image management module (store the last x loaded images and the y most used images)
-        ?   Group files into submodules
-        1.0 Write file_types.txt
+        ?   Group files into submodules?
+        1.0 Write file types reference
         1.0 Basic tutorial
         

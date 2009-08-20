@@ -1,15 +1,35 @@
+"""
+The :mod:`camera` module defines a couple of ways to follow the party
+avatar around the map. Each of these ways is represented by a class, and
+changing the camera mode is done by the config.graphics_config object.
+
+This module also defines a CameraMode abstract class that can be used to
+write custom camera modes.
+"""
+
 from config import graphics_config
 
 
 class CameraMode(object):
 
+    """
+    Base abstract class for creating new camera modes.
+    """
+
     def attach_to_map(self, map_model):
-        """Virtual."""
+        """
+        *Virtual.*
+        
+        Callback called when a map is initialized to be used with the
+        camera. Typically, map-specific initialization is be done here.
+        
+        *map_model* is a handle to the MapModel, so that information such
+        as the map size can be retrieved.
+        """
         pass
 
     def calc_object_topleft(self, bg_slice_topleft, object_pos, object_width,
                             object_height, object_x_offset, object_y_offset):
-        """TODO: doc"""
         object_pixel_x = (object_pos.x * graphics_config.tile_size -
                           (object_width - graphics_config.tile_size) / 2)
         object_pixel_y = (object_pos.y * graphics_config.tile_size -
@@ -22,17 +42,36 @@ class CameraMode(object):
         return (x, y)
 
     def calc_bg_slice_topleft(self, party_pos, party_x_offset, party_y_offset):
-        """"TODO: doc"""
+        """
+        *Abstract.*
+        
+        Return the position to which the top left corner of the screen
+        should be aligned in the background.
+        
+        The background is the map plus black borders in every side, as
+        thick as half the screen size in that direction. For example, a
+        screen with width=640 and height=480 has 320 black lines in each
+        side and 240 black lines up and down.
+        
+        Given the *party_pos* (position of the party in tiles),
+        *party_x_offset* and *party_y_offset* (offset in pixels to apply to
+        *party_pos* due to animation), this function should return an
+        (x, y) tuple representing where the top left of the camera should
+        aim for in the background.
+        """
         raise NotImplementedError, 'CameraMode.calc_bg_slice_topleft() is abstract'
 
 
 class PartyConfinementCameraMode(CameraMode):
-    """Flexible centered camera mode.
+    """
+    Flexible centered camera mode.
 
     In this camera mode, the party does not go further than
-    (horizontal_tolerance, vertical_tolerance) from the middle of
+    (*horizontal_tolerance*, *vertical_tolerance*) from the middle of
     the screen.
 
+    This will decrease the frequency of scrolling, especially when the
+    party is switching directions frequently.
     """
 
     def __init__(self, vertical_tolerance, horizontal_tolerance):
@@ -41,7 +80,6 @@ class PartyConfinementCameraMode(CameraMode):
         self.current_place = None
 
     def _normalize(self, current, proj, tolerance):
-        """TODO: doc"""
         new_value = current
         if abs(proj - current) > tolerance:
             if proj > current:
@@ -72,11 +110,12 @@ class PartyConfinementCameraMode(CameraMode):
 
 
 class PartyCentricCameraMode(CameraMode):
-    """Centered camera mode.
+    """
+    Centered camera mode.
 
     In this camera mode, the party does not leave the middle of the
-    screen at all.
-
+    screen at all. Therefore, whenever the party would move, it is
+    actually the background that moves.
     """
 
     def calc_bg_slice_topleft(self, party_pos, party_x_offset, party_y_offset):
@@ -88,13 +127,13 @@ class PartyCentricCameraMode(CameraMode):
 
 
 class ScreenConfinementCameraMode(CameraMode):
-    """No black area camera.
+    """
+    No black area camera.
 
     In this camera mode, the camera will never show the black area
     beyond the map. It will keep the party at the center of the screen
     while it is far from the border. When the party approaches the
     border, the camera will stop to avoid showing the black area.
-
     """
 
     def attach_to_map(self, map_model):
@@ -127,12 +166,12 @@ class ScreenConfinementCameraMode(CameraMode):
 
 
 class FixedCameraMode(CameraMode):
-    """Still camera mode.
+    """
+    Still camera mode.
 
     The camera will not move in this mode, but stay fixed, at the
-    given (x, y) position. x and y are in tiles, from the top left
+    given (*x*, *y*) position. *x* and *y* are in tiles, from the top left
     corner of the map.
-
     """
 
     def __init__(self, x, y):

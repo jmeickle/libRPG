@@ -19,8 +19,8 @@ class ScaledScreen(pygame.Surface):
                  depth=0):
         pygame.Surface.__init__(self, width_and_height, flags, depth)
         self.real_screen = real_screen
-        real_width = width_and_height[0] * scale
-        real_height = width_and_height[1] * scale
+        real_width = int(width_and_height[0] * scale)
+        real_height = int(width_and_height[1] * scale)
         self.real_width_and_height = (real_width, real_height)
 
     def flip(self):

@@ -1,7 +1,10 @@
 import librpg
 
 librpg.init('Boulder Test')
-librpg.config.graphics_config.config(tile_size=32, object_height=32, object_width=32)
+librpg.config.graphics_config.config(tile_size=32,
+                                     object_height=32,
+                                     object_width=32,
+                                     scale=1.7)
 
 from librpg.map import MapModel
 from librpg.mapobject import ScenarioMapObject
