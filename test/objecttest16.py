@@ -13,7 +13,6 @@ from librpg.util import Position, inverse
 from librpg.party import Character, CharacterReserve
 from librpg.movement import Slide, Wait, ForcedStep, Face
 from librpg.dialog import MessageDialog
-from librpg.context import ContextStack, get_context_stack
 from librpg.locals import *
 
 class ObjectTestNPC(MapObject):
