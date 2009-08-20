@@ -1,3 +1,8 @@
+"""
+The :mod:`util` module has assorted functions and classes for various
+purposes.
+"""
+
 import os
 
 from librpg.locals import *
@@ -5,32 +10,56 @@ from librpg.locals import *
 
 class Position(object):
 
-    # This considers that x axis goes from left to right and y axis goes downwards
+    """
+    Represents a pair (x, y) of 2D coordinates. It considers that the
+    x axis goes from left to right and the y axis goes downwards.
+    
+    :attr:`x`
+        Horizontal position.
 
-    # Read-Only Attributes
-    # x - horizontal position
-    # y - vertical position
+    :attr:`y`
+        Vertical position.
+    """
 
     def __init__(self, x=0, y=0):
         self.x = x
         self.y = y
 
     def __add__(self, pos):
+        """
+        Positions may be added, which is a typical vectorial addition.
+        """
         return Position(self.x + pos.x, self.y + pos.y)
 
     def up(self, amount=1):
+        """
+        Return a Position that is *amount* tiles above this one.
+        """
         return Position(self.x, self.y - amount)
 
     def down(self, amount=1):
+        """
+        Return a Position that is *amount* tiles below this one.
+        """
         return Position(self.x, self.y + amount)
 
     def left(self, amount=1):
+        """
+        Return a Position that is *amount* tiles left of this one.
+        """
         return Position(self.x - amount, self.y)
 
     def right(self, amount=1):
+        """
+        Return a Position that is *amount* tiles right of this one.
+        """
         return Position(self.x + amount, self.y)
 
     def step(self, direction, amount=1):
+        """
+        Return a Position that is the position one would get by walking
+        *amount* tiles towards *direction*.
+        """
         return [None, self.up, self.right, self.down,
                 self.left][direction](amount)
 
@@ -38,6 +67,10 @@ class Position(object):
         return '(%s, %s)' % (self.x, self.y)
 
     def __cmp__(self, another):
+        """
+        Comparing two Positions will give compare their y coordinates,
+        then, if they are tied, compare the x coordinates.
+        """
         if self.y < another.y:
             return -1
         elif self.y > another.y:
@@ -52,12 +85,20 @@ class Position(object):
 
 class Matrix(object):
 
-    # Read-Only Attributes
-    # width - the matrix's width
-    # height - the matrix's height
-    # size - total number of positions in the matrix (width * height)
+    """
+    Represents a 2-dimensional matrix with fast random access.
+    
+    :attr:`width`
+        Matrix width.
+        
+    :attr:`height`
+        Matrix height.
+        
+    :attr:`size`
+        Number of positions (height * width).
+    
+    """
 
-    # Private Attributes
     # m - array of elements. The element at (x,y) is at the
     # (x + width*y) position
 
@@ -78,28 +119,59 @@ class Matrix(object):
         return s
 
     def get(self, x, y):
+        """
+        Return the element at (*x*, *y*).
+        
+        Raises IndexError if *x* or *y* are not inside the matrix's
+        limits.
+        """
         if not self.valid(x, y):
             raise IndexError, '%s was indexed with x=%s y=%s' % (repr(self),
                                                                  x, y)
         return self.m[x + self.width * y]
 
     def set(self, x, y, value):
-
+        """
+        Sets the element at (*x*, *y*) to *value*.
+        
+        Raises IndexError if *x* or *y* are not inside the matrix's
+        limits.
+        """
         if not self.valid(x, y):
             raise IndexError, '%s was indexed with x=%s y=%s' % (repr(self),
                                                                  x, y)
         self.m[x + self.width * y] = value
 
     def get_pos(self, pos):
+        """
+        Return the element at x=*pos*.x, y=*pos*.y. Meant to be used
+        with Position.
+        
+        Raises IndexError if x or y are not inside the matrix's
+        limits.
+        """
         return self.get(pos.x, pos.y)
 
     def set_pos(self, pos, value):
+        """
+        Set the element at x=*pos*.x, y=*pos*.y to *value*. Meant to be
+        used with Position.
+        
+        Raises IndexError if x or y are not inside the matrix's
+        limits.
+        """
         self.set(pos.x, pos.y, value)
 
     def valid(self, x, y):
+        """
+        Return whether (*x*, *y*) are inside the matrix's limits.
+        """
         return x < self.width and x >= 0 and y < self.height and y >= 0
 
     def valid_pos(self, pos):
+        """
+        Return whether (*pos*.x, *pos*.y) are inside the matrix's limits.
+        """
         return self.valid(pos.x, pos.y)
 
 
