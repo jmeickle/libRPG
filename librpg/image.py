@@ -5,31 +5,63 @@ from librpg.config import *
 
 
 class Image(object):
+
+    """
+    A simple static image.
+    
+    This is the base class for more complex and animated images.
+    
+    :attr:`surface`
+        Pygame Surface containing the image.
+        
+    :attr:`width`
+        Image width in pixels.
+
+    :attr:`height`
+        Image height in pixels.
+    """
+
     def __init__(self, surface):
+        """
+        *Constructor.*
+        
+        Pass the *surface* that will be stored in the image. Note
+        that the surface is not copied, which means it should not be
+        altered after being passed to this class.
+        """
         self.surface = surface
         self.width = self.surface.get_width()
         self.height = self.surface.get_height()
 
     def get_surface(self, obj=None):
+        """
+        *Virtual.*
+        
+        Return a surface with how the image is to be rendered at the
+        moment.
+        """
         return self.surface
 
 
 class TileImage(Image):
-    """A Tile image.
-
-    This class represents a Tile image, which may include simple
-    animation cycles.
 
     """
+    A scenario or terrain tile image.
+
+    This class represents a Tile image, which will include simple
+    animation cycles in the future. For now it is just a static image.
+    """
+
     pass
 
 
 class ObjectImage(Image):
-    """A MapObject image.
+
+    """
+    A MapObject image.
 
     This class represents a MapObject image, which may include simple
     animation cycles and movement animation.
-
     """
 
     DEFAULT_OBJECT_IMAGE_BASIC_ANIMATION = [[1, 2], [1, 0]]
@@ -38,6 +70,35 @@ class ObjectImage(Image):
     def __init__(self, filename, index=0,
                  basic_animation=DEFAULT_OBJECT_IMAGE_BASIC_ANIMATION,
                  frame_number=None):
+        """
+        *Constructor.*
+        
+        The frames will be loaded from *filename*, which should be a
+        map object image file - a bitmap with a special format for the
+        frames. Since there can be more than one map object image in
+        the file, which of them should be loaded is specified by the
+        *index* parameter.
+        
+        The image's animation is described by *basic_animation*.
+        The animation of an object during a step is described by a list
+        of the ids of the frames to be shown. *basic_animation*
+        should be a list of these lists with the order in which these
+        animations will represent a step.
+        
+        The default animation map is [[1, 2], [1, 0]], which means that
+        every other step will be animated with [1, 2] and the others
+        with [1, 0]. [1, 2] means half of the frames will show frame[2]
+        then the other half will show frame[1]. [1, 0] is analogous.
+        This default animation will cause the object to take each step
+        with a leg, provided 0 and 2 are frames of it walking with
+        opposite legs and 1 is a frame of it standing.
+        
+        The frame number, important to slice correctly the image file
+        into object images, is determined automatically by looking at the
+        highest number in the animation map. If there are frames beyond
+        that number, that is, not all of them are used, *frame_number*
+        should be passed.
+        """
         # Calculate frame count
         if frame_number is None:
             self.frame_number = max([max(i) for i in basic_animation]) + 1
