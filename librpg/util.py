@@ -104,11 +104,14 @@ class Matrix(object):
 
 
 def inverse(direction):
+    """
+    Return the opposite of a direction. UP <-> DOWN and LEFT <-> RIGHT.
+    """
     return {UP: DOWN, DOWN: UP, LEFT: RIGHT, RIGHT: LEFT}[direction]
 
-def lib_path(name):
+def lib_path(relative_path):
     """
-    Returns the absolute file path of a file, specified by a path relative
+    Return the absolute file path of a file, specified by a *relative_path*
     to the librpg module root directory.
     """
-    return os.path.join(os.path.split(__file__)[0], name)
+    return os.path.join(os.path.split(__file__)[0], relative_path)

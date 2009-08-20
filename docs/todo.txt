@@ -59,7 +59,6 @@ ok      0.3 Integrate MessageDialog in context stack mechanism
 ok      0.3 Improve context stack API - wrap into MicroWorld
 ok      0.3 Make all classes inherit from object
 ok      0.3 Separate internal modules in a special section
-        0.3 Change member ordering from alphabetical for autodoc
         0.3 Update API docs
         0.3 Allow create_map with variable arguments
         0.3 Fix obj.collide_with_party(party_avatar, party_avatar.facing) - cannot use facing, what if the party is knocked back?

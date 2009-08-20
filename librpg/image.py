@@ -87,8 +87,8 @@ class ObjectImage(Image):
 
     def get_surface(self, obj=None, facing=None, phase=None):
         assert obj is not None or (facing is not None and phase is not None),\
-                ('get_surface() must be called with either `obj` or `facing` '
-                 'AND `phase` parameters set')
+                ('get_surface() must be called with either `obj` or (`facing` '
+                 'AND `phase`) parameters set')
 
         if obj is not None:
             if obj.sliding:
