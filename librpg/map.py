@@ -44,7 +44,12 @@ class MapController(Context):
         self.party_movement = map_model.party_movement
         self.party_movement_append = self.party_movement.append
         self.party_movement_remove = self.party_movement.remove
-        get_context_stack().stack_context(self.message_queue)
+        
+        # Initialize contexts
+        context_stack = get_context_stack()
+        context_stack.stack_context(self.message_queue)
+        for context in map_model.contexts:
+            context_stack.stack_context(context)
         
     def step(self):
         if self.map_model.pause_delay > 0:
@@ -202,6 +207,7 @@ class MapModel(object):
                 self.area_layer.set(x, y, [])
 
         self.pause_delay = 0
+        self.contexts = []
 
     def load_from_map_file(self):
         layout_file = open(self.map_file)
@@ -467,14 +473,14 @@ class MapModel(object):
 
     def schedule_message(self, message):
         """
-        Adds a Dialog to the message queue, displaying it as soon as the
+        Add a Dialog to the message queue, displaying it as soon as the
         messages that were previously there are done.
         """
         self.controller.message_queue.push(message)
 
     def pause(self, length):
         """
-        Stops movement and acting in the map for *length* frames.
+        Stop movement and acting in the map for *length* frames.
         """
         self.pause_delay = length
 
@@ -500,7 +506,7 @@ class MapModel(object):
 
     def sync_movement(self, objects):
         """
-        Stops movement and acting in the map, except for the movement
+        Stop movement and acting in the map, except for the movement
         already scheduled or in progress in the objects specified.
         *objects* should be a list of those MapObjects.
         """
@@ -508,7 +514,7 @@ class MapModel(object):
 
     def save_world(self, filename):
         """
-        Saves the game to the given file.
+        Save the game to the given file.
         """
         self.world.state.save_local(self.id, self.save())
         party_local_state = (self.id, self.party_avatar.position,
@@ -516,6 +522,13 @@ class MapModel(object):
         self.world.state.save_local(PARTY_POSITION_LOCAL_STATE,
                                     party_local_state)
         self.world.save(filename)
+
+    def add_context(self, context):
+        """
+        Add a context to be run over this map and the message queue
+        context.
+        """
+        self.contexts.append(context)
 
 
 class ObjectCell(object):

@@ -13,6 +13,7 @@ from librpg.virtualscreen import get_screen
 from librpg.context import Context
 
 class MessageDialog(object):
+
     """
     A MessageDialog is a simple message to be displayed on the screen.
     
@@ -79,6 +80,7 @@ class MessageDialog(object):
 
 
 class ChoiceDialog(MessageDialog):
+
     """
     A ChoiceDialog is a message that comes along a list of options from
     which the player has to pick one option.
