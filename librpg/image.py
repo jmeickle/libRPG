@@ -10,15 +10,6 @@ class Image(object):
     A simple static image.
     
     This is the base class for more complex and animated images.
-    
-    :attr:`surface`
-        Pygame Surface containing the image.
-        
-    :attr:`width`
-        Image width in pixels.
-
-    :attr:`height`
-        Image height in pixels.
     """
 
     def __init__(self, surface):
@@ -28,6 +19,15 @@ class Image(object):
         Pass the *surface* that will be stored in the image. Note
         that the surface is not copied, which means it should not be
         altered after being passed to this class.
+    
+        :attr:`surface`
+            Pygame Surface containing the image.
+            
+        :attr:`width`
+            Image width in pixels.
+
+        :attr:`height`
+            Image height in pixels.
         """
         self.surface = surface
         self.width = self.surface.get_width()
