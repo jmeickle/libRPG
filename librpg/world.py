@@ -82,16 +82,16 @@ class World(BaseWorld):
         
         BaseWorld.__init__(self, initial_map, initial_position, state_file)
         self.maps = maps
-        self.scheduled_teleport = (self.party_pos[0], self.party_pos[1])
+        self.scheduled_teleport = (self.party_pos[0], self.party_pos[1], ())
         
-    def create_map(self, map_id):
-        created_map = self.maps[map_id]()
+    def create_map(self, map_id, *args):
+        created_map = self.maps[map_id](*args)
         created_map.world = self
         created_map.id = map_id
         return created_map
 
-    def schedule_teleport(self, position, map_id):
-        self.scheduled_teleport = (map_id, position)
+    def schedule_teleport(self, position, map_id, *args):
+        self.scheduled_teleport = (map_id, position, args)
 
     def gameloop(self):
         prev_facing = None
@@ -101,8 +101,8 @@ class World(BaseWorld):
             # print self.state.locals
         
             # Create new map
-            map_id, position = self.scheduled_teleport
-            map_model = self.create_map(map_id)
+            map_id, position, args = self.scheduled_teleport
+            map_model = self.create_map(map_id, *args)
 
             # Use data that was stored
             if prev_facing is None:
@@ -209,7 +209,7 @@ class WorldMap(MapModel):
         self.world = None
         self.id = None
 
-    def schedule_teleport(self, position, map_id=None):
+    def schedule_teleport(self, position, map_id=None, *map_args):
         """
         After the current iteration of the WorldMap's context stack, the
         party will be teleported to the WorldMap represented by *map_id*
@@ -220,9 +220,12 @@ class WorldMap(MapModel):
         passed, the party will be removed and added to the map, causing
         the state to be saved and the map to be reinitialized as if it
         were just entered.
+        
+        If the target map takes arguments for creation, pass them as
+        *map_args*.
         """
         if map_id is not None:
-            self.world.schedule_teleport(position, map_id)
+            self.world.schedule_teleport(position, map_id, *map_args)
             self.controller.stop()
         else:
             self.teleport_object(self.party_avatar, position)
@@ -235,15 +238,20 @@ class TeleportArea(MapArea):
     
     If *map_id* is not passed, the teleport will be internal to the map,
     preventing it from being reinitialized.
+            
+    If the target map takes arguments for creation, pass them as
+    *map_args*.
     """
 
-    def __init__(self, position, map_id=None):
+    def __init__(self, position, map_id=None, *map_args):
         MapArea.__init__(self)
         self.map_id = map_id
         self.position = position
+        self.map_args = map_args
 
     def party_entered(self, party_avatar, position):
-        party_avatar.map.schedule_teleport(self.position, self.map_id)
+        party_avatar.map.schedule_teleport(self.position, self.map_id,
+                                           *self.map_args)
 
 
 class RelativeTeleportArea(MapArea):
@@ -261,16 +269,21 @@ class RelativeTeleportArea(MapArea):
     
     If *map_id* is not passed, the teleport will be internal to the map,
     preventing it from being reinitialized.
+    
+    If the target map takes arguments for creation, pass them as
+    *map_args*.
     """
 
-    def __init__(self, x_offset=0, y_offset=0, map_id=None):
+    def __init__(self, x_offset=0, y_offset=0, map_id=None, *map_args):
         MapArea.__init__(self)
         self.map_id = map_id
         self.x_offset = x_offset
         self.y_offset = y_offset
+        self.map_args = map_args
 
     def party_entered(self, party_avatar, position):
         position = Position(position.x + self.x_offset,
                             position.y + self.y_offset)
         party_avatar.map.schedule_teleport(position,
-                                           self.map_id)
+                                           self.map_id,
+                                           *self.map_args)
