@@ -61,7 +61,8 @@ ok      0.3 Make all classes inherit from object
 ok      0.3 Separate internal modules in a special section
 ok      0.3 Update API docs
 ok      0.3 Allow create_map with variable arguments
-        0.3 Fix obj.collide_with_party(party_avatar, party_avatar.facing) - cannot use facing, what if the party is knocked back?
+ok      0.3 Fix obj.collide_with_party(party_avatar, party_avatar.facing) - cannot use facing, what if the party is knocked back?
+        0.3 Allow objects to walk backwards
         0.4 PEP-8 item.py
         0.4 Write item module docs
         0.4 Improve message dialogs - split texts too big into more than 1 dialog

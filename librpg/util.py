@@ -31,6 +31,12 @@ class Position(object):
         """
         return Position(self.x + pos.x, self.y + pos.y)
 
+    def __sub__(self, pos):
+        """
+        Positions may be subtracted, which is a typical vectorial subtraction.
+        """
+        return Position(self.x - pos.x, self.y - pos.y)
+
     def up(self, amount=1):
         """
         Return a Position that is *amount* tiles above this one.
@@ -187,3 +193,21 @@ def lib_path(relative_path):
     to the librpg module root directory.
     """
     return os.path.join(os.path.split(__file__)[0], relative_path)
+
+def determine_facing(new_pos, old_pos):
+    """
+    Returns the direction that has to be followed to get from *old_pos*
+    to *new_pos*. Returns None if they are not adjacent.
+    """
+    delta = new_pos - old_pos
+    print delta
+    if delta == Position(-1, 0):
+        return LEFT
+    elif delta == Position(+1, 0):
+        return RIGHT
+    elif delta == Position(0, -1):
+        return UP
+    elif delta == Position(0, +1):
+        return DOWN
+    else:
+        return None

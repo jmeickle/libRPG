@@ -110,16 +110,20 @@ class MapController(Context):
         party_avatar = self.map_model.party_avatar
         if party_avatar.just_completed_movement:
             party_avatar.just_completed_movement = False
+            coming_from_direction = determine_facing(party_avatar.position,
+                                                     party_avatar.prev_position)
 
             # Trigger below objects' collide_with_party()
             for obj in self.map_model.object_layer.\
                        get_pos(party_avatar.position).below:
-                obj.collide_with_party(party_avatar, party_avatar.facing)
+                obj.collide_with_party(party_avatar,
+                                       coming_from_direction)
 
             # Trigger above objects' collide_with_party()
             for obj in self.map_model.object_layer.\
                        get_pos(party_avatar.position).above:
-                obj.collide_with_party(party_avatar, party_avatar.facing)
+                obj.collide_with_party(party_avatar,
+                                       coming_from_direction)
 
             # Trigger areas' party_entered and party_moved()
             for area in self.map_model.area_layer.get_pos(party_avatar.position):
