@@ -12,9 +12,12 @@ Scene
         considering that the first term is a SceneAction and the second is
         a list of its dependencies.
         
-    + add_action(action, dependencies=[])
+    + add_action(action, wait_for_previous=True, dependencies=None)
     
         Adds a new SceneAction to the Scene.
+        
+        If *wait_for_previous* is True, this action will wait for the previously
+        added ones to execute. If it is False, it will be executed concurrently.
         
         *dependencies* should be a list of the SceneActions on which this
         action depends to start.
@@ -128,4 +131,21 @@ Examples
         scene.add_action(party_movement, [door_movement])
         scene.add_action(wait, [msg1, party_movement])
         scene.add_action(teleport, [wait])
+        scene.run()
+        
+    def activate():
+        door_movement = MovementAction(self.door,
+                                       [Face(UP), Wait(3), Face(LEFT)])
+        party_movement = MovementAction(self.party_avatar,
+                                       [Step(UP)])
+        msg1 = MessageDialog('Hi.')
+        teleport = TeleportAction(map_id=14, pos=Position(10, 15))
+        wait = WaitAction(16)
+    
+        scene = Scene()
+        scene.add_action(door_movement, True)
+        scene.add_action(msg1, False)
+        scene.add_action(party_movement, True)
+        scene.add_action(wait, [msg1, True)
+        scene.add_action(teleport, True)
         scene.run()
