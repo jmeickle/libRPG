@@ -11,7 +11,7 @@ from librpg.map import MapModel, MapController
 from librpg.mapobject import MapObject, ScenarioMapObject
 from librpg.util import Position, inverse
 from librpg.party import Character, CharacterReserve
-from librpg.movement import Slide, Wait, ForcedStep, Face
+from librpg.movement import Slide, Wait, ForcedStep
 from librpg.dialog import MessageDialog
 from librpg.locals import *
 
@@ -43,9 +43,11 @@ class ObjectTestRock(ScenarioMapObject):
     def activate(self, party_avatar, direction):
 
         print 'Grabbed and pulled rock'
-        party_avatar.schedule_movement(Slide(inverse(direction)))
-        party_avatar.schedule_movement(Face(direction))
-        self.schedule_movement(ForcedStep(inverse(direction)))
+        pulling_direction = inverse(direction)
+        party_avatar.schedule_movement(Slide(pulling_direction, back=True),
+                                       override=True)
+        self.schedule_movement(Slide(pulling_direction), override=True)
+
 
 class ObjectTestMap(MapModel):
     

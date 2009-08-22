@@ -32,8 +32,7 @@ class ObjectTestNPC(MapObject):
     
         print 'Activated NPC'
         for i in xrange(2):
-            party_avatar.schedule_movement(Step(inverse(direction)))
-        party_avatar.schedule_movement(Face(direction))
+            party_avatar.schedule_movement(Step(inverse(direction), back=True))
         self.map.schedule_message(MessageDialog(u"Ouch!", block_movement=False))
         self.map.schedule_message(MessageDialog(u"Hey, why are you hitting me?",
                                                 block_movement=False))

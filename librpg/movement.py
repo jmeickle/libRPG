@@ -58,6 +58,9 @@ class MovementQueue(Movement, list):
         else:
             return False
 
+    def clear(self):
+        del self[:]
+
 
 class MovementCycle(Movement):
 
@@ -94,15 +97,23 @@ class Step(Movement):
 
     """
     Tries to make the object take one step to *direction*. Yields
-    control immediately, not caring whether the step worked or not.
+    control after the step worked or after *tries* frames have passed.
+    
+    If *back* is True, the step will be backwards.
     """
 
-    def __init__(self, direction):
+    def __init__(self, direction, back=False, tries=2):
         self.direction = direction
+        self.back = back
+        self.tries_left = tries
 
     def flow(self, obj):
-        obj.map.try_to_move_object(obj, self.direction)
-        return True
+        done = obj.map.try_to_move_object(obj, self.direction, back=self.back)
+        if self.tries_left and not done:
+            self.tries_left -= 1
+            return False
+        else:
+            return True
 
 
 class Face(Movement):
@@ -143,15 +154,24 @@ class Slide(Movement):
 
     """
     Tries to make the object slide one tile to *direction*. Yields
-    control immediately, not caring whether the slide worked or not.
+    control after the slide worked or after *tries* frames have passed.
+
+    If *back* is True, the slide will be backwards.
     """
 
-    def __init__(self, direction):
+    def __init__(self, direction, back=False, tries=2):
         self.direction = direction
+        self.back = back
+        self.tries_left = tries
 
     def flow(self, obj):
-        obj.map.try_to_move_object(obj, self.direction, slide=True)
-        return True
+        done = obj.map.try_to_move_object(obj, self.direction, slide=True,
+                                   back=self.back)
+        if self.tries_left and not done:
+            self.tries_left -= 1
+            return False
+        else:
+            return True
 
 
 class ForcedStep(Movement):
@@ -161,9 +181,25 @@ class ForcedStep(Movement):
     control only when the step is taken.
     """
 
-    def __init__(self, direction):
+    def __init__(self, direction, back=False):
         self.direction = direction
+        self.back = back
 
     def flow(self, obj):
-        return obj.map.try_to_move_object(obj, self.direction)
+        return obj.map.try_to_move_object(obj, self.direction, back=self.back)
 
+
+class ForcedSlide(Movement):
+
+    """
+    Tries to make the object slide one tile to *direction*. Yields
+    control only when the slide works.
+    """
+
+    def __init__(self, direction, back=False):
+        self.direction = direction
+        self.back = back
+
+    def flow(self, obj):
+        return obj.map.try_to_move_object(obj, self.direction, slide=True,
+                                          back=self.back)

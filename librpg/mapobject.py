@@ -89,6 +89,7 @@ class MapObject(object):
         self.scheduled_movement = MovementQueue()
         self.movement_behavior = MovementCycle()
         self.sliding = False
+        self.going_back = False
         self.just_completed_movement = False
 
         self.areas = []
@@ -173,11 +174,18 @@ class MapObject(object):
             if no_scheduled_movement:
                 self.movement_behavior.flow(self)
 
-    def schedule_movement(self, movement):
+    def schedule_movement(self, movement, override=False):
         """
         Enqueue a Movement for the object to execute after the ones
         already requested.
+        
+        If *override* is passed as True, this movement will cancel
+        whatever other scheduled movements there are already in the
+        queue.
         """
+        if override:
+            self.scheduled_movement.clear()
+        
         self.scheduled_movement.append(movement)
 
 

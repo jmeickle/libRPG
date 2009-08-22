@@ -83,7 +83,9 @@ class MapController(Context):
                 self.party_movement_append(direction)
                 return True
             elif event.key == K_SPACE or event.key == K_RETURN:
-                self.map_model.party_action()
+                if not self.party_avatar.scheduled_movement \
+                   and not self.party_avatar.movement_phase:
+                    self.map_model.party_action()
                 return True
             elif event.key == K_ESCAPE:
                 get_context_stack().stop()
@@ -176,12 +178,13 @@ class MapModel(object):
         as *terrain_tileset_files*. Each will correspond to a scenario
         layer.        
         """
+        # Set up party
         self.party = None
         self.party_avatar = None
         self.party_movement = []
 
+        # Load file data
         self.map_file = map_file
-
         self.terrain_tileset_files = terrain_tileset_files
         self.scenario_tileset_files_list = scenario_tileset_files_list
 
@@ -192,8 +195,10 @@ class MapModel(object):
 
         self.load_from_map_file()
 
+        # Set up local state
         self.local_state = None
 
+        # Set up objects
         self.objects = []
         self.below_objects = []
         self.obstacle_objects = []
@@ -204,12 +209,14 @@ class MapModel(object):
             for y in range(self.height):
                 object_layer_set(x, y, ObjectCell())
 
+        # Set up areas
         self.areas = []
         self.area_layer = Matrix(self.width, self.height)
         for x in range(self.width):
             for y in range(self.height):
                 self.area_layer.set(x, y, [])
 
+        # Set up context system
         self.pause_delay = 0
         self.contexts = []
 
@@ -360,15 +367,21 @@ class MapModel(object):
             self.area_layer.get_pos(pos).remove(area)
         area.area = list(set(area.area) - set(positions))
 
-    def try_to_move_object(self, obj, direction, slide=False):
+    def try_to_move_object(self, obj, direction, slide=False, back=False):
         """
         Try to move an object to the specified direction (UP, DOWN, LEFT or
         RIGHT). Return whether the object could be moved.
+        
+        If *slide* is True, the movement will use only the static frame of
+        the object. If *back* is True, the movement will be backwards.
         """
         if obj.movement_phase > 0:
             return False
 
-        obj.facing = direction
+        if back:
+            obj.facing = inverse(direction)
+        else:
+            obj.facing = direction
 
         old_pos = obj.position
         desired = obj.position.step(direction)
@@ -388,7 +401,7 @@ class MapModel(object):
                 self.is_obstructed(old_terrain, old_scenario, new_terrain,
                                    new_scenario, new_object, direction)):
             # Move
-            self.move_object(obj, old_object, new_object, desired, slide)
+            self.move_object(obj, old_object, new_object, desired, slide, back)
             if obj is self.party_avatar:
                 for area in self.area_layer.get_pos(old_pos):
                     if area not in self.area_layer.get_pos(desired):
@@ -424,9 +437,10 @@ class MapModel(object):
                 return False
         return new_terrain.is_obstacle() or new_terrain.cannot_be_entered(inv)
 
-    def move_object(self, obj, old_object, new_object, new_pos, slide):
+    def move_object(self, obj, old_object, new_object, new_pos, slide, back):
         obj.movement_phase = obj.speed - 1
         obj.sliding = slide
+        obj.going_back = back
 
         old_object.remove_object(obj)
         new_object.add_object(obj)

@@ -200,7 +200,6 @@ def determine_facing(new_pos, old_pos):
     to *new_pos*. Returns None if they are not adjacent.
     """
     delta = new_pos - old_pos
-    print delta
     if delta == Position(-1, 0):
         return LEFT
     elif delta == Position(+1, 0):

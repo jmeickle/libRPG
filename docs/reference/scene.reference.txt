@@ -4,11 +4,15 @@ Scene
     To use, set it up by inheriting and overloading the constructor
     or just instantiate and set it up normally.
 
-    + Scene()
+    + Scene(actions=[])
     
         Set up the SceneActions and their dependencies.
         
-    + add_action(action, dependencies)
+        The tuples (SceneAction, [SceneAction]) in *actions* will be inserted,
+        considering that the first term is a SceneAction and the second is
+        a list of its dependencies.
+        
+    + add_action(action, dependencies=[])
     
         Adds a new SceneAction to the Scene.
         
@@ -74,7 +78,7 @@ IdGenerator
 
 ActionSequence(SceneAction)
 
-    + ActionSequence(actions, dependencies)
+    + ActionSequence(actions, dependencies=[])
 
         A set of SceneActions that will be executed sequentially.
         

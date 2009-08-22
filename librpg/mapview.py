@@ -123,13 +123,23 @@ class MapView(object):
         obj_x_offset, obj_y_offset = 0, 0
         if obj.movement_phase > 0:
             offset = obj.movement_phase * graphics_config.tile_size / obj.speed
-            if obj.facing == UP:
-                obj_y_offset = offset
-            elif obj.facing == RIGHT:
-                obj_x_offset = -offset
-            elif obj.facing == DOWN:
-                obj_y_offset = -offset
-            elif obj.facing == LEFT:
-                obj_x_offset = offset
+            if not obj.going_back:
+                if obj.facing == UP:
+                    obj_y_offset = offset
+                elif obj.facing == RIGHT:
+                    obj_x_offset = -offset
+                elif obj.facing == DOWN:
+                    obj_y_offset = -offset
+                elif obj.facing == LEFT:
+                    obj_x_offset = offset
+            else:
+                if obj.facing == UP:
+                    obj_y_offset = -offset
+                elif obj.facing == RIGHT:
+                    obj_x_offset = offset
+                elif obj.facing == DOWN:
+                    obj_y_offset = offset
+                elif obj.facing == LEFT:
+                    obj_x_offset = -offset
         return obj_x_offset, obj_y_offset
 
