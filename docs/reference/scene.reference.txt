@@ -1,0 +1,127 @@
+Scene
+
+    A sequence of parallel and sequential events that will be run.
+    To use, set it up by inheriting and overloading the constructor
+    or just instantiate and set it up normally.
+
+    + Scene()
+    
+        Set up the SceneActions and their dependencies.
+        
+    + add_action(action, dependencies)
+    
+        Adds a new SceneAction to the Scene.
+        
+        *dependencies* should be a list of the SceneActions on which this
+        action depends to start.
+        
+    + run()
+    
+        Run the Scene, calling its actions in the right order.
+        
+        This is actually a mixture of a thread manager with a topological
+        sorter. Every iteration, all actions that are not blocked by any
+        unfulfilled dependency will be stepped. For each of them that ends
+        (step() returns True), the ones that depend on it will have this
+        dependency checked, possibly unblocking it.
+
+    -  broadcast_completion(action_id)
+        
+        Tell the SceneActions waiting for the SceneAction with *action_id*
+        that this dependency has been solved.
+        
+    - active_actions
+    
+        List of all SceneActions in execution.
+
+    - blocked_actions
+    
+        Maps action ids to lists of the actions blocked by that id.
+
+
+SceneAction
+
+    A SceneAction is an atomic action that is part of a scene. It will be
+    attributed a unique id to identify it as a dependency for other
+    SceneActions. This is an abstract class, inherit from it to create the
+    actual SceneActions.
+    
+    + SceneAction()
+    
+        Set the id.
+        
+    - step()
+    
+        *Abstract.*
+        
+        Run one iteration of the action. Return whether the action has
+        ended and can be completed.
+
+    - dependencies
+        
+        List of the ids of the SceneActions on which this action depends.
+        When a dependency is resolved, it is removed from this list.
+
+
+IdGenerator
+
+    + IdGenerator()
+    
+    + get_id()
+    
+        Return a unique integer id.
+
+
+ActionSequence(SceneAction)
+
+    + ActionSequence(actions, dependencies)
+
+        A set of SceneActions that will be executed sequentially.
+        
+        *actions* should be a list of these SceneActions, while
+        *dependencies* should be the a list of the dependencies of the
+        ActionSequence itself.
+
+        
+TeleportAction(SceneAction)
+MovementAction(SceneAction)
+AddObjectAction(SceneAction)
+RemoveObjectAction(SceneAction)
+MessageDialogAction(SceneAction)
+ChoiceDialogAction(SceneAction)
+WaitAction(SceneAction)
+
+
+Examples
+--------
+
+    def activate():
+        scene = Scene()
+        
+        door_movement = MovementAction(self.door,
+                                       [Face(UP), Wait(3), Face(LEFT)])
+        party_movement = MovementAction(self.party_avatar,
+                                       [Step(UP)])
+        teleport = TeleportAction(map_id=14, pos=Position(10, 15))
+        sequence = ActionSequence([door_movement, WaitAction(6), party_movement,
+                                   teleport])
+        
+        scene.add_action(sequence)
+        scene.run()
+
+    def activate():        
+        door_movement = MovementAction(self.door,
+                                       [Face(UP), Wait(3), Face(LEFT)])
+        party_movement = MovementAction(self.party_avatar,
+                                       [Step(UP)])
+        msg1 = MessageDialog('Hi.')
+        teleport = TeleportAction(map_id=14, pos=Position(10, 15))
+        wait = WaitAction(16)
+        
+        scene = Scene()
+        scene.add_action(door_movement)
+        scene.add_action(msg1, [door_movement])
+        scene.add_action(party_movement, [door_movement])
+        scene.add_action(wait, [msg1, party_movement])
+        scene.add_action(teleport, [wait])
+        scene.run()

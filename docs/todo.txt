@@ -62,7 +62,7 @@ ok      0.3 Separate internal modules in a special section
 ok      0.3 Update API docs
 ok      0.3 Allow create_map with variable arguments
 ok      0.3 Fix obj.collide_with_party(party_avatar, party_avatar.facing) - cannot use facing, what if the party is knocked back?
-        0.3 Solve synchronization problems
+ok      0.3 Solve synchronization problems
         0.3 Allow objects to walk backwards
         0.4 PEP-8 item.py
         0.4 Write item module docs
@@ -77,6 +77,7 @@ ok      0.3 Fix obj.collide_with_party(party_avatar, party_avatar.facing) - cann
         0.5 Design Menu API
         0.5 Define generic menu skin system
         0.6 Add gameloop hooks
+        0.6 Write scene module
         0.7 Define generic battle system
         ?   Add on_object_touch events
         ?   Image management module (store the last x loaded images and the y most used images)

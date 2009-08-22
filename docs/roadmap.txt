@@ -24,7 +24,7 @@ Generic menu is implemented. Party management, save and inventory sample menus d
 
 Version 0.6
 
-Asynchronous events and configurable keys implemented. Example displays a mana bar on the screen, and binds keys to spells castable on the map. Also, random events happen on the map every once in a while. Support for random animations.
+Synchronous events (scene module) and asynchronous events (context module) implemented. Configurable keys implemented. Example displays a mana bar on the screen, and binds keys to spells castable on the map. Also, random events happen on the map every once in a while. Support for random animations.
 
 Version 0.7
 
