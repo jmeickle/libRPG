@@ -7,6 +7,8 @@ RIGHT = 2
 DOWN = 3
 LEFT = 4
 
+ACTIVATE = 5
+
 # Movement speed constants
 
 VERY_FAST_SPEED, FAST_SPEED, NORMAL_SPEED, SLOW_SPEED, VERY_SLOW_SPEED = 3, 4, 6, 10, 15

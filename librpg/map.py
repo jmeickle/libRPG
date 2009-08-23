@@ -67,7 +67,12 @@ class MapController(Context):
         if self.party_movement and not self.party_avatar.scheduled_movement \
            and not self.party_avatar.movement_phase \
            and not self.message_queue.is_busy():
-            self.party_avatar.schedule_movement(Step(self.party_movement[0]))
+            action = self.party_movement[0]
+            if action == ACTIVATE:
+                self.party_movement.pop(0)
+                self.map_model.party_action()
+            else:
+                self.party_avatar.schedule_movement(Step(action))
 
     def draw(self):
         self.map_view_draw()
@@ -83,9 +88,8 @@ class MapController(Context):
                 self.party_movement_append(direction)
                 return True
             elif event.key == K_SPACE or event.key == K_RETURN:
-                if not self.party_avatar.scheduled_movement \
-                   and not self.party_avatar.movement_phase:
-                    self.map_model.party_action()
+                if not ACTIVATE in self.party_movement:
+                    self.party_movement.insert(0, ACTIVATE)
                 return True
             elif event.key == K_ESCAPE:
                 get_context_stack().stop()
@@ -95,6 +99,10 @@ class MapController(Context):
             if direction is not None and\
                direction in self.map_model.party_movement:
                 self.party_movement_remove(direction)
+                return True
+            elif event.key == K_SPACE or event.key == K_RETURN \
+                 and ACTIVATE in self.party_movement:
+                self.party_movement_remove(ACTIVATE)
                 return True
         return False
 
