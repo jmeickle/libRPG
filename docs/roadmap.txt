@@ -10,7 +10,7 @@ Version 0.2 (released on ago 8, 2009)
 
 The map includes interactive MapObjects. Most graphic options are implemented, including various camera modes and scaling. The MapObjects can move.
 
-Version 0.3 (to be released on ago 24, 2009)
+Version 0.3 (released on ago 22, 2009)
 
 A World with a few connected maps is available for the Party to walk around. The local state of the maps is saved for when the party comes back to that map.
 

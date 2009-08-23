@@ -65,7 +65,7 @@ ok      0.3 Fix obj.collide_with_party(party_avatar, party_avatar.facing) - cann
 ok      0.3 Solve synchronization problems
 ok      0.3 Allow objects to walk backwards
 ok      0.3 Improve activate key
-        0.4 PEP-8 item.py
+ok      0.4 PEP-8 item.py
         0.4 Write item module docs
         0.4 Improve message dialogs - split texts too big into more than 1 dialog
         0.4 Change ChoiceDialog to call a callback (either passed in constructor or overridden in a derived class) upon completion

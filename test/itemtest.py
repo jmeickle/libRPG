@@ -2,15 +2,15 @@
 
 from librpg.item import *
 
-def addTest(id, amount):
-    a = i.addItem(UsableOrdinaryItem(id), amount)
+def add_test(id, amount):
+    a = i.add_item(UsableOrdinaryItem(id), amount)
     if a != amount:
         print "Item", id, ": Added", a, "trying to add", amount
     else:
         print "Item", id, ": Added", a
 
-def removeTest(id, amount):
-    r = i.removeItem(UsableOrdinaryItem(id), amount)
+def remove_test(id, amount):
+    r = i.remove_item(UsableOrdinaryItem(id), amount)
     if r != amount:
         print "Item", id, ": Removed", r, "trying to remove", amount
     else:
@@ -18,24 +18,22 @@ def removeTest(id, amount):
         
 i = OrdinaryInventory()
 
-addTest(19, 1)
-addTest(42, 1)
-addTest(19, 5)
-addTest(66, 95)
-addTest(66, 15)
+add_test(19, 1)
+add_test(42, 1)
+add_test(19, 5)
+add_test(66, 95)
+add_test(66, 15)
 
-removeTest(66, 17)
-removeTest(19, 7)
-removeTest(19, 1)
+remove_test(66, 17)
+remove_test(19, 7)
+remove_test(19, 1)
 
-addTest(19, 1)
-addTest(42, 1)
-addTest(19, 5)
-addTest(67, 95)
-addTest(66, 15)
+add_test(19, 1)
+add_test(42, 1)
+add_test(19, 5)
+add_test(67, 95)
+add_test(66, 15)
 
-o = i.getOrderedList(lambda x: UsableOrdinaryItem(x), cmp, lambda x: x.id)
-d = i.getItemsWithAmounts(lambda x: UsableOrdinaryItem(x))
+print i.get_ordered_list(lambda x: UsableOrdinaryItem(x), cmp, lambda x: x.id)
+print i.get_items_with_amounts(lambda x: UsableOrdinaryItem(x))
 
-print o
-print d

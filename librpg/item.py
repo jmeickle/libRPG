@@ -2,132 +2,133 @@ class Inventory(object):
 
     # Read-Only Attributes:
     # weight - current total weight in inventory
-    # maxWeight - maximum total weight the inventory can hold
+    # max_weight - maximum total weight the inventory can hold
 
-    def __init__(self, maxWeight = None):
+    def __init__(self, max_weight = None):
         self.weight = 0
-        self.maxWeight = maxWeight
+        self.max_weight = max_weight
 
 
 class OrdinaryInventory(Inventory):
 
     # Read-Only Attributes:
-    # items - dictionary mapping itemIds to their amounts contained
-    # maxItemPile - maximum amount of identical items in a pile
+    # items - dictionary mapping item_ids to their amounts contained
+    # max_item_pile - maximum amount of identical items in a pile
 
-    def __init__(self, maxWeight=None, maxItemPile=99):
-        Inventory.__init__(self, maxWeight)
+    def __init__(self, max_weight=None, max_item_pile=99):
+        Inventory.__init__(self, max_weight)
         self.items = {}
-        self.maxItemPile = maxItemPile
+        self.max_item_pile = max_item_pile
 
-    def addItem(self, item, amount=1):
+    def add_item(self, item, amount=1):
         #check for overweight problems
-        if self.maxWeight is not None:
-            availableWeight = self.maxWeight - self.weight
-            amountThatFits = availableWeight / item.weight
+        if self.max_weight is not None:
+            available_weight = self.max_weight - self.weight
+            amount_that_fits = available_weight / item.weight
         else:
-            amountThatFits = self.maxItemPile
+            amount_that_fits = self.max_item_pile
 
         #check for pile problems
-        pileSpace = self.maxItemPile - self.getAmount(item)
-        finalAmount = min(amountThatFits, pileSpace, amount)
+        pile_space = self.max_item_pile - self.get_amount(item)
+        final_amount = min(amount_that_fits, pile_space, amount)
 
-        self._unchecked_addItem(item.id, finalAmount, item.weight)
-        return finalAmount
+        self._unchecked_add_item(item.id, final_amount, item.weight)
+        return final_amount
 
-    def removeItem(self, item, amount=1):
-        amountContained = self.getAmountById(item.id)
-        if amountContained > amount:
+    def remove_item(self, item, amount=1):
+        amount_contained = self.get_amount_by_id(item.id)
+        if amount_contained > amount:
             self.items[item.id] -= amount
             self.weight -= amount * item.weight
             return amount
-        elif amountContained > 0:
+        elif amount_contained > 0:
             del self.items[item.id]
-            self.weight -= amountContained * item.weight
-            return amountContained
+            self.weight -= amount_contained * item.weight
+            return amount_contained
         else:
             return 0
 
     # Private
-    def _unchecked_addItem(self, itemId, amount, itemWeight):
+    def _unchecked_add_item(self, item_id, amount, item_weight):
         if amount > 0:
-            if self.containsById(itemId):
-                self.items[itemId] += amount
+            if self.contains_by_id(item_id):
+                self.items[item_id] += amount
             else:
-                self.items[itemId] = amount
-            self.weight += amount * itemWeight
+                self.items[item_id] = amount
+            self.weight += amount * item_weight
 
     def contains(self, item):
-        return self.containsById(item.id)
+        return self.contains_by_id(item.id)
 
-    def containsById(self, itemId):
-        return itemId in self.items
+    def contains_by_id(self, item_id):
+        return item_id in self.items
 
-    def getAmount(self, item):
-        return self.getAmountById(item.id)
+    def get_amount(self, item):
+        return self.get_amount_by_id(item.id)
 
-    def getAmountById(self, itemId):
-        if self.containsById(itemId):
-            return self.items[itemId]
+    def get_amount_by_id(self, item_id):
+        if self.contains_by_id(item_id):
+            return self.items[item_id]
         else:
             return 0
 
-    def getPileCount(self):
+    def get_pile_count(self):
         return len(self.items)
 
     def clear(self):
         self.items = {}
 
-    def getOrderedList(self, itemFactory, comparisonFunction,
-                       extractFunction=None):
-        return sorted(map(itemFactory, self.items.keys()), comparisonFunction,
-                      extractFunction)
+    def get_ordered_list(self, item_factory, comparison_function,
+                       extract_function=None):
+        return sorted(map(item_factory, self.items.keys()), comparison_function,
+                      extract_function)
 
-    def getItemsWithAmounts(self, itemFactory):
+    def get_items_with_amounts(self, item_factory):
         result = {}
-        for itemId, amount in self.items.iteritems():
-            result[itemFactory(itemId)] = amount
+        for item_id, amount in self.items.iteritems():
+            result[item_factory(item_id)] = amount
         return result
 
 
 class UniquesInventory(Inventory):
 
-    def __init__(self, maxWeight = None):
-        Inventory.__init__(self, maxWeight)
+    def __init__(self, max_weight = None):
+        Inventory.__init__(self, max_weight)
         self.items = []
 
-    def addItem(self, item):
+    def add_item(self, item):
         #check for overweight problems
-        if self.maxWeight is not None and self.maxWeight - self.weight >= item.weight:
-            self._unchecked_addItem(item)
+        if self.max_weight is not None \
+           and self.max_weight - self.weight >= item.weight:
+            self._unchecked_add_item(item)
             return True
         else:
             return False
 
-    def removeItem(self, item):
+    def remove_item(self, item):
         if item in self.items:
-            self.uncheckedRemoveItem(item)
+            self.unchecked_remove_item(item)
             return True
         else:
             return False
 
     # Private
-    def _unchecked_addItem(self, item):
+    def _unchecked_add_item(self, item):
         self.items.append(item)
         self.weight += item.weight
 
     # Private
-    def uncheckedRemoveItem(self, item):
+    def unchecked_remove_item(self, item):
         self.items.remove(item)
         self.weight -= item.weight
 
-    def getOrderedList(self, comparisonFunction=None):
-        return sorted(self.items, comparisonFunction)
+    def get_ordered_list(self, comparison_function=None):
+        return sorted(self.items, comparison_function)
 
     def clear(self):
         self.items = []
 
-    def getItemCount(self):
+    def get_item_count(self):
         return len(self.items)
 
 
