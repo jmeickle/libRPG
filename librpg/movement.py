@@ -93,7 +93,45 @@ class MovementCycle(Movement):
         return False
 
 
-class Step(Movement):
+class OneTileMovement(Movement):
+
+    """
+    Base class for one tile movements.
+    """
+    
+    def __init__(self, direction, slide, back, tries):
+        """
+        *Constructor.*
+
+        If *slide* is True, the object will keep its stopped animation.
+
+        If *back* is True, the movement will be backwards.
+
+        If *tries* is None, the movement will be forced, that is, will
+        not yield control until it is executed.
+        """
+        self.direction = direction
+        self.slide = slide
+        self.back = back
+        if tries is None:
+            self.forced = True
+        else:
+            self.forced = False
+            self.tries_left = tries
+
+    def flow(self, obj):
+        done = obj.map.try_to_move_object(obj, self.direction, slide=self.slide,
+                                          back=self.back)
+        if self.forced:
+            return done
+        if self.tries_left and not done:
+            self.tries_left -= 1
+            return False
+        else:
+            return True
+
+
+class Step(OneTileMovement):
 
     """
     Tries to make the object take one step to *direction*. Yields
@@ -103,17 +141,7 @@ class Step(Movement):
     """
 
     def __init__(self, direction, back=False, tries=2):
-        self.direction = direction
-        self.back = back
-        self.tries_left = tries
-
-    def flow(self, obj):
-        done = obj.map.try_to_move_object(obj, self.direction, back=self.back)
-        if self.tries_left and not done:
-            self.tries_left -= 1
-            return False
-        else:
-            return True
+        OneTileMovement.__init__(self, direction, False, back, tries)
 
 
 class Face(Movement):
@@ -150,7 +178,7 @@ class Wait(Movement):
             return False
 
 
-class Slide(Movement):
+class Slide(OneTileMovement):
 
     """
     Tries to make the object slide one tile to *direction*. Yields
@@ -160,21 +188,10 @@ class Slide(Movement):
     """
 
     def __init__(self, direction, back=False, tries=2):
-        self.direction = direction
-        self.back = back
-        self.tries_left = tries
-
-    def flow(self, obj):
-        done = obj.map.try_to_move_object(obj, self.direction, slide=True,
-                                   back=self.back)
-        if self.tries_left and not done:
-            self.tries_left -= 1
-            return False
-        else:
-            return True
+        OneTileMovement.__init__(self, direction, True, back, tries)
 
 
-class ForcedStep(Movement):
+class ForcedStep(OneTileMovement):
 
     """
     Tries to make the object take one step to *direction*. Yields
@@ -182,14 +199,10 @@ class ForcedStep(Movement):
     """
 
     def __init__(self, direction, back=False):
-        self.direction = direction
-        self.back = back
-
-    def flow(self, obj):
-        return obj.map.try_to_move_object(obj, self.direction, back=self.back)
+        OneTileMovement.__init__(self, direction, False, back, tries=None)
 
 
-class ForcedSlide(Movement):
+class ForcedSlide(OneTileMovement):
 
     """
     Tries to make the object slide one tile to *direction*. Yields
@@ -197,9 +210,4 @@ class ForcedSlide(Movement):
     """
 
     def __init__(self, direction, back=False):
-        self.direction = direction
-        self.back = back
-
-    def flow(self, obj):
-        return obj.map.try_to_move_object(obj, self.direction, slide=True,
-                                          back=self.back)
+        OneTileMovement.__init__(self, direction, True, back, tries=None)
