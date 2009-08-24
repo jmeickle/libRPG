@@ -66,7 +66,9 @@ ok      0.3 Solve synchronization problems
 ok      0.3 Allow objects to walk backwards
 ok      0.3 Improve activate key
 ok      0.4 PEP-8 item.py
-        0.4 Write item module docs
+ok      0.4 Write item module docs
+ok      0.4 Reevaluate item module
+        0.4 Join similar movements (Step, Slide, ForcedStep, ForcedSlide) into a base class, making them just front ends
         0.4 Improve message dialogs - split texts too big into more than 1 dialog
         0.4 Change ChoiceDialog to call a callback (either passed in constructor or overridden in a derived class) upon completion
         0.4 Animated tiles (period | 12 allows (1, 2, 3, 4, 6, 12), one surface per phase)
@@ -77,10 +79,10 @@ ok      0.4 PEP-8 item.py
         0.4 Allow FPS configuration
         0.4 Add license headers to files
         0.4 Implement movements with timeout
-        0.4 Join similar movements (Step, Slide, ForcedStep, ForcedSlide) into a base class, making them just front ends
         0.5 Open a "library" module with stuff like TeleportArea
         0.5 Design Menu API
         0.5 Define generic menu skin system
+        0.5 Decide if UsableItems should be kept
         0.6 Add gameloop hooks
         0.6 Write scene module
         0.7 Define generic battle system
