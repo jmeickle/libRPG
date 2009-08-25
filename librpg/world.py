@@ -73,22 +73,31 @@ class World(BaseWorld):
                  initial_map=None, initial_position=None, state_file=None):
         """
         *Constructor.*
-        
+
         *maps* should be a dict mapping the map ids to the corresponding
         classes, inherited from MapModel. Map ids should be unique (no two
         maps should share the same id) and may be any hashable and immutable
         object, typically strings or integers.
-        
+
+        *character_factory* should be a factory function that returns an
+        instance of Character or some derived class, given a name and
+        a saved character state.
+
+        *party_factory* should be a factory function that returns an
+        instance of Party or some derived class, given a capacity, a
+        reserve, a list of character names, a leader name and a party
+        state. This defaults to the base Party constructor.
+
         There are two ways of calling this constructor, concerning the
         initial state. If *state_file* is passed, the game will be run 
         from a save that was previously recorded with the World.save()
         method or MapModel.save_world().
-        
+
         If *state_file* is not passed, *initial_map* and *initial_position*
         have to be passed. In this case, the game will be run from the
         beginning, with a brand new save.
         """
-        
+
         BaseWorld.__init__(self, character_factory, party_factory, initial_map,
                            initial_position, state_file)
         self.maps = maps
@@ -162,6 +171,18 @@ class MicroWorld(BaseWorld):
         *map* should be an instantiated map inherited from MapModel,
         which will run as the single map in the world.
         
+        *party_members* should be a list of the names of the characters
+        in the default Party.
+
+        *character_factory* should be a factory function that returns an
+        instance of Character or some derived class, given a name and
+        a saved character state.
+
+        *party_factory* should be a factory function that returns an
+        instance of Party or some derived class, given a capacity, a
+        reserve, a list of character names, a leader name and a party
+        state. This defaults to the base Party constructor.
+
         There are two ways of calling this constructor, concerning the
         initial state. If *state_file* is passed, the game will be run 
         from a save that was previously recorded with the World.save()

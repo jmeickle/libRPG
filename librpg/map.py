@@ -271,7 +271,11 @@ class MapModel(object):
         
         Put the map in an initial, virgin state if the *local_state*
         specified is None. Puts the map in a state loaded from the
-        *local_state*, otherwise.
+        *local_state*, and the *global_state* otherwise.
+        
+        *local_state* is the serializable object returned by
+        MapModel.save() when this map was saved. *global_state*
+        is a dict mapping all feature strings to their local states.
         """
         pass
 
