@@ -28,11 +28,11 @@ class MapController(Context):
     # map_view - MapView (View component of MVC)
     # map_model - MapModel (Model component of MVC)
 
-    def __init__(self, map_model, local_state=None):
+    def __init__(self, map_model, local_state=None, global_state=None):
         Context.__init__(self)
         self.map_model = map_model
         self.map_model.controller = self
-        self.map_model.initialize(local_state)
+        self.map_model.initialize(local_state, global_state)
         self.map_view = MapView(self.map_model)
         self.moving_sync = False
         self.message_queue = MessageQueue(self)
@@ -265,7 +265,7 @@ class MapModel(object):
         layout_file.close()
 
     # Virtual, should be implemented.
-    def initialize(self, local_state):
+    def initialize(self, local_state, global_state):
         """
         *Virtual*
         

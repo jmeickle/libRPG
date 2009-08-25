@@ -4,18 +4,16 @@ librpg.init()
 from worldtest.myworld import MyWorld
 
 # Config graphics
-librpg.config.graphics_config.config(tile_size=32, object_height=32, object_width=32)
+librpg.config.graphics_config.config(tile_size=32, object_height=32,
+                                     object_width=32)
 
-# Create char and char reserve
-a = librpg.party.Character('Andy', 'char_alex32.png')
-r = librpg.party.CharacterReserve([a])
-
-# Create world and run
+# Create world
 try:
     w = MyWorld('save.sav')
 except IOError:
     w = MyWorld()
-w.party = r.create_party(3, [a])
+print w.party
+# Run
 w.gameloop()
 
 # Terminate

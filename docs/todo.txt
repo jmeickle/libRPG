@@ -69,20 +69,30 @@ ok      0.4 PEP-8 item.py
 ok      0.4 Write item module docs
 ok      0.4 Reevaluate item module
 ok      0.4 Join similar movements (Step, Slide, ForcedStep, ForcedSlide) into a base class, making them just front ends
+ok      0.4 Add global state to MapModel.initialize() parameters
+ok      0.4 Add a way to save inventory, quests, etc when the World is being saved
+ok      0.4 Move CharacterReserve to World
+        0.4 Write inventory's save() method
+        0.4 Improve party/reserve/character configuration API at world creation
+        0.4 Configurable keys for MapModel
+        0.4 Add a gameover() method
+        0.4 Generalize image slicing
+        0.4 Separate line spacing for choice dialogs
         0.4 Improve message dialogs - split texts too big into more than 1 dialog
         0.4 Change ChoiceDialog to call a callback (either passed in constructor or overridden in a derived class) upon completion
         0.4 Animated tiles (period | 12 allows (1, 2, 3, 4, 6, 12), one surface per phase)
-        0.4 Configurable keys for MapModel
         0.4 Support background music for maps
         0.4 Put sound effects in standard resources and use them in tests. Evaluate the need for sfx wrappers.
         0.4 Move build_lines to util module, so it can be used for menus later
         0.4 Allow FPS configuration
         0.4 Add license headers to files
         0.4 Implement movements with timeout
+        0.4 Allow objects to be updated, so that they can be "alarms"
         0.5 Open a "library" module with stuff like TeleportArea
         0.5 Design Menu API
         0.5 Define generic menu skin system
         0.5 Decide if UsableItems should be kept
+        0.5 Define item image system and API for menu
         0.6 Add gameloop hooks
         0.6 Write scene module
         0.7 Define generic battle system

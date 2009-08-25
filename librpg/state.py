@@ -25,3 +25,6 @@ class State(object):
     # local_state must be serializable
     def save_local(self, feature, local_state):
         self.locals[feature] = local_state
+
+    def update(self, new_data):
+        self.locals.update(new_data)

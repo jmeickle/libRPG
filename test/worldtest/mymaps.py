@@ -65,7 +65,7 @@ class Map1(WorldMap):
                           ('lower_tileset32.png', 'lower_tileset32.bnd'),
                           [('upper_tileset32.png', 'upper_tileset32.bnd'),])
 
-    def initialize(self, local_state):
+    def initialize(self, local_state, global_state):
         self.add_area(RelativeTeleportArea(x_offset=-8, map_id=2),
                       RectangleArea((9, 0), (9, 9)))
 
@@ -88,7 +88,7 @@ class Map2(WorldMap):
                           ('lower_tileset32.png', 'lower_tileset32.bnd'),
                           [('upper_tileset32.png', 'upper_tileset32.bnd'),])
 
-    def initialize(self, local_state):
+    def initialize(self, local_state, global_state):
         self.add_area(RelativeTeleportArea(x_offset=+8, map_id=1),
                       RectangleArea((0, 0), (0, 9)))
                       
@@ -115,7 +115,7 @@ class Map3(WorldMap):
                           ('lower_tileset32.png', 'lower_tileset32.bnd'),
                           [('upper_tileset32.png', 'upper_tileset32.bnd'),])
 
-    def initialize(self, local_state):
+    def initialize(self, local_state, global_state):
         self.add_area(RelativeTeleportArea(x_offset=+8, map_id=2),
                       RectangleArea((0, 0), (0, 9)))
                       

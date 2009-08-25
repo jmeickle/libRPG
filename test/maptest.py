@@ -14,46 +14,14 @@ print m.terrain_layer
 print 'Scenario layer:'
 print m.scenario_layer
 
-r = librpg.party.CharacterReserve()
-a = librpg.party.Character('Andy', 'char_alex.png')
-r.add_char(a)
-p = r.create_party(3)
-p.add_char(a)
+def char_factory(name, char_state):
+    return librpg.party.Character('Andy', 'char_alex.png')
 
-print 'Adding', str(p)
-m.add_party(p, librpg.util.Position(0, 0))
-print 'Added'
-print
-
-print 'Trying to add', str(p), 'again'
-try:
-    m.add_party(p, librpg.util.Position(0, 0))
-except AssertionError:
-    print 'Ooops, map already had a party'
-print
-
-print 'Removing party'
-party, pos = m.remove_party()
-print 'Removed', party, pos
-print
-
-print 'Trying to remove party again'
-party, pos = m.remove_party()
-print 'Removed', party, pos
-print
-
-print 'Adding', str(p)
-m.add_party(p, librpg.util.Position(0, 0), librpg.locals.RIGHT, librpg.locals.NORMAL_SPEED)
-print 'Added'
-print
-
-print 'Removing party'
-party, pos = m.remove_party()
-print 'Removed', party, pos
-print
+world = librpg.world.MicroWorld(m, ['Andy'], char_factory,
+                                initial_position=librpg.util.Position(0, 0))
 
 print 'Starting gameloop()'
-librpg.world.MicroWorld(m, p, librpg.util.Position(0, 0)).gameloop()
+world.gameloop()
 print 'Finished gameloop()'
 
 exit()

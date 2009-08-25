@@ -74,14 +74,14 @@ class LogRoll(object):
         return self.entries.__repr__()
 
     def __str__(self):
-        return '\n'.join(entries)
+        return '\n'.join([str(entry) for entry in self.entries])
 
     def write_to_file(self, logfile):
         """
         Writes all stored entries to the file but does not write
         subsequently added entries automatically.
         """
-        logfile.write('\n'.join(entries))
+        logfile.write(str(self))
         self.clean()
 
 class Log(object):

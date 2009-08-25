@@ -55,7 +55,7 @@ class ObjectTestMap(MapModel):
     
         MapModel.__init__(self, 'objecttest16.map', ('lower_tileset.png', 'lower_tileset.bnd'), [('upper_tileset.png', 'upper_tileset.bnd'),])
         
-    def initialize(self, local_state):
+    def initialize(self, local_state, global_state):
     
         index = 0
         for i in range(6, 2, -1):
@@ -65,9 +65,11 @@ class ObjectTestMap(MapModel):
                 
         self.add_object(ObjectTestRock(self), Position(7, 2))
 
+def char_factory(name, char_state):
+    return librpg.party.Character('Andy', 'chara1.png', 3)
 
-a = librpg.party.Character('Andy', 'chara1.png', 3)
-r = librpg.party.CharacterReserve([a])
+world = librpg.world.MicroWorld(ObjectTestMap(), ['Andy'], char_factory,
+                                initial_position=librpg.util.Position(8, 8))
+world.gameloop()
 
-librpg.world.MicroWorld(ObjectTestMap(), r.create_party(3, [a]), Position(8, 8)).gameloop()
 exit()

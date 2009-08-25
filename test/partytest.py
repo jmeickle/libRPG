@@ -18,9 +18,12 @@ def test_remove(p, r, char):
     print 'Reserve:', r
     print
 
-r = CharacterReserve()
-p = r.create_party(3)
-c = [Character(name, None) for name in ['Andy', 'Bernie', 'Chris', 'Dylan', 'Emma']]
+def char_factory(name, char_state):
+    return Character(name, None)
+
+r = CharacterReserve(char_factory)
+p = Party(3, r)
+c = ['Andy', 'Bernie', 'Chris', 'Dylan', 'Emma']
 for char in c:
     r.add_char(char)
 

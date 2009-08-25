@@ -7,10 +7,11 @@ librpg.config.graphics_config.config(camera_mode=librpg.camera.PartyConfinementC
 
 m = librpg.map.MapModel('city.map', ('city32.png', 'city32.bnd'), [('city_upper32.png', 'city_upper32.bnd')])
 
-a = librpg.party.Character('Andy', 'actor1.png', 0)
-r = librpg.party.CharacterReserve([a])
-p = r.create_party(3, [a])
+def char_factory(name, char_state):
+    return librpg.party.Character('Andy', 'actor1.png', 0)
 
-librpg.world.MicroWorld(m, p, librpg.util.Position(10, 10)).gameloop()
+world = librpg.world.MicroWorld(m, ['Andy'], char_factory,
+                                initial_position=librpg.util.Position(10, 10))
+world.gameloop()
 
 exit()

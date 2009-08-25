@@ -27,12 +27,13 @@ else:
 
 m = librpg.map.MapModel('maptest32.map', ('lower_tileset32.png', 'lower_tileset32.bnd'), [('upper_tileset32.png', 'upper_tileset32.bnd')])
 
-a = librpg.party.Character('Andy', 'actor1.png', 0)
-r = librpg.party.CharacterReserve([a])
-p = r.create_party(3, [a])
+def char_factory(name, char_state):
+    return librpg.party.Character('Andy', 'actor1.png', 0)
 
 print 'Starting gameloop()'
-librpg.world.MicroWorld(m, p, librpg.util.Position(0, 0)).gameloop()
+world = librpg.world.MicroWorld(m, ['Andy'], char_factory,
+                                initial_position=librpg.util.Position(0, 0))
+world.gameloop()
 print 'Finished gameloop()'
 
 exit()

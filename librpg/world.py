@@ -11,6 +11,7 @@ from librpg.state import State
 from librpg.maparea import MapArea
 from librpg.util import Position
 from librpg.context import ContextStack, get_context_stack
+from librpg.party import CharacterReserve, default_party_factory
 from librpg.locals import *
 
 class BaseWorld(object):
@@ -25,8 +26,8 @@ class BaseWorld(object):
     run a game.
     """
 
-    def __init__(self, initial_map=None, initial_position=None,
-                 state_file=None):
+    def __init__(self, character_factory, party_factory=None, initial_map=None,
+                 initial_position=None, state_file=None):
         assert (initial_map is not None and initial_position is not None)\
                or state_file is not None,\
                'BaseWorld.__init__ cannot determine the party\'s starting\
@@ -39,7 +40,15 @@ class BaseWorld(object):
         if self.party_pos is None:
             self.party_pos = (initial_map, initial_position, DOWN)
 
+        if party_factory is not None:
+            self.reserve = CharacterReserve(character_factory, party_factory)
+        else:
+            self.reserve = CharacterReserve(character_factory)
+        self.reserve._initialize(self.state.locals)
+        self.party = self.reserve.get_default_party()
+
     def save(self, filename):
+        self.state.update(self.reserve._save())
         self.state.save(filename)
 
     def gameloop():
@@ -60,8 +69,8 @@ class World(BaseWorld):
     LibRPG game with more than one map, that is, most games.
     """
 
-    def __init__(self, maps, initial_map=None, initial_position=None,
-                 state_file=None):
+    def __init__(self, maps, character_factory, party_factory=None,
+                 initial_map=None, initial_position=None, state_file=None):
         """
         *Constructor.*
         
@@ -80,7 +89,8 @@ class World(BaseWorld):
         beginning, with a brand new save.
         """
         
-        BaseWorld.__init__(self, initial_map, initial_position, state_file)
+        BaseWorld.__init__(self, character_factory, party_factory, initial_map,
+                           initial_position, state_file)
         self.maps = maps
         self.scheduled_teleport = (self.party_pos[0], self.party_pos[1], ())
         
@@ -94,11 +104,12 @@ class World(BaseWorld):
         self.scheduled_teleport = (map_id, position, args)
 
     def gameloop(self):
+        assert not self.party.empty(), 'Party is empty'
         prev_facing = None
         prev_party_movement = []
 
         while self.scheduled_teleport:
-            # print self.state.locals
+            print self.state.locals
         
             # Create new map
             map_id, position, args = self.scheduled_teleport
@@ -117,7 +128,8 @@ class World(BaseWorld):
             # Transfer control to map
             self.scheduled_teleport = None
             get_context_stack().stack_context(MapController(map_model,
-                                                            local_state))
+                                                            local_state,
+                                                            self.state))
             get_context_stack().gameloop()
 
             # Store data that we wish to carry
@@ -139,8 +151,11 @@ class MicroWorld(BaseWorld):
     """
 
     TEH_MAP_ID = 42
+    PARTY_SIZE = 3
 
-    def __init__(self, map, party, initial_position=None, state_file=None):
+    def __init__(self, map, party_members, character_factory,
+                 party_factory=default_party_factory,
+                 initial_position=None, state_file=None):
         """
         *Constructor.*
         
@@ -157,10 +172,17 @@ class MicroWorld(BaseWorld):
         new save.
         """
 
-        BaseWorld.__init__(self, MicroWorld.TEH_MAP_ID, initial_position,
+        BaseWorld.__init__(self, character_factory, party_factory,
+                           MicroWorld.TEH_MAP_ID, initial_position,
                            state_file)
         self.only_map = map
-        self.party = party
+        for char in party_members:
+            self.reserve.add_char(char)
+        self.party = party_factory(MicroWorld.PARTY_SIZE,
+                                   self.reserve,
+                                   party_members,
+                                   party_members[0])
+        print 'self.party =', self.party
 
     def gameloop(self):
         # Create new map
@@ -174,7 +196,8 @@ class MicroWorld(BaseWorld):
 
         # Transfer control to map
         get_context_stack().stack_context(MapController(self.only_map,
-                                                        local_state))
+                                                        local_state,
+                                                        self.state))
         get_context_stack().gameloop()
 
         # Store data that we wish to carry

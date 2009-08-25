@@ -81,7 +81,7 @@ class ObjectTestMap(MapModel):
                           ('lower_tileset.png', 'lower_tileset.bnd'),
                           [('upper_tileset.png', 'upper_tileset.bnd'),])
         
-    def initialize(self, local_state):
+    def initialize(self, local_state, global_state):
     
         # Add yummy NPCs
         index = 0
@@ -97,8 +97,11 @@ class ObjectTestMap(MapModel):
         self.object_counter = CounterContext(self)
         self.add_context(self.object_counter)
 
-a = librpg.party.Character('Andy', 'chara1.png', 3)
-r = librpg.party.CharacterReserve([a])
+def char_factory(name, char_state):
+    return librpg.party.Character('Andy', 'chara1.png', 3)
 
-librpg.world.MicroWorld(ObjectTestMap(), r.create_party(3, [a]), Position(8, 8)).gameloop()
+world = librpg.world.MicroWorld(ObjectTestMap(), ['Andy'], char_factory,
+                                initial_position=librpg.util.Position(8, 8))
+world.gameloop()
+
 exit()
