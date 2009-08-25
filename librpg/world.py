@@ -109,7 +109,7 @@ class World(BaseWorld):
         prev_party_movement = []
 
         while self.scheduled_teleport:
-            print self.state.locals
+            # print self.state.locals
         
             # Create new map
             map_id, position, args = self.scheduled_teleport
@@ -182,7 +182,6 @@ class MicroWorld(BaseWorld):
                                    self.reserve,
                                    party_members,
                                    party_members[0])
-        print 'self.party =', self.party
 
     def gameloop(self):
         # Create new map

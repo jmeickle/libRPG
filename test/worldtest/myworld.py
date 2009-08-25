@@ -18,4 +18,3 @@ class MyWorld(World):
         if save_file is None:
             self.reserve.add_char('Andy')
             self.party = Party(3, self.reserve, ['Andy'])
-            print self.party

@@ -47,15 +47,11 @@ class Party(object):
         
         if chars is not None:
             for char in chars:
-                print 'self.add_char %s' % (char)
                 self.add_char(char)
 
         if leader is not None:
-            print 'self.leader %s' % leader
             self.leader = leader
 
-        #assert 1 == 0, 'wow'
-        
     def add_char(self, name):
         """
         Insert a Character in the Party.
@@ -105,7 +101,6 @@ class Party(object):
 
     def get_char(self, name):
         if name not in self.chars:
-            print 'name %s, chars %s' % (name, str(self.chars))
             return None
         else:
             return self.reserve.get_char(name)

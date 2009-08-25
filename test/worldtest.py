@@ -12,7 +12,7 @@ try:
     w = MyWorld('save.sav')
 except IOError:
     w = MyWorld()
-print w.party
+
 # Run
 w.gameloop()
 
