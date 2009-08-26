@@ -16,29 +16,34 @@ that reserve. To create a CharacterReserve, simply instantiate it. To add
 Characters to that reserve, use CharacterReserve.add_char(), or pass a list
 of those Characters to CharacterReserve's constructor.
 
-To create a Party, use the CharacterReserve.create_party() method.
+To create a Party, instantiate it passing the world's CharacterReserve
+(world.reserve).
 
 To add characters to a party, use the Party.add_char() method. To remove them,
 use Party.remove_char().
 
-To destroy a Party, use the CharacterReserve.destroy_party() method, which
-will return the Characters in the Party to 
+To destroy a Party, use the Party.destroy() method, which will return the
+Characters in the Party to an available state.
 
 Example
 -------
 
 ::
-    reserve = CharacterReserve()
 
-    reserve.add_char(Character('Andy', 'andy.png'))
-    reserve.add_char(Character('Bernie', 'bernie.png'))
-    reserve.add_char(Character('Chris', 'chris.png'))
-    reserve.add_char(Character('Dylan', 'dylan.png'))
-    reserve.add_char(Character('Emma', 'emma.png'))
+    def char_factory(name, char_state):
+        return Character(name, None)
+
+    reserve = CharacterReserve(char_factory)
+    c = ['Andy', 'Bernie', 'Chris', 'Dylan', 'Emma']
+    for char in c:
+        reserve.add_char(char)
+
+    party = Party(3, reserve, ['Andy', 'Emma'], 'Andy')
     
-    chars = reserve.get_chars()
+    party.add_char('Chris')
+    party.remove_char('Andy')
+
+    print party
     
-    party = reserve.create_party(3)
-    party.add_char(chars[0])
-    party.add_char(chars[2])
-    party.add_char(chars[3])
+    party.destroy()
+    

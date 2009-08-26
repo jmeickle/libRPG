@@ -37,3 +37,7 @@ test_remove(p, r, c[1])
 test_remove(p, r, c[0])
 
 test_add(p, r, c[4])
+
+p.destroy()
+print 'Party:', p
+print 'Reserve:', r

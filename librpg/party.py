@@ -21,8 +21,21 @@ class Party(object):
     def __init__(self, capacity, reserve, chars=None, leader=None,
                  party_state=None):
         """
-        Do not call the Party constructor directly. Parties should be
-        created by the factory method CharacterReserve.create_party().
+        Initialize a party with the given parameters.
+        
+        *capacity* should be an integer with the maximum number of
+        Characters the party can hold.
+        
+        *reserve* should be the CharacterReserve that contains the party's
+        characters.
+        
+        *chars*, should be a list of the names of the initial characters.
+        *leader* should be the name of the initial leader. By default the
+        party is empty.
+        
+        If *party_state* is passed, *chars* and *leader* should not be
+        specified. In this case, the party setup is loaded from
+        *party_state*.
 
         :attr:`capacity`
             Maximum number of characters in the Party.
@@ -36,8 +49,9 @@ class Party(object):
         :attr:`leader`
             Character whose image will be displayed in the map.
         """
-        assert chars is None or party_state is None, \
-               'Either chars or party_state has to be None.'
+        assert (chars is None and leader is None) or \
+               party_state is None, \
+               'Either (chars and leader) or party_state has to be None.'
         self.capacity = capacity
         self.reserve = reserve
         self.chars = []
@@ -55,7 +69,9 @@ class Party(object):
     def add_char(self, name):
         """
         Insert a Character in the Party.
-        
+
+        *name* should be the character's name.
+
         Return True is the character was added, False if the operation
         failed, which happens either because the Character already was
         in the Party or because it is already full.
@@ -64,7 +80,7 @@ class Party(object):
             or len(self.chars) >= self.capacity):
             return False
         else:
-            self.reserve.allocate_char(name, self)
+            self.reserve._allocate_char(name, self)
             self.chars.append(name)
             if self.leader is None:
                 self.leader = name
@@ -73,12 +89,14 @@ class Party(object):
     def remove_char(self, name):
         """
         Remove a Character from the Party.
-        
+
+        *name* should be the character's name.
+
         Return True is the character was removed, False if the operation
         failed because the Character was not found in the party.
         """
         if name in self.chars:
-            self.reserve.allocate_char(name, None)
+            self.reserve._allocate_char(name, None)
             self.chars.remove(name)
             if self.leader == name:
                 if len(self.chars) == 0:
@@ -89,7 +107,16 @@ class Party(object):
         else:
             return False
 
+    def destroy(self):
+        """
+        Return a Party's characters to an available state.
+        """
+        self.reserve._destroy_party(self)
+
     def empty(self):
+        """
+        Return whether the party is empty.
+        """
         return len(self.chars) == 0
 
     def __repr__(self):
@@ -100,6 +127,10 @@ class Party(object):
             return '(Leader: %s, %s)' % (self.leader, chars)
 
     def get_char(self, name):
+        """
+        Return the Character instance of the character with the given
+        name.
+        """
         if name not in self.chars:
             return None
         else:
@@ -107,7 +138,11 @@ class Party(object):
 
     def get_image(self, avatar):
         """
-        Returns the image to represent the Party on the map.
+        Return the image to represent the Party on the map.
+        
+        *avatar* does not need to be specified, unless a class derived from
+        Party wants to have an image that depends on it and overloads
+        this function.
         """
         assert self.leader is not None, 'A Party with no characters may not be \
                                         displayed'
@@ -162,8 +197,13 @@ class CharacterReserve(object):
         """
         *Constructor.*
         
-        *character_factory* should be a factory function that, given a
+        *character_factory* that, given a
         character name, returns an instance of that character.
+        
+        *party_factory* should be a factory function that returns an
+        instance of Party or some derived class, given a capacity, a
+        reserve and ((a list of character names and a leader name) or
+        a party state). This defaults to the base Party constructor.
 
         :attr:`chars`
             Dict mapping character names to the Characters in the reserve.
@@ -180,8 +220,10 @@ class CharacterReserve(object):
             state, returns an instance of the related character.
 
         :attr:`party_factory`
-            Factory function that, given a capacity, a CharacterReserve and
-            a party state, returns an instance of Party or a derived class.
+            Factory function that returns an instance of Party or some
+            derived class, given a capacity, a reserve and ((a list of
+            character names and a leader name) or a party state). This
+            defaults to the base Party constructor.
         """
         self.chars = {}
         self.party_allocation = {}
@@ -192,6 +234,11 @@ class CharacterReserve(object):
     def add_char(self, name, char_state=None):
         """
         Add a Character to the reserve.
+        
+        *name* should be the character's name. If the character is
+        supposed to be newly crated, *char_state* should be None.
+        If it is being loaded, *char_state* should be a serializable
+        with the necessary data.
         """
         self.chars[name] = self.character_factory(name, char_state)
         self.party_allocation[name] = None
@@ -199,6 +246,8 @@ class CharacterReserve(object):
     def remove_char(self, name):
         """
         Remove a character from the reserve.
+        
+        *name* should be the character's name.
         
         Return the Character if he was in the reserve, None otherwise.
         """
@@ -215,16 +264,16 @@ class CharacterReserve(object):
     def register_party(self, party):
         self.parties.append(party)
         for char in party.chars:
-            self.allocate_char(char, party)
+            self._allocate_char(char, party)
 
-    def destroy_party(self, party):
+    def _destroy_party(self, party):
         assert party in self.parties, 'Trying to destroy a Party not in this \
                                        reserve'
         for char in party.chars:
-            self.party_allocation[char.name] = None
+            self._allocate_char(char, None)
         self.parties.remove(party)
 
-    def allocate_char(self, name, party):
+    def _allocate_char(self, name, party):
         assert name in self.get_names(), 'Character is not in reserve'
         assert party is None or party in self.parties, 'Party is not in reserve'
         self.party_allocation[name] = party
@@ -237,8 +286,9 @@ class CharacterReserve(object):
 
     def get_char(self, name):
         """
-        Return the Character mapped to *name* in the reserve or None if
-        no character with that name was found.
+        Return the Character mapped to *name* in the reserve.
+
+        None is returned if no character with that name was found.
         """
         return self.chars.get(name, None)
 

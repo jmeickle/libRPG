@@ -85,8 +85,8 @@ class World(BaseWorld):
 
         *party_factory* should be a factory function that returns an
         instance of Party or some derived class, given a capacity, a
-        reserve, a list of character names, a leader name and a party
-        state. This defaults to the base Party constructor.
+        reserve and ((a list of character names and a leader name) or
+        a party state). This defaults to the base Party constructor.
 
         There are two ways of calling this constructor, concerning the
         initial state. If *state_file* is passed, the game will be run 
@@ -180,8 +180,8 @@ class MicroWorld(BaseWorld):
 
         *party_factory* should be a factory function that returns an
         instance of Party or some derived class, given a capacity, a
-        reserve, a list of character names, a leader name and a party
-        state. This defaults to the base Party constructor.
+        reserve and ((a list of character names and a leader name) or
+        a party state). This defaults to the base Party constructor.
 
         There are two ways of calling this constructor, concerning the
         initial state. If *state_file* is passed, the game will be run 
