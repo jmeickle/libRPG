@@ -104,6 +104,7 @@ ok      0.4 Update world and party modules docs
         ?   Image management module (store the last x loaded images and the y most used images)
         ?   Group files into submodules?
         ?   Charset generating tool (clothes/hair/accessories layers, written in librpg itself)
+        ?   Write quest module
         1.0 Write file types reference
         1.0 Basic tutorial
         

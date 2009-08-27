@@ -90,7 +90,7 @@ class BaseWorld(object):
         self.party = self.reserve.get_default_party()
 
     def save(self, filename):
-        self.state.update(self.reserve._save())
+        self.state.update(self.reserve.save())
         self.state.save(filename)
 
     def gameloop():

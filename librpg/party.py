@@ -148,11 +148,11 @@ class Party(object):
                                         displayed'
         return self.get_char(self.leader).image
 
-    def _save(self):
-        return ((self.capacity, self.chars, self.leader),
-                self.save())
-
     def save(self):
+        return ((self.capacity, self.chars, self.leader),
+                self.custom_save())
+
+    def custom_save(self):
         """
         *Virtual.*
         
@@ -307,17 +307,17 @@ class CharacterReserve(object):
     def __repr__(self):
         return self.party_allocation.__repr__()
 
-    def _save(self):
+    def save(self):
         # Save characters
         result = {}
         result[CHARACTERS_LOCAL_STATE] = {}
         for char in self.get_chars():
-            result[CHARACTERS_LOCAL_STATE][char.name] = char._save()
+            result[CHARACTERS_LOCAL_STATE][char.name] = char.save()
 
         # Save parties
         result[PARTIES_LOCAL_STATE] = []
         for party in self.parties:
-            result[PARTIES_LOCAL_STATE].append(party._save())
+            result[PARTIES_LOCAL_STATE].append(party.save())
 
         return result
     
@@ -379,10 +379,10 @@ class Character(object):
     def __repr__(self):
         return self.name
 
-    def _save(self):
-        return (self.name, self.save())
-
     def save(self):
+        return (self.name, self.custom_save())
+
+    def custom_save(self):
         """
         *Virtual.*
         
@@ -404,7 +404,7 @@ class Character(object):
         Initialize whatever fields depend on the state that was saved in a
         previous game.
 
-        *char_state* is the local state returned by save() when the
+        *char_state* is the local state returned by custom_save() when the
         state was saved.
         """
         pass

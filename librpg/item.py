@@ -361,6 +361,9 @@ class UniqueItem(Item):
     UniqueItems cannot be uniquely represented by an id like
     OrdinaryItems they are not stored stacked, but individually. A
     factory function is not necessary to use them.
+    
+    UniqueItems need to be serializable and should be carefully
+    implemented, since to be saved they have to be pickled.
     """
 
     def __init__(self, name, weight=0):
