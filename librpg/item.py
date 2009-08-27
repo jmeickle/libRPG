@@ -32,6 +32,37 @@ class Inventory(object):
         self.weight = 0
         self.max_weight = max_weight
 
+    def save(self):
+        return (self.class_save(), self.custom_save())
+
+    def custom_save(self):
+        """
+        *Virtual.*
+        """
+        return None
+
+    def class_save(self):
+        return (self.weight, self.max_weight)
+
+    def initialize(self, state=None):
+        if state is not None:
+            self.class_initialize(state[0])
+            self.custom_initialize(state[1])
+        else:
+            self.class_initialize(None)
+            self.custom_initialize(None)
+
+    def custom_initialize(self, state=None):
+        """
+        *Virtual.*
+        """
+        pass
+
+    def class_initialize(self, state=None):
+        if state is not None:
+            self.weight = state[0]
+            self.max_weight = state[1]
+
 
 class OrdinaryInventory(Inventory):
 
@@ -68,6 +99,15 @@ class OrdinaryInventory(Inventory):
         self.items = {}
         self.max_item_pile = max_item_pile
         self.factory = factory
+
+    def class_save(self):
+        return Inventory.class_save(self) + (self.items, self.max_item_pile)
+
+    def class_initialize(self, state=None):
+        if state is not None:
+            Inventory.class_initialize(self, state[:2])
+            self.items = state[2]
+            self.max_item_pile = state[3]
 
     def add_item(self, item, amount=1):
         """

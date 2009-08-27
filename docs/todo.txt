@@ -77,7 +77,8 @@ ok      0.4 Refactor initialization out of World's constructor
 ok      0.4 Improve party/reserve/character configuration API at world creation
 ok      0.4 Update world and party modules docs
         0.4 Write inventory's save() method
-        0.4 Switch World to use initialize(), _initialize(), save() and _save()
+        0.4 Write a test for inventory and party persistency
+        0.4 Switch World to use initialize(), _initialize(), save() and _save()?
         0.4 Configurable keys for MapModel
         0.4 Allow FPS configuration
         0.4 Add a gameover() method
@@ -86,6 +87,7 @@ ok      0.4 Update world and party modules docs
         0.4 Separate line spacing for choice dialogs
         0.4 Improve message dialogs - split texts too big into more than 1 dialog
         0.4 Change ChoiceDialog to call a callback (either passed in constructor or overridden in a derived class) upon completion
+        0.4 Change boundaries file schema (type, id, *type_dependent_fields) type contains [normal, animated, smart]
         0.4 Animated tiles (period | 12 allows (1, 2, 3, 4, 6, 12), one surface per phase)
         0.4 Support background music for maps
         0.4 Put sound effects in standard resources and use them in tests. Evaluate the need for sfx wrappers.

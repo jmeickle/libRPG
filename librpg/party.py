@@ -56,7 +56,7 @@ class Party(object):
         self.reserve = reserve
         self.chars = []
         self.leader = None
-        self._initialize(party_state)
+        self.initialize(party_state)
         reserve.register_party(self)
         
         if chars is not None:
@@ -161,7 +161,7 @@ class Party(object):
         """
         return None
 
-    def _initialize(self, party_state=None):
+    def initialize(self, party_state=None):
         if party_state is None:
             return
 
@@ -170,9 +170,9 @@ class Party(object):
         self.chars = data[1]
         self.leader = data[2]
         
-        self.initialize(party_state[1])
+        self.custom_initialize(party_state[1])
 
-    def initialize(self, party_state=None):
+    def custom_initialize(self, party_state=None):
         """
         *Virtual.*
         
@@ -321,7 +321,7 @@ class CharacterReserve(object):
 
         return result
     
-    def _initialize(self, state=None):
+    def initialize(self, state=None):
         if state is None:
             return
         if state.has_key(CHARACTERS_LOCAL_STATE):
@@ -374,7 +374,7 @@ class Character(object):
             self.image = ObjectImage(self.image_file, index)
         else:
             self.image = None
-        self._initialize(char_state)
+        self.initialize(char_state)
 
     def __repr__(self):
         return self.name
@@ -391,13 +391,13 @@ class Character(object):
         """
         return None
 
-    def _initialize(self, char_state=None):
+    def initialize(self, char_state=None):
         if char_state is None:
             return
         self.name = char_state[0]
-        self.initialize(char_state[1])
+        self.custom_initialize(char_state[1])
 
-    def initialize(self, char_state=None):
+    def custom_initialize(self, char_state=None):
         """
         *Virtual.*
         

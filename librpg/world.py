@@ -86,7 +86,7 @@ class BaseWorld(object):
         assert self.party_pos is not None, 'Loaded state does not contain' \
                                            'initial party position'
 
-        self.reserve._initialize(self.state.locals)
+        self.reserve.initialize(self.state.locals)
         self.party = self.reserve.get_default_party()
 
     def save(self, filename):
