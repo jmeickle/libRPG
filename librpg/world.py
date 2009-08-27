@@ -26,24 +26,66 @@ class BaseWorld(object):
     run a game.
     """
 
-    def __init__(self, character_factory, party_factory=None, initial_map=None,
-                 initial_position=None, state_file=None):
-        assert (initial_map is not None and initial_position is not None)\
-               or state_file is not None,\
-               'BaseWorld.__init__ cannot determine the party\'s starting\
-               position'
+    def __init__(self, character_factory, party_factory=default_party_factory):
+        self.reserve = CharacterReserve(character_factory, party_factory)
 
-        self.party = None
+    def initial_config(self, map, position, chars, party_capacity=None,
+                       party=None):
+        """
+        Initialize the world to a brand new state, without loading any
+        data.
+
+        *map* and *position* should be, respectively, the id of the
+        starting map and the starting Position for the party.
+
+        *chars* should be a list of the names of the characters that
+        the CharacterReserve is to contain initially.
+
+        *party* is a list of the names of the characters that the initial
+        party will contain. These need to be specified at *chars* as well.
+        Using the default value for this parameter will cause the party to
+        contain all characters in *chars*.
+
+        *party_capacity* is the maximum size of the initial party. If the
+        default value is used, the party will be just big enough to contain
+        all characters in *party*. If *party* was not passed, it will be
+        big enough to contain the characters in *chars*.
+        """
+        self.state_file = None
+        self.state = State()
+        self.party_pos = (map, position, DOWN)
+
+        # Add chars to reserve
+        for char in chars:
+            self.reserve.add_char(char)
+
+        # Create party
+        if party_capacity is None:
+            if party is None:
+                party_capacity = len(chars)
+            else:
+                party_capacity = len(party)
+        if party is None:
+            party = []
+            for i in xrange(party_capacity):
+                party.append(chars[i])
+        self.party = self.reserve.party_factory(party_capacity,
+                                                self.reserve,
+                                                party,
+                                                party[0])
+
+    def load_config(self, state_file):
+        """
+        Initialize the world to a state loaded from the state_file.
+
+        *state_file* is the name of the save file to be loaded.
+        """
         self.state_file = state_file
         self.state = State(state_file)
         self.party_pos = self.state.load_local(PARTY_POSITION_LOCAL_STATE)
-        if self.party_pos is None:
-            self.party_pos = (initial_map, initial_position, DOWN)
+        assert self.party_pos is not None, 'Loaded state does not contain' \
+                                           'initial party position'
 
-        if party_factory is not None:
-            self.reserve = CharacterReserve(character_factory, party_factory)
-        else:
-            self.reserve = CharacterReserve(character_factory)
         self.reserve._initialize(self.state.locals)
         self.party = self.reserve.get_default_party()
 
@@ -64,13 +106,14 @@ class BaseWorld(object):
 
 
 class World(BaseWorld):
+
     """
     A World contains several maps and is used as an entry point to a
     LibRPG game with more than one map, that is, most games.
     """
 
-    def __init__(self, maps, character_factory, party_factory=None,
-                 initial_map=None, initial_position=None, state_file=None):
+    def __init__(self, maps, character_factory,
+                 party_factory=default_party_factory):
         """
         *Constructor.*
 
@@ -87,22 +130,11 @@ class World(BaseWorld):
         instance of Party or some derived class, given a capacity, a
         reserve and ((a list of character names and a leader name) or
         a party state). This defaults to the base Party constructor.
-
-        There are two ways of calling this constructor, concerning the
-        initial state. If *state_file* is passed, the game will be run 
-        from a save that was previously recorded with the World.save()
-        method or MapModel.save_world().
-
-        If *state_file* is not passed, *initial_map* and *initial_position*
-        have to be passed. In this case, the game will be run from the
-        beginning, with a brand new save.
         """
 
-        BaseWorld.__init__(self, character_factory, party_factory, initial_map,
-                           initial_position, state_file)
+        BaseWorld.__init__(self, character_factory, party_factory)
         self.maps = maps
-        self.scheduled_teleport = (self.party_pos[0], self.party_pos[1], ())
-        
+
     def create_map(self, map_id, *args):
         created_map = self.maps[map_id](*args)
         created_map.world = self
@@ -116,6 +148,7 @@ class World(BaseWorld):
         assert not self.party.empty(), 'Party is empty'
         prev_facing = None
         prev_party_movement = []
+        self.schedule_teleport(self.party_pos[1], self.party_pos[0])
 
         while self.scheduled_teleport:
             # print self.state.locals
@@ -162,9 +195,8 @@ class MicroWorld(BaseWorld):
     TEH_MAP_ID = 42
     PARTY_SIZE = 3
 
-    def __init__(self, map, party_members, character_factory,
-                 party_factory=default_party_factory,
-                 initial_position=None, state_file=None):
+    def __init__(self, map, character_factory,
+                 party_factory=default_party_factory):
         """
         *Constructor.*
         
@@ -182,27 +214,33 @@ class MicroWorld(BaseWorld):
         instance of Party or some derived class, given a capacity, a
         reserve and ((a list of character names and a leader name) or
         a party state). This defaults to the base Party constructor.
-
-        There are two ways of calling this constructor, concerning the
-        initial state. If *state_file* is passed, the game will be run 
-        from a save that was previously recorded with the World.save()
-        method or MapModel.save_world().
-        
-        If *state_file* is not passed, *initial_position* has to be passed.
-        In this case, the game will be run from the beginning, with a brand
-        new save.
         """
 
-        BaseWorld.__init__(self, character_factory, party_factory,
-                           MicroWorld.TEH_MAP_ID, initial_position,
-                           state_file)
+        BaseWorld.__init__(self, character_factory, party_factory)
         self.only_map = map
-        for char in party_members:
-            self.reserve.add_char(char)
-        self.party = party_factory(MicroWorld.PARTY_SIZE,
-                                   self.reserve,
-                                   party_members,
-                                   party_members[0])
+
+    def initial_config(self, position, chars, party_capacity=None, party=None):
+        """
+        Initialize the world to a brand new state, without loading any
+        data.
+
+        *position* should be the starting Position for the party.
+
+        *chars* should be a list of the names of the characters that
+        the CharacterReserve is to contain initially.
+
+        *party* is a list of the names of the characters that the initial
+        party will contain. These need to be specified at *chars* as well.
+        Using the default value for this parameter will cause the party to
+        contain all characters in *chars*.
+
+        *party_capacity* is the maximum size of the initial party. If the
+        default value is used, the party will be just big enough to contain
+        all characters in *party*. If *party* was not passed, it will be
+        big enough to contain the characters in *chars*.
+        """
+        BaseWorld.initial_config(self, MicroWorld.TEH_MAP_ID, position, chars,
+                                 party_capacity, party)
 
     def gameloop(self):
         # Create new map
@@ -227,6 +265,7 @@ class MicroWorld(BaseWorld):
 
 
 class WorldMap(MapModel):
+
     """
     A WorldMap is merely a MapModel that belongs to a World (the world
     that contains multiple maps). 

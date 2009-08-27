@@ -13,18 +13,20 @@ A World is necessary for any game that makes full use of LibRPG.
 For tiny games than only need one map:
    
     1. Instantiate the MapModel corresponding to that map.
-    2. Instantiate a MicroWorld passing that MapModel, a Party and the starting position.
-    3. Call the MicroWorld's gameloop().
+    2. Instantiate a MicroWorld passing that MapModel.
+    3. Call MicroWorld.initial_config() passing the starting position and characters.
+    4. Call the MicroWorld's gameloop().
    
 For games that need more than one map:
 
     1. Define your WorldMaps, inheriting a class from it for each map.
-    2. Instantiate the World. As parameters, pass a dict attributing a unique map id to each WorldMap-inherited class, the starting map id and the starting position.
-    3. Call the World's gameloop().
-    
+    2. Instantiate the World. As parameter, pass a dict attributing a unique map id to each WorldMap-inherited class.
+    3. Call World.initial_config(), passing the starting map id, the starting position and the characters.
+    4. Call the World's gameloop().
+
 After a world's gameloop ends, to quit the program it is good to call exit(). This will terminate pygame gracefully.
 
-Note: to load from a save, pass the save filename to the map's constructor.
+Note: to load from a save, in step 3 call load_config() instead, passing the name of the save file.
 
 Examples
 --------
@@ -33,8 +35,11 @@ A MicroWorld example::
 
     import librpg
 
-    librpg.init()
-    librpg.config.graphics_config.config(tile_size=32, object_height=32, object_width=32)
+    librpg.init('Boulder Test')
+    librpg.config.graphics_config.config(tile_size=32,
+                                         object_height=32,
+                                         object_width=32,
+                                         scale=1.7)
 
     from librpg.map import MapModel
     from librpg.mapobject import ScenarioMapObject
@@ -69,25 +74,23 @@ A MicroWorld example::
         [1,1,1,1,1,1,1,1,1,1]]
 
         def __init__(self):
-        
             MapModel.__init__(self, 'bouldertest.map',
                               ('lower_tileset32.png', 'lower_tileset32.bnd'),
                               [('upper_tileset32.png', 'upper_tileset32.bnd')])
             
-        def initialize(self, local_state):
-        
+        def initialize(self, local_state, global_state):
             for y, line in enumerate(BoulderMaze.MAZE):
                 for x, cell in enumerate(line):
                     if cell == 2:
                         self.add_object(Boulder(self), Position(x, y))
 
 
-    andy = Character('Andy', 'char_alex32.png')
-    reserve = CharacterReserve([andy])
-    party = reserve.create_party(3, [andy])
+    def char_factory(name, char_state):
+        return Character('Andy', 'char_alex32.png')
 
-    map_model = BoulderMaze()
-    world = MicroWorld(map_model, party, Position(4, 9))
+    world = MicroWorld(BoulderMaze(), char_factory)
+    world.initial_config(Position(4, 9),
+                         ['Andy'])
     world.gameloop()
     exit()
 
@@ -101,6 +104,7 @@ A (macro) World example::
     from librpg.movement import Face, Wait
     from librpg.dialog import MessageDialog
     from librpg.world import World
+    from librpg.party import Character
     from librpg.locals import *
 
     librpg.init()
@@ -164,7 +168,7 @@ A (macro) World example::
                               ('lower_tileset32.png', 'lower_tileset32.bnd'),
                               [('upper_tileset32.png', 'upper_tileset32.bnd'),])
 
-        def initialize(self, local_state):
+        def initialize(self, local_state, global_state):
             self.add_area(RelativeTeleportArea(x_offset=-8, map_id=2),
                           RectangleArea((9, 0), (9, 9)))
 
@@ -187,7 +191,7 @@ A (macro) World example::
                               ('lower_tileset32.png', 'lower_tileset32.bnd'),
                               [('upper_tileset32.png', 'upper_tileset32.bnd'),])
 
-        def initialize(self, local_state):
+        def initialize(self, local_state, global_state):
             self.add_area(RelativeTeleportArea(x_offset=+8, map_id=1),
                           RectangleArea((0, 0), (0, 9)))
                           
@@ -214,7 +218,7 @@ A (macro) World example::
                               ('lower_tileset32.png', 'lower_tileset32.bnd'),
                               [('upper_tileset32.png', 'upper_tileset32.bnd'),])
 
-        def initialize(self, local_state):
+        def initialize(self, local_state, global_state):
             self.add_area(RelativeTeleportArea(x_offset=+8, map_id=2),
                           RectangleArea((0, 0), (0, 9)))
                           
@@ -224,29 +228,33 @@ A (macro) World example::
                           RectangleArea((0, 9), (9, 9)))
 
 
+    def char_factory(name, char_state):
+        return Character('Andy', 'char_alex32.png')
+
+
     class MyWorld(World):
 
         def __init__(self, save_file=None):
-        
             maps = {1: Map1, 2: Map2, 3: Map3}
-            World.__init__(self, maps, 1, Position(5, 4), save_file)
+            World.__init__(self, maps=maps, character_factory=char_factory)
+            if save_file is None:
+                self.initial_config(map=1, position=Position(5, 4), chars=['Andy'])
+            else:
+                self.load_config(save_file)
+
 
     # Config graphics
-    librpg.config.graphics_config.config(tile_size=32, object_height=32, object_width=32)
-
-    # Create char and char reserve
-    a = librpg.party.Character('Andy', 'char_alex32.png')
-    r = librpg.party.CharacterReserve([a])
+    librpg.config.graphics_config.config(tile_size=32,
+                                         object_height=32,
+                                         object_width=32)
 
     # Create world and run
     try:
         w = MyWorld(SAVE_FILE)
     except IOError:
         w = MyWorld()
-    w.party = r.create_party(3, [a])
+
     w.gameloop()
 
     # Terminate
     exit()
-
-

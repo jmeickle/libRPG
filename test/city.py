@@ -10,8 +10,8 @@ m = librpg.map.MapModel('city.map', ('city32.png', 'city32.bnd'), [('city_upper3
 def char_factory(name, char_state):
     return librpg.party.Character('Andy', 'actor1.png', 0)
 
-world = librpg.world.MicroWorld(m, ['Andy'], char_factory,
-                                initial_position=librpg.util.Position(10, 10))
+world = librpg.world.MicroWorld(m, char_factory)
+world.initial_config(librpg.util.Position(10, 10), ['Andy'])
 world.gameloop()
 
 exit()

@@ -52,11 +52,11 @@ class BoulderMaze(MapModel):
     [1,1,1,1,1,1,1,1,1,1]]
 
     def __init__(self):
-    
-        MapModel.__init__(self, 'bouldertest.map', ('lower_tileset32.png', 'lower_tileset32.bnd'), [('upper_tileset32.png', 'upper_tileset32.bnd')])
+        MapModel.__init__(self, 'bouldertest.map',
+                          ('lower_tileset32.png', 'lower_tileset32.bnd'),
+                          [('upper_tileset32.png', 'upper_tileset32.bnd')])
         
     def initialize(self, local_state, global_state):
-    
         for y, line in enumerate(BoulderMaze.MAZE):
             for x, cell in enumerate(line):
                 if cell == 2:
@@ -67,7 +67,8 @@ class BoulderMaze(MapModel):
 def char_factory(name, char_state):
     return librpg.party.Character('Andy', 'char_alex32.png')
 
-world = librpg.world.MicroWorld(BoulderMaze(), ['Andy'], char_factory,
-                                initial_position=librpg.util.Position(4, 9))
+world = librpg.world.MicroWorld(BoulderMaze(), char_factory)
+world.initial_config(position=Position(4, 9),
+                     chars=['Andy'])
 world.gameloop()
 exit()

@@ -100,8 +100,8 @@ class ObjectTestMap(MapModel):
 def char_factory(name, char_state):
     return librpg.party.Character('Andy', 'chara1.png', 3)
 
-world = librpg.world.MicroWorld(ObjectTestMap(), ['Andy'], char_factory,
-                                initial_position=librpg.util.Position(8, 8))
+world = librpg.world.MicroWorld(ObjectTestMap(), char_factory)
+world.initial_config(Position(8, 8), ['Andy'])
 world.gameloop()
 
 exit()
