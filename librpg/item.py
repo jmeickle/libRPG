@@ -291,6 +291,14 @@ class UniquesInventory(Inventory):
         self.items = []
         self.max_items = max_items
 
+    def class_save(self):
+        return (self.items, self.max_items)
+
+    def class_initialize(self, state=None):
+        if state is not None:
+            self.items = state[0]
+            self.max_items = state[1]
+    
     def add_item(self, item):
         """
         Add an *item* to the inventory.
