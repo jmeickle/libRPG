@@ -110,7 +110,12 @@ class TestParty(Party):
 # Char and party factories
 
 def char_factory(name, char_state):
-    return Character('Andy', 'char_alex32.png')
+    CHAR_IMAGES = {'Andy': ('actor1.png', 0),
+                   'Brenda': ('actor1.png', 1),
+                   'Charles': ('actor1.png', 2),
+                   'Dylan': ('actor1.png', 6)}
+    image_and_index = CHAR_IMAGES[name]
+    return Character(name, image_and_index[0], image_and_index[1], char_state)
 
 def party_factory(reserve, capacity=None, chars=None, leader=None,
                   party_state=None):
@@ -121,16 +126,40 @@ def party_factory(reserve, capacity=None, chars=None, leader=None,
 
 class InventoryContext(Context):
 
+    KEY_TO_CHAR = {K_a: 'Andy', K_b: 'Brenda', K_c: 'Charles', K_d: 'Dylan'}
     def __init__(self, map):
         Context.__init__(self, map)
         self.map = map
+        self.reserve = map.world.reserve
+        self.party = map.party
         self.inv = map.party.inventory
 
     def process_event(self, event):
-        if event.type == KEYDOWN:
-            if event.key == K_i \
-               and not self.map.controller.message_queue.is_active():
-                msg = str(self.inv.get_items_with_amounts())
+        if not self.map.controller.message_queue.is_active() \
+           and event.type == KEYDOWN:
+            if event.key == K_i:
+                msg = 'Inventory:' + str(self.inv.get_items_with_amounts())
+                self.map.schedule_message(MessageDialog(msg))
+                return True
+            elif event.key == K_p:
+                msg = 'Party:' + str(self.party)
+                self.map.schedule_message(MessageDialog(msg))
+                msg = 'Reserve:' + str(self.reserve.get_names())
+                self.map.schedule_message(MessageDialog(msg))
+                return True
+            elif event.key in InventoryContext.KEY_TO_CHAR.keys():
+                char_to_add = InventoryContext.KEY_TO_CHAR[event.key]
+                if char_to_add in self.party.chars:
+                    if len(self.party.chars) > 1 \
+                       and self.party.remove_char(char_to_add):
+                            msg = 'Removed %s.' % char_to_add
+                    else:
+                        msg = 'Cannot remove %s.' % char_to_add
+                else:
+                    if self.party.add_char(char_to_add):
+                        msg = 'Added %s.' % char_to_add
+                    else:
+                        msg = 'Could not add %s.' % char_to_add
                 self.map.schedule_message(MessageDialog(msg))
                 return True
         return False
@@ -149,6 +178,9 @@ if __name__ == '__main__':
     if SAVE_FILE in os.listdir('.'):
         world.load_config(SAVE_FILE)
     else:
-        world.initial_config(Position(4, 3), ['Andy'])
+        world.initial_config(Position(4, 3),
+                             chars=['Andy', 'Brenda', 'Charles', 'Dylan'],
+                             party_capacity=3,
+                             party=['Andy'])
     world.gameloop()
     exit()

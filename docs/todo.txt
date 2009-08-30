@@ -77,7 +77,7 @@ ok      0.4 Refactor initialization out of World's constructor
 ok      0.4 Improve party/reserve/character configuration API at world creation
 ok      0.4 Update world and party modules docs
 ok      0.4 Write inventory's save() method
-        0.4 Write a test for inventory and party persistency
+ok      0.4 Write a test for inventory and party persistency
         0.4 Remove the need to bind item ids to item classes twice
         0.4 Homogenize persistency interface
         0.4 Switch World to use initialize(), _initialize(), save() and _save()?

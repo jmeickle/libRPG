@@ -48,6 +48,9 @@ class Party(object):
 
         :attr:`leader`
             Character whose image will be displayed in the map.
+
+        :attr:`avatar`
+            PartyAvatar that represents the party in the map.
         """
         assert (capacity is None and chars is None and leader is None) or \
                party_state is None, \
@@ -57,6 +60,8 @@ class Party(object):
         self.reserve = reserve
         self.chars = []
         self.leader = None
+        self.avatar = None
+
         self.initialize(party_state)
         reserve.register_party(self)
         
@@ -84,7 +89,7 @@ class Party(object):
             self.reserve._allocate_char(name, self)
             self.chars.append(name)
             if self.leader is None:
-                self.leader = name
+                self.set_leader(name)
             return True
 
     def remove_char(self, name):
@@ -101,9 +106,9 @@ class Party(object):
             self.chars.remove(name)
             if self.leader == name:
                 if len(self.chars) == 0:
-                    self.leader = None
+                    self.set_leader(None)
                 else:
-                    self.leader = self.chars[0]
+                    self.set_leader(self.chars[0])
             return True
         else:
             return False
@@ -169,7 +174,7 @@ class Party(object):
         data = party_state[0]
         self.capacity = data[0]
         self.chars = data[1]
-        self.leader = data[2]
+        self.set_leader(data[2])
         
         self.custom_initialize(party_state[1])
 
@@ -184,6 +189,11 @@ class Party(object):
         was saved.
         """
         pass
+
+    def set_leader(self, new_leader):
+        self.leader = new_leader
+        if self.avatar is not None:
+            self.avatar.reload_image()
 
 
 class CharacterReserve(object):

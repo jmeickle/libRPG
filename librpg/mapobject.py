@@ -204,6 +204,10 @@ class PartyAvatar(MapObject):
         MapObject.__init__(self, MapObject.OBSTACLE, party.get_image(self),
                            facing, speed)
         self.party = party
+        party.avatar = self
+
+    def reload_image(self):
+        self.image = self.party.get_image(self)
 
 
 class ScenarioMapObject(MapObject):
