@@ -398,7 +398,8 @@ class OrdinaryItem(Item):
         self.id = id
 
     def __repr__(self):
-        return "%s id=%s" % (self.name, str(self.id))
+        #return "%s id=%s" % (self.name, str(self.id))
+        return "%s" % (self.name)
 
 
 class UniqueItem(Item):

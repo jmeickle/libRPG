@@ -22,7 +22,7 @@ def char_factory(name, char_state):
     return Character(name, None)
 
 r = CharacterReserve(char_factory)
-p = Party(3, r)
+p = Party(r, 3)
 c = ['Andy', 'Bernie', 'Chris', 'Dylan', 'Emma']
 for char in c:
     r.add_char(char)

@@ -184,8 +184,11 @@ class MapModel(object):
         The scenario tilesets are specified by
         *scenario_tileset_files_list*, a list of tuples like the one passed
         as *terrain_tileset_files*. Each will correspond to a scenario
-        layer.        
+        layer.
         """
+        self.world = None
+        self.id = None
+
         # Set up party
         self.party = None
         self.party_avatar = None

@@ -8,9 +8,9 @@ import pygame
 from librpg.image import ObjectImage
 from librpg.locals import *
 
-def default_party_factory(capacity, reserve, chars=None, leader=None,
+def default_party_factory(reserve, capacity=None, chars=None, leader=None,
                           party_state=None):
-    return Party(capacity, reserve, chars, leader, party_state)
+    return Party(reserve, capacity, chars, leader, party_state)
 
 class Party(object):
 
@@ -18,23 +18,23 @@ class Party(object):
     A Party is a group of Characters that move together in a map.
     """
 
-    def __init__(self, capacity, reserve, chars=None, leader=None,
+    def __init__(self, reserve, capacity=None, chars=None, leader=None,
                  party_state=None):
         """
         Initialize a party with the given parameters.
         
-        *capacity* should be an integer with the maximum number of
-        Characters the party can hold.
-        
         *reserve* should be the CharacterReserve that contains the party's
         characters.
+        
+        *capacity* should be an integer with the maximum number of
+        Characters the party can hold.
         
         *chars*, should be a list of the names of the initial characters.
         *leader* should be the name of the initial leader. By default the
         party is empty.
         
-        If *party_state* is passed, *chars* and *leader* should not be
-        specified. In this case, the party setup is loaded from
+        If *party_state* is passed, *capacity*, *chars* and *leader* should
+        not be specified. In this case, the party setup is loaded from
         *party_state*.
 
         :attr:`capacity`
@@ -49,9 +49,10 @@ class Party(object):
         :attr:`leader`
             Character whose image will be displayed in the map.
         """
-        assert (chars is None and leader is None) or \
+        assert (capacity is None and chars is None and leader is None) or \
                party_state is None, \
-               'Either (chars and leader) or party_state has to be None.'
+               'Either (chars and leader and capacity) or party_state has'\
+               'to be None.'
         self.capacity = capacity
         self.reserve = reserve
         self.chars = []
@@ -318,7 +319,6 @@ class CharacterReserve(object):
         result[PARTIES_LOCAL_STATE] = []
         for party in self.parties:
             result[PARTIES_LOCAL_STATE].append(party.save())
-
         return result
     
     def initialize(self, state=None):
@@ -329,11 +329,7 @@ class CharacterReserve(object):
                 self.add_char(name, char_state)
         if state.has_key(PARTIES_LOCAL_STATE):
             for party_state in state[PARTIES_LOCAL_STATE]:
-                self.party_factory(capacity=party_state[0][0],
-                                   reserve=self,
-                                   chars=party_state[0][1],
-                                   leader=party_state[0][2],
-                                   party_state=party_state[1])
+                self.party_factory(self, party_state=party_state)
 
 
 class Character(object):

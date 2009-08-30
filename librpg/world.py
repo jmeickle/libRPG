@@ -69,8 +69,8 @@ class BaseWorld(object):
             party = []
             for i in xrange(party_capacity):
                 party.append(chars[i])
-        self.party = self.reserve.party_factory(party_capacity,
-                                                self.reserve,
+        self.party = self.reserve.party_factory(self.reserve,
+                                                party_capacity,
                                                 party,
                                                 party[0])
 
@@ -218,6 +218,8 @@ class MicroWorld(BaseWorld):
 
         BaseWorld.__init__(self, character_factory, party_factory)
         self.only_map = map
+        map.world = self
+        map.id = MicroWorld.TEH_MAP_ID
 
     def initial_config(self, position, chars, party_capacity=None, party=None):
         """
@@ -279,17 +281,9 @@ class WorldMap(MapModel):
         A WorldMap's constructor does not differ from the base MapModel's,
         but it generally should not be called, except for by
         World.create_map().
-
-        :attr:`id`
-            Map id that represents that WorldMap to the World.
-
-        :attr:`world`
-            World to which the WorldMap to the WorldMap belongs.
         """
         MapModel.__init__(self, map_file, terrain_tileset_files,
                           scenario_tileset_files_list)
-        self.world = None
-        self.id = None
 
     def schedule_teleport(self, position, map_id=None, *map_args):
         """

@@ -109,6 +109,7 @@ ok      0.4 Write inventory's save() method
         ?   Image management module (store the last x loaded images and the y most used images)
         ?   Group files into submodules?
         ?   Charset generating tool (clothes/hair/accessories layers, written in librpg itself)
+        ?   Bank module (stores money and items)
         1.0 Write file types reference
         1.0 Basic tutorial
         
