@@ -17,19 +17,18 @@ SAVE_FILE = "itempersisttest.sav"
 
 # Items
 
-ITEM_LOG = 'log'
-ITEM_LEAF = 'leaf'
-
 class LogItem(OrdinaryItem):
+    id = 'log'
     def __init__(self):
-        OrdinaryItem.__init__(self, ITEM_LOG, 'Log')
+        OrdinaryItem.__init__(self, 'Log')
 
 class LeafItem(OrdinaryItem):
+    id = 'leaf'
     def __init__(self):
-        OrdinaryItem.__init__(self, ITEM_LEAF, 'Leaf')
+        OrdinaryItem.__init__(self, 'Leaf')
 
 def item_factory(id):
-    return {ITEM_LOG: LogItem, ITEM_LEAF: LeafItem}[id]()
+    return {'log': LogItem, 'leaf': LeafItem}[id]()
 
 
 # Map objects
@@ -40,7 +39,7 @@ class LogPile(ScenarioMapObject):
         ScenarioMapObject.__init__(self, map, 0, 9)
         
     def activate(self, party_avatar, direction):
-        added = party_avatar.party.inventory.add_item_by_id(ITEM_LOG)
+        added = party_avatar.party.inventory.add_item_by_id('log')
         if added:
             self.map.schedule_message(MessageDialog("Got a Log."))
         else:
@@ -53,7 +52,7 @@ class Tree(ScenarioMapObject):
         ScenarioMapObject.__init__(self, map, 0, 5)
         
     def activate(self, party_avatar, direction):
-        added = party_avatar.party.inventory.add_item_by_id(ITEM_LEAF)
+        added = party_avatar.party.inventory.add_item_by_id('leaf')
         if added:
             self.map.schedule_message(MessageDialog("Got a Leaf."))
         else:
@@ -126,13 +125,14 @@ def party_factory(reserve, capacity=None, chars=None, leader=None,
 
 class InventoryContext(Context):
 
-    KEY_TO_CHAR = {K_a: 'Andy', K_b: 'Brenda', K_c: 'Charles', K_d: 'Dylan'}
     def __init__(self, map):
         Context.__init__(self, map)
         self.map = map
         self.reserve = map.world.reserve
         self.party = map.party
         self.inv = map.party.inventory
+
+    KEY_TO_CHAR = {K_a: 'Andy', K_b: 'Brenda', K_c: 'Charles', K_d: 'Dylan'}
 
     def process_event(self, event):
         if not self.map.controller.message_queue.is_active() \
@@ -148,18 +148,18 @@ class InventoryContext(Context):
                 self.map.schedule_message(MessageDialog(msg))
                 return True
             elif event.key in InventoryContext.KEY_TO_CHAR.keys():
-                char_to_add = InventoryContext.KEY_TO_CHAR[event.key]
-                if char_to_add in self.party.chars:
-                    if len(self.party.chars) > 1 \
-                       and self.party.remove_char(char_to_add):
-                            msg = 'Removed %s.' % char_to_add
+                char = InventoryContext.KEY_TO_CHAR[event.key]
+                if char in self.party.chars:
+                    if (len(self.party.chars) > 1 
+                        and self.party.remove_char(char)):
+                            msg = 'Removed %s.' % char
                     else:
-                        msg = 'Cannot remove %s.' % char_to_add
+                        msg = 'Cannot remove %s.' % char
                 else:
-                    if self.party.add_char(char_to_add):
-                        msg = 'Added %s.' % char_to_add
+                    if self.party.add_char(char):
+                        msg = 'Added %s.' % char
                     else:
-                        msg = 'Could not add %s.' % char_to_add
+                        msg = 'Could not add %s.' % char
                 self.map.schedule_message(MessageDialog(msg))
                 return True
         return False

@@ -2,8 +2,28 @@
 
 from librpg.item import *
 
+class Item19(OrdinaryItem):
+    id = 19
+    def __init__(self):
+        OrdinaryItem.__init__(self, 'Item19')
+
+class Item42(OrdinaryItem):
+    id = 42
+    def __init__(self):
+        OrdinaryItem.__init__(self, 'Item42')
+
+class Item66(OrdinaryItem):
+    id = 66
+    def __init__(self):
+        OrdinaryItem.__init__(self, 'Item66')
+
+class Item67(OrdinaryItem):
+    id = 67
+    def __init__(self):
+        OrdinaryItem.__init__(self, 'Item67')
+
 def item_factory(id):
-    return OrdinaryItem(id, "Item%03d" % id)
+    return {19: Item19, 42: Item42, 66:Item66, 67: Item67}[id]()
 
 def add_test(id, amount, by_id=False):
     if by_id:

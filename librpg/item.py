@@ -393,9 +393,13 @@ class OrdinaryItem(Item):
         May be any hashable type, but typically an integer.
     """
 
-    def __init__(self, id, name, weight=0):
+    def __init__(self, name, weight=0):
         Item.__init__(self, name, weight)
-        self.id = id
+        try:
+            self.id
+        except AttributeError:
+            raise Exception('Classes derived from OrdinaryItem must have an '\
+                            'id as class attribute')
 
     def __repr__(self):
         #return "%s id=%s" % (self.name, str(self.id))
@@ -428,8 +432,8 @@ class UsableItem(Item):
 
 
 class UsableOrdinaryItem(UsableItem, OrdinaryItem):
-    def __init__(self, id, name, weight=0):
-        OrdinaryItem.__init__(self, id, name, weight)
+    def __init__(self, name, weight=0):
+        OrdinaryItem.__init__(self, name, weight)
 
 
 class UsableUniqueItem(UsableItem, UniqueItem):
