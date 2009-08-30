@@ -210,3 +210,38 @@ def determine_facing(new_pos, old_pos):
         return DOWN
     else:
         return None
+
+
+class IdFactory(object):
+
+    """
+    An IdFactory chooses from a set of classes and creates an instance
+    of it based on the passed ID.
+    """
+
+    def __init__(self):
+        self.classes = {}
+
+    def register(self, _class, id):
+        """
+        Register a class-id pair.
+        
+        *_class* should be the class created when *id* is passed
+        to fabricate().
+        """
+        assert id not in self.classes, 'id %s already registered' % id
+        self.classes[id] = _class
+        _class.id = id
+
+    def fabricate(self, id, *args):
+        """
+        Return a newly created instance of the class registers with the
+        given *id*.
+        
+        If more arguments are passed, they will be forwarded to the
+        class constructor.
+        """
+        return self.classes[id](*args)
+
+    def __repr__(self):
+        return self.classes.__repr__()
