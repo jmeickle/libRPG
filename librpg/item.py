@@ -80,16 +80,16 @@ class OrdinaryInventory(Inventory):
         Create an empty inventory, which holds up to *max_weight* in weight
         and *max_item_pile* items in each pile.
         
-        *factory* should be a factory function that, given an item id,
-        returns an instance of that item.
+        *factory* should be an IdFactory with which all OrdinaryItems to
+        be stored in this inventory have been registered.
         
         :attr:`items`
             Dict mapping item ids to the amount of that item in the
             inventory.
 
         :attr:`factory`
-            Factory function that, given an item id, returns an instance of
-            that item.
+            IdFactory with which all OrdinaryItems to be stored in this
+            inventory have been registered.
 
         :attr:`max_item_pile`
             Maximum number of items with the same id the inventory can
@@ -171,7 +171,7 @@ class OrdinaryInventory(Inventory):
         number smaller than *amount* means that there was not enough
         room (either because of weight constraints or pile constraints).
         """
-        return self.add_item(self.factory(item_id), amount)
+        return self.add_item(self.factory.fabricate(item_id), amount)
 
     def remove_item_by_id(self, item_id, amount=1):
         """
@@ -185,7 +185,7 @@ class OrdinaryInventory(Inventory):
         number smaller than *amount* means that there were not enough
         items with that id.
         """
-        return self.remove_item(self.factory(item_id), amount)
+        return self.remove_item(self.factory.fabricate(item_id), amount)
 
     # Private
     def __unchecked_add_item(self, id, amount, item_weight):
@@ -257,7 +257,7 @@ class OrdinaryInventory(Inventory):
         than the second argument. To order descending, pass *reverse*
         as True.
         """
-        return sorted([self.factory(id) for id in self.items.keys()],
+        return sorted([self.factory.fabricate(id) for id in self.items.keys()],
                       comparison_function,
                       extract_function,
                       reverse)
@@ -267,14 +267,14 @@ class OrdinaryInventory(Inventory):
         Return a dict mapping OrdinaryItems to the amount of each the
         inventory contains.
         """
-        return dict((self.factory(id), amount) for id, amount \
+        return dict((self.factory.fabricate(id), amount) for id, amount \
                     in self.items.iteritems())
 
     def fabricate(self, id):
         """
         Instantiate an OrdinaryItem from an id using the factory function.
         """
-        return self.factory(id)
+        return self.factory.fabricate(id)
 
 
 class UniquesInventory(Inventory):

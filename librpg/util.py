@@ -222,16 +222,21 @@ class IdFactory(object):
     def __init__(self):
         self.classes = {}
 
-    def register(self, _class, id):
+    def register(self, _class):
         """
         Register a class-id pair.
         
-        *_class* should be the class created when *id* is passed
-        to fabricate().
+        *_class* should be the class created when its id is passed
+        to fabricate(). It should have id as a class attribute.
         """
-        assert id not in self.classes, 'id %s already registered' % id
-        self.classes[id] = _class
-        _class.id = id
+        try:
+            _class.id
+        except AttributeError:
+            raise Exception('A class must have an id attribute to be '
+                            'registered.')
+        assert _class.id not in self.classes.keys(), \
+                'id %s already registered' % _class.id
+        self.classes[_class.id] = _class
 
     def fabricate(self, id, *args):
         """

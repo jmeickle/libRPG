@@ -1,35 +1,40 @@
 #! /usr/bin/env python
 
 from librpg.item import *
+from librpg.util import IdFactory
+
+item_factory = IdFactory()
 
 class Item19(OrdinaryItem):
     id = 19
     def __init__(self):
         OrdinaryItem.__init__(self, 'Item19')
+item_factory.register(Item19)
 
 class Item42(OrdinaryItem):
     id = 42
     def __init__(self):
         OrdinaryItem.__init__(self, 'Item42')
+item_factory.register(Item42)
 
 class Item66(OrdinaryItem):
     id = 66
     def __init__(self):
         OrdinaryItem.__init__(self, 'Item66')
+item_factory.register(Item66)
 
 class Item67(OrdinaryItem):
     id = 67
     def __init__(self):
         OrdinaryItem.__init__(self, 'Item67')
+item_factory.register(Item67)
 
-def item_factory(id):
-    return {19: Item19, 42: Item42, 66:Item66, 67: Item67}[id]()
 
 def add_test(id, amount, by_id=False):
     if by_id:
         a = i.add_item_by_id(id, amount)
     else:
-        a = i.add_item(item_factory(id), amount)
+        a = i.add_item(item_factory.fabricate(id), amount)
 
     if a != amount:
         print "Item", id, ": Added", a, "trying to add", amount
@@ -40,7 +45,7 @@ def remove_test(id, amount, by_id=False):
     if by_id:
         r = i.remove_item_by_id(id, amount)
     else:
-        r = i.remove_item(item_factory(id), amount)
+        r = i.remove_item(item_factory.fabricate(id), amount)
 
     if r != amount:
         print "Item", id, ": Removed", r, "trying to remove", amount

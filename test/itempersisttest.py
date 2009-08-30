@@ -3,7 +3,7 @@
 import librpg
 from librpg.map import MapModel
 from librpg.mapobject import ScenarioMapObject
-from librpg.util import Position
+from librpg.util import Position, IdFactory
 from librpg.party import Character, CharacterReserve, Party
 from librpg.world import MicroWorld
 from librpg.item import OrdinaryInventory, OrdinaryItem
@@ -17,18 +17,20 @@ SAVE_FILE = "itempersisttest.sav"
 
 # Items
 
+item_factory = IdFactory()
+
 class LogItem(OrdinaryItem):
     id = 'log'
     def __init__(self):
         OrdinaryItem.__init__(self, 'Log')
+item_factory.register(LogItem)
+
 
 class LeafItem(OrdinaryItem):
     id = 'leaf'
     def __init__(self):
         OrdinaryItem.__init__(self, 'Leaf')
-
-def item_factory(id):
-    return {'log': LogItem, 'leaf': LeafItem}[id]()
+item_factory.register(LeafItem)
 
 
 # Map objects
