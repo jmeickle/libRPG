@@ -296,6 +296,10 @@ class CharacterReserve(object):
         assert party is None or party in self.parties, 'Party is not in reserve'
         self.party_allocation[name] = party
 
+    def set_default_party(self, party):
+        self.parties.remove(party)
+        self.parties.insert(0, party)
+
     def get_default_party(self):
         if self.parties:
             return self.parties[0]

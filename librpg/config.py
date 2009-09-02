@@ -12,10 +12,14 @@ The global configuration objects are:
     **dialog_config**
         DialogConfig object
 
+    **map_config**
+        MapConfig object
+
 """
 
 import pygame
 
+from librpg.locals import *
 from librpg import virtualscreen
 
 
@@ -59,35 +63,36 @@ class GraphicsConfig(Config):
     rendering.
     
     :attr:`camera_mode`
-    CameraMode for displaying following the PartyAvatar on the map.
+        CameraMode for displaying following the PartyAvatar on the map.
     
     :attr:`display_mode`
-    Combination of flags that will be used to config the screen. Passed
-    directly to pygame.display.set_mode().
+        Combination of flags that will be used to config the screen. Passed
+        directly to pygame.display.set_mode().
     
     :attr:`screen_width`
-    Game window width in pixels.
+        Game window width in pixels.
     
     :attr:`screen_height`
-    Game window height in pixels.
+        Game window height in pixels.
     
     :attr:`object_width`
-    MapObjects' width in pixels. Does not apply for ScenarioMapObjects.
+        MapObjects' width in pixels. Does not apply for ScenarioMapObjects.
     
     :attr:`object_height`
-    MapObjects' height in pixels. Does not apply for ScenarioMapObjects.
+        MapObjects' height in pixels. Does not apply for ScenarioMapObjects.
     
     :attr:`tile_size`
-    Tiles' width and height in pixels.
+        Tiles' width and height in pixels.
     
     :attr:`scale`
-    Zoom to use when drawing anything on the screen. When 1, it will be
-    drawn in the normal scale, which will look very small for low
-    resolution graphics. Numbers higher than 1 will enlarge the screen
-    while numbers lower than 1 will reduce it. Non-integers MAY be passed.
+        Zoom to use when drawing anything on the screen. When 1, it will be
+        drawn in the normal scale, which will look very small for low
+        resolution graphics. Numbers higher than 1 will enlarge the screen
+        while numbers lower than 1 will reduce it. Non-integers MAY be
+        passed.
     
     :attr:`real_screen_dimensions`
-    2-Tuple with height and width of the actual screen. Read-only.
+        2-Tuple with height and width of the actual screen. Read-only.
     """
 
     DEFAULT_SCREEN_WIDTH = 400
@@ -203,31 +208,31 @@ class DialogConfig(Config):
     The DialogConfig contains attributes related to dialog rendering.
     
     :attr:`font_name`
-    Name of the font or font file to be used in dialogs.
+        Name of the font or font file to be used in dialogs.
     
     :attr:`font_size`
-    Size to render the font in dialogs.
+        Size to render the font in dialogs.
     
     :attr:`border_width`
-    Space in pixels between the screen edge and the text box and
-    between the text box and the text.
+        Space in pixels between the screen edge and the text box and
+        between the text box and the text.
     
     :attr:`line_spacing`
-    Space in pixels between text lines.
+        Space in pixels between text lines.
     
     :attr:`bg_color`
-    Tuple with the dialog's background colors.    
+        Tuple with the dialog's background colors.    
     
     :attr:`font_color`
-    Tuple with the text font's color.
+        Tuple with the text font's color.
     
     :attr:`selected_font_color`
-    Tuple with the text color to use for selected options in a
-    ChoiceDialog.
+        Tuple with the text color to use for selected options in a
+        ChoiceDialog.
     
     :attr:`not_selected_font_color`
-    Tuple with the text color to use for options not selected in a
-    ChoiceDialog.
+        Tuple with the text color to use for options not selected in a
+        ChoiceDialog.
     """
 
     DEFAULT_FONT_NAME = 'Verdana'
@@ -240,6 +245,7 @@ class DialogConfig(Config):
     DEFAULT_NOT_SELECTED_FONT_COLOR = (128, 128, 128)
 
     def __init__(self):
+        Config.__init__(self)
         self.font_name = DialogConfig.DEFAULT_FONT_NAME
         self.font_size = DialogConfig.DEFAULT_FONT_SIZE
         self.border_width = DialogConfig.DEFAULT_BORDER_WIDTH
@@ -251,8 +257,51 @@ class DialogConfig(Config):
                                     DialogConfig.DEFAULT_NOT_SELECTED_FONT_COLOR
 
 
+class MapConfig(Config):
+
+    """
+    The MapConfig contains attributes related to map navigation and
+    execution.
+
+    :attr:`key_up`
+        Set of keys that move the party up.
+
+    :attr:`key_down`
+        Set of keys that move the party down.
+
+    :attr:`key_left`
+        Set of keys that move the party left.
+
+    :attr:`key_right`
+        Set of keys that move the party right.
+
+    :attr:`key_action`
+        Set of keys that activate objects, advance or choose an option.
+
+    :attr:`key_cancel`
+        Set of keys that quit the game, cancel actions, go back.
+    """
+    
+    DEFAULT_KEY_UP = set([K_UP])
+    DEFAULT_KEY_DOWN = set([K_DOWN])
+    DEFAULT_KEY_LEFT = set([K_LEFT])
+    DEFAULT_KEY_RIGHT = set([K_RIGHT])
+    DEFAULT_KEY_ACTION = set([K_RETURN, K_SPACE])
+    DEFAULT_KEY_CANCEL = set([K_ESCAPE])
+    
+    def __init__(self):
+        Config.__init__(self)
+        self.key_up = MapConfig.DEFAULT_KEY_UP
+        self.key_down = MapConfig.DEFAULT_KEY_DOWN
+        self.key_left = MapConfig.DEFAULT_KEY_LEFT
+        self.key_right = MapConfig.DEFAULT_KEY_RIGHT
+        self.key_action = MapConfig.DEFAULT_KEY_ACTION
+        self.key_cancel = MapConfig.DEFAULT_KEY_CANCEL
+
+
 graphics_config = GraphicsConfig()
 dialog_config = DialogConfig()
+map_config = MapConfig()
 
 from librpg.camera import PartyCentricCameraMode as DEFAULT_CAMERA_MODE
 graphics_config.camera_mode = DEFAULT_CAMERA_MODE()

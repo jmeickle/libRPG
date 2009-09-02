@@ -50,6 +50,20 @@ The default values are:
     
     :attr:`not_selected_font_color` - (128, 128, 128)
     
+**map_config**
+
+    :attr:`key_up` - set([K_UP])
+    
+    :attr:`key_down` - set([K_DOWN])
+    
+    :attr:`key_left` - set([K_LEFT]) 
+    
+    :attr:`key_right` - set([K_RIGHT])
+    
+    :attr:`key_action` - set([K_RETURN, K_SPACE])
+    
+    :attr:`key_cancel` - set([K_ESCAPE])
+    
 Examples
 --------
 

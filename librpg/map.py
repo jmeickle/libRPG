@@ -8,7 +8,6 @@ import csv
 import operator
 
 import pygame
-from pygame.locals import *
 
 from librpg.mapobject import *
 from librpg.mapview import *
@@ -82,29 +81,41 @@ class MapController(Context):
             get_context_stack().stop()
             return True
         elif event.type == KEYDOWN:
-            direction = KEY_TO_DIRECTION.get(event.key)
+            direction = self.check_direction(event.key)
             if direction is not None and\
                not direction in self.map_model.party_movement:
                 self.party_movement_append(direction)
                 return True
-            elif event.key == K_SPACE or event.key == K_RETURN:
+            elif event.key in map_config.key_action:
                 if not ACTIVATE in self.party_movement:
                     self.party_movement.insert(0, ACTIVATE)
                 return True
-            elif event.key == K_ESCAPE:
+            elif event.key in map_config.key_cancel:
                 get_context_stack().stop()
                 return True
         elif event.type == KEYUP:
-            direction = KEY_TO_DIRECTION.get(event.key)
+            direction = self.check_direction(event.key)
             if direction is not None and\
                direction in self.map_model.party_movement:
                 self.party_movement_remove(direction)
                 return True
-            elif event.key == K_SPACE or event.key == K_RETURN \
+            elif event.key in map_config.key_action \
                  and ACTIVATE in self.party_movement:
                 self.party_movement_remove(ACTIVATE)
                 return True
         return False
+
+    def check_direction(self, key):
+        if key in map_config.key_up:
+            return UP
+        elif key in map_config.key_down:
+            return DOWN
+        elif key in map_config.key_left:
+            return LEFT
+        elif key in map_config.key_right:
+            return RIGHT
+        else:
+            return None
 
     def flow_object_movement(self):
         party_avatar = self.map_model.party_avatar

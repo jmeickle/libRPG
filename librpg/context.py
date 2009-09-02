@@ -9,7 +9,6 @@ context.get_context_stack().
 """
 
 import pygame
-from pygame.locals import *
 
 from librpg.locals import *
 from librpg.virtualscreen import get_screen

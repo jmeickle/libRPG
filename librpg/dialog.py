@@ -5,10 +5,11 @@ are a tool for displaying conversations, questions, etc.
 """
 
 import pygame
-from pygame.locals import *
 
+from librpg.locals import *
 from librpg.config import dialog_config as cfg
 from librpg.config import graphics_config as g_cfg
+from librpg.config import map_config as m_cfg
 from librpg.virtualscreen import get_screen
 from librpg.context import Context
 
@@ -73,7 +74,7 @@ class MessageDialog(object):
         self.lines.append([last_y_offset, cur_line])
 
     def process_event(self, event):
-        if event.key == K_SPACE or event.key == K_RETURN:
+        if event.key in m_cfg.key_action:
             return False
         else:
             return True
@@ -171,12 +172,12 @@ class ChoiceDialog(MessageDialog):
                                       choice])
 
     def process_event(self, event):
-        if event.key == K_SPACE or event.key == K_RETURN:
+        if event.key in m_cfg.key_action:
             return False
-        elif event.key == K_UP:
+        elif event.key in m_cfg.key_up:
             self.selected = (self.selected - 1) % len(self.choice_lines)
             self.update()
-        elif event.key == K_DOWN:
+        elif event.key in m_cfg.key_down:
             self.selected = (self.selected + 1) % len(self.choice_lines)
             self.update()
             
