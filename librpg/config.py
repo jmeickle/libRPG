@@ -95,26 +95,18 @@ class GraphicsConfig(Config):
         2-Tuple with height and width of the actual screen. Read-only.
     """
 
-    DEFAULT_SCREEN_WIDTH = 400
-    DEFAULT_SCREEN_HEIGHT = 300
-    DEFAULT_TILE_SIZE = 16
-    DEFAULT_OBJECT_HEIGHT = 32
-    DEFAULT_OBJECT_WIDTH = 24
-    DEFAULT_SCALE = 2
-    DEFAULT_DISPLAY_MODE = 0
-    #DEFAULT_DISPLAY_MODE = pygame.HWSURFACE | pygame.DOUBLEBUF | pygame.FULLSCREEN
+    _screen_width = 400
+    _screen_height = 300
+    _tile_size = 16
+    _object_height = 32
+    _object_width = 24
+    _scale = 2
+    camera_mode = None
+    display_mode = 0
+    # display_mode = pygame.HWSURFACE | pygame.DOUBLEBUF | pygame.FULLSCREEN
 
     def __init__(self):
-        Config.__init__(self, late_attributions=['display_mode'])
-        self._screen_width = GraphicsConfig.DEFAULT_SCREEN_WIDTH
-        self._screen_height = GraphicsConfig.DEFAULT_SCREEN_HEIGHT
-        self._tile_size = GraphicsConfig.DEFAULT_TILE_SIZE
-        self._object_height = GraphicsConfig.DEFAULT_OBJECT_HEIGHT
-        self._object_width = GraphicsConfig.DEFAULT_OBJECT_WIDTH
-        self._scale = GraphicsConfig.DEFAULT_SCALE
-        self.camera_mode = None # avoid circular import problems
-        self.display_mode = GraphicsConfig.DEFAULT_DISPLAY_MODE
-
+        Config.__init__(self)
         self.calc_screen_dimensions()
         self.calc_object_dimensions()
         self.calc_map_border_width()
@@ -235,26 +227,14 @@ class DialogConfig(Config):
         ChoiceDialog.
     """
 
-    DEFAULT_FONT_NAME = 'Verdana'
-    DEFAULT_FONT_SIZE = 12
-    DEFAULT_BORDER_WIDTH = 15
-    DEFAULT_LINE_SPACING = 2
-    DEFAULT_BG_COLOR = (128, 0, 128, 128)
-    DEFAULT_FONT_COLOR = (255, 255, 255)
-    DEFAULT_SELECTED_FONT_COLOR = (255, 0, 0)
-    DEFAULT_NOT_SELECTED_FONT_COLOR = (128, 128, 128)
-
-    def __init__(self):
-        Config.__init__(self)
-        self.font_name = DialogConfig.DEFAULT_FONT_NAME
-        self.font_size = DialogConfig.DEFAULT_FONT_SIZE
-        self.border_width = DialogConfig.DEFAULT_BORDER_WIDTH
-        self.line_spacing = DialogConfig.DEFAULT_LINE_SPACING
-        self.bg_color = DialogConfig.DEFAULT_BG_COLOR
-        self.font_color = DialogConfig.DEFAULT_FONT_COLOR
-        self.selected_font_color = DialogConfig.DEFAULT_SELECTED_FONT_COLOR
-        self.not_selected_font_color = \
-                                    DialogConfig.DEFAULT_NOT_SELECTED_FONT_COLOR
+    font_name = 'Verdana'
+    font_size = 12
+    border_width = 15
+    line_spacing = 2
+    bg_color = (128, 0, 128, 128)
+    font_color = (255, 255, 255)
+    selected_font_color = (255, 0, 0)
+    not_selected_font_color = (128, 128, 128)
 
 
 class MapConfig(Config):
@@ -282,22 +262,13 @@ class MapConfig(Config):
         Set of keys that quit the game, cancel actions, go back.
     """
     
-    DEFAULT_KEY_UP = set([K_UP])
-    DEFAULT_KEY_DOWN = set([K_DOWN])
-    DEFAULT_KEY_LEFT = set([K_LEFT])
-    DEFAULT_KEY_RIGHT = set([K_RIGHT])
-    DEFAULT_KEY_ACTION = set([K_RETURN, K_SPACE])
-    DEFAULT_KEY_CANCEL = set([K_ESCAPE])
+    key_up = set([K_UP])
+    key_down = set([K_DOWN])
+    key_left = set([K_LEFT])
+    key_right = set([K_RIGHT])
+    key_action = set([K_RETURN, K_SPACE])
+    key_cancel = set([K_ESCAPE])
     
-    def __init__(self):
-        Config.__init__(self)
-        self.key_up = MapConfig.DEFAULT_KEY_UP
-        self.key_down = MapConfig.DEFAULT_KEY_DOWN
-        self.key_left = MapConfig.DEFAULT_KEY_LEFT
-        self.key_right = MapConfig.DEFAULT_KEY_RIGHT
-        self.key_action = MapConfig.DEFAULT_KEY_ACTION
-        self.key_cancel = MapConfig.DEFAULT_KEY_CANCEL
-
 
 graphics_config = GraphicsConfig()
 dialog_config = DialogConfig()
