@@ -80,8 +80,7 @@ ok      0.4 Write inventory's save() method
 ok      0.4 Write a test for inventory and party persistency
 ok      0.4 Remove the need to bind item ids to item classes twice: implement item factories with class registration
         0.4 Worlds will now have only one party
-        0.4 Homogenize persistency interface
-        0.4 Switch World to use initialize(), _initialize(), save() and _save()?
+ok      0.4 Homogenize persistency interface
         0.4 Configurable keys for MapModel
         0.4 Allow FPS configuration
         0.4 Add a gameover() method

@@ -32,36 +32,49 @@ class Inventory(object):
         self.weight = 0
         self.max_weight = max_weight
 
-    def save_state(self):
-        return (self.class_save(), self.custom_save())
+    def initial_state(self):
+        pass
 
-    def custom_save(self):
+    def save_state(self):
         """
-        *Virtual.*
+        Return serializable data for rebuilding the inventory when the
+        state is loaded.
         """
-        return None
+        return (self.class_save(), self.custom_save())
 
     def class_save(self):
         return (self.weight, self.max_weight)
 
-    def initialize(self, state=None):
-        if state is not None:
-            self.class_load(state[0])
-            self.custom_load(state[1])
-        else:
-            self.class_load(None)
-            self.custom_load(None)
-
-    def custom_load(self, state=None):
+    def custom_save(self):
         """
         *Virtual.*
+        
+        Return serializable data specific for a derived class for
+        rebuilding the inventory when the state is loaded with
+        load_state().
+        """
+        return None
+
+    def load_state(self, state):
+        """
+        Rebuild the inventory based on the *state* returned by
+        save_state() in another game instance.
+        """
+        self.class_load(state[0])
+        self.custom_load(state[1])
+
+    def class_load(self, state):
+        self.weight = state[0]
+        self.max_weight = state[1]
+
+    def custom_load(self, state):
+        """
+        *Virtual.*
+        
+        Load data specific for a derived class from what a custom_save()
+        call returned previously.
         """
         pass
-
-    def class_initialize(self, state=None):
-        if state is not None:
-            self.weight = state[0]
-            self.max_weight = state[1]
 
 
 class OrdinaryInventory(Inventory):
@@ -103,11 +116,10 @@ class OrdinaryInventory(Inventory):
     def class_save(self):
         return Inventory.class_save(self) + (self.items, self.max_item_pile)
 
-    def class_initialize(self, state=None):
-        if state is not None:
-            Inventory.class_initialize(self, state[:2])
-            self.items = state[2]
-            self.max_item_pile = state[3]
+    def class_load(self, state):
+        Inventory.class_load(self, state[:2])
+        self.items = state[2]
+        self.max_item_pile = state[3]
 
     def add_item(self, item, amount=1):
         """
@@ -294,11 +306,10 @@ class UniquesInventory(Inventory):
     def class_save(self):
         return (self.items, self.max_items)
 
-    def class_initialize(self, state=None):
-        if state is not None:
-            self.items = state[0]
-            self.max_items = state[1]
-    
+    def class_load(self, state):
+        self.items = state[0]
+        self.max_items = state[1]
+
     def add_item(self, item):
         """
         Add an *item* to the inventory.

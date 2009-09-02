@@ -95,16 +95,15 @@ class TestParty(Party):
     
     def __init__(self, reserve):
         Party.__init__(self, reserve)
+        self.inventory = OrdinaryInventory(item_factory)
 
     def custom_save(self):
-        return self.inventory
+        return self.inventory.save_state()
 
     def custom_load(self, party_state=None):
-        print party_state.get_items_with_amounts()
-        self.inventory = party_state
+        self.inventory.load_state(party_state)
+        print 'Loaded', self.inventory.get_items_with_amounts()
 
-    def custom_init(self):
-        self.inventory = OrdinaryInventory(item_factory)
 
 # Char and party factories
 
