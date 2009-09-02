@@ -93,12 +93,9 @@ class PersistTestMap(MapModel):
 
 class TestParty(Party):
     
-    def __init__(self, reserve, capacity=None, chars=None, leader=None,
-                 party_state=None):
-        Party.__init__(self, reserve, capacity, chars, leader,
-                       party_state)
-        if party_state is None:
-            self.inventory = OrdinaryInventory(item_factory)
+    def __init__(self, reserve):
+        Party.__init__(self, reserve)
+        self.custom_init()
 
     def custom_save(self):
         return self.inventory
@@ -106,6 +103,9 @@ class TestParty(Party):
     def custom_load(self, party_state=None):
         print party_state.get_items_with_amounts()
         self.inventory = party_state
+
+    def custom_init(self):
+        self.inventory = OrdinaryInventory(item_factory)
 
 # Char and party factories
 
@@ -117,9 +117,8 @@ def char_factory(name, char_state):
     image_and_index = CHAR_IMAGES[name]
     return Character(name, image_and_index[0], image_and_index[1], char_state)
 
-def party_factory(reserve, capacity=None, chars=None, leader=None,
-                  party_state=None):
-    return TestParty(reserve, capacity, chars, leader, party_state)
+def party_factory(reserve):
+    return TestParty(reserve)
 
 
 # Inventory context

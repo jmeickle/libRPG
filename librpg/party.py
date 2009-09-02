@@ -8,9 +8,8 @@ import pygame
 from librpg.image import ObjectImage
 from librpg.locals import *
 
-def default_party_factory(reserve, capacity=None, chars=None, leader=None,
-                          party_state=None):
-    return Party(reserve, capacity, chars, leader, party_state)
+def default_party_factory(reserve):
+    return Party(reserve)
 
 class Party(object):
 
@@ -18,8 +17,7 @@ class Party(object):
     A Party is a group of Characters that move together in a map.
     """
 
-    def __init__(self, reserve, capacity=None, chars=None, leader=None,
-                 party_state=None):
+    def __init__(self, reserve):
         """
         Initialize a party with the given parameters.
         
@@ -52,19 +50,11 @@ class Party(object):
         :attr:`avatar`
             PartyAvatar that represents the party in the map.
         """
-        assert (capacity is None and chars is None and leader is None) or \
-               party_state is None, \
-               'Either (chars and leader and capacity) or party_state has'\
-               'to be None.'
         self.reserve = reserve
         self.chars = []
         self.leader = None
         self.avatar = None
         reserve.register_party(self)
-        if party_state is not None:
-            self.load_config(party_state)
-        else:
-            self.initial_config(capacity, chars, leader)
 
     def initial_config(self, capacity, chars=None, leader=None):
         self.capacity = capacity
