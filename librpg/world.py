@@ -56,8 +56,7 @@ class BaseWorld(object):
         self.party_pos = (map, position, DOWN)
 
         # Add chars to reserve
-        for char in chars:
-            self.reserve.add_char(char)
+        self.reserve.initial_config(chars)
 
         # Create party
         if party_capacity is None:
@@ -69,10 +68,8 @@ class BaseWorld(object):
             party = []
             for i in xrange(party_capacity):
                 party.append(chars[i])
-        self.party = self.reserve.party_factory(self.reserve,
-                                                party_capacity,
-                                                party,
-                                                party[0])
+        self.party = self.reserve.party_factory(self.reserve)
+        self.party.initial_config(party_capacity, party, party[0])
 
     def load_config(self, state_file):
         """
@@ -86,7 +83,7 @@ class BaseWorld(object):
         assert self.party_pos is not None, 'Loaded state does not contain' \
                                            'initial party position'
 
-        self.reserve.initialize(self.state.locals)
+        self.reserve.load_config(self.state.locals)
         self.party = self.reserve.get_default_party()
 
     def save(self, filename):

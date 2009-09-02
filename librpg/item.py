@@ -46,13 +46,13 @@ class Inventory(object):
 
     def initialize(self, state=None):
         if state is not None:
-            self.class_initialize(state[0])
-            self.custom_initialize(state[1])
+            self.class_load(state[0])
+            self.custom_load(state[1])
         else:
-            self.class_initialize(None)
-            self.custom_initialize(None)
+            self.class_load(None)
+            self.custom_load(None)
 
-    def custom_initialize(self, state=None):
+    def custom_load(self, state=None):
         """
         *Virtual.*
         """

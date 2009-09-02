@@ -56,22 +56,28 @@ class Party(object):
                party_state is None, \
                'Either (chars and leader and capacity) or party_state has'\
                'to be None.'
-        self.capacity = capacity
         self.reserve = reserve
         self.chars = []
         self.leader = None
         self.avatar = None
-
-        self.initialize(party_state)
         reserve.register_party(self)
-        
+        if party_state is not None:
+            self.load_config(party_state)
+        else:
+            self.initial_config(capacity, chars, leader)
+
+    def initial_config(self, capacity, chars=None, leader=None):
+        self.capacity = capacity
+        self.chars = []
+        self.leader = None
         if chars is not None:
             for char in chars:
                 self.add_char(char)
 
         if leader is not None:
             self.leader = leader
-
+        
+        
     def add_char(self, name):
         """
         Insert a Character in the Party.
@@ -167,18 +173,15 @@ class Party(object):
         """
         return None
 
-    def initialize(self, party_state=None):
-        if party_state is None:
-            return
-
+    def load_config(self, party_state):
         data = party_state[0]
         self.capacity = data[0]
         self.chars = data[1]
         self.set_leader(data[2])
         
-        self.custom_initialize(party_state[1])
+        self.custom_load(party_state[1])
 
-    def custom_initialize(self, party_state=None):
+    def custom_load(self, party_state=None):
         """
         *Virtual.*
         
@@ -331,15 +334,20 @@ class CharacterReserve(object):
             result[PARTIES_LOCAL_STATE].append(party.save())
         return result
     
-    def initialize(self, state=None):
-        if state is None:
-            return
-        if state.has_key(CHARACTERS_LOCAL_STATE):
-            for name, char_state in state[CHARACTERS_LOCAL_STATE].iteritems():
-                self.add_char(name, char_state)
-        if state.has_key(PARTIES_LOCAL_STATE):
-            for party_state in state[PARTIES_LOCAL_STATE]:
-                self.party_factory(self, party_state=party_state)
+    def load_config(self, state):
+        assert state.has_key(CHARACTERS_LOCAL_STATE), 'State does not have '\
+               'character information.'
+        assert state.has_key(CHARACTERS_LOCAL_STATE), 'State does not have '\
+               'party information.'
+        for name, char_state in state[CHARACTERS_LOCAL_STATE].iteritems():
+            self.add_char(name, char_state)
+        for party_state in state[PARTIES_LOCAL_STATE]:
+            party = self.party_factory(self)
+            party.load_config(party_state)
+
+    def initial_config(self, chars=[]):
+        for char in chars:
+            self.add_char(char)
 
 
 class Character(object):
@@ -401,9 +409,9 @@ class Character(object):
         if char_state is None:
             return
         self.name = char_state[0]
-        self.custom_initialize(char_state[1])
+        self.custom_load(char_state[1])
 
-    def custom_initialize(self, char_state=None):
+    def custom_load(self, char_state=None):
         """
         *Virtual.*
         

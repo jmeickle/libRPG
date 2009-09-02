@@ -103,10 +103,9 @@ class TestParty(Party):
     def custom_save(self):
         return self.inventory
 
-    def custom_initialize(self, party_state=None):
+    def custom_load(self, party_state=None):
         print party_state.get_items_with_amounts()
         self.inventory = party_state
-
 
 # Char and party factories
 
