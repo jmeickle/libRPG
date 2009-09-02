@@ -29,7 +29,7 @@ class BaseWorld(object):
     def __init__(self, character_factory, party_factory=default_party_factory):
         self.reserve = CharacterReserve(character_factory, party_factory)
 
-    def initial_config(self, map, position, chars, party_capacity=None,
+    def initial_state(self, map, position, chars, party_capacity=None,
                        party=None):
         """
         Initialize the world to a brand new state, without loading any
@@ -56,7 +56,7 @@ class BaseWorld(object):
         self.party_pos = (map, position, DOWN)
 
         # Add chars to reserve
-        self.reserve.initial_config(chars)
+        self.reserve.initial_state(chars)
 
         # Create party
         if party_capacity is None:
@@ -69,9 +69,9 @@ class BaseWorld(object):
             for i in xrange(party_capacity):
                 party.append(chars[i])
         self.party = self.reserve.party_factory(self.reserve)
-        self.party.initial_config(party_capacity, party, party[0])
+        self.party.initial_state(party_capacity, party, party[0])
 
-    def load_config(self, state_file):
+    def load_state(self, state_file):
         """
         Initialize the world to a state loaded from the state_file.
 
@@ -83,11 +83,11 @@ class BaseWorld(object):
         assert self.party_pos is not None, 'Loaded state does not contain' \
                                            'initial party position'
 
-        self.reserve.load_config(self.state.locals)
+        self.reserve.load_state(self.state.locals)
         self.party = self.reserve.get_default_party()
 
     def save(self, filename):
-        self.state.update(self.reserve.save())
+        self.state.update(self.reserve.save_state())
         self.state.save(filename)
 
     def gameloop():
@@ -172,7 +172,7 @@ class World(BaseWorld):
             get_context_stack().gameloop()
 
             # Store data that we wish to carry
-            local_state = map_model.save()
+            local_state = map_model.save_state()
             self.state.save_local(map_id, local_state)
             prev_facing = map_model.party_avatar.facing
             prev_party_movement = map_model.party_movement
@@ -218,7 +218,7 @@ class MicroWorld(BaseWorld):
         map.world = self
         map.id = MicroWorld.TEH_MAP_ID
 
-    def initial_config(self, position, chars, party_capacity=None, party=None):
+    def initial_state(self, position, chars, party_capacity=None, party=None):
         """
         Initialize the world to a brand new state, without loading any
         data.
@@ -238,7 +238,7 @@ class MicroWorld(BaseWorld):
         all characters in *party*. If *party* was not passed, it will be
         big enough to contain the characters in *chars*.
         """
-        BaseWorld.initial_config(self, MicroWorld.TEH_MAP_ID, position, chars,
+        BaseWorld.initial_state(self, MicroWorld.TEH_MAP_ID, position, chars,
                                  party_capacity, party)
 
     def gameloop(self):
@@ -258,7 +258,7 @@ class MicroWorld(BaseWorld):
         get_context_stack().gameloop()
 
         # Store data that we wish to carry
-        local_state = self.only_map.save()
+        local_state = self.only_map.save_state()
         self.state.save_local(map_id, local_state)
         self.only_map.remove_party()
 

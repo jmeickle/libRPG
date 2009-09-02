@@ -277,13 +277,13 @@ class MapModel(object):
         *local_state*, and the *global_state* otherwise.
         
         *local_state* is the serializable object returned by
-        MapModel.save() when this map was saved. *global_state*
+        MapModel.save_state() when this map was saved. *global_state*
         is a dict mapping all feature strings to their local states.
         """
         pass
 
     # Virtual, should be implemented.
-    def save(self):
+    def save_state(self):
         """
         *Virtual*
         
@@ -549,7 +549,7 @@ class MapModel(object):
         """
         Save the game to the given file.
         """
-        self.world.state.save_local(self.id, self.save())
+        self.world.state.save_local(self.id, self.save_state())
         party_local_state = (self.id, self.party_avatar.position,
                              self.party_avatar.facing)
         self.world.state.save_local(PARTY_POSITION_LOCAL_STATE,

@@ -14,19 +14,19 @@ For tiny games than only need one map:
    
     1. Instantiate the MapModel corresponding to that map.
     2. Instantiate a MicroWorld passing that MapModel.
-    3. Call MicroWorld.initial_config() passing the starting position and characters.
+    3. Call MicroWorld.initial_state() passing the starting position and characters.
     4. Call the MicroWorld's gameloop().
    
 For games that need more than one map:
 
     1. Define your WorldMaps, inheriting a class from it for each map.
     2. Instantiate the World. As parameter, pass a dict attributing a unique map id to each WorldMap-inherited class.
-    3. Call World.initial_config(), passing the starting map id, the starting position and the characters.
+    3. Call World.initial_state(), passing the starting map id, the starting position and the characters.
     4. Call the World's gameloop().
 
 After a world's gameloop ends, to quit the program it is good to call exit(). This will terminate pygame gracefully.
 
-Note: to load from a save, in step 3 call load_config() instead, passing the name of the save file.
+Note: to load from a save, in step 3 call load_state() instead, passing the name of the save file.
 
 Examples
 --------
@@ -89,7 +89,7 @@ A MicroWorld example::
         return Character('Andy', 'char_alex32.png')
 
     world = MicroWorld(BoulderMaze(), char_factory)
-    world.initial_config(Position(4, 9),
+    world.initial_state(Position(4, 9),
                          ['Andy'])
     world.gameloop()
     exit()
@@ -180,7 +180,7 @@ A (macro) World example::
 
             self.add_object(SavePoint(self), Position(6, 7))
 
-        def save(self):
+        def save_state(self):
             return {'chest_closed': self.chest.closed}
 
 
@@ -207,7 +207,7 @@ A (macro) World example::
             self.add_object(SavePoint(self), Position(3, 4))
             self.add_area(AreaAroundWell(), RectangleArea((2, 3), (4, 5)))
 
-        def save(self):
+        def save_state(self):
             return {'chest_closed': self.chest.closed}
 
 
@@ -238,9 +238,9 @@ A (macro) World example::
             maps = {1: Map1, 2: Map2, 3: Map3}
             World.__init__(self, maps=maps, character_factory=char_factory)
             if save_file is None:
-                self.initial_config(map=1, position=Position(5, 4), chars=['Andy'])
+                self.initial_state(map=1, position=Position(5, 4), chars=['Andy'])
             else:
-                self.load_config(save_file)
+                self.load_state(save_file)
 
 
     # Config graphics

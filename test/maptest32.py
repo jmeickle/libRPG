@@ -32,7 +32,7 @@ def char_factory(name):
 
 print 'Starting gameloop()'
 world = librpg.world.MicroWorld(m, char_factory)
-world.initial_config(librpg.util.Position(0, 0), ['Andy'])
+world.initial_state(librpg.util.Position(0, 0), ['Andy'])
 world.gameloop()
 print 'Finished gameloop()'
 

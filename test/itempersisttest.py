@@ -175,9 +175,9 @@ if __name__ == '__main__':
 
     world = MicroWorld(PersistTestMap(), char_factory, party_factory)
     if SAVE_FILE in os.listdir('.'):
-        world.load_config(SAVE_FILE)
+        world.load_state(SAVE_FILE)
     else:
-        world.initial_config(Position(4, 3),
+        world.initial_state(Position(4, 3),
                              chars=['Andy', 'Brenda', 'Charles', 'Dylan'],
                              party_capacity=3,
                              party=['Andy'])

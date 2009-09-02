@@ -32,7 +32,7 @@ class Inventory(object):
         self.weight = 0
         self.max_weight = max_weight
 
-    def save(self):
+    def save_state(self):
         return (self.class_save(), self.custom_save())
 
     def custom_save(self):

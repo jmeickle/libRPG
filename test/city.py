@@ -11,7 +11,7 @@ def char_factory(name):
     return librpg.party.Character('Andy', 'actor1.png', 0)
 
 world = librpg.world.MicroWorld(m, char_factory)
-world.initial_config(librpg.util.Position(10, 10), ['Andy'])
+world.initial_state(librpg.util.Position(10, 10), ['Andy'])
 world.gameloop()
 
 exit()

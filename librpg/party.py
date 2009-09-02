@@ -19,22 +19,8 @@ class Party(object):
 
     def __init__(self, reserve):
         """
-        Initialize a party with the given parameters.
+        Initialize a party that takes characters from a CharacterReserve.
         
-        *reserve* should be the CharacterReserve that contains the party's
-        characters.
-        
-        *capacity* should be an integer with the maximum number of
-        Characters the party can hold.
-        
-        *chars*, should be a list of the names of the initial characters.
-        *leader* should be the name of the initial leader. By default the
-        party is empty.
-        
-        If *party_state* is passed, *capacity*, *chars* and *leader* should
-        not be specified. In this case, the party setup is loaded from
-        *party_state*.
-
         :attr:`capacity`
             Maximum number of characters in the Party.
 
@@ -56,7 +42,19 @@ class Party(object):
         self.avatar = None
         reserve.register_party(self)
 
-    def initial_config(self, capacity, chars=None, leader=None):
+    def initial_state(self, capacity, chars=None, leader=None):
+        """
+        Put the Party in an initial configuration without loading its
+        state from a save.
+
+        *capacity* should be an integer with the maximum number of
+        Characters the party can hold.
+
+        *chars*, should be a list of the names of the initial characters.
+
+        *leader* should be the name of the initial leader. By default the
+        party is empty.
+        """
         self.capacity = capacity
         self.chars = []
         self.leader = None
@@ -149,7 +147,7 @@ class Party(object):
                                         displayed'
         return self.get_char(self.leader).image
 
-    def save(self):
+    def save_state(self):
         return ((self.capacity, self.chars, self.leader),
                 self.custom_save())
 
@@ -162,7 +160,10 @@ class Party(object):
         """
         return None
 
-    def load_config(self, party_state):
+    def load_state(self, party_state):
+        """
+        Load the party setup from *party_state*.
+        """
         data = party_state[0]
         self.capacity = data[0]
         self.chars = data[1]
@@ -177,7 +178,7 @@ class Party(object):
         Initialize whatever fields depend on the state that was saved in a
         previous game.
 
-        *party_state* is the local state returned by save() when the state
+        *party_state* is the local state returned by save_state() when the state
         was saved.
         """
         pass
@@ -189,8 +190,8 @@ class Party(object):
         Initial config whatever attributes would be normally loaded from
         a save file.
 
-        This is the analogous to Party.custom_load() for initial_config
-        case rather than load_config.
+        This is the analogous to Party.custom_load() for initial_state
+        case rather than load_state.
         """
         pass
 
@@ -212,13 +213,12 @@ class CharacterReserve(object):
         """
         *Constructor.*
         
-        *character_factory* that, given a
-        character name, returns an instance of that character.
+        *character_factory* that, given a character name, returns an
+        instance of that character.
         
         *party_factory* should be a factory function that returns an
-        instance of Party or some derived class, given a capacity, a
-        reserve and ((a list of character names and a leader name) or
-        a party state). This defaults to the base Party constructor.
+        instance of Party or some derived class, given a reserve. This
+        defaults to the base Party constructor.
 
         :attr:`chars`
             Dict mapping character names to the Characters in the reserve.
@@ -231,14 +231,13 @@ class CharacterReserve(object):
             List of Parties created by this reserve.
 
         :attr:`character_factory`
-            Factory function that, given a name and possibly a character
-            state, returns an instance of the related character.
+            Factory function that, given a name, returns an instance of
+            the related character.
 
         :attr:`party_factory`
             Factory function that returns an instance of Party or some
-            derived class, given a capacity, a reserve and ((a list of
-            character names and a leader name) or a party state). This
-            defaults to the base Party constructor.
+            derived class, given a reserve. This defaults to the base
+            Party constructor.
         """
         self.chars = {}
         self.party_allocation = {}
@@ -257,9 +256,9 @@ class CharacterReserve(object):
         """
         self.chars[name] = self.character_factory(name)
         if char_state is not None:
-            self.chars[name].load_config(char_state)
+            self.chars[name].load_state(char_state)
         else:
-            self.chars[name].init_config()
+            self.chars[name].initial_state()
         self.party_allocation[name] = None
 
     def remove_char(self, name):
@@ -326,20 +325,20 @@ class CharacterReserve(object):
     def __repr__(self):
         return self.party_allocation.__repr__()
 
-    def save(self):
+    def save_state(self):
         # Save characters
         result = {}
         result[CHARACTERS_LOCAL_STATE] = {}
         for char in self.get_chars():
-            result[CHARACTERS_LOCAL_STATE][char.name] = char.save()
+            result[CHARACTERS_LOCAL_STATE][char.name] = char.save_state()
 
         # Save parties
         result[PARTIES_LOCAL_STATE] = []
         for party in self.parties:
-            result[PARTIES_LOCAL_STATE].append(party.save())
+            result[PARTIES_LOCAL_STATE].append(party.save_state())
         return result
     
-    def load_config(self, state):
+    def load_state(self, state):
         assert state.has_key(CHARACTERS_LOCAL_STATE), 'State does not have '\
                'character information.'
         assert state.has_key(CHARACTERS_LOCAL_STATE), 'State does not have '\
@@ -348,9 +347,9 @@ class CharacterReserve(object):
             self.add_char(name, char_state)
         for party_state in state[PARTIES_LOCAL_STATE]:
             party = self.party_factory(self)
-            party.load_config(party_state)
+            party.load_state(party_state)
 
-    def initial_config(self, chars=[]):
+    def initial_state(self, chars=[]):
         for char in chars:
             self.add_char(char)
 
@@ -395,7 +394,7 @@ class Character(object):
     def __repr__(self):
         return self.name
 
-    def save(self):
+    def save_state(self):
         return (self.name, self.custom_save())
 
     def custom_save(self):
@@ -407,10 +406,10 @@ class Character(object):
         """
         return None
 
-    def init_config(self):
+    def initial_state(self):
         pass
 
-    def load_config(self, char_state):
+    def load_state(self, char_state):
         # do_nothing(char_state[0]), maybe in the future.
         self.custom_load(char_state[1])
 

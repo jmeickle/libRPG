@@ -30,16 +30,16 @@ Example
 
 ::
 
-    def char_factory(name, char_state):
-        return Character(name, None)
+    def char_factory(name):
+        return Character(name)
 
     reserve = CharacterReserve(char_factory)
     c = ['Andy', 'Bernie', 'Chris', 'Dylan', 'Emma']
     for char in c:
         reserve.add_char(char)
 
-    party = Party(3, reserve, ['Andy', 'Emma'], 'Andy')
-    
+    party = Party(reserve)
+    party.initial_state(3, ['Andy', 'Emma'], 'Andy')
     party.add_char('Chris')
     party.remove_char('Andy')
 

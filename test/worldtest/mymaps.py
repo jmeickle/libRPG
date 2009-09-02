@@ -77,7 +77,7 @@ class Map1(WorldMap):
 
         self.add_object(SavePoint(self), Position(6, 7))
 
-    def save(self):
+    def save_state(self):
         return {'chest_closed': self.chest.closed}
 
 
@@ -104,7 +104,7 @@ class Map2(WorldMap):
         self.add_object(SavePoint(self), Position(3, 4))
         self.add_area(AreaAroundWell(), RectangleArea((2, 3), (4, 5)))
 
-    def save(self):
+    def save_state(self):
         return {'chest_closed': self.chest.closed}
 
 

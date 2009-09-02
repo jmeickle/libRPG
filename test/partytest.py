@@ -19,11 +19,11 @@ def test_remove(p, r, char):
     print
 
 def char_factory(name):
-    return Character(name, None)
+    return Character(name)
 
 r = CharacterReserve(char_factory)
 p = Party(r)
-p.initial_config(3)
+p.initial_state(3)
 c = ['Andy', 'Bernie', 'Chris', 'Dylan', 'Emma']
 for char in c:
     r.add_char(char)

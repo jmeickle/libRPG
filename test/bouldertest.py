@@ -68,7 +68,7 @@ def char_factory(name):
     return librpg.party.Character('Andy', 'char_alex32.png')
 
 world = librpg.world.MicroWorld(BoulderMaze(), char_factory)
-world.initial_config(position=Position(4, 9),
+world.initial_state(position=Position(4, 9),
                      chars=['Andy'])
 world.gameloop()
 exit()
