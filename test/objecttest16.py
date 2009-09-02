@@ -65,7 +65,7 @@ class ObjectTestMap(MapModel):
                 
         self.add_object(ObjectTestRock(self), Position(7, 2))
 
-def char_factory(name, char_state):
+def char_factory(name):
     return librpg.party.Character('Andy', 'chara1.png', 3)
 
 world = librpg.world.MicroWorld(ObjectTestMap(), char_factory)

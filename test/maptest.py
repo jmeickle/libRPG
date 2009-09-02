@@ -14,7 +14,7 @@ print m.terrain_layer
 print 'Scenario layer:'
 print m.scenario_layer
 
-def char_factory(name, char_state):
+def char_factory(name):
     return librpg.party.Character('Andy', 'char_alex.png')
 
 world = librpg.world.MicroWorld(m, char_factory)

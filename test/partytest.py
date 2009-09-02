@@ -18,7 +18,7 @@ def test_remove(p, r, char):
     print 'Reserve:', r
     print
 
-def char_factory(name, char_state):
+def char_factory(name):
     return Character(name, None)
 
 r = CharacterReserve(char_factory)

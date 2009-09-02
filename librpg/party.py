@@ -63,10 +63,9 @@ class Party(object):
         if chars is not None:
             for char in chars:
                 self.add_char(char)
-
         if leader is not None:
             self.leader = leader
-        
+        self.custom_init()
         
     def add_char(self, name):
         """
@@ -171,7 +170,7 @@ class Party(object):
         
         self.custom_load(party_state[1])
 
-    def custom_load(self, party_state=None):
+    def custom_load(self, party_state):
         """
         *Virtual.*
         
@@ -180,6 +179,18 @@ class Party(object):
 
         *party_state* is the local state returned by save() when the state
         was saved.
+        """
+        pass
+
+    def custom_init(self):
+        """
+        *Virtual.*
+        
+        Initial config whatever attributes would be normally loaded from
+        a save file.
+
+        This is the analogous to Party.custom_load() for initial_config
+        case rather than load_config.
         """
         pass
 
@@ -244,7 +255,11 @@ class CharacterReserve(object):
         If it is being loaded, *char_state* should be a serializable
         with the necessary data.
         """
-        self.chars[name] = self.character_factory(name, char_state)
+        self.chars[name] = self.character_factory(name)
+        if char_state is not None:
+            self.chars[name].load_config(char_state)
+        else:
+            self.chars[name].init_config()
         self.party_allocation[name] = None
 
     def remove_char(self, name):
@@ -352,7 +367,7 @@ class Character(object):
     from the CharacterReserve.
     """
 
-    def __init__(self, name=None, image_file=None, index=0, char_state=None):
+    def __init__(self, name, image_file=None, index=0):
         """
         *Constructor.*
         
@@ -370,15 +385,12 @@ class Character(object):
         :attr:`image`
             ObjectImage with the character's sprites.
         """
-        assert name is not None or char_state is not None, 'Cannot determine \
-               the character\'s name'
         self.name = name
         self.image_file = image_file
         if image_file:
             self.image = ObjectImage(self.image_file, index)
         else:
             self.image = None
-        self.initialize(char_state)
 
     def __repr__(self):
         return self.name
@@ -395,10 +407,11 @@ class Character(object):
         """
         return None
 
-    def initialize(self, char_state=None):
-        if char_state is None:
-            return
-        self.name = char_state[0]
+    def init_config(self):
+        pass
+
+    def load_config(self, char_state):
+        # do_nothing(char_state[0]), maybe in the future.
         self.custom_load(char_state[1])
 
     def custom_load(self, char_state=None):

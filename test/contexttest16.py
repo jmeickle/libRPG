@@ -97,7 +97,7 @@ class ObjectTestMap(MapModel):
         self.object_counter = CounterContext(self)
         self.add_context(self.object_counter)
 
-def char_factory(name, char_state):
+def char_factory(name):
     return librpg.party.Character('Andy', 'chara1.png', 3)
 
 world = librpg.world.MicroWorld(ObjectTestMap(), char_factory)

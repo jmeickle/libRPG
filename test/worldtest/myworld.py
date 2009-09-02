@@ -4,7 +4,7 @@ from librpg.party import Character, Party
 
 from worldtest.mymaps import *
 
-def char_factory(name, char_state):
+def char_factory(name):
     return Character('Andy', 'char_alex32.png')
 
 class MyWorld(World):

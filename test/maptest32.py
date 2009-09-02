@@ -27,7 +27,7 @@ else:
 
 m = librpg.map.MapModel('maptest32.map', ('lower_tileset32.png', 'lower_tileset32.bnd'), [('upper_tileset32.png', 'upper_tileset32.bnd')])
 
-def char_factory(name, char_state):
+def char_factory(name):
     return librpg.party.Character('Andy', 'actor1.png', 0)
 
 print 'Starting gameloop()'

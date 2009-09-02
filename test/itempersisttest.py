@@ -95,7 +95,6 @@ class TestParty(Party):
     
     def __init__(self, reserve):
         Party.__init__(self, reserve)
-        self.custom_init()
 
     def custom_save(self):
         return self.inventory
@@ -109,13 +108,13 @@ class TestParty(Party):
 
 # Char and party factories
 
-def char_factory(name, char_state):
+def char_factory(name):
     CHAR_IMAGES = {'Andy': ('actor1.png', 0),
                    'Brenda': ('actor1.png', 1),
                    'Charles': ('actor1.png', 2),
                    'Dylan': ('actor1.png', 6)}
     image_and_index = CHAR_IMAGES[name]
-    return Character(name, image_and_index[0], image_and_index[1], char_state)
+    return Character(name, image_and_index[0], image_and_index[1])
 
 def party_factory(reserve):
     return TestParty(reserve)
