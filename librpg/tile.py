@@ -1,7 +1,7 @@
 import csv
 import pygame
 
-from librpg.image import TileImage
+from librpg.image import TileImage, SlicedImage
 from librpg.config import graphics_config
 
 
@@ -86,10 +86,9 @@ class Tileset(object):
         self.size = tile_width * tile_height
 
         self.tiles = []
+        sliced_image = SlicedImage(self.image, tsize, tsize)
         for i in xrange(self.size):
-            x, y = i % tile_width, i / tile_width
-            ssur = self.image.subsurface((x * tsize, y * tsize), (tsize,
-                                                                  tsize))
+            ssur = sliced_image.get_slice(i)
             self.tiles.append(Tile(TileImage(ssur)))
 
     def load_boundaries_file(self):

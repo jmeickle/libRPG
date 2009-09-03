@@ -107,32 +107,22 @@ class ObjectImage(Image):
 
         # Load file
         file_surface = pygame.image.load(filename)
-
-        object_chunk_width = self.frame_number * graphics_config.object_width
-        object_chunk_height = 4 * graphics_config.object_height
-        chunks_per_line = file_surface.get_width() / object_chunk_width
-
-        x = index % chunks_per_line
-        y = index / chunks_per_line
-
-        #FIXME: this is unreadable!
-        Image.__init__(self, file_surface.subsurface((x * object_chunk_width,
-                                                      y * object_chunk_height),
-                                                     (object_chunk_width,
-                                                      object_chunk_height)))
+        chunk_width = self.frame_number * graphics_config.object_width
+        chunk_height = 4 * graphics_config.object_height
+        sliced_file = SlicedImage(file_surface, chunk_width, chunk_height)
+        Image.__init__(self, sliced_file.get_slice(index))
 
         # Create a sprite matrix [facing x frame]
+        sliced_image = SlicedImage(self.surface,
+                                   graphics_config.object_width,
+                                   graphics_config.object_height)
         self.frames = []
         for facing in [UP, RIGHT, DOWN, LEFT]:
             y = ObjectImage.DIRECTION_TO_INDEX_MAP[facing]
             phases = []
             self.frames.append(phases)
             for x in range(self.frame_number):
-                width = x * graphics_config.object_width
-                height = y * graphics_config.object_height
-                rect = pygame.Rect((width, height),
-                                   graphics_config.object_dimensions)
-                phases.append(self.surface.subsurface(rect))
+                phases.append(sliced_image.get_slice_xy(x, y))
 
         self.width = graphics_config.object_width
         self.height = graphics_config.object_height
@@ -167,7 +157,81 @@ class ObjectImage(Image):
 
     def next_animation(self, obj):
         if obj.movement_phase > self.last_observed_movement_phase:
-            self.current_animation = (self.current_animation + 1) %\
-                    len(self.basic_animation)
+            self.current_animation = (self.current_animation + 1) \
+                                     % len(self.basic_animation)
         self.last_observed_movement_phase = obj.movement_phase
 
+
+class SlicedImage(Image):
+
+    """
+    An image that can be sliced in pieces of the same size.
+    
+    Useful for easily loading images that are all bundled in a single
+    file, such as tilesets and object images.
+    """
+    
+    def __init__(self, surface, slice_width, slice_height):
+        """
+        *Constructor.*
+        
+        *surface* should be the Pygame surface with the pre-loaded
+        image. *slice_width* and *slice_height* specify the size of
+        each part of the image in pixels.
+        
+        :attr:`slice_width`
+            Width of each slice in pixels.
+
+        :attr:`slice_height`
+            Height of each slice in pixels.
+
+        :attr:`width_in_slices`
+            Width of the surface, in slices.
+
+        :attr:`slice_height`
+            Height of the surface, in slices.
+
+        :attr:`amount_of_slices`
+            Total number of slices in which the image was divided.
+        """
+        assert slice_width <= surface.get_width() \
+               and slice_height <= surface.get_height(), \
+               'The slice should not be bigger than whole the image.'
+        Image.__init__(self, surface)
+        self.slice_width = slice_width
+        self.slice_height = slice_height
+        self.width_in_slices = self.width / self.slice_width
+        self.height_in_slices = self.height / self.slice_height
+        self.amount_of_slices = self.width_in_slices * self.height_in_slices
+
+    def get_slice(self, index):
+        """
+        Return a subsurface indexed by *index*, given in slices.
+        
+        *index* starts at 0 (the topmost and leftmost slice), and
+        grows to the left, then when the line ends, down. For example:
+        0  1  2  3
+        4  5  6  7
+        8  9 10 11
+        """
+        assert index >= 0 and index < self.amount_of_slices, \
+               'index=%d has to be in [0, slices=%d)' \
+               % (index, self.amount_of_slices)
+        x = index % self.width_in_slices
+        y = index / self.width_in_slices
+        return self.get_slice_xy(x, y)
+
+    def get_slice_xy(self, x, y):
+        """
+        Return a subsurface located at (x, y), given in slices.
+        """
+        assert 0 <= x and x < self.width_in_slices, \
+               'x=%d has to be in [0, width_in_slices=%d)' \
+               % (x, self.width_in_slices)
+        assert 0 <= y and y < self.height_in_slices, \
+               'y=%d has to be in [0, height_in_slices=%d)' \
+               % (y, self.height_in_slices)
+        r = pygame.Rect((x * self.slice_width, y * self.slice_height),
+                        (self.slice_width, self.slice_height))
+        result = self.surface.subsurface(r)
+        return result
