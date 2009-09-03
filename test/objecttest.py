@@ -22,14 +22,12 @@ from librpg.locals import *
 class ObjectTestNPC(MapObject):
 
     def __init__(self):
-    
         MapObject.__init__(self, MapObject.OBSTACLE, image_file='actor1.png',
                            image_index=7)
         self.movement_behavior.movements.extend([Wait(30), ForcedStep(UP),
                                                  Wait(30), ForcedStep(DOWN)])
         
     def activate(self, party_avatar, direction):
-    
         print 'Activated NPC'
         for i in xrange(2):
             party_avatar.schedule_movement(Step(inverse(direction), back=True))
@@ -43,19 +41,18 @@ class ObjectTestNPC(MapObject):
 class ObjectTestRock(ScenarioMapObject):
 
     def __init__(self, map):
-    
         ScenarioMapObject.__init__(self, map, 0, 3)
         
     def activate(self, party_avatar, direction):
-    
         print 'Activated rock'
         for i in xrange(3):
             self.schedule_movement(Step(direction))
         self.schedule_movement(Face(inverse(direction)))
         
     def collide_with_party(self, party_avatar, direction):
-        print 'Collided rock'
-        self.schedule_movement(Slide(direction))
+        if not self.scheduled_movement:
+            print 'Collided rock'
+            self.schedule_movement(Slide(direction))
 
 
 class ObjectTestChest(MapObject):
@@ -92,15 +89,12 @@ class ObjectTestChest(MapObject):
 class ObjectTestTowerUpper(ScenarioMapObject):
 
     def __init__(self, map):
-
         ScenarioMapObject.__init__(self, map, 0, 4)
         
     def activate(self, party_avatar, direction):
-        
         print 'Activated upper tower object'
         
     def collide_with_party(self, party_avatar, direction):
-    
         print 'Collided upper tower object'
 
 

@@ -18,13 +18,11 @@ from librpg.locals import *
 class ObjectTestNPC(MapObject):
 
     def __init__(self, index):
-    
         MapObject.__init__(self, MapObject.OBSTACLE, image_file='chara1.png', image_index=index)
         for dir in [LEFT, DOWN, RIGHT, UP]:
             self.movement_behavior.movements.extend([Wait(30), ForcedStep(dir)])
 
     def activate(self, party_avatar, direction):
-    
         print 'GLOMPed NPC'
         self.map.schedule_message(MessageDialog('GLOMP'))
         self.map.remove_object(self)
@@ -32,20 +30,20 @@ class ObjectTestNPC(MapObject):
 class ObjectTestRock(ScenarioMapObject):
 
     def __init__(self, map):
-    
         ScenarioMapObject.__init__(self, map, 0, 57)
         
     def collide_with_party(self, party_avatar, direction):
-    
-        print 'Pushed rock'
-        self.schedule_movement(Slide(direction))
+        if not self.scheduled_movement:
+            print 'Pushed rock'
+            self.schedule_movement(Slide(direction))
         
     def activate(self, party_avatar, direction):
-
-        print 'Grabbed and pulled rock'
-        party_avatar.schedule_movement(Slide(inverse(direction)))
-        party_avatar.schedule_movement(Face(direction))
-        self.schedule_movement(ForcedStep(inverse(direction)))
+        if not self.scheduled_movement:
+            print 'Grabbed and pulled rock'
+            pulling_direction = inverse(direction)
+            party_avatar.schedule_movement(Slide(pulling_direction, back=True),
+                                           override=True)
+            self.schedule_movement(Slide(pulling_direction), override=True)
 
 
 class CounterContext(Context):
@@ -76,13 +74,11 @@ class CounterContext(Context):
 class ObjectTestMap(MapModel):
     
     def __init__(self):
-    
         MapModel.__init__(self, 'objecttest16.map',
                           ('lower_tileset.png', 'lower_tileset.bnd'),
                           [('upper_tileset.png', 'upper_tileset.bnd'),])
         
     def initialize(self, local_state, global_state):
-    
         # Add yummy NPCs
         index = 0
         for i in range(6, 2, -1):
