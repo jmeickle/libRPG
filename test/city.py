@@ -10,12 +10,12 @@ camera = camera_mode=librpg.camera.PartyConfinementCameraMode(50, 40)
 librpg.config.graphics_config.config(camera_mode=camera,
                                      screen_width=500,
                                      screen_height=400)
-librpg.config.map_config.config(key_up=set([K_w]),
-                                key_left=set([K_a]),
-                                key_down=set([K_s]),
-                                key_right=set([K_d]),
-                                key_action=set([K_e]),
-                                key_cancel=set([K_q]))
+librpg.config.game_config.config(key_up=set([K_w]),
+                                 key_left=set([K_a]),
+                                 key_down=set([K_s]),
+                                 key_right=set([K_d]),
+                                 key_action=set([K_e]),
+                                 key_cancel=set([K_q]))
 
 m = librpg.map.MapModel('city.map',
                         ('city32.png', 'city32.bnd'),

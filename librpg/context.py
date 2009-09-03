@@ -11,6 +11,7 @@ context.get_context_stack().
 import pygame
 
 from librpg.locals import *
+from librpg.config import game_config
 from librpg.virtualscreen import get_screen
 
 class ContextStack(object):
@@ -89,8 +90,8 @@ class ContextStack(object):
         calls ContextStack.stop() or they are all removed from the
         ContextStack.
         
-        The ContextStack will cap the cycles/second at FPS. In each cycle,
-        the following will happen:
+        The ContextStack will cap the cycles/second at game_config.fps.
+        In each cycle, the following will happen:
         
         1) For each active context in the map, bottom-up:
             a) The step() method of that Context will be called
@@ -110,7 +111,7 @@ class ContextStack(object):
         self.keep_going = True
         self.clock = pygame.time.Clock()
         while self.stack and self.keep_going:
-            self.clock.tick(FPS)
+            self.clock.tick(game_config.fps)
             for context in self.stack:
                 if context.active:
                     context.step()

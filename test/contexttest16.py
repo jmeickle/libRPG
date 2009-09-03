@@ -10,7 +10,7 @@ from librpg.util import Position, inverse
 from librpg.party import Character, CharacterReserve
 from librpg.movement import Slide, Wait, ForcedStep, Face
 from librpg.dialog import MessageDialog
-from librpg.config import dialog_config
+from librpg.config import dialog_config, game_config
 from librpg.context import Context, get_context_stack
 from librpg.virtualscreen import get_screen
 from librpg.locals import *
@@ -96,6 +96,7 @@ class ObjectTestMap(MapModel):
 def char_factory(name):
     return librpg.party.Character('Andy', 'chara1.png', 3)
 
+game_config.config(fps=40)
 world = librpg.world.MicroWorld(ObjectTestMap(), char_factory)
 world.initial_state(Position(8, 8), ['Andy'])
 world.gameloop()

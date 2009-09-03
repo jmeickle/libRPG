@@ -12,8 +12,8 @@ The global configuration objects are:
     **dialog_config**
         DialogConfig object
 
-    **map_config**
-        MapConfig object
+    **game_config**
+        GameConfig object
 
 """
 
@@ -237,11 +237,14 @@ class DialogConfig(Config):
     not_selected_font_color = (128, 128, 128)
 
 
-class MapConfig(Config):
+class GameConfig(Config):
 
     """
-    The MapConfig contains attributes related to map navigation and
-    execution.
+    The GameConfig contains attributes related to map and menu
+    navigation and execution.
+
+    :attr:`fps`
+        How many frames per second the map will run (at most).
 
     :attr:`key_up`
         Set of keys that move the party up.
@@ -262,6 +265,7 @@ class MapConfig(Config):
         Set of keys that quit the game, cancel actions, go back.
     """
     
+    fps = 30
     key_up = set([K_UP])
     key_down = set([K_DOWN])
     key_left = set([K_LEFT])
@@ -272,7 +276,7 @@ class MapConfig(Config):
 
 graphics_config = GraphicsConfig()
 dialog_config = DialogConfig()
-map_config = MapConfig()
+game_config = GameConfig()
 
 from librpg.camera import PartyCentricCameraMode as DEFAULT_CAMERA_MODE
 graphics_config.camera_mode = DEFAULT_CAMERA_MODE()

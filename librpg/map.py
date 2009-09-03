@@ -86,11 +86,11 @@ class MapController(Context):
                not direction in self.map_model.party_movement:
                 self.party_movement_append(direction)
                 return True
-            elif event.key in map_config.key_action:
+            elif event.key in game_config.key_action:
                 if not ACTIVATE in self.party_movement:
                     self.party_movement.insert(0, ACTIVATE)
                 return True
-            elif event.key in map_config.key_cancel:
+            elif event.key in game_config.key_cancel:
                 get_context_stack().stop()
                 return True
         elif event.type == KEYUP:
@@ -99,20 +99,20 @@ class MapController(Context):
                direction in self.map_model.party_movement:
                 self.party_movement_remove(direction)
                 return True
-            elif event.key in map_config.key_action \
+            elif event.key in game_config.key_action \
                  and ACTIVATE in self.party_movement:
                 self.party_movement_remove(ACTIVATE)
                 return True
         return False
 
     def check_direction(self, key):
-        if key in map_config.key_up:
+        if key in game_config.key_up:
             return UP
-        elif key in map_config.key_down:
+        elif key in game_config.key_down:
             return DOWN
-        elif key in map_config.key_left:
+        elif key in game_config.key_left:
             return LEFT
-        elif key in map_config.key_right:
+        elif key in game_config.key_right:
             return RIGHT
         else:
             return None

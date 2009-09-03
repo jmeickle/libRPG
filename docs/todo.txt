@@ -83,8 +83,7 @@ ok      0.4 Homogenize persistency interface
 ok      0.4 Configurable keys for MapModel
 ok      0.4 Clean constant defines in config and replace for class attributes
 ok      0.4 Fix multiple rock push bug in contexttest16.py
-        0.4 Allow FPS configuration
-        0.4 Add a gameover() method
+ok      0.4 Allow FPS configuration
         0.4 Generalize image slicing
         0.4 Move build_lines to util module, so it can be used for menus later
         0.4 Separate line spacing for choice dialogs
@@ -97,6 +96,7 @@ ok      0.4 Fix multiple rock push bug in contexttest16.py
         0.4 Add license headers to files
         0.4 Allow objects to be updated, so that they can be "alarms"
         0.4 Split util module
+        0.4 Add a gameover() method
         0.5 Open a "library" module with stuff like TeleportArea
         0.5 Design Menu API
         0.5 Define generic menu skin system

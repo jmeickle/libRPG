@@ -9,7 +9,7 @@ import pygame
 from librpg.locals import *
 from librpg.config import dialog_config as cfg
 from librpg.config import graphics_config as g_cfg
-from librpg.config import map_config as m_cfg
+from librpg.config import game_config as m_cfg
 from librpg.virtualscreen import get_screen
 from librpg.context import Context
 

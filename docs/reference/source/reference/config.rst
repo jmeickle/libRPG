@@ -50,7 +50,9 @@ The default values are:
     
     :attr:`not_selected_font_color` - (128, 128, 128)
     
-**map_config**
+**game_config**
+
+    :attr:`fps` - 30
 
     :attr:`key_up` - set([K_UP])
     
@@ -88,6 +90,16 @@ Examples
     librpg.config.graphics_config.config(tile_size=32,
                                          object_height=32,
                                          object_width=32)
+
+::
+
+librpg.config.game_config.config(fps=24,
+                                 key_up=set([K_w]),
+                                 key_left=set([K_a]),
+                                 key_down=set([K_s]),
+                                 key_right=set([K_d]),
+                                 key_action=set([K_e]),
+                                 key_cancel=set([K_q]))
 
 ::
 
