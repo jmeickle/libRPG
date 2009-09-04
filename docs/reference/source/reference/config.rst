@@ -42,6 +42,8 @@ The default values are:
     
     :attr:`line_spacing` - 2
     
+    :attr:`choice_line_spacing` - 2
+    
     :attr:`bg_color` - (128, 0, 128, 128)
     
     :attr:`font_color` - (255, 255, 255)

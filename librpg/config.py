@@ -212,6 +212,9 @@ class DialogConfig(Config):
     :attr:`line_spacing`
         Space in pixels between text lines.
     
+    :attr:`choice_line_spacing`
+        Space in pixels between choice text lines.
+    
     :attr:`bg_color`
         Tuple with the dialog's background colors.    
     
@@ -231,6 +234,7 @@ class DialogConfig(Config):
     font_size = 12
     border_width = 15
     line_spacing = 2
+    choice_line_spacing = 2
     bg_color = (128, 0, 128, 128)
     font_color = (255, 255, 255)
     selected_font_color = (255, 0, 0)

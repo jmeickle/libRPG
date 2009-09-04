@@ -167,7 +167,7 @@ class ChoiceDialog(MessageDialog):
 
         for choice in self.choices:
             width, height = font.size(choice)
-            last_y_offset += height + cfg.line_spacing
+            last_y_offset += height + cfg.choice_line_spacing
             self.choice_lines.append([(cfg.border_width, last_y_offset),
                                       choice])
 

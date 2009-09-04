@@ -75,11 +75,11 @@ class Tileset(object):
         width, height = self.image.get_width(), self.image.get_height()
         tsize = graphics_config.tile_size
         assert width % tsize == 0,\
-                'Tileset file width is not a multiple of %s: %s' % (
-                    graphics_config.tile_size, self.image_file)
-        assert height % tsize== 0,\
-                'Tileset file height is not a multiple of %s: %s' % (
-                    graphics_config.tile_size, self.image_file)
+               'Tileset file width is not a multiple of %d: %s' \
+               % (graphics_config.tile_size, self.image_file)
+        assert height % tsize == 0,\
+               'Tileset file height is not a multiple of %d: %s' \
+               % (graphics_config.tile_size, self.image_file)
 
         tile_width = width / tsize
         tile_height = height / tsize
