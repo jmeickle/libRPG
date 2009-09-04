@@ -86,19 +86,22 @@ ok      0.4 Fix multiple rock push bug in contexttest16.py
 ok      0.4 Allow FPS configuration
 ok      0.4 Generalize image slicing
 ok      0.4 Separate line spacing for choice dialogs
-        0.4 Improve message dialogs - split texts too big into more than 1 dialog
-        0.4 Change ChoiceDialog to call a callback (either passed in constructor or overridden in a derived class) upon completion
+        0.4 Improve message dialogs - split texts too big into more than 1 dialog. Accept more than one "screen" per Dialog. Use a virtual process_event per dialog.
         0.4 Change boundaries file schema (type, id, *type_dependent_fields) type contains [normal, animated, smart]
         0.4 Animated tiles (period | 12 allows (1, 2, 3, 4, 6, 12), one surface per phase)
         0.4 Support background music for maps
         0.4 Put sound effects in standard resources and use them in tests. Evaluate the need for sfx wrappers.
         0.4 Add license headers to files
         0.4 Allow objects to be updated, so that they can be "alarms"
-        0.4 Split util module
         0.4 Add a gameover() method
-        0.5 Open a "library" module with stuff like TeleportArea
+        0.5 Open a "library" module with stuff like TeleportArea, Rock, Chest, ChatDialog, InventoryMenu, SaveMenu, PartyMenu
         0.5 Design Menu API
         0.5 Define generic menu skin system
+        0.5 Design widgets
+        0.5 Code Text widget
+        0.5 Code Image widget
+        0.5 Code Cursor
+        0.5 Change ChoiceDialog to call a callback (either passed in constructor or overridden in a derived class) upon completion
         0.5 Decide if UsableItems should be kept
         0.5 Define item image system and API for menu
         0.6 Add gameloop hooks
@@ -111,6 +114,7 @@ ok      0.4 Separate line spacing for choice dialogs
         ?   Group files into submodules?
         ?   Charset generating tool (clothes/hair/accessories layers, written in librpg itself)
         ?   Bank module (stores money and items)
+        ?   Split util module
         1.0 Write file types reference
         1.0 Basic tutorial
         
