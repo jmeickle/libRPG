@@ -59,7 +59,8 @@ class CameraMode(object):
         (x, y) tuple representing where the top left of the camera should
         aim for in the background.
         """
-        raise NotImplementedError, 'CameraMode.calc_bg_slice_topleft() is abstract'
+        raise NotImplementedError, \
+              'CameraMode.calc_bg_slice_topleft() is abstract'
 
 
 class PartyConfinementCameraMode(CameraMode):

@@ -13,7 +13,39 @@ from librpg.config import game_config as m_cfg
 from librpg.virtualscreen import get_screen
 from librpg.context import Context
 
-class MessageDialog(object):
+
+def build_lines(text, box_width, box_height, font, spacing, border_width,
+                last_y_offset=0):
+    lines = []
+    words = text.split()
+    cur_line = words[0]
+    last_y = last_y_offset
+    next_line_last_loop = True
+
+    for word in words[1:]:
+        projected_line = cur_line + ' ' + word
+        width, height = font.size(projected_line)
+        if width > box_width - 2 * cfg.border_width:
+            lines.append([last_y, cur_line])
+            last_y += height + spacing
+            cur_line = word
+            next_line_last_loop = True
+        else:
+            cur_line += ' ' + word
+            next_line_last_loop = False
+    lines.append([last_y, cur_line])
+    if not next_line_last_loop:
+        last_y += height + spacing
+    return lines, last_y
+
+
+class Dialog(object):
+
+    def process_event(self, event):
+        raise NotImplementedError, 'Dialog.process_event() is abstract'
+
+
+class MessageDialog(Dialog):
 
     """
     A MessageDialog is a simple message to be displayed on the screen.
@@ -44,7 +76,13 @@ class MessageDialog(object):
             pygame.draw.rect(self.surface, cfg.bg_color, dim)
 
             # Split into lines
-            self.build_lines(font, g_cfg.screen_width)
+            box_width = g_cfg.screen_width - 2 * cfg.border_width
+            self.lines, _ = build_lines(self.text,
+                                        box_width,
+                                        0,
+                                        font,
+                                        cfg.line_spacing,
+                                        cfg.border_width)
 
             # Draw message
             for line in self.lines:
@@ -56,23 +94,6 @@ class MessageDialog(object):
                                          g_cfg.screen_width,
                                          g_cfg.screen_height / 2)
 
-    def build_lines(self, font, box_width):
-        self.lines = []
-        last_y_offset = 0
-        words = self.text.split()
-        cur_line = words[0]
-
-        for word in words[1:]:
-            projected_line = cur_line + ' ' + word
-            width, height = font.size(projected_line)
-            if width > box_width - 4 * cfg.border_width:
-                self.lines.append([last_y_offset, cur_line])
-                last_y_offset += height + cfg.line_spacing
-                cur_line = word
-            else:
-                cur_line += ' ' + word
-        self.lines.append([last_y_offset, cur_line])
-
     def process_event(self, event):
         if event.key in m_cfg.key_action:
             return False
@@ -80,7 +101,7 @@ class MessageDialog(object):
             return True
 
 
-class ChoiceDialog(MessageDialog):
+class ChoiceDialog(Dialog):
 
     """
     A ChoiceDialog is a message that comes along a list of options from
@@ -122,14 +143,13 @@ class ChoiceDialog(MessageDialog):
             pygame.draw.rect(self.surface, cfg.bg_color, dim)
 
             # Split into lines
-            self.build_lines(font, g_cfg.screen_width)
+            self.__build_lines(font)
 
             # Draw message
             for line in self.lines:
                 self.surface.blit(font.render(line[1], True, cfg.font_color),
-                                  (2 * cfg.border_width+line[0][0],
-                                   2 * cfg.border_width +
-                                   line[0][1]))
+                                  (2 * cfg.border_width,
+                                   2 * cfg.border_width + line[0]))
                                    
             for n, line in enumerate(self.choice_lines):
                 if n == self.selected:
@@ -138,38 +158,34 @@ class ChoiceDialog(MessageDialog):
                     color = cfg.not_selected_font_color
                     
                 self.surface.blit(font.render(line[1], True, color),
-                                  (2 * cfg.border_width+line[0][0],
-                                   2 * cfg.border_width +
-                                   line[0][1]))
+                                  (3 * cfg.border_width,
+                                   2 * cfg.border_width + line[0]))
 
 
         return self.surface, pygame.Rect(0, g_cfg.screen_height / 2,
                                          g_cfg.screen_width,
                                          g_cfg.screen_height / 2)
 
-    def build_lines(self, font, box_width):
-        self.lines = []
+    def __build_lines(self, font):
+        box_width = g_cfg.screen_width - 2 * cfg.border_width
+        self.lines, y_offset = build_lines(self.text,
+                                           box_width,
+                                           0,
+                                           font,
+                                           cfg.line_spacing,
+                                           cfg.border_width)
+
+        box_width = g_cfg.screen_width - 3 * cfg.border_width
         self.choice_lines = []
-        last_y_offset = 0
-        words = self.text.split()
-        cur_line = words[0]
-
-        for word in words[1:]:
-            projected_line = cur_line + ' ' + word
-            width, height = font.size(projected_line)
-            if width > box_width - 4 * cfg.border_width:
-                self.lines.append([last_y_offset, cur_line])
-                last_y_offset += height + cfg.line_spacing
-                cur_line = word
-            else:
-                cur_line += ' ' + word
-        self.lines.append([(0, last_y_offset), cur_line])
-
         for choice in self.choices:
-            width, height = font.size(choice)
-            last_y_offset += height + cfg.choice_line_spacing
-            self.choice_lines.append([(cfg.border_width, last_y_offset),
-                                      choice])
+            choice_line, y_offset = build_lines(choice,
+                                                box_width,
+                                                0,
+                                                font,
+                                                cfg.choice_line_spacing,
+                                                cfg.border_width,
+                                                y_offset)
+            self.choice_lines.extend(choice_line)
 
     def process_event(self, event):
         if event.key in m_cfg.key_action:
