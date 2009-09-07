@@ -87,7 +87,7 @@ ok      0.4 Allow FPS configuration
 ok      0.4 Generalize image slicing
 ok      0.4 Separate line spacing for choice dialogs
 ok      0.4 Improve message dialogs - split texts too big into more than 1 dialog. Accept more than one "screen" per Dialog. Use a virtual process_event per dialog.
-        0.4 Implement ElasticMessageDialog
+ok      0.4 Implement ElasticMessageDialog
         0.4 Change boundaries file schema (type, id, *type_dependent_fields) type contains [normal, animated, smart]
         0.4 Animated tiles (period | 12 allows (1, 2, 3, 4, 6, 12), one surface per phase)
         0.4 Support background music for maps

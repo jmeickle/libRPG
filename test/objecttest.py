@@ -16,7 +16,8 @@ from librpg.world import MicroWorld
 from librpg.util import Position, inverse
 from librpg.party import Character, CharacterReserve
 from librpg.movement import Step, ForcedStep, Face, Wait, Slide
-from librpg.dialog import MessageDialog, ChoiceDialog, MultiMessageDialog
+from librpg.dialog import (MessageDialog, ChoiceDialog, MultiMessageDialog,
+                           ElasticMessageDialog)
 from librpg.locals import *
 
 class ObjectTestNPC(MapObject):
@@ -129,7 +130,8 @@ class ObjectTestTowerLower(ScenarioMapObject):
         
     def activate(self, party_avatar, direction):
         print 'Activated lower tower object'
-        self.map.schedule_message(MessageDialog(choice(ObjectTestTowerLower.RANDOM_TEXTS)))
+        text = choice(ObjectTestTowerLower.RANDOM_TEXTS)
+        self.map.schedule_message(ElasticMessageDialog(text))
         
     def collide_with_party(self, party_avatar, direction):
         print 'Collided lower tower object'

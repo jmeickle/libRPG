@@ -113,10 +113,58 @@ class MessageDialog(Dialog):
             return True
 
 
+class ElasticMessageDialog(MessageDialog):
+
+    """
+    Same as a MessageDialog but resizes the box as needed for the text to
+    fit in.
+    """
+    def draw(self):
+        if not self.surface:
+            font = pygame.font.SysFont(cfg.font_name, cfg.font_size)
+
+            # Split into lines
+            box_width = g_cfg.screen_width - 4 * cfg.border_width
+            lines = build_lines(self.text,
+                                box_width,
+                                font)
+
+            # Calculate box size
+            self.box_height = (sum([line[0] for line in lines])
+                          + (len(lines) - 1) * cfg.line_spacing
+                          + 4 * cfg.border_width)
+            assert self.box_height < g_cfg.screen_height,\
+                   'Too much text for one box.'
+
+            # Create empty surface
+            self.surface = pygame.Surface((g_cfg.screen_width,
+                                           self.box_height), SRCALPHA,
+                                           32)
+
+            # Draw dialog background
+            dim = pygame.Rect((cfg.border_width, cfg.border_width),
+                              (g_cfg.screen_width - 2 * cfg.border_width,
+                               self.box_height - 2 * cfg.border_width))
+            pygame.draw.rect(self.surface, cfg.bg_color, dim)
+
+            # Draw message
+            y_acc = 0
+            for line in lines:
+                self.surface.blit(font.render(line[1], True, cfg.font_color),
+                                  (2 * cfg.border_width, 2 * cfg.border_width +
+                                   y_acc))
+                y_acc += line[0] + cfg.line_spacing
+
+        return self.surface, pygame.Rect(0,
+                                         g_cfg.screen_height - self.box_height,
+                                         g_cfg.screen_width,
+                                         self.box_height)
+
+
 class MultiMessageDialog(MessageDialog):
     
     """
-    Same as a MessageDialog that splits messages bigger than the default
+    Same as a MessageDialog but splits messages bigger than the default
     box size into multiple dialogs.
     """
     
