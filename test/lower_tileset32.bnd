@@ -5,3 +5,13 @@ normal,2,0,0,0,0,0
 normal,3,0,0,0,0,0
 normal,4,1,1,1,1,1
 normal,5,1,1,1,1,1
+
+normal,6,0,0,0,0,0
+normal,7,1,1,1,1,1
+normal,8,1,1,1,1,1
+
+normal,9,0,0,0,0,0
+normal,10,1,1,1,1,1
+
+animated,0,8,7,6
+animated,10,9,3
