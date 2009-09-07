@@ -14,32 +14,45 @@ from librpg.virtualscreen import get_screen
 from librpg.context import Context
 
 
-def build_lines(text, box_width, box_height, font, spacing, border_width,
-                last_y_offset=0):
+def build_lines(text, box_width, font):
     lines = []
     words = text.split()
     cur_line = words[0]
-    last_y = last_y_offset
-    next_line_last_loop = True
+    _, height = font.size(cur_line)
 
     for word in words[1:]:
         projected_line = cur_line + ' ' + word
         width, height = font.size(projected_line)
-        if width > box_width - 2 * cfg.border_width:
-            lines.append([last_y, cur_line])
-            last_y += height + spacing
+        if width > box_width:
+            lines.append([height, cur_line])
             cur_line = word
-            next_line_last_loop = True
         else:
             cur_line += ' ' + word
-            next_line_last_loop = False
-    lines.append([last_y, cur_line])
-    if not next_line_last_loop:
-        last_y += height + spacing
-    return lines, last_y
+    lines.append([height, cur_line])
+    return lines
 
+def split_boxes(lines, box_height, line_spacing):
+    boxes = []
+    box_cur_height = lines[0][0]
+    box = [lines[0]]
+
+    for line in lines[1:]:
+        if box_cur_height + line[0] + line_spacing > box_height:
+            boxes.append(box)
+            box_cur_height = line[0]
+            box = [line]
+        else:
+            box.append(line)
+            box_cur_height += line[0] + line_spacing
+    if box:
+        boxes.append(box)
+
+    return boxes
 
 class Dialog(object):
+
+    def __init__(self, block_movement=True):
+        self.block_movement = block_movement
 
     def process_event(self, event):
         raise NotImplementedError, 'Dialog.process_event() is abstract'
@@ -56,9 +69,9 @@ class MessageDialog(Dialog):
     """
 
     def __init__(self, text, block_movement=True):
+        Dialog.__init__(self, block_movement)
         self.text = text
         self.surface = None
-        self.block_movement = block_movement
 
     def draw(self):
         if not self.surface:
@@ -76,19 +89,18 @@ class MessageDialog(Dialog):
             pygame.draw.rect(self.surface, cfg.bg_color, dim)
 
             # Split into lines
-            box_width = g_cfg.screen_width - 2 * cfg.border_width
-            self.lines, _ = build_lines(self.text,
-                                        box_width,
-                                        0,
-                                        font,
-                                        cfg.line_spacing,
-                                        cfg.border_width)
+            box_width = g_cfg.screen_width - 4 * cfg.border_width
+            lines = build_lines(self.text,
+                                box_width,
+                                font)
 
             # Draw message
-            for line in self.lines:
+            y_acc = 0
+            for line in lines:
                 self.surface.blit(font.render(line[1], True, cfg.font_color),
                                   (2 * cfg.border_width, 2 * cfg.border_width +
-                                   line[0]))
+                                   y_acc))
+                y_acc += line[0] + cfg.line_spacing
 
         return self.surface, pygame.Rect(0, g_cfg.screen_height / 2,
                                          g_cfg.screen_width,
@@ -100,6 +112,69 @@ class MessageDialog(Dialog):
         else:
             return True
 
+
+class MultiMessageDialog(MessageDialog):
+    
+    """
+    Same as a MessageDialog that splits messages bigger than the default
+    box size into multiple dialogs.
+    """
+    
+    def __init__(self, text, block_movement=True):
+        MessageDialog.__init__(self, text, block_movement)
+        self.surfaces = None
+
+    def draw(self):
+        if not self.surfaces:
+            self.surfaces = []
+            font = pygame.font.SysFont(cfg.font_name, cfg.font_size)
+
+            # Split into lines
+            box_width = g_cfg.screen_width - 4 * cfg.border_width
+            lines = build_lines(self.text,
+                                box_width,
+                                font)
+            
+            # Split into boxes
+            box_height = g_cfg.screen_height / 2 - 4 * cfg.border_width
+            self.boxes = split_boxes(lines, box_height, cfg.line_spacing)
+
+            for box in self.boxes:
+
+                # Create empty surface
+                surface = pygame.Surface((g_cfg.screen_width,
+                                          g_cfg.screen_height / 2), SRCALPHA,
+                                          32)
+
+                # Draw dialog background
+                dim = pygame.Rect((cfg.border_width, cfg.border_width),
+                                  (g_cfg.screen_width - 2 * cfg.border_width,
+                                   g_cfg.screen_height / 2 - 2 * cfg.border_width))
+                pygame.draw.rect(surface, cfg.bg_color, dim)
+
+                # Draw message
+                y_acc = 0
+                for line in box:
+                    surface.blit(font.render(line[1], True, cfg.font_color),
+                                             (2 * cfg.border_width,
+                                              2 * cfg.border_width + y_acc))
+                    y_acc += line[0] + cfg.line_spacing
+
+                self.surfaces.append(surface)
+
+        return self.surfaces[0], pygame.Rect(0, g_cfg.screen_height / 2,
+                                             g_cfg.screen_width,
+                                             g_cfg.screen_height / 2)
+
+    def process_event(self, event):
+        if event.key in m_cfg.key_action:
+            self.surfaces.pop(0)
+            if self.surfaces:
+                return True
+            else:
+                return False
+        else:
+            return True
 
 class ChoiceDialog(Dialog):
 
@@ -115,10 +190,10 @@ class ChoiceDialog(Dialog):
     """
     
     def __init__(self, text, choices=[], block_movement=True):
+        Dialog.__init__(self, block_movement)
         self.text = text
         self.choices = choices
         self.surface = None
-        self.block_movement = block_movement
         self.selected = 0
     
     def get(self):
@@ -146,20 +221,23 @@ class ChoiceDialog(Dialog):
             self.__build_lines(font)
 
             # Draw message
+            y_acc = 0
             for line in self.lines:
                 self.surface.blit(font.render(line[1], True, cfg.font_color),
                                   (2 * cfg.border_width,
-                                   2 * cfg.border_width + line[0]))
-                                   
+                                   2 * cfg.border_width + y_acc))
+                y_acc += line[0] + cfg.line_spacing
+
             for n, line in enumerate(self.choice_lines):
                 if n == self.selected:
                     color = cfg.selected_font_color
                 else:
                     color = cfg.not_selected_font_color
-                    
+
                 self.surface.blit(font.render(line[1], True, color),
                                   (3 * cfg.border_width,
-                                   2 * cfg.border_width + line[0]))
+                                   2 * cfg.border_width + y_acc))
+                y_acc += line[0] + cfg.choice_line_spacing
 
 
         return self.surface, pygame.Rect(0, g_cfg.screen_height / 2,
@@ -167,24 +245,17 @@ class ChoiceDialog(Dialog):
                                          g_cfg.screen_height / 2)
 
     def __build_lines(self, font):
-        box_width = g_cfg.screen_width - 2 * cfg.border_width
-        self.lines, y_offset = build_lines(self.text,
-                                           box_width,
-                                           0,
-                                           font,
-                                           cfg.line_spacing,
-                                           cfg.border_width)
+        box_width = g_cfg.screen_width - 4 * cfg.border_width
+        self.lines = build_lines(self.text,
+                                 box_width,
+                                 font)
 
-        box_width = g_cfg.screen_width - 3 * cfg.border_width
+        box_width = g_cfg.screen_width - 5 * cfg.border_width
         self.choice_lines = []
         for choice in self.choices:
-            choice_line, y_offset = build_lines(choice,
-                                                box_width,
-                                                0,
-                                                font,
-                                                cfg.choice_line_spacing,
-                                                cfg.border_width,
-                                                y_offset)
+            choice_line = build_lines(choice,
+                                      box_width,
+                                      font)
             self.choice_lines.extend(choice_line)
 
     def process_event(self, event):
