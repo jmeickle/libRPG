@@ -92,19 +92,21 @@ class Tileset(object):
             self.tiles.append(Tile(TileImage(ssur)))
 
     def load_boundaries_file(self):
-
         f = file(self.boundaries_file, "r")
         r = csv.reader(f, delimiter=',')
 
         y = 0
         for line in r:
-            if len(line) == 5:
-                tile = self.tiles[y]
-                tile.obstacle = int(line[0])
-                for x, dir in zip(range(1, 5), range(0, 4)):
-                    tile.open_directions[dir] = int(line[x])
-                y += 1
+            if line:
+                normalize_type = line[0].lower()
+                if normalize_type == 'normal':
+                    tile = self.tiles[y]
+                    tile.obstacle = int(line[1])
+                    for x, dir in zip(range(2, 6), range(0, 4)):
+                        tile.open_directions[dir] = int(line[x])
+                    y += 1
+                elif normalize_type == 'animated':
+                    pass
             if y >= self.size:
                 break
         f.close()
-
