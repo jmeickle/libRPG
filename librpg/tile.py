@@ -100,9 +100,12 @@ class Tileset(object):
             if line:
                 normalize_type = line[0].lower()
                 if normalize_type == 'normal':
+                    assert y == int(line[1]),\
+                           'Entry %d in .bnd file should have id %d'\
+                           % (int(line[1]), y)
                     tile = self.tiles[y]
-                    tile.obstacle = int(line[1])
-                    for x, dir in zip(range(2, 6), range(0, 4)):
+                    tile.obstacle = int(line[2])
+                    for x, dir in zip(range(3, 7), range(0, 4)):
                         tile.open_directions[dir] = int(line[x])
                     y += 1
                 elif normalize_type == 'animated':

@@ -1,31 +1,31 @@
-normal,0,0,0,0,0
-normal,1,1,1,1,1
-normal,0,0,0,0,0
+normal,0,0,0,0,0,0
+normal,1,1,1,1,1,1
+normal,2,0,0,0,0,0
 
-normal,1,1,1,1,1
-normal,0,0,0,0,0
-normal,0,0,0,0,0
+normal,3,1,1,1,1,1
+normal,4,0,0,0,0,0
+normal,5,0,0,0,0,0
 
-normal,1,1,1,1,1
-normal,1,1,1,1,1
-normal,0,0,0,0,0
+normal,6,1,1,1,1,1
+normal,7,1,1,1,1,1
+normal,8,0,0,0,0,0
 
-normal,1,1,1,1,1
-normal,1,1,1,1,1
-normal,0,0,0,0,0
+normal,9,1,1,1,1,1
+normal,10,1,1,1,1,1
+normal,11,0,0,0,0,0
 
-normal,0,1,0,0,1
-normal,0,1,0,0,0
-normal,0,1,1,0,0
+normal,12,0,1,0,0,1
+normal,13,0,1,0,0,0
+normal,14,0,1,1,0,0
 
-normal,0,0,0,0,1
-normal,0,0,0,0,0
-normal,0,0,1,0,0
+normal,15,0,0,0,0,1
+normal,16,0,0,0,0,0
+normal,17,0,0,1,0,0
 
-normal,0,0,0,1,1
-normal,0,0,0,1,0
-normal,0,0,1,1,0
+normal,18,0,0,0,1,1
+normal,19,0,0,0,1,0
+normal,20,0,0,1,1,0
 
-normal,1,1,1,1,1
-normal,1,1,1,1,1
-normal,1,1,1,1,1
+normal,21,1,1,1,1,1
+normal,22,1,1,1,1,1
+normal,23,1,1,1,1,1

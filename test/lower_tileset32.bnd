@@ -1,7 +1,7 @@
-normal,1,1,1,1,1
-normal,0,0,0,0,0
-normal,0,0,0,0,0
+normal,0,1,1,1,1,1
+normal,1,0,0,0,0,0
+normal,2,0,0,0,0,0
 
-normal,0,0,0,0,0
-normal,1,1,1,1,1
-normal,1,1,1,1,1
+normal,3,0,0,0,0,0
+normal,4,1,1,1,1,1
+normal,5,1,1,1,1,1
