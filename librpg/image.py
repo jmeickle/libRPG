@@ -52,7 +52,14 @@ class TileImage(Image):
     animation cycles in the future. For now it is just a static image.
     """
 
-    pass
+    def get_surface(self, animation_phase=0):
+        """
+        *Virtual.*
+        
+        Return a surface with how the tile is to be rendered at the
+        moment.
+        """
+        return self.surface
 
 
 class ObjectImage(Image):

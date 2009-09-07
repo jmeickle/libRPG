@@ -3,7 +3,7 @@ import pygame
 
 from librpg.image import TileImage, SlicedImage
 from librpg.config import graphics_config
-
+from librpg.locals import *
 
 class Tile(object):
 
@@ -40,8 +40,8 @@ class Tile(object):
     def is_above(self):
         return self.obstacle == Tile.ABOVE
 
-    def get_surface(self):
-        return self.image.get_surface()
+    def get_surface(self, animation_phase=0):
+        return self.image.get_surface(animation_phase)
 
 
 class Tileset(object):
@@ -100,16 +100,22 @@ class Tileset(object):
             if line:
                 normalize_type = line[0].lower()
                 if normalize_type == 'normal':
-                    assert y == int(line[1]),\
-                           'Entry %d in .bnd file should have id %d'\
-                           % (int(line[1]), y)
-                    tile = self.tiles[y]
-                    tile.obstacle = int(line[2])
-                    for x, dir in zip(range(3, 7), range(0, 4)):
-                        tile.open_directions[dir] = int(line[x])
+                    self.process_normal_bnd_line(y, line)
                     y += 1
                 elif normalize_type == 'animated':
-                    pass
+                    self.process_animated_bnd_line(line)
             if y >= self.size:
                 break
         f.close()
+
+    def process_normal_bnd_line(self, y, line):
+        assert y == int(line[1]),\
+               'Entry %d in .bnd file should have id %d' % (int(line[1]), y)
+        tile = self.tiles[y]
+        tile.obstacle = int(line[2])
+        for x, dir in zip(range(3, 7), range(0, 4)):
+            tile.open_directions[dir] = int(line[x])
+
+    def process_animated_bnd_line(self, line):
+        assert ANIMATION_PERIOD % len(line[1:]) == 0,\
+               'The number of animated tiles must divide %d' % ANIMATION_PERIOD

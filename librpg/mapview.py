@@ -28,42 +28,50 @@ class MapView(object):
     def __init__(self, map_model):
         self.map_model = map_model
 
-        self.init_background()
+        self.init_backgrounds()
         self.init_foreground()
         self.camera_mode = graphics_config.camera_mode
         self.camera_mode.attach_to_map(self.map_model)
 
-    def init_background(self):
+        self.phase = 0
+
+    def init_backgrounds(self):
+        self.backgrounds = []
+        for i in range(ANIMATION_PERIOD):
+            self.backgrounds.append(self.init_background(i))
+
+    def init_background(self, i):
         background_width = (graphics_config.tile_size * self.map_model.width +
                             graphics_config.screen_width)
         background_height = (graphics_config.tile_size * self.map_model.height +
                              graphics_config.screen_height)
-        self.background = pygame.Surface((background_width, background_height))
+        background = pygame.Surface((background_width, background_height))
 
         BLACK = (0, 0, 0)
-        self.background.fill(BLACK)
+        background.fill(BLACK)
 
         for y in xrange(self.map_model.height):
             for x in xrange(self.map_model.width):
-                bg_x = (graphics_config.map_border_width + x *
-                        graphics_config.tile_size)
-                bg_y = (graphics_config.map_border_height + y *
-                        graphics_config.tile_size)
+                bg_x = (graphics_config.map_border_width
+                        + x * graphics_config.tile_size)
+                bg_y = (graphics_config.map_border_height
+                        + y * graphics_config.tile_size)
                 terrain_tile_surface = self.map_model.terrain_layer.get(x, y).\
-                        get_surface()
-                self.background.blit(terrain_tile_surface, (bg_x, bg_y))
+                                       get_surface(i)
+                background.blit(terrain_tile_surface, (bg_x, bg_y))
 
                 for i in range(self.map_model.scenario_number):
                     scenario_tile = self.map_model.scenario_layer[i].get(x, y)
                     if scenario_tile.obstacle != Tile.ABOVE:
                         scenario_tile_surface = scenario_tile.get_surface()
-                        self.background.blit(scenario_tile_surface, (bg_x, bg_y))
+                        background.blit(scenario_tile_surface, (bg_x, bg_y))
+        return background
 
     def init_foreground(self):
-        foreground_width = (graphics_config.tile_size * self.map_model.width +
-                            graphics_config.screen_width)
-        foreground_height = (graphics_config.tile_size * self.map_model.height +
-                             graphics_config.screen_height)
+        foreground_width = (graphics_config.tile_size * self.map_model.width
+                            + graphics_config.screen_width)
+        foreground_height = (graphics_config.tile_size * self.map_model.height
+                             + graphics_config.screen_height)
         self.foreground = pygame.Surface((foreground_width, foreground_height),
                                          SRCALPHA, 32)
 
@@ -72,10 +80,10 @@ class MapView(object):
                 for i in range(self.map_model.scenario_number):
                     scenario_tile = self.map_model.scenario_layer[i].get(x, y)
                     if scenario_tile.obstacle == Tile.ABOVE:
-                        fg_x = (graphics_config.map_border_width + x *
-                                graphics_config.tile_size)
-                        fg_y = (graphics_config.map_border_height + y *
-                                graphics_config.tile_size)
+                        fg_x = (graphics_config.map_border_width
+                                + x * graphics_config.tile_size)
+                        fg_y = (graphics_config.map_border_height
+                                + y * graphics_config.tile_size)
                         scenario_tile_surface = scenario_tile.get_surface()
                         self.foreground.blit(scenario_tile_surface, (fg_x, fg_y))
 
@@ -94,7 +102,7 @@ class MapView(object):
                                                             party_x_offset,
                                                             party_y_offset)
         bg_rect = pygame.Rect(bg_topleft, graphics_config.screen_dimensions)
-        get_screen().blit(self.background, (0, 0), bg_rect)
+        get_screen().blit(self.backgrounds[self.phase], (0, 0), bg_rect)
 
         # Draw the map objects
         self.draw_object_layer(self.map_model.below_objects, bg_topleft)
@@ -103,6 +111,9 @@ class MapView(object):
 
         # Draw the foreground
         get_screen().blit(self.foreground, (0, 0), bg_rect)
+        
+        # Update phase
+        self.phase = (self.phase + 1) % ANIMATION_PERIOD
 
     def draw_object_layer(self, object_layer, bg_topleft):
         if graphics_config.object_width > graphics_config.tile_size or\
