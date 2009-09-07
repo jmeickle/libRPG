@@ -37,10 +37,10 @@ class MapView(object):
 
     def init_backgrounds(self):
         self.backgrounds = []
-        for i in range(ANIMATION_PERIOD):
-            self.backgrounds.append(self.init_background(i))
+        for animation_phase in xrange(ANIMATION_PERIOD):
+            self.backgrounds.append(self.init_background(animation_phase))
 
-    def init_background(self, i):
+    def init_background(self, animation_phase):
         background_width = (graphics_config.tile_size * self.map_model.width +
                             graphics_config.screen_width)
         background_height = (graphics_config.tile_size * self.map_model.height +
@@ -57,7 +57,7 @@ class MapView(object):
                 bg_y = (graphics_config.map_border_height
                         + y * graphics_config.tile_size)
                 terrain_tile_surface = self.map_model.terrain_layer.get(x, y).\
-                                       get_surface(i)
+                                       get_surface(animation_phase)
                 background.blit(terrain_tile_surface, (bg_x, bg_y))
 
                 for i in range(self.map_model.scenario_number):
@@ -102,7 +102,8 @@ class MapView(object):
                                                             party_x_offset,
                                                             party_y_offset)
         bg_rect = pygame.Rect(bg_topleft, graphics_config.screen_dimensions)
-        get_screen().blit(self.backgrounds[self.phase], (0, 0), bg_rect)
+        phase = self.phase / graphics_config.animation_frame_period
+        get_screen().blit(self.backgrounds[phase], (0, 0), bg_rect)
 
         # Draw the map objects
         self.draw_object_layer(self.map_model.below_objects, bg_topleft)
@@ -113,7 +114,8 @@ class MapView(object):
         get_screen().blit(self.foreground, (0, 0), bg_rect)
         
         # Update phase
-        self.phase = (self.phase + 1) % ANIMATION_PERIOD
+        self.phase = (self.phase + 1) % (ANIMATION_PERIOD
+                                       * graphics_config.animation_frame_period)
 
     def draw_object_layer(self, object_layer, bg_topleft):
         if graphics_config.object_width > graphics_config.tile_size or\

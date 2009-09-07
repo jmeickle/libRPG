@@ -93,6 +93,10 @@ class GraphicsConfig(Config):
     
     :attr:`real_screen_dimensions`
         2-Tuple with height and width of the actual screen. Read-only.
+
+    :attr:`animation_frame_period`
+        Number of frames after which the next frame of tile animation will
+        be displayed.
     """
 
     _screen_width = 400
@@ -103,6 +107,7 @@ class GraphicsConfig(Config):
     _scale = 2
     camera_mode = None
     display_mode = 0
+    animation_frame_period = 15
     # display_mode = pygame.HWSURFACE | pygame.DOUBLEBUF | pygame.FULLSCREEN
 
     def __init__(self):

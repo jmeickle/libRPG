@@ -32,6 +32,8 @@ The default values are:
     
     :attr:`scale` - 2
 
+    :attr:`animation_frame_period` - 15
+
 **dialog_config**
 
     :attr:`font_name` - 'Verdana'

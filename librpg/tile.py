@@ -41,7 +41,7 @@ class Tile(object):
         return self.obstacle == Tile.ABOVE
 
     def get_surface(self, animation_phase=0):
-        return self.image.get_surface(animation_phase)
+        return self.image.get_surface(animation_phase=animation_phase)
 
 
 class Tileset(object):
@@ -89,7 +89,7 @@ class Tileset(object):
         sliced_image = SlicedImage(self.image, tsize, tsize)
         for i in xrange(self.size):
             ssur = sliced_image.get_slice(i)
-            self.tiles.append(Tile(TileImage(ssur)))
+            self.tiles.append(Tile(TileImage([ssur])))
 
     def load_boundaries_file(self):
         f = file(self.boundaries_file, "r")
@@ -117,5 +117,9 @@ class Tileset(object):
             tile.open_directions[dir] = int(line[x])
 
     def process_animated_bnd_line(self, line):
-        assert ANIMATION_PERIOD % len(line[1:]) == 0,\
+        ids = [int(id) for id in line[1:]]
+        assert ANIMATION_PERIOD % len(ids) == 0,\
                'The number of animated tiles must divide %d' % ANIMATION_PERIOD
+        new_image = TileImage([self.tiles[i].get_surface() for i in ids])
+        for id in ids:
+            self.tiles[id].image = new_image
