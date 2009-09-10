@@ -1,6 +1,8 @@
 import atexit
 import pygame
 
+from librpg.loader import FileLoader
+
 def init():
     pygame.mixer.init()
     atexit.register(quit)
@@ -8,11 +10,19 @@ def init():
 def quit():
     pygame.mixer.quit()
 
-class SoundEffectLoader:
-    pass
 
-def play_sfx(sfx_name, times=1):
-    pass
+class SoundEffectLoader(FileLoader):
+
+    def load_from_file(self, file):
+        return pygame.mixer.Sound(file)
+
+
+sfx_loader = SoundEffectLoader()
+
+def play_sfx(sfx_name, times=1, force_load=False):
+    s = sfx_loader.load(file, force_load)
+    s.play(times-1)
+
 
 class MapMusic:
 

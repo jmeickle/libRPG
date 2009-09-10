@@ -6,6 +6,7 @@ Contents:
 ..  toctree::
     :numbered:
 
+    loader
     mapview
     tile
     state
