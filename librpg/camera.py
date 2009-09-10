@@ -7,7 +7,7 @@ This module also defines a CameraMode abstract class that can be used to
 write custom camera modes.
 """
 
-from config import graphics_config
+from librpg.config import graphics_config
 
 
 class CameraMode(object):

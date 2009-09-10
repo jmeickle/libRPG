@@ -4,7 +4,7 @@ import pygame
 from librpg.loader import FileLoader
 
 def init():
-    pygame.mixer.init()
+    pygame.mixer.init(buffer=1024)
     atexit.register(quit)
 
 def quit():
@@ -20,7 +20,7 @@ class SoundEffectLoader(FileLoader):
 sfx_loader = SoundEffectLoader()
 
 def play_sfx(sfx_name, times=1, force_load=False):
-    s = sfx_loader.load(file, force_load)
+    s = sfx_loader.load(sfx_name, force_load)
     s.play(times-1)
 
 

@@ -18,6 +18,7 @@ from librpg.party import Character, CharacterReserve
 from librpg.movement import Step, ForcedStep, Face, Wait, Slide
 from librpg.dialog import (MessageDialog, ChoiceDialog, MultiMessageDialog,
                            ElasticMessageDialog)
+from librpg.sound import play_sfx
 from librpg.locals import *
 
 class ObjectTestNPC(MapObject):
@@ -65,6 +66,7 @@ class ObjectTestChest(MapObject):
         self.filled = True
         
     def activate(self, party_avatar, direction):
+        play_sfx('sound6.wav')
         if self.closed:
             self.closed = False
             self.schedule_movement(Face(RIGHT))
