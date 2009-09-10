@@ -579,6 +579,12 @@ class MapModel(object):
         """
         self.contexts.append(context)
 
+    def set_music(self, music_file):
+        """
+        Set the background for the map.
+        """
+        self.music = music_file
+
 
 class ObjectCell(object):
 

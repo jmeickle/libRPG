@@ -20,7 +20,7 @@ librpg.config.game_config.config(key_up=set([K_w]),
 m = librpg.map.MapModel('city.map',
                         ('city32.png', 'city32.bnd'),
                         [('city_upper32.png', 'city_upper32.bnd')])
-m.music = 'park_1.ogg'
+m.set_music('park_1.ogg')
 
 def char_factory(name):
     return librpg.party.Character('Andy', 'actor1.png', 0)

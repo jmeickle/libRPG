@@ -91,8 +91,9 @@ ok      0.4 Implement ElasticMessageDialog
 ok      0.4 Change boundaries file schema (type, id, *type_dependent_fields) type contains [normal, animated, smart]
 ok      0.4 Animated tiles (period | 12 allows (1, 2, 3, 4, 6, 12), one surface per phase)
 ok      0.4 Support background music for maps
-        0.4 Put sound effects in standard resources and use them in tests. Evaluate the need for sfx wrappers.
-        0.4 Write sound module docs
+ok      0.4 Implement sfx wrappers
+ok      0.4 Write sound module docs
+        0.4 Put sound effects in standard resources and use them in tests
         0.4 Evaluate log module
         0.4 Allow objects to be updated, so that they can be "alarms"
         0.4 Add a gameover() method
