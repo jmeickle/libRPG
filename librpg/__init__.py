@@ -2,10 +2,11 @@ import pygame
 
 from librpg import (virtualscreen, config, party, map, world, mapobject,
                     camera, image, log, item, util, context, maparea, tile,
-                    dialog, mapview, menu, movement, state)
+                    dialog, mapview, menu, movement, state, sound)
 
 def init(game_name='LibRPG Game', icon=None):
     pygame.init()
+    sound.init()
     
     if icon is not None:
         icon = pygame.image.load(icon)

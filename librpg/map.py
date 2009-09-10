@@ -10,7 +10,8 @@ import operator
 import pygame
 
 from librpg.mapobject import *
-from librpg.mapview import *
+from librpg.mapview import MapView
+from librpg.sound import MapMusic
 from librpg.util import *
 from librpg.image import *
 from librpg.tile import *
@@ -33,6 +34,7 @@ class MapController(Context):
         self.map_model.controller = self
         self.map_model.initialize(local_state, global_state)
         self.map_view = MapView(self.map_model)
+        self.map_music = MapMusic(self.map_model)
         self.moving_sync = False
         self.message_queue = MessageQueue(self)
 
@@ -75,6 +77,7 @@ class MapController(Context):
 
     def draw(self):
         self.map_view_draw()
+        self.map_music.update()
         
     def process_event(self, event):
         if event.type == QUIT:
@@ -199,6 +202,8 @@ class MapModel(object):
         """
         self.world = None
         self.id = None
+
+        self.music = None
 
         # Set up party
         self.party = None
