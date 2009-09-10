@@ -15,6 +15,7 @@ Contents:
     dialog
     movement
     config
+    sound
     camera
     context
     image

@@ -97,13 +97,13 @@ Examples
 
 ::
 
-librpg.config.game_config.config(fps=24,
-                                 key_up=set([K_w]),
-                                 key_left=set([K_a]),
-                                 key_down=set([K_s]),
-                                 key_right=set([K_d]),
-                                 key_action=set([K_e]),
-                                 key_cancel=set([K_q]))
+    librpg.config.game_config.config(fps=24,
+                                     key_up=set([K_w]),
+                                     key_left=set([K_a]),
+                                     key_down=set([K_s]),
+                                     key_right=set([K_d]),
+                                     key_action=set([K_e]),
+                                     key_cancel=set([K_q]))
 
 ::
 
