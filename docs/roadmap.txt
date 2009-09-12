@@ -28,7 +28,7 @@ Synchronous events (scene module) and asynchronous events (context module) imple
 
 Version 0.7
 
-Basic battle API implemented for turn based battles.
+Basic battle API implemented for turn based battles. Battle system implementation example.
 
 Version 1.0
 
