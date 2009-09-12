@@ -94,7 +94,7 @@ ok      0.4 Support background music for maps
 ok      0.4 Implement sfx wrappers
 ok      0.4 Write sound module docs
         0.4 Put sound effects in standard resources and use them in tests
-        0.4 Evaluate log module
+ok      0.4 Evaluate log module
         0.4 Allow objects to be updated, so that they can be "alarms"
         0.4 Add a gameover() method
         0.4 Add license headers to files

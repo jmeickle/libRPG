@@ -8,21 +8,11 @@
 Usage
 -----
 
-    - Do not instantiate Log, it is a class with only static attributes and
-      methods.
-
-    - To create a LogRoll, use Log.create_roll() specifying the entry types
+    - To create a LogRoll, use create_roll() specifying the entry types
       that the roll should catch. To destroy a LogRoll, use destroy_roll().
 
     - To write a LogEntry to all rolls that catch it, simply call
-      Log.write().
-
-    - To create a LogRoll, call Log.create_roll() passing a list of all
-      entry types the roll should catch. To destroy it, call
-      Log.destroy_roll().
-
-    - To write entries to the roll, let Log.write() do it automatically to
-      all rolls that catch those entries.
+      write().
 
     - To write the contents of a LogRoll to a file, use log_to_file() or
       write_to_file(). If you used log_to_file(), the entries received will
@@ -49,6 +39,9 @@ Example
         def __str__(self):
             return "Added " + str(self.n)
         
+        def __repr__(self):
+            return "+" + str(self.n)
+            
     class SubtractedEntry(LogEntry):
         def __init__(self, n):
             LogEntry.__init__(self, "SubtractedEntry")
@@ -57,22 +50,27 @@ Example
         def __str__(self):
             return "Subtracted " + str(self.n)
         
-    a = Log().create_roll(["AddedEntry"])
-    b = Log().create_roll(["SubtractedEntry"])
-    c = Log().create_roll(["AddedEntry", "SubtractedEntry"])
-    d = Log().create_roll()
+        def __repr__(self):
+            return "-" + str(self.n)
+            
+    a = create_roll(["AddedEntry"])
+    b = create_roll(["SubtractedEntry"])
+    c = create_roll(["AddedEntry", "SubtractedEntry"])
+    d = create_roll()
 
     a.log_to_file(file("logtest.added.log", "w"))
     b.log_to_file(file("logtest.subtracted.log", "w"))
 
-    Log().write(AddedEntry(1))
-    Log().write(SubtractedEntry(2))
-    Log().write(AddedEntry(3))
-    Log().write(SubtractedEntry(4))
-    Log().write(SubtractedEntry(5))
-    Log().write(SubtractedEntry(6))
+    write(AddedEntry(1))
+    write(SubtractedEntry(2))
+    write(AddedEntry(3))
+    write(SubtractedEntry(4))
+    write(SubtractedEntry(5))
+    write(SubtractedEntry(6))
 
     c.write_to_file(file("logtest.both.log", "w"))
 
-    Log().write(AddedEntry(7))
-    Log().write(AddedEntry(8))
+    write(AddedEntry(7))
+    write(AddedEntry(8))
+
+    print d

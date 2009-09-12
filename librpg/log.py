@@ -1,11 +1,11 @@
 """
 The :mod:`log` module provides a powerful and flexible logging interface.
 
-When the Log.write() function is called, the entry passed as parameter will
+When the write() function is called, the entry passed as parameter will
 be inserted into all LogRolls that were configured to catch that type of
 entry. These types are called *entry types*, and are normally strings.
 
-The objects passed to Log.write() should be inherited from LogEntry,
+The objects passed to write() should be inherited from LogEntry,
 implementing the __str__() method, which should return the string as it
 should be printed in the screen or log file.
 
@@ -20,7 +20,7 @@ class LogRoll(object):
     
     UNLIMITED_CAPACITY = -1
     """
-    Constant which can be passed to Log.create_roll indicating it has no
+    Constant which can be passed to create_roll indicating it has no
     entry count limit.
     """
 
@@ -84,87 +84,78 @@ class LogRoll(object):
         logfile.write(str(self))
         self.clean()
 
-class Log(object):
+ALL_LOG_ENTRIES = 1
+"""
+Constant which can be passed to create_roll to have it catch all entries.
+"""
 
+# Contains all Rolls created
+rolls = []
+
+# Maps the entry_types to their list of Rolls
+index = {}
+
+# List of rolls that catch all entries
+rolls_that_catch_all = []
+
+def create_roll(entry_types=ALL_LOG_ENTRIES,
+                capacity=LogRoll.UNLIMITED_CAPACITY):
     """
-    Log is a static class that works as a logger and statistics collector,
-    which keeps LogRolls, each specialized in a set of events. Once set up,
-    the application may use Log.write() to write an entry to the appropriate
-    LogRolls.
-    """
+    Create a new LogRoll with the specified characteristics and return
+    it.
     
-    ALL_LOG_ENTRIES = 1
+    The new LogRoll will catch all entries which entry type is in the
+    list *entry_types*. It will be able to hold as many entries as
+    *capacity*. By default, it will catch any entry, and have an
+    infinite capacity.
+    
     """
-    Constant which can be passed to create_roll to have it catch all entries.
+    roll = LogRoll(entry_types, capacity)
+
+    if (entry_types == ALL_LOG_ENTRIES):
+        rolls_that_catch_all.append(roll)
+    else:
+        for entry_type in entry_types:
+            if entry_type in index.keys():
+                index[entry_type].append(roll)
+            else:
+                index[entry_type] = [roll]
+
+    rolls.append(roll)
+
+    return roll
+
+
+def destroy_roll(roll):
     """
+    Destroy a LogRoll.
+    
+    The LogRoll *roll* will be destroyed, which means it will stop
+    catching entries.
+    """
+    rolls.remove(roll)
 
-    # Contains all Rolls created
-    rolls = []
-
-    # Maps the entry_types to their list of Rolls
-    index = {}
-
-    # List of rolls that catch all entries
-    rolls_that_catch_all = []
-
-    def create_roll(self, entry_types=ALL_LOG_ENTRIES,
-                    capacity=LogRoll.UNLIMITED_CAPACITY):
-        """
-        Create a new LogRoll with the specified characteristics and return
-        it.
-        
-        The new LogRoll will catch all entries which entry type is in the
-        list *entry_types*. It will be able to hold as many entries as
-        *capacity*. By default, it will catch any entry, and have an
-        infinite capacity.
-        
-        """
-        roll = LogRoll(entry_types, capacity)
-
-        if (entry_types == Log.ALL_LOG_ENTRIES):
-            Log.rolls_that_catch_all.append(roll)
-        else:
-            for entry_type in entry_types:
-                if entry_type in Log.index.keys():
-                    Log.index[entry_type].append(roll)
-                else:
-                    Log.index[entry_type] = [roll]
-
-        Log.rolls.append(roll)
-
-        return roll
+    if roll.entry_types == ALL_LOG_ENTRIES:
+        rolls_that_catch_all.remove(roll)
+    else:
+        for entry_type in roll.entry_types:
+            index[entry_type].remove(roll)
+            if len(index[entry_type]) == 0:
+                del index[entry_type]
 
 
-    def destroy_roll(self, roll):
-        """
-        Destroy a LogRoll.
-        
-        The LogRoll *roll* will be destroyed, which means it will stop
-        catching entries.
-        """
-        Log.rolls.remove(roll)
-
-        if roll.entry_types == Log.ALL_LOG_ENTRIES:
-            Log.rolls_that_catch_all.remove(roll)
-        else:
-            for entry_type in roll.entry_types:
-                Log.index[entry_type].remove(roll)
-                if len(Log.index[entry_type]) == 0:
-                    del Log.index[entry_type]
-
-
-    def write(self, entry):
-        """
-        Write a LogEntry to all LogRolls that catch it.
-        
-        The *entry* will be inserted in all LogRolls created by create_roll
-        that passed a list containing the *entry*'s entry type.
-        """
-        if entry.entry_type in Log.index.keys():
-            for roll in Log.index[entry.entry_type]:
-                roll.write(entry)
-        for roll in Log.rolls_that_catch_all:
+def write(entry):
+    """
+    Write a LogEntry to all LogRolls that catch it.
+    
+    The *entry* will be inserted in all LogRolls created by create_roll
+    that passed a list containing the *entry*'s entry type.
+    """
+    if entry.entry_type in index.keys():
+        for roll in index[entry.entry_type]:
             roll.write(entry)
+    for roll in rolls_that_catch_all:
+        roll.write(entry)
 
 
 class LogEntry(object):
@@ -175,7 +166,7 @@ class LogEntry(object):
     
     def __init__(self, entry_type):
         self.entry_type = entry_type
-        if self.entry_type == Log.ALL_LOG_ENTRIES:
+        if self.entry_type == ALL_LOG_ENTRIES:
             self.repr = "ALL_LOG_ENTRIES"
         else:
             self.repr = entry_type

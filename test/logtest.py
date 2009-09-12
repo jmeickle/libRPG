@@ -24,26 +24,24 @@ class SubtractedEntry(LogEntry):
     def __repr__(self):
         return "-" + str(self.n)
         
-a = Log().create_roll(["AddedEntry"])
-b = Log().create_roll(["SubtractedEntry"])
-c = Log().create_roll(["AddedEntry", "SubtractedEntry"])
-d = Log().create_roll()
+a = create_roll(["AddedEntry"])
+b = create_roll(["SubtractedEntry"])
+c = create_roll(["AddedEntry", "SubtractedEntry"])
+d = create_roll()
 
 a.log_to_file(file("logtest.added.log", "w"))
 b.log_to_file(file("logtest.subtracted.log", "w"))
 
-l=Log()
-
-Log().write(AddedEntry(1))
-Log().write(SubtractedEntry(2))
-Log().write(AddedEntry(3))
-Log().write(SubtractedEntry(4))
-Log().write(SubtractedEntry(5))
-Log().write(SubtractedEntry(6))
+write(AddedEntry(1))
+write(SubtractedEntry(2))
+write(AddedEntry(3))
+write(SubtractedEntry(4))
+write(SubtractedEntry(5))
+write(SubtractedEntry(6))
 
 c.write_to_file(file("logtest.both.log", "w"))
 
-Log().write(AddedEntry(7))
-Log().write(AddedEntry(8))
+write(AddedEntry(7))
+write(AddedEntry(8))
 
 print d
