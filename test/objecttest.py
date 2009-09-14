@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from random import choice
+from random import choice, randint
 
 import librpg
 import pygame
@@ -19,6 +19,7 @@ from librpg.movement import Step, ForcedStep, Face, Wait, Slide
 from librpg.dialog import (MessageDialog, ChoiceDialog, MultiMessageDialog,
                            ElasticMessageDialog)
 from librpg.sound import play_sfx
+from librpg.image import ObjectImage
 from librpg.locals import *
 
 class ObjectTestNPC(MapObject):
@@ -64,7 +65,8 @@ class ObjectTestChest(MapObject):
                            image_index=5, facing=UP)
         self.closed = True
         self.filled = True
-        
+        self.shapeshift = 0
+
     def activate(self, party_avatar, direction):
         play_sfx('sound6.wav')
         if self.closed:
@@ -87,6 +89,12 @@ class ObjectTestChest(MapObject):
             print 'Chest is open, closing'
             self.schedule_movement(Face(UP))
             self.closed = True
+
+    def update(self):
+        self.shapeshift += 1
+        if self.shapeshift > 40:
+            self.image = ObjectImage('chest2.png', randint(0, 7))
+            self.shapeshift = 0
 
 
 class ObjectTestTowerUpper(ScenarioMapObject):

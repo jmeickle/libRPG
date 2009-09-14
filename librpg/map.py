@@ -64,6 +64,7 @@ class MapController(Context):
 
         if not self.message_queue.is_busy():
             self.flow_object_movement()
+            self.update_objects()
 
         if self.party_movement and not self.party_avatar.scheduled_movement \
            and not self.party_avatar.movement_phase \
@@ -172,6 +173,10 @@ class MapController(Context):
             o.flow()
         return False
 
+    def update_objects(self):
+        for o in self.map_model.updatable_objects:
+            o.update()
+
 
 class MapModel(object):
 
@@ -230,6 +235,7 @@ class MapModel(object):
         self.below_objects = []
         self.obstacle_objects = []
         self.above_objects = []
+        self.updatable_objects = []
         self.object_layer = Matrix(self.width, self.height)
         object_layer_set = self.object_layer.set
         for x in range(self.width):
@@ -350,7 +356,9 @@ class MapModel(object):
             self.above_objects.append(obj)
         else:
             raise Exception('Object is neither below, obstacle or above')
-
+        if hasattr(obj, 'update'):
+            self.updatable_objects.append(obj)
+            
         obj.position = position
         obj.areas = self.area_layer.get_pos(position)
         obj.map = self
@@ -370,6 +378,8 @@ class MapModel(object):
             self.above_objects.remove(obj)
         else:
             raise Exception('Object is neither below, obstacle or above')
+        if hasattr(obj, 'update'):
+            self.updatable_objects.remove(obj)
 
         self.object_layer.get_pos(obj.position).remove_object(obj)
         result = obj.position
