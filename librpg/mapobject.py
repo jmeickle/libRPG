@@ -188,6 +188,14 @@ class MapObject(object):
         
         self.scheduled_movement.append(movement)
 
+    def destroy(self):
+        """
+        Remove the object from its map, effectively destroying it.
+        """
+        assert self.map is not None, 'The object must be in a map to be ' \
+                                     'destroyed.'
+        self.map.remove_object(self)
+
 
 class PartyAvatar(MapObject):
     """

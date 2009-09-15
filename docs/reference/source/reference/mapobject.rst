@@ -18,6 +18,8 @@ To create a MapObject that takes its image from the scenario tileset, that is, a
 - To define the object's behavior when activated, implement the *activate()* method.
 - To define the object's behavior when collided, implement the *collide_with_party()* method.
 
+To have a MapObject be updated every cycle, define an update() method for it and it will be called every map cycle.
+
 Example
 -------
 

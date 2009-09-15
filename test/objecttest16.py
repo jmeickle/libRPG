@@ -25,7 +25,8 @@ class ObjectTestNPC(MapObject):
     def activate(self, party_avatar, direction):
         print 'GLOMPed NPC'
         self.map.schedule_message(MessageDialog('GLOMP'))
-        self.map.remove_object(self)
+        self.destroy()
+
 
 class ObjectTestRock(ScenarioMapObject):
 

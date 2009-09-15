@@ -93,11 +93,12 @@ ok      0.4 Animated tiles (period | 12 allows (1, 2, 3, 4, 6, 12), one surface 
 ok      0.4 Support background music for maps
 ok      0.4 Implement sfx wrappers
 ok      0.4 Write sound module docs
-        0.4 Put sound effects in standard resources and use them in tests
 ok      0.4 Evaluate log module
 ok      0.4 Allow objects to be updated, so that they can be "alarms"
+ok      0.4 Implement a MapObject.destroy() method
         0.4 Add a gameover() method
         0.4 Add license headers to files
+        0.4 Put sound effects in standard resources and use them in tests
         0.5 Open a "library" module with stuff like TeleportArea, Rock, Chest, ChatDialog, InventoryMenu, SaveMenu, PartyMenu
         0.5 Design Menu API
         0.5 Define generic menu skin system
