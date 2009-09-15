@@ -44,6 +44,16 @@ class Chest(MapObject):
             self.closed = True
 
 
+class GameOverBarrel(ScenarioMapObject):
+
+    def __init__(self, map):
+        ScenarioMapObject.__init__(self, map, 0, 12)
+
+    def activate(self, party_avatar, direction):
+        print 'The barrel explodes and you die.'
+        self.map.gameover()
+
+
 class AreaAroundWell(MapArea):
 
     def party_entered(self, party_avatar, position):
@@ -116,6 +126,8 @@ class Map3(WorldMap):
                           [('upper_tileset32.png', 'upper_tileset32.bnd'),])
 
     def initialize(self, local_state, global_state):
+        self.add_object(GameOverBarrel(self), Position(6, 4))
+        
         self.add_area(RelativeTeleportArea(x_offset=+8, map_id=2),
                       RectangleArea((0, 0), (0, 9)))
                       
@@ -123,3 +135,6 @@ class Map3(WorldMap):
                       RectangleArea((0, 0), (9, 0)))
         self.add_area(RelativeTeleportArea(y_offset=-8),
                       RectangleArea((0, 9), (9, 9)))
+
+    def custom_gameover(self):
+        print 'Map3.custom_gameover()'

@@ -101,6 +101,15 @@ class BaseWorld(object):
         """
         raise NotImplementedError, 'BaseWorld.gameloop() is abstract'
 
+    def custom_gameover(self):
+        """
+        *Virtual.*
+        
+        Overload to perform any reaction necessary to a MapModel.gameover()
+        or World.gameover() call.
+        """
+        pass
+
 
 class World(BaseWorld):
 

@@ -6,10 +6,6 @@ from random import choice, randint
 import librpg
 import pygame
 
-librpg.init('Object Test')
-librpg.config.graphics_config.config(tile_size=32, object_height=32,
-                                     object_width=32)
-
 from librpg.map import MapModel, MapController
 from librpg.mapobject import MapObject, ScenarioMapObject
 from librpg.world import MicroWorld
@@ -197,6 +193,16 @@ class ObjectTestCity(ScenarioMapObject):
         print 'Collided city object'
 
 
+class ObjectTestGameOverBarrel(ScenarioMapObject):
+
+    def __init__(self, map):
+        ScenarioMapObject.__init__(self, map, 0, 12)
+
+    def activate(self, party_avatar, direction):
+        print 'The barrel explodes and you die.'
+        self.map.gameover()
+
+
 class ObjectTestMap(MapModel):
     
     def __init__(self):
@@ -211,13 +217,22 @@ class ObjectTestMap(MapModel):
         self.add_object(ObjectTestTowerUpper(self), Position(6, 0))
         self.add_object(ObjectTestTowerLower(self), Position(6, 1))
         self.add_object(ObjectTestCity(self), Position(7, 1))
+        self.add_object(ObjectTestGameOverBarrel(self), Position(9, 9))
+
+    def custom_gameover(self):
+        print 'Map says: You probably messed with a barrel. Don\'t.'
 
 
 def char_factory(name):
     return librpg.party.Character('Andy', 'char_alex32.png')
 
-world = MicroWorld(ObjectTestMap(), char_factory)
-world.initial_state(Position(0, 0), ['Andy'])
-world.gameloop()
+if __name__ == '__main__':
+    librpg.init('Object Test')
+    librpg.config.graphics_config.config(tile_size=32, object_height=32,
+                                         object_width=32)
 
-exit()
+    world = MicroWorld(ObjectTestMap(), char_factory)
+    world.initial_state(Position(0, 0), ['Andy'])
+    world.gameloop()
+
+    exit()

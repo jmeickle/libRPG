@@ -177,6 +177,9 @@ class MapController(Context):
         for o in self.map_model.updatable_objects:
             o.update()
 
+    def gameover(self):
+        get_context_stack().stop()
+
 
 class MapModel(object):
 
@@ -594,6 +597,23 @@ class MapModel(object):
         Set the background for the map.
         """
         self.music = music_file
+
+    def gameover(self):
+        """
+        End the game.
+        """
+        self.custom_gameover()
+        self.controller.gameover()
+        self.world.custom_gameover()
+
+    def custom_gameover(self):
+        """
+        *Virtual.*
+        
+        Overload to perform any reaction necessary to a MapModel.gameover()
+        call.
+        """
+        pass
 
 
 class ObjectCell(object):

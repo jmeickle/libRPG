@@ -16,3 +16,6 @@ class MyWorld(World):
             self.initial_state(map=1, position=Position(5, 4), chars=['Andy'])
         else:
             self.load_state(state_file=save_file)
+
+    def custom_gameover(self):
+        print 'MyWorld.custom_gameover()'
