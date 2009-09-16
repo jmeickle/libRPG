@@ -11,7 +11,7 @@ def init(game_name='LibRPG Game', icon=None):
     if icon is not None:
         icon = pygame.image.load(icon)
     else:
-        icon = pygame.image.load(util.lib_path('../data/icon.png'))
+        icon = pygame.image.load(util.data_path('icon.png'))
     pygame.display.set_icon(icon)
     
     virtualscreen.init(config.graphics_config.real_screen_dimensions,
