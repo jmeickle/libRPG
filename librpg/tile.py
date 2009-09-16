@@ -99,13 +99,11 @@ class Tileset(object):
         for line in r:
             if line:
                 normalize_type = line[0].lower()
-                if normalize_type == 'normal':
+                if normalize_type == 'normal' and y < self.size:
                     self.process_normal_bnd_line(y, line)
                     y += 1
                 elif normalize_type == 'animated':
                     self.process_animated_bnd_line(line)
-            if y >= self.size:
-                break
         f.close()
 
     def process_normal_bnd_line(self, y, line):

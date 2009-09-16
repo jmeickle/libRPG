@@ -9,7 +9,7 @@ import pygame
 from librpg.map import MapModel, MapController
 from librpg.mapobject import MapObject, ScenarioMapObject
 from librpg.world import MicroWorld
-from librpg.util import Position, inverse
+from librpg.util import Position, inverse, data_path
 from librpg.party import Character, CharacterReserve
 from librpg.movement import Step, ForcedStep, Face, Wait, Slide
 from librpg.dialog import (MessageDialog, ChoiceDialog, MultiMessageDialog,
@@ -206,8 +206,11 @@ class ObjectTestGameOverBarrel(ScenarioMapObject):
 class ObjectTestMap(MapModel):
     
     def __init__(self):
+        map_file = 'objecttest.map'
+        tile_image = data_path('tileset/town2.png')
+        bnd_file = data_path('tileset/town2.bnd')
         MapModel.__init__(self, 'objecttest.map',
-                          ('lower_tileset32.png', 'lower_tileset32.bnd'),
+                          (tile_image, bnd_file),
                           [('upper_tileset32.png', 'upper_tileset32.bnd'),])
 
     def initialize(self, local_state, global_state):

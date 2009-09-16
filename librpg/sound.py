@@ -9,8 +9,13 @@ import pygame
 from librpg.loader import FileLoader
 
 def init():
-    pygame.mixer.init(buffer=1024)
-    atexit.register(quit)
+    try :
+        pygame.mixer.init(buffer=1024)
+    except pygame.error:
+        print "no sound device available"
+    else:
+        atexit.register(quit)
+
 
 def quit():
     pygame.mixer.quit()
