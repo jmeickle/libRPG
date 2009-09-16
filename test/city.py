@@ -18,8 +18,10 @@ librpg.config.game_config.config(key_up=set([K_w]),
                                  key_cancel=set([K_q]))
 
 m = librpg.map.MapModel('city.map',
-                        ('city32.png', 'city32.bnd'),
-                        [('city_upper32.png', 'city_upper32.bnd')])
+                        (librpg.util.data_path('tileset/city32.png'),
+                         librpg.util.data_path('tileset/city32.bnd')),
+                        [(librpg.util.data_path('tileset/city_upper32.png'),
+                          librpg.util.data_path('tileset/city_upper32.bnd'))])
 m.set_music('park_1.ogg')
 
 def char_factory(name):

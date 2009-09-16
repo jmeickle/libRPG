@@ -7,3 +7,10 @@ tileset/city1.png
 tileset/city2.png
 
 ===============================================================================
+
+By Kamila de Medeiros Galvani
+
+tileset/city32.png
+tileset/city_upper32.png
+
+===============================================================================
