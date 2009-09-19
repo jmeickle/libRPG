@@ -3,15 +3,15 @@
 By Daniel Harris "Hyptosis"
 Downloaded from http://lorestrome.com/pixel_archive/main.htm
 
-tileset/city1.png
-tileset/city2.png
+tileset/town1.png
+tileset/town2.png
 
 ===============================================================================
 
 By Kamila de Medeiros Galvani
 
-tileset/city32.png
-tileset/city_upper32.png
-tileset/upper_world.png
+tileset/city_lower.png
+tileset/city_upper.png
+tileset/world_upper.png
 
 ===============================================================================
