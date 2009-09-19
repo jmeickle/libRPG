@@ -1,46 +1,62 @@
 world_lower.png
 ---------------
 
-Sea
-Grass
-Sand
-Dirt
-Mountains
-Snow
-Snowed Mountains
-Forest
+    Sea
+    Grass
+    Sand
+    Dirt
+    Mountains
+    Snow
+    Snowed Mountains
+    Forest
+    Roads
 
 
 world_upper.png
 ---------------
 
-Bridges
-Trees
-Tower
-Well
-Rock
-Log Pile
-Barrel
-Volcano
-City
-Castle
+ok  Bridges
+    Trees
+ok  Tower
+ok  Well
+    Rock
+ok  Log Pile
+ok  Barrel
+    Volcano
+    Cities
+    Castle
 
 
 city_lower.png
 --------------
 
-House walls (concrete)
-House walls (wood)
-Building (residential)
-Building (commercial, shopping center?)
-Stores
-Church
-Park
-Water
-Fences
-Walls
-School
+ok  Streets
+ok  Sidewalks
+ok  House walls (concrete)
+ok  House walls (wood)
+ok  Building (residential)
+    Building (commercial, shopping center?)
+    Stores
+    Church
+    Park
+    Water
+    Walls
+    School
 
 
 city_upper.png
 --------------
+
+ok  Flowers
+    Metal fence
+    Log fence
+ok  Roof (tiles)
+    Doors
+    Windows
+    Canopies
+    Bike racks
+    Transit signs
+    Bus stops
+    Benches
+ok  Trees
+ok  Rock
