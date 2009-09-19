@@ -1,0 +1,46 @@
+world_lower.png
+---------------
+
+Sea
+Grass
+Sand
+Dirt
+Mountains
+Snow
+Snowed Mountains
+Forest
+
+
+world_upper.png
+---------------
+
+Bridges
+Trees
+Tower
+Well
+Rock
+Log Pile
+Barrel
+Volcano
+City
+Castle
+
+
+city_lower.png
+--------------
+
+House walls (concrete)
+House walls (wood)
+Building (residential)
+Building (commercial, shopping center?)
+Stores
+Church
+Park
+Water
+Fences
+Walls
+School
+
+
+city_upper.png
+--------------

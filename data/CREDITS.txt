@@ -12,5 +12,6 @@ By Kamila de Medeiros Galvani
 
 tileset/city32.png
 tileset/city_upper32.png
+tileset/upper_world.png
 
 ===============================================================================
