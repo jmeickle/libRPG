@@ -97,6 +97,9 @@ ok      0.4 Evaluate log module
 ok      0.4 Allow objects to be updated, so that they can be "alarms"
 ok      0.4 Implement a MapObject.destroy() method
 ok      0.4 Add a gameover() method
+        0.4 Draw 32 pixel upper world tileset and replace placeholders in tests
+        0.4 Draw 16 pixel simple tileset and replace placeholders in tests
+        0.4 Draw basic charset and replace placeholders in tests
         0.4 Put sound effects in standard resources and use them in tests
         0.5 Open a "library" module with stuff like TeleportArea, Rock, Chest, ChatDialog, InventoryMenu, SaveMenu, PartyMenu
         0.5 Design Menu API

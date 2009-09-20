@@ -473,14 +473,6 @@ class MapModel(object):
             return True
 
         return False
-        
-        # for new_scenario in reversed(new_scenario_list):
-            # if new_scenario.is_obstacle():
-                # return True
-            # elif new_scenario.is_below() and\
-                    # not new_scenario.cannot_be_entered(inv):
-                # return False
-        # return new_terrain.is_obstacle() or new_terrain.cannot_be_entered(inv)
 
     def direction_obstructed(self, terrain, scenario_list, direction):
         bridge = False
