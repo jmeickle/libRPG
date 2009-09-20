@@ -460,26 +460,41 @@ class MapModel(object):
 
     def is_obstructed(self, old_terrain, old_scenario_list, new_terrain,
                       new_scenario_list, new_object, direction):
-        cannot_leave_old = True
-        for old_scenario in reversed(old_scenario_list):
-            if old_scenario.is_below() and\
-               not old_scenario.cannot_be_entered(direction):
-                cannot_leave_old = False
-        if cannot_leave_old and\
-           old_terrain.cannot_be_entered(direction):
-            return True
-
-        inv = inverse(direction)
 
         if new_object.obstacle is not None:
             return True
-        for new_scenario in reversed(new_scenario_list):
-            if new_scenario.is_obstacle():
+
+        if self.direction_obstructed(old_terrain, old_scenario_list, \
+           direction):
+            return True
+
+        inv = inverse(direction)
+        if self.direction_obstructed(new_terrain, new_scenario_list, inv):
+            return True
+
+        return False
+        
+        # for new_scenario in reversed(new_scenario_list):
+            # if new_scenario.is_obstacle():
+                # return True
+            # elif new_scenario.is_below() and\
+                    # not new_scenario.cannot_be_entered(inv):
+                # return False
+        # return new_terrain.is_obstacle() or new_terrain.cannot_be_entered(inv)
+
+    def direction_obstructed(self, terrain, scenario_list, direction):
+        bridge = False
+        for scenario in reversed(scenario_list):
+            if scenario.cannot_be_entered(direction)\
+               or scenario.is_obstacle():
                 return True
-            elif new_scenario.is_below() and\
-                    not new_scenario.cannot_be_entered(inv):
+            elif scenario.is_below():
                 return False
-        return new_terrain.is_obstacle() or new_terrain.cannot_be_entered(inv)
+
+        if terrain.is_obstacle() or terrain.cannot_be_entered(direction):
+            return True
+        else:
+            return False
 
     def move_object(self, obj, old_object, new_object, new_pos, slide, back):
         obj.movement_phase = obj.speed - 1
