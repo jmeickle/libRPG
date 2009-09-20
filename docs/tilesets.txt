@@ -16,14 +16,14 @@ world_upper.png
 ---------------
 
 ok  Bridges
-    Trees
+ok  Trees
 ok  Tower
 ok  Well
     Rock
 ok  Log Pile
 ok  Barrel
-    Volcano
-    Cities
+ok  Volcano
+ok  Cities
     Castle
 
 
