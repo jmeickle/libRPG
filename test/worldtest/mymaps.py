@@ -1,17 +1,20 @@
 from librpg.world import WorldMap, RelativeTeleportArea
 from librpg.mapobject import ScenarioMapObject, MapObject
 from librpg.maparea import RectangleArea, MapArea
-from librpg.util import Position
+from librpg.util import Position, data_path
 from librpg.movement import Face, Wait
 from librpg.dialog import MessageDialog
 from librpg.locals import *
 
 SAVE_FILE = 'save.sav'
+LOWER_TILESET = ('lower_tileset32.png', 'lower_tileset32.bnd')
+UPPER_TILESET = [(data_path('tileset/world_upper.png'),
+                  data_path('tileset/world_upper.bnd'))]
 
 class SavePoint(ScenarioMapObject):
 
     def __init__(self, map):
-        ScenarioMapObject.__init__(self, map, 0, 7)
+        ScenarioMapObject.__init__(self, map, 0, 1)
 
     def activate(self, party_avatar, direction):
         self.map.schedule_message(MessageDialog('You game will be saved to %s.'
@@ -47,7 +50,7 @@ class Chest(MapObject):
 class GameOverBarrel(ScenarioMapObject):
 
     def __init__(self, map):
-        ScenarioMapObject.__init__(self, map, 0, 12)
+        ScenarioMapObject.__init__(self, map, 0, 4)
 
     def activate(self, party_avatar, direction):
         print 'The barrel explodes and you die.'
@@ -72,8 +75,8 @@ class Map1(WorldMap):
 
     def __init__(self):
         WorldMap.__init__(self, 'worldtest/map1.map',
-                          ('lower_tileset32.png', 'lower_tileset32.bnd'),
-                          [('upper_tileset32.png', 'upper_tileset32.bnd'),])
+                          LOWER_TILESET,
+                          UPPER_TILESET)
 
     def initialize(self, local_state, global_state):
         self.add_area(RelativeTeleportArea(x_offset=-8, map_id=2),
@@ -95,8 +98,8 @@ class Map2(WorldMap):
 
     def __init__(self):
         WorldMap.__init__(self, 'worldtest/map2.map',
-                          ('lower_tileset32.png', 'lower_tileset32.bnd'),
-                          [('upper_tileset32.png', 'upper_tileset32.bnd'),])
+                          LOWER_TILESET,
+                          UPPER_TILESET)
 
     def initialize(self, local_state, global_state):
         self.add_area(RelativeTeleportArea(x_offset=+8, map_id=1),
@@ -122,8 +125,8 @@ class Map3(WorldMap):
 
     def __init__(self):
         WorldMap.__init__(self, 'worldtest/map3.map',
-                          ('lower_tileset32.png', 'lower_tileset32.bnd'),
-                          [('upper_tileset32.png', 'upper_tileset32.bnd'),])
+                          LOWER_TILESET,
+                          UPPER_TILESET)
 
     def initialize(self, local_state, global_state):
         self.add_object(GameOverBarrel(self), Position(6, 4))

@@ -40,7 +40,7 @@ class ObjectTestNPC(MapObject):
 class ObjectTestRock(ScenarioMapObject):
 
     def __init__(self, map):
-        ScenarioMapObject.__init__(self, map, 0, 3)
+        ScenarioMapObject.__init__(self, map, 0, 5)
         
     def activate(self, party_avatar, direction):
         print 'Activated rock'
@@ -96,7 +96,7 @@ class ObjectTestChest(MapObject):
 class ObjectTestTowerUpper(ScenarioMapObject):
 
     def __init__(self, map):
-        ScenarioMapObject.__init__(self, map, 0, 4)
+        ScenarioMapObject.__init__(self, map, 0, 12)
         
     def activate(self, party_avatar, direction):
         print 'Activated upper tower object'
@@ -132,7 +132,7 @@ class ObjectTestTowerLower(ScenarioMapObject):
                     to say. - Abraham Lincoln']
 
     def __init__(self, map):
-        ScenarioMapObject.__init__(self, map, 0, 8)
+        ScenarioMapObject.__init__(self, map, 0, 22)
         
     def activate(self, party_avatar, direction):
         print 'Activated lower tower object'
@@ -183,7 +183,7 @@ class ObjectTestCity(ScenarioMapObject):
            'Library Reference.'
 
     def __init__(self, map):
-        ScenarioMapObject.__init__(self, map, 0, 13)
+        ScenarioMapObject.__init__(self, map, 0, 30)
         
     def activate(self, party_avatar, direction):
         print 'Activated city object'
@@ -196,7 +196,7 @@ class ObjectTestCity(ScenarioMapObject):
 class ObjectTestGameOverBarrel(ScenarioMapObject):
 
     def __init__(self, map):
-        ScenarioMapObject.__init__(self, map, 0, 12)
+        ScenarioMapObject.__init__(self, map, 0, 4)
 
     def activate(self, party_avatar, direction):
         print 'The barrel explodes and you die.'
@@ -207,11 +207,13 @@ class ObjectTestMap(MapModel):
     
     def __init__(self):
         map_file = 'objecttest.map'
-        tile_image = data_path('tileset/town2.png')
-        bnd_file = data_path('tileset/town2.bnd')
+        lower_tile_image = data_path('tileset/town2.png')
+        lower_bnd_file = data_path('tileset/town2.bnd')
+        upper_tile_image = data_path('tileset/world_upper.png')
+        upper_bnd_file = data_path('tileset/world_upper.bnd')
         MapModel.__init__(self, 'objecttest.map',
-                          (tile_image, bnd_file),
-                          [('upper_tileset32.png', 'upper_tileset32.bnd'),])
+                          (lower_tile_image, lower_bnd_file),
+                          [(upper_tile_image, upper_bnd_file),])
 
     def initialize(self, local_state, global_state):
         self.add_object(ObjectTestNPC(), Position(2, 2))

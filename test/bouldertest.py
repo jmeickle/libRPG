@@ -8,7 +8,7 @@ librpg.config.graphics_config.config(tile_size=32,
 
 from librpg.map import MapModel
 from librpg.mapobject import ScenarioMapObject
-from librpg.util import Position
+from librpg.util import Position, data_path
 from librpg.party import Character, CharacterReserve
 from librpg.movement import Slide
 from librpg.dialog import MessageDialog
@@ -18,7 +18,7 @@ class Boulder(ScenarioMapObject):
 
     def __init__(self, map):
     
-        ScenarioMapObject.__init__(self, map, 0, 3)
+        ScenarioMapObject.__init__(self, map, 0, 5)
         
     def activate(self, party_avatar, direction):
     
@@ -54,7 +54,8 @@ class BoulderMaze(MapModel):
     def __init__(self):
         MapModel.__init__(self, 'bouldertest.map',
                           ('lower_tileset32.png', 'lower_tileset32.bnd'),
-                          [('upper_tileset32.png', 'upper_tileset32.bnd')])
+                          [(data_path('tileset\world_upper.png'),
+                            data_path('tileset\world_upper.bnd'))])
         
     def initialize(self, local_state, global_state):
         for y, line in enumerate(BoulderMaze.MAZE):

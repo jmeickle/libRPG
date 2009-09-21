@@ -3,7 +3,7 @@
 import librpg
 from librpg.map import MapModel
 from librpg.mapobject import ScenarioMapObject
-from librpg.util import Position, IdFactory
+from librpg.util import Position, IdFactory, data_path
 from librpg.party import Character, CharacterReserve, Party
 from librpg.world import MicroWorld
 from librpg.item import OrdinaryInventory, OrdinaryItem
@@ -38,7 +38,7 @@ item_factory.register(LeafItem)
 class LogPile(ScenarioMapObject):
 
     def __init__(self, map):
-        ScenarioMapObject.__init__(self, map, 0, 9)
+        ScenarioMapObject.__init__(self, map, 0, 2)
         
     def activate(self, party_avatar, direction):
         added = party_avatar.party.inventory.add_item_by_id('log')
@@ -51,7 +51,7 @@ class LogPile(ScenarioMapObject):
 class Tree(ScenarioMapObject):
 
     def __init__(self, map):
-        ScenarioMapObject.__init__(self, map, 0, 5)
+        ScenarioMapObject.__init__(self, map, 0, 23)
         
     def activate(self, party_avatar, direction):
         added = party_avatar.party.inventory.add_item_by_id('leaf')
@@ -63,7 +63,7 @@ class Tree(ScenarioMapObject):
 class SavePoint(ScenarioMapObject):
 
     def __init__(self, map):
-        ScenarioMapObject.__init__(self, map, 0, 7)
+        ScenarioMapObject.__init__(self, map, 0, 1)
 
     def activate(self, party_avatar, direction):
         self.map.schedule_message(MessageDialog('You game will be saved to %s.'
@@ -78,7 +78,8 @@ class PersistTestMap(MapModel):
     def __init__(self):
         MapModel.__init__(self, 'itempersisttest.map',
                           ('lower_tileset32.png', 'lower_tileset32.bnd'),
-                          [('upper_tileset32.png', 'upper_tileset32.bnd')])
+                          [(data_path('tileset/world_upper.png'),
+                            data_path('tileset/world_upper.bnd'))])
 
     def initialize(self, local_state, global_state):
         self.add_object(LogPile(self), Position(4, 5))
