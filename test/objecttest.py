@@ -229,7 +229,7 @@ class ObjectTestMap(MapModel):
 
 
 def char_factory(name):
-    return librpg.party.Character('Andy', 'char_alex32.png')
+    return librpg.party.Character('Andy', data_path('charset/naked_man.png'))
 
 if __name__ == '__main__':
     librpg.init('Object Test')

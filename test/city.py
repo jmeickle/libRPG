@@ -25,7 +25,7 @@ m = librpg.map.MapModel('city.map',
 m.set_music('park_1.ogg')
 
 def char_factory(name):
-    return librpg.party.Character('Andy', 'actor1.png', 0)
+    return librpg.party.Character('Andy', librpg.util.data_path('charset/naked_man.png'), 0)
 
 world = librpg.world.MicroWorld(m, char_factory)
 world.initial_state(librpg.util.Position(10, 10), ['Andy'])

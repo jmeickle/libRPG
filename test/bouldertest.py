@@ -66,7 +66,7 @@ class BoulderMaze(MapModel):
                     self.add_object(Victory(self), Position(x, y))
 
 def char_factory(name):
-    return librpg.party.Character('Andy', 'char_alex32.png')
+    return librpg.party.Character('Andy', data_path('charset/naked_man.png'))
 
 world = librpg.world.MicroWorld(BoulderMaze(), char_factory)
 world.initial_state(position=Position(4, 9),
