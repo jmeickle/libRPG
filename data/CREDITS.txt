@@ -8,10 +8,12 @@ tileset/town2.png
 
 ===============================================================================
 
-By Kamila de Medeiros Galvani
+By Kamila de Medeiros Galvani and Henrique Nakashima
 
 tileset/city_lower.png
 tileset/city_upper.png
 tileset/world_upper.png
+tileset/cliff.png
+charset/naked_man.png
 
 ===============================================================================
