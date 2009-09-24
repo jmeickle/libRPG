@@ -27,7 +27,7 @@ class SoundEffectLoader(FileLoader):
         return pygame.mixer.Sound(file)
 
 
-sfx_loader = SoundEffectLoader()
+__sfx_loader = SoundEffectLoader()
 
 def play_sfx(sfx_name, times=1, force_load=False):
     """
@@ -40,7 +40,7 @@ def play_sfx(sfx_name, times=1, force_load=False):
     *force_load*, if specified, will force the sound to be loaded again
     from its file rather than searched in the cache.
     """
-    s = sfx_loader.load(sfx_name, force_load)
+    s = __sfx_loader.load(sfx_name, force_load)
     s.play(times-1)
 
 

@@ -1,27 +1,31 @@
 import os
 
-class TemporalCache:
+class Cache:
+
+    def get(self, filename):
+        """
+        Return a pre-loaded resource loaded from *filename* or None if
+        that resource is not pre-loaded.
+        """
+        return None
+
+    def update_used(self, filename, resource):
+        """
+        Notify the cache that *resource* was loaded from *filename*.
+        """
+        pass
+
+
+class TemporalCache(Cache):
 
     def __init__(self):
         self.order = []
 
-    def get(self, filename):
-        return None
 
-    def update_used(self, filename, resource):
-        pass
-
-
-class FrequencyCache:
+class FrequencyCache(Cache):
 
     def __init__(self):
         self.order = {}
-
-    def get(self, filename):
-        return None
-
-    def update_used(self, filename, resource):
-        pass
 
 
 class FileLoader:
