@@ -21,8 +21,8 @@ from librpg.locals import *
 class ObjectTestNPC(MapObject):
 
     def __init__(self):
-        MapObject.__init__(self, MapObject.OBSTACLE, image_file='actor1.png',
-                           image_index=7)
+        MapObject.__init__(self, MapObject.OBSTACLE,
+                           image_file='man_undies.png')
         self.movement_behavior.movements.extend([Wait(30), ForcedStep(UP),
                                                  Wait(30), ForcedStep(DOWN)])
         
