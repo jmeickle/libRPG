@@ -4,7 +4,13 @@ librpg.init()
 
 librpg.config.graphics_config.config(screen_width=200, screen_height=200, scale=3)
 
-m = librpg.map.MapModel('maptest.map', ('lower_tileset.png', 'lower_tileset.bnd'), [('upper_tileset.png', 'upper_tileset.bnd'), ('upper_tileset.png','upper_tileset.bnd')] )
+m = librpg.map.MapModel('maptest.map',
+                        ('test16_lower_tileset.png',
+                         'test16_lower_tileset.bnd'),
+                        [('test16_upper_tileset.png',
+                          'test16_upper_tileset.bnd'),
+                         ('test16_upper_tileset.png',
+                          'test16_upper_tileset.bnd')] )
 
 print m
 

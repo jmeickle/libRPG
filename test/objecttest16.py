@@ -31,7 +31,7 @@ class ObjectTestNPC(MapObject):
 class ObjectTestRock(ScenarioMapObject):
 
     def __init__(self, map):
-        ScenarioMapObject.__init__(self, map, 0, 57)
+        ScenarioMapObject.__init__(self, map, 0, 11)
         
     def collide_with_party(self, party_avatar, direction):
         if not self.scheduled_movement:
@@ -50,8 +50,12 @@ class ObjectTestRock(ScenarioMapObject):
 class ObjectTestMap(MapModel):
     
     def __init__(self):
-        MapModel.__init__(self, 'objecttest16.map', ('lower_tileset.png', 'lower_tileset.bnd'), [('upper_tileset.png', 'upper_tileset.bnd'),])
-        
+        MapModel.__init__(self, 'objecttest16.map',
+                          ('test16_lower_tileset.png',
+                           'test16_lower_tileset.bnd'),
+                          [('test16_upper_tileset.png',
+                            'test16_upper_tileset.bnd')])
+
     def initialize(self, local_state, global_state):
         index = 0
         for i in range(6, 2, -1):

@@ -1,4 +1,4 @@
 from librpg.tile import *
 
-ts = Tileset('lower_tileset.png', 'lower_tileset.bnd')
+ts = Tileset('test16_lower_tileset.png', 'test16_lower_tileset.bnd')
 
