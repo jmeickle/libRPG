@@ -19,7 +19,7 @@ ok  Bridges
 ok  Trees
 ok  Tower
 ok  Well
-    Rock
+ok  Rock
 ok  Log Pile
 ok  Barrel
 ok  Volcano
