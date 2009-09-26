@@ -71,7 +71,7 @@ class MapController(Context):
            and not self.message_queue.is_busy():
             action = self.party_movement[0]
             if action == ACTIVATE:
-                self.party_movement.pop(0)
+                del self.party_movement[0]
                 self.map_model.party_action()
             else:
                 self.party_avatar.schedule_movement(Step(action))

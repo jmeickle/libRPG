@@ -52,7 +52,7 @@ class MovementQueue(Movement, list):
         first = self[0]
         should_remove = first.flow(obj)
         if should_remove:
-            self.pop(0)
+            del self[0]
         if len(self) == 0:
             return True
         else:

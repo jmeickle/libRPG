@@ -23,8 +23,8 @@ def quit():
 
 class SoundEffectLoader(FileLoader):
 
-    def load_from_file(self, file):
-        return pygame.mixer.Sound(file)
+    def actual_load(self, name):
+        return pygame.mixer.Sound(name)
 
 
 __sfx_loader = SoundEffectLoader()

@@ -216,7 +216,7 @@ class MultiMessageDialog(MessageDialog):
 
     def process_event(self, event):
         if event.key in m_cfg.key_action:
-            self.surfaces.pop(0)
+            del self.surfaces[0]
             if self.surfaces:
                 return True
             else:
