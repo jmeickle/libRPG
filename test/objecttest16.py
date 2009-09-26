@@ -5,7 +5,9 @@ import librpg
 import pygame
 
 librpg.init()
-librpg.config.graphics_config.config(tile_size=16, object_height=32, object_width=24)
+librpg.config.graphics_config.config(tile_size=16,
+                                     object_height=32,
+                                     object_width=24)
 
 from librpg.map import MapModel, MapController
 from librpg.mapobject import MapObject, ScenarioMapObject
@@ -18,7 +20,8 @@ from librpg.locals import *
 class ObjectTestNPC(MapObject):
 
     def __init__(self, index):
-        MapObject.__init__(self, MapObject.OBSTACLE, image_file='chara1.png', image_index=index)
+        MapObject.__init__(self, MapObject.OBSTACLE,
+                           image_file='test16_charset.png', image_index=index)
         for dir in [LEFT, DOWN, RIGHT, UP]:
             self.movement_behavior.movements.extend([Wait(30), ForcedStep(dir)])
 
@@ -66,7 +69,7 @@ class ObjectTestMap(MapModel):
         self.add_object(ObjectTestRock(self), Position(7, 2))
 
 def char_factory(name):
-    return librpg.party.Character('Andy', 'chara1.png', 3)
+    return librpg.party.Character('Andy', 'test16_charset.png', 3)
 
 world = librpg.world.MicroWorld(ObjectTestMap(), char_factory)
 world.initial_state(Position(8, 8), ['Andy'])

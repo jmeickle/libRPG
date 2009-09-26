@@ -2,7 +2,9 @@ import librpg
 
 librpg.init()
 
-librpg.config.graphics_config.config(screen_width=200, screen_height=200, scale=3)
+librpg.config.graphics_config.config(screen_width=200,
+                                     screen_height=200,
+                                     scale=3)
 
 m = librpg.map.MapModel('maptest.map',
                         ('test16_lower_tileset.png',
@@ -21,7 +23,7 @@ print 'Scenario layer:'
 print m.scenario_layer
 
 def char_factory(name):
-    return librpg.party.Character('Andy', 'char_alex.png')
+    return librpg.party.Character('Andy', 'test16_charset.png', 0)
 
 world = librpg.world.MicroWorld(m, char_factory)
 world.initial_state(librpg.util.Position(0, 0), ['Andy'])

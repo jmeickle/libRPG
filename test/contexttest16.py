@@ -2,7 +2,9 @@ import librpg
 import pygame
 
 librpg.init()
-librpg.config.graphics_config.config(tile_size=16, object_height=32, object_width=24)
+librpg.config.graphics_config.config(tile_size=16,
+                                     object_height=32,
+                                     object_width=24)
 
 from librpg.map import MapModel, MapController
 from librpg.mapobject import MapObject, ScenarioMapObject
@@ -18,7 +20,8 @@ from librpg.locals import *
 class ObjectTestNPC(MapObject):
 
     def __init__(self, index):
-        MapObject.__init__(self, MapObject.OBSTACLE, image_file='chara1.png', image_index=index)
+        MapObject.__init__(self, MapObject.OBSTACLE,
+                           image_file='test16_charset.png', image_index=index)
         for dir in [LEFT, DOWN, RIGHT, UP]:
             self.movement_behavior.movements.extend([Wait(30), ForcedStep(dir)])
 
@@ -75,8 +78,10 @@ class ObjectTestMap(MapModel):
     
     def __init__(self):
         MapModel.__init__(self, 'objecttest16.map',
-                          ('test16_lower_tileset.png', 'test16_lower_tileset.bnd'),
-                          [('test16_upper_tileset.png', 'test16_upper_tileset.bnd'),])
+                          ('test16_lower_tileset.png',
+                           'test16_lower_tileset.bnd'),
+                          [('test16_upper_tileset.png',
+                            'test16_upper_tileset.bnd'),])
         
     def initialize(self, local_state, global_state):
         # Add yummy NPCs
@@ -94,7 +99,7 @@ class ObjectTestMap(MapModel):
         self.add_context(self.object_counter)
 
 def char_factory(name):
-    return librpg.party.Character('Andy', 'chara1.png', 3)
+    return librpg.party.Character('Andy', 'test16_charset.png', 3)
 
 game_config.config(fps=40)
 world = librpg.world.MicroWorld(ObjectTestMap(), char_factory)
