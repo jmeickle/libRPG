@@ -25,8 +25,9 @@ else:
     print 'Pass a number from 1 to 5 for the screen and camera mode.'
     exit()
 
+lower_files = (librpg.util.data_path('tileset/city_lower.png'), librpg.util.data_path('tileset/city_lower.bnd'))
 upper_files = [(librpg.util.data_path('tileset/world_upper.png'), librpg.util.data_path('tileset/world_upper.bnd'))]
-m = librpg.map.MapModel('maptest32.map', ('lower_tileset32.png', 'lower_tileset32.bnd'), upper_files)
+m = librpg.map.MapModel('maptest32.map', lower_files, upper_files)
 
 def char_factory(name):
     return librpg.party.Character('Andy', 'test_chars.png', 1)

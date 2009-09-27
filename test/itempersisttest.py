@@ -77,7 +77,8 @@ class PersistTestMap(MapModel):
     
     def __init__(self):
         MapModel.__init__(self, 'itempersisttest.map',
-                          ('lower_tileset32.png', 'lower_tileset32.bnd'),
+                          (data_path('tileset/city_lower.png'),
+                           data_path('tileset/city_lower.bnd')),
                           [(data_path('tileset/world_upper.png'),
                             data_path('tileset/world_upper.bnd'))])
 

@@ -7,7 +7,8 @@ from librpg.dialog import MessageDialog
 from librpg.locals import *
 
 SAVE_FILE = 'save.sav'
-LOWER_TILESET = ('lower_tileset32.png', 'lower_tileset32.bnd')
+LOWER_TILESET = (data_path('tileset/city_lower.png'),
+                 data_path('tileset/city_lower.bnd'))
 UPPER_TILESET = [(data_path('tileset/world_upper.png'),
                   data_path('tileset/world_upper.bnd'))]
 
