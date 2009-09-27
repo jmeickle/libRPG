@@ -2,6 +2,9 @@ import os
 
 class Cache:
 
+    """
+    """
+
     def get(self, name):
         """
         Return a pre-loaded resource loaded from *name* or None if
@@ -17,6 +20,9 @@ class Cache:
 
 
 class TemporalCache(Cache):
+
+    """
+    """
 
     def __init__(self, capacity=5):
         self.capacity = capacity
@@ -42,12 +48,18 @@ class TemporalCache(Cache):
 
 class FrequencyCache(Cache):
 
+    """
+    """
+
     def __init__(self, capacity=5):
         self.capacity = capacity
         self.order = {}
 
 
 class InfiniteCache(Cache):
+
+    """
+    """
 
     def __init__(self):
         self.items = {}
@@ -60,6 +72,9 @@ class InfiniteCache(Cache):
 
 
 class Loader:
+
+    """
+    """
 
     def __init__(self, caches=None):
         if caches is None:
@@ -88,6 +103,9 @@ class Loader:
 
 
 class FileLoader(Loader):
+
+    """
+    """
 
     def load(self, name, force_load=False):
         filename = os.path.abspath(name)

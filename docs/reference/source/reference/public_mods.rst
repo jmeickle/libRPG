@@ -16,6 +16,8 @@ Contents:
     movement
     config
     sound
+    path
+    quest
     camera
     context
     image
