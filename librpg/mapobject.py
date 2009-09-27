@@ -23,27 +23,31 @@ class MapObject(object):
     BELOW, OBSTACLE, COUNTER, ABOVE = 0, 1, 2, 3
 
     def __init__(self, obstacle, image=None, facing=DOWN, speed=NORMAL_SPEED,
-                 image_file=None, image_index=0):
+                 image_file=None, image_index=0,
+                 basic_animation=DEFAULT_OBJECT_IMAGE_BASIC_ANIMATION,
+                 frame_number=None):
         """
         *Constructor*
-        
+
         *obstacle* should be one of {BELOW, OBSTACLE, COUNTER, ABOVE}
         indicating the vertical position of the object.
-        
+
         If *image* or *image_file* are specified, the object will be
         displayed with that image. *image* should be an ObjectImage and
         *image_file* should be the filename of a bitmap with the intended
-        image. Only one of them may be specified. If *image_file* is
-        specified and the file holds more than one object image,
-        *image_index* has to be passed indicating which of them should
-        be loaded.
-        
+        image. Only one of them may be specified.
+
+        If *image_file* is specified and the file holds more than one object
+        image, *image_index* has to be passed indicating which of them should
+        be loaded. Also, *basic_animation* and *frame_number* will customize
+        the object's animation in that case.
+
         *facing* is the object's starting facing, and *speed* is its
         starting speed.
-        
+
         :attr:`map`
             MapModel in which the object is.
-        
+
         :attr:`position`
             Position of the object in the map.
 
@@ -98,7 +102,8 @@ class MapObject(object):
         if image is not None:
             self.image = image
         elif image_file is not None:
-            self.image = ObjectImage(image_file, image_index)
+            self.image = ObjectImage(image_file, image_index, basic_animation,
+                                     frame_number)
 
     # Virtual
     def activate(self, party_avatar, direction):

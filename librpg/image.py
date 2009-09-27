@@ -76,7 +76,6 @@ class ObjectImage(Image):
     animation cycles and movement animation.
     """
 
-    DEFAULT_OBJECT_IMAGE_BASIC_ANIMATION = [[1, 2], [1, 0]]
     DIRECTION_TO_INDEX_MAP = {UP: 0, RIGHT: 1, DOWN: 2, LEFT: 3}
 
     def __init__(self, filename, index=0,

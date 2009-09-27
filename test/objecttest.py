@@ -57,8 +57,10 @@ class ObjectTestRock(ScenarioMapObject):
 class ObjectTestChest(MapObject):
 
     def __init__(self):
-        MapObject.__init__(self, MapObject.OBSTACLE, image_file='chest2.png',
-                           image_index=5, facing=UP)
+        MapObject.__init__(self, MapObject.OBSTACLE,
+                           image_file=data_path('charset/chest.png'),
+                           image_index=0, facing=UP,
+                           basic_animation=[[0]])
         self.closed = True
         self.filled = True
         self.shapeshift = 0
@@ -89,7 +91,8 @@ class ObjectTestChest(MapObject):
     def update(self):
         self.shapeshift += 1
         if self.shapeshift > 40:
-            self.image = ObjectImage('chest2.png', randint(0, 7))
+            self.image = ObjectImage(data_path('charset/chest.png'),
+                                     randint(0, 1), [[0]])
             self.shapeshift = 0
 
 

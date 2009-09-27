@@ -27,8 +27,10 @@ class SavePoint(ScenarioMapObject):
 class Chest(MapObject):
 
     def __init__(self, closed=True):
-        MapObject.__init__(self, MapObject.OBSTACLE, image_file='chest2.png',
-                           image_index=6)
+        MapObject.__init__(self, MapObject.OBSTACLE,
+                           image_file=data_path('charset/chest.png'),
+                           image_index=0,
+                           basic_animation=[[0]])
         if closed:
             self.facing = UP
         self.closed = closed
