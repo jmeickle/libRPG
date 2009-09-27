@@ -1,8 +1,9 @@
 import pygame
 
 from librpg import (virtualscreen, config, party, map, world, mapobject,
-                    camera, image, log, item, util, context, maparea, tile,
-                    dialog, mapview, menu, movement, state, sound)
+                    camera, image, loader, log, item, util, context, maparea,
+                    tile, dialog, mapview, menu, movement, state, sound, quest,
+                    path)
 
 def init(game_name='LibRPG Game', icon=None):
     pygame.init()
@@ -11,7 +12,7 @@ def init(game_name='LibRPG Game', icon=None):
     if icon is not None:
         icon = pygame.image.load(icon)
     else:
-        icon = pygame.image.load(util.data_path('icon.png'))
+        icon = pygame.image.load(path.data_path('icon.png'))
     pygame.display.set_icon(icon)
     
     virtualscreen.init(config.graphics_config.real_screen_dimensions,

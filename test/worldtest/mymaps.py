@@ -1,16 +1,17 @@
 from librpg.world import WorldMap, RelativeTeleportArea
 from librpg.mapobject import ScenarioMapObject, MapObject
 from librpg.maparea import RectangleArea, MapArea
-from librpg.util import Position, data_path
+from librpg.util import Position
 from librpg.movement import Face, Wait
 from librpg.dialog import MessageDialog
 from librpg.locals import *
+from librpg.path import *
 
 SAVE_FILE = 'save.sav'
-LOWER_TILESET = (data_path('tileset/city_lower.png'),
-                 data_path('tileset/city_lower.bnd'))
-UPPER_TILESET = [(data_path('tileset/world_upper.png'),
-                  data_path('tileset/world_upper.bnd'))]
+LOWER_TILESET = (tileset_path('city_lower.png'),
+                 tileset_path('city_lower.bnd'))
+UPPER_TILESET = [(tileset_path('world_upper.png'),
+                  tileset_path('world_upper.bnd'))]
 
 class SavePoint(ScenarioMapObject):
 
@@ -29,7 +30,7 @@ class Chest(MapObject):
 
     def __init__(self, closed=True):
         MapObject.__init__(self, MapObject.OBSTACLE,
-                           image_file=data_path('charset/chest.png'),
+                           image_file=charset_path('chest.png'),
                            image_index=0,
                            basic_animation=[[0]])
         if closed:

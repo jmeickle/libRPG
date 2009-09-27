@@ -1,6 +1,4 @@
-branch
-tag
-trunk
+hg
     life
         life.py
         maps
@@ -56,5 +54,19 @@ trunk
         mapeditor
             mapeditor.py
             ... other mapeditor scripts
+        tileset
+            ... tileset management tools
+        charset
+            ... charset management tools
         ... other tools
-        
+    data
+        tileset
+            ... tilesets and bnds
+        charset
+            ... charsets
+        sfx
+            ... sound effects
+        music
+            ... music
+        icon.png
+        CREDITS.txt

@@ -9,7 +9,7 @@ import pygame
 from librpg.map import MapModel, MapController
 from librpg.mapobject import MapObject, ScenarioMapObject
 from librpg.world import MicroWorld
-from librpg.util import Position, inverse, data_path
+from librpg.util import Position, inverse
 from librpg.party import Character, CharacterReserve
 from librpg.movement import Step, ForcedStep, Face, Wait, Slide
 from librpg.dialog import (MessageDialog, ChoiceDialog, MultiMessageDialog,
@@ -17,6 +17,7 @@ from librpg.dialog import (MessageDialog, ChoiceDialog, MultiMessageDialog,
 from librpg.sound import play_sfx
 from librpg.image import ObjectImage
 from librpg.locals import *
+from librpg.path import *
 
 class ObjectTestNPC(MapObject):
 
@@ -58,7 +59,7 @@ class ObjectTestChest(MapObject):
 
     def __init__(self):
         MapObject.__init__(self, MapObject.OBSTACLE,
-                           image_file=data_path('charset/chest.png'),
+                           image_file=charset_path('chest.png'),
                            image_index=0, facing=UP,
                            basic_animation=[[0]])
         self.closed = True
@@ -91,7 +92,7 @@ class ObjectTestChest(MapObject):
     def update(self):
         self.shapeshift += 1
         if self.shapeshift > 40:
-            self.image = ObjectImage(data_path('charset/chest.png'),
+            self.image = ObjectImage(charset_path('chest.png'),
                                      randint(0, 1), [[0]])
             self.shapeshift = 0
 
@@ -210,10 +211,10 @@ class ObjectTestMap(MapModel):
     
     def __init__(self):
         map_file = 'objecttest.map'
-        lower_tile_image = data_path('tileset/town2.png')
-        lower_bnd_file = data_path('tileset/town2.bnd')
-        upper_tile_image = data_path('tileset/world_upper.png')
-        upper_bnd_file = data_path('tileset/world_upper.bnd')
+        lower_tile_image = tileset_path('town2.png')
+        lower_bnd_file = tileset_path('town2.bnd')
+        upper_tile_image = tileset_path('world_upper.png')
+        upper_bnd_file = tileset_path('world_upper.bnd')
         MapModel.__init__(self, 'objecttest.map',
                           (lower_tile_image, lower_bnd_file),
                           [(upper_tile_image, upper_bnd_file),])
@@ -232,7 +233,7 @@ class ObjectTestMap(MapModel):
 
 
 def char_factory(name):
-    return librpg.party.Character('Andy', data_path('charset/naked_man.png'))
+    return librpg.party.Character('Andy', charset_path('naked_man.png'))
 
 if __name__ == '__main__':
     librpg.init('Object Test')

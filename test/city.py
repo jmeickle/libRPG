@@ -18,14 +18,15 @@ librpg.config.game_config.config(key_up=set([K_w]),
                                  key_cancel=set([K_q]))
 
 m = librpg.map.MapModel('city.map',
-                        (librpg.util.data_path('tileset/city_lower.png'),
-                         librpg.util.data_path('tileset/city_lower.bnd')),
-                        [(librpg.util.data_path('tileset/city_upper.png'),
-                          librpg.util.data_path('tileset/city_upper.bnd'))])
+                        (librpg.path.tileset_path('city_lower.png'),
+                         librpg.path.tileset_path('city_lower.bnd')),
+                        [(librpg.path.tileset_path('city_upper.png'),
+                          librpg.path.tileset_path('city_upper.bnd'))])
 m.set_music('park_1.ogg')
 
 def char_factory(name):
-    return librpg.party.Character('Andy', librpg.util.data_path('charset/naked_man.png'), 0)
+    return librpg.party.Character('Andy',
+                                  librpg.path.charset_path('naked_man.png'), 0)
 
 world = librpg.world.MicroWorld(m, char_factory)
 world.initial_state(librpg.util.Position(10, 10), ['Andy'])

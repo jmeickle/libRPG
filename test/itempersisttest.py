@@ -3,12 +3,13 @@
 import librpg
 from librpg.map import MapModel
 from librpg.mapobject import ScenarioMapObject
-from librpg.util import Position, IdFactory, data_path
+from librpg.util import Position, IdFactory
 from librpg.party import Character, CharacterReserve, Party
 from librpg.world import MicroWorld
 from librpg.item import OrdinaryInventory, OrdinaryItem
 from librpg.dialog import MessageDialog
 from librpg.context import Context, get_context_stack
+from librpg.path import *
 
 from pygame.locals import *
 import os
@@ -77,10 +78,10 @@ class PersistTestMap(MapModel):
     
     def __init__(self):
         MapModel.__init__(self, 'itempersisttest.map',
-                          (data_path('tileset/city_lower.png'),
-                           data_path('tileset/city_lower.bnd')),
-                          [(data_path('tileset/world_upper.png'),
-                            data_path('tileset/world_upper.bnd'))])
+                          (tileset_path('city_lower.png'),
+                           tileset_path('city_lower.bnd')),
+                          [(tileset_path('world_upper.png'),
+                            tileset_path('world_upper.bnd'))])
 
     def initialize(self, local_state, global_state):
         self.add_object(LogPile(self), Position(4, 5))
@@ -110,7 +111,7 @@ class TestParty(Party):
 # Char and party factories
 
 def char_factory(name):
-    CHAR_IMAGES = {'Andy': (data_path('charset/naked_man.png'), 0),
+    CHAR_IMAGES = {'Andy': (charset_path('naked_man.png'), 0),
                    'Brenda': ('test_chars.png', 1),
                    'Charles': ('test_chars.png', 0),
                    'Dylan': ('test_chars.png', 2)}
