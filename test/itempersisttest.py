@@ -109,10 +109,10 @@ class TestParty(Party):
 # Char and party factories
 
 def char_factory(name):
-    CHAR_IMAGES = {'Andy': ('actor1.png', 0),
-                   'Brenda': ('actor1.png', 1),
-                   'Charles': ('actor1.png', 2),
-                   'Dylan': ('actor1.png', 6)}
+    CHAR_IMAGES = {'Andy': (data_path('charset/naked_man.png'), 0),
+                   'Brenda': ('test_chars.png', 1),
+                   'Charles': ('test_chars.png', 0),
+                   'Dylan': ('test_chars.png', 2)}
     image_and_index = CHAR_IMAGES[name]
     return Character(name, image_and_index[0], image_and_index[1])
 
