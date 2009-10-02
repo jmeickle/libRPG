@@ -1,7 +1,7 @@
 :mod:`maparea` -- Map areas
 ===========================
 
-.. automodule:: maparea
+.. automodule:: librpg.maparea
    :members:
    :show-inheritance:
 

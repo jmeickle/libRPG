@@ -1,7 +1,7 @@
 :mod:`virtualscreen` -- Screen with scaling
 ===========================================
 
-.. automodule:: virtualscreen
+.. automodule:: librpg.virtualscreen
    :members:
    :show-inheritance:
 

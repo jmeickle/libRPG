@@ -1,6 +1,6 @@
 :mod:`menu` -- Generic menus
 ============================
 
-.. automodule:: menu
+.. automodule:: librpg.menu
    :members:
    :show-inheritance:

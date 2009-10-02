@@ -1,7 +1,7 @@
 :mod:`camera` -- Cameras for viewing maps
 =========================================
 
-.. automodule:: camera
+.. automodule:: librpg.camera
    :members:
    :show-inheritance:
 

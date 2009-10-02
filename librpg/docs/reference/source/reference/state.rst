@@ -1,6 +1,6 @@
 :mod:`state` -- Gamestate and savegame
 ======================================
 
-.. automodule:: state
+.. automodule:: librpg.state
    :members:
    :show-inheritance:

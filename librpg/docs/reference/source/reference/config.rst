@@ -1,7 +1,7 @@
 :mod:`config` -- Components configuration
 =========================================
 
-.. automodule:: config
+.. automodule:: librpg.config
    :members:
    :show-inheritance:
 

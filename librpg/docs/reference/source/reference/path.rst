@@ -1,6 +1,6 @@
 :mod:`path` -- Accessors for standard resources
 ===============================================
 
-.. automodule:: path
+.. automodule:: librpg.path
    :members:
    :show-inheritance:

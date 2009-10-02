@@ -1,7 +1,7 @@
 :mod:`loader` -- File loading and caching
 =========================================
 
-.. automodule:: loader
+.. automodule:: librpg.loader
    :members:
    :show-inheritance:
 

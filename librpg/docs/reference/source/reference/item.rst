@@ -1,7 +1,7 @@
 :mod:`item` -- Items and inventory management
 =============================================
 
-.. automodule:: item
+.. automodule:: librpg.item
    :members:
    :show-inheritance:
 

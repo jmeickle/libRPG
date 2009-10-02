@@ -1,6 +1,6 @@
 :mod:`tile` -- Tile loading and rendering
 =========================================
 
-.. automodule:: tile
+.. automodule:: librpg.tile
    :members:
    :show-inheritance:

@@ -1,7 +1,7 @@
 :mod:`movement` -- Movement management for MapObjects
 =====================================================
 
-.. automodule:: movement
+.. automodule:: librpg.movement
    :members:
    :show-inheritance:
 

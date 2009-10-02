@@ -1,7 +1,7 @@
 :mod:`sound` -- Music and sound effects
 =======================================
 
-.. automodule:: sound
+.. automodule:: librpg.sound
    :members:
    :show-inheritance:
 

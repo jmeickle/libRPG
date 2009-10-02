@@ -1,7 +1,7 @@
 :mod:`log` -- Generic logging
 =============================
 
-.. automodule:: log
+.. automodule:: librpg.log
    :members:
    :show-inheritance:
 

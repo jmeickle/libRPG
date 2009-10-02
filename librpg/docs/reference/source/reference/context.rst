@@ -1,7 +1,7 @@
 :mod:`context` -- Context Stack mechanism
 =========================================
 
-.. automodule:: context
+.. automodule:: librpg.context
    :members:
    :show-inheritance:
 

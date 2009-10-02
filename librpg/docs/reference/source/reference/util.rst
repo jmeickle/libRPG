@@ -1,6 +1,6 @@
 :mod:`util` -- Utility classes
 ==============================
 
-.. automodule:: util
+.. automodule:: librpg.util
    :members:
    :show-inheritance:

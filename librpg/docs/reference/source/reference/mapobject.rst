@@ -1,7 +1,7 @@
 :mod:`mapobject` -- Map interactive objects
 ===========================================
 
-.. automodule:: mapobject
+.. automodule:: librpg.mapobject
    :members:
    :show-inheritance:
 

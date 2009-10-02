@@ -1,7 +1,7 @@
 :mod:`image` -- Image loading and slicing
 =========================================
 
-.. automodule:: image
+.. automodule:: librpg.image
    :members:
    :show-inheritance:
 

@@ -1,7 +1,7 @@
 :mod:`world` -- Game world
 ==========================
 
-.. automodule:: world
+.. automodule:: librpg.world
    :members:
    :show-inheritance:
 

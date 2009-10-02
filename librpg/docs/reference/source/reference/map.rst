@@ -1,7 +1,7 @@
 :mod:`map` -- Map core
 ======================
 
-.. automodule:: map
+.. automodule:: librpg.map
    :members:
    :show-inheritance:
    

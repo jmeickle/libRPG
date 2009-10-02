@@ -1,6 +1,6 @@
 :mod:`mapview` -- Map rendering
 ===============================
 
-.. automodule:: mapview
+.. automodule:: librpg.mapview
    :members:
    :show-inheritance:

@@ -1,7 +1,7 @@
 :mod:`dialog` -- Simple dialogs
 ===============================
 
-.. automodule:: dialog
+.. automodule:: librpg.dialog
    :members:
    :show-inheritance:
 

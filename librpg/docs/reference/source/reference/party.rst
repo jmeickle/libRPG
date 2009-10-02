@@ -1,7 +1,7 @@
 :mod:`party` -- Party and Character management
 ==============================================
 
-.. automodule:: party
+.. automodule:: librpg.party
    :members:
    :show-inheritance:
 

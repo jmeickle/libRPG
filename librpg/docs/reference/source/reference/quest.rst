@@ -1,6 +1,6 @@
 :mod:`quest` -- Quests and storyline management
 ===============================================
 
-.. automodule:: quest
+.. automodule:: librpg.quest
    :members:
    :show-inheritance:
