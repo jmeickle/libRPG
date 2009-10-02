@@ -12,7 +12,7 @@ def data_path(relative_path='.'):
     Return the absolute file path of a file, specified by a *relative_path*
     to the librpg data root directory.
     """
-    path = os.path.join('..', 'data', relative_path)
+    path = os.path.join('data', relative_path)
     return lib_path(path)
 
 def tileset_path(relative_path='.'):
