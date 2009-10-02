@@ -9,7 +9,7 @@ librpg.config.graphics_config.config(tile_size=32, object_height=32,
 
 # Create world
 try:
-    w = MyWorld('save.sav')
+    w = MyWorld('save')
 except IOError:
     w = MyWorld()
 

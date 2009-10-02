@@ -14,7 +14,7 @@ from librpg.path import *
 from pygame.locals import *
 import os
 
-SAVE_FILE = "itempersisttest.sav"
+SAVE_FILE = "itempersisttest_save"
 
 # Items
 
