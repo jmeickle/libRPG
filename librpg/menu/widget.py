@@ -2,8 +2,10 @@ import pygame
 
 class Widget(object):
 
-    def __init__(self):
-        self.surface = None
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+        self.surface = pygame.Surface((width, height)).convert_alpha()
 
     def get_surface(self):
         """
@@ -43,4 +45,3 @@ class Widget(object):
         Handle a right mouse click event.
         """
         pass
-    

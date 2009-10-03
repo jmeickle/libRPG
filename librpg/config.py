@@ -283,7 +283,7 @@ class GameConfig(Config):
     key_right = set([K_RIGHT])
     key_action = set([K_RETURN, K_SPACE])
     key_cancel = set([K_ESCAPE])
-    
+
 
 class MenuConfig(Config):
 
@@ -295,12 +295,12 @@ class MenuConfig(Config):
     """
 
     _theme = None
-    
+
     def get_theme(self):
         if self._theme is None:
             theme = MenuTheme()
         return theme
-    
+
     theme = property(get_theme)
 
 

@@ -1,6 +1,6 @@
 import pygame
 
-from widget import Widget
+from div import Div
 
-class Panel(Widget):
+class Panel(Div):
     pass
