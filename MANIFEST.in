@@ -1,4 +1,9 @@
 include setup.py
 include make_release.py
-recursive-include librpg *
+include MANIFEST.in
+
+include librpg/docs/reference/Makefile
+recursive-include librpg *.py *.txt *.png *.bnd *.map *.rst *.xcf *.bat *.yaml *.scm
+
 prune librpg/docs/reference/build
+prune librpg/tools/mapeditor

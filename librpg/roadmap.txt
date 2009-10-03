@@ -14,7 +14,7 @@ Version 0.3 (released on ago 22, 2009)
 
 A World with a few connected maps is available for the Party to walk around. The local state of the maps is saved for when the party comes back to that map.
 
-Version 0.4 (to be released on sep 28, 2009)
+Version 0.4 (to be released on oct 4, 2009)
 
 An inventory stores the party's items, which are taken from map events. The items are created by an item factory. Log system working and tested. Animated tiles implemented. Party and inventory persistency. Original graphics to allow for distribution under LGPL. First released version.
 

@@ -51,7 +51,7 @@ def main():
           license='LGPL',
           description='A framework over Pygame for developing 2D RPGs',
           long_description='A framework based on Pygame for developing \
-                       old-school 2D tile-based RPGs.',
+                            old-school 2D tile-based RPGs.',
           packages = ['librpg'],
           package_dir={'librpg': 'librpg'},
           package_data={'librpg': data})
