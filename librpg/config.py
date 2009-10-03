@@ -15,6 +15,8 @@ The global configuration objects are:
     **game_config**
         GameConfig object
 
+    **menu_config**
+        MenuConfig object
 """
 
 import pygame
@@ -281,11 +283,31 @@ class GameConfig(Config):
     key_right = set([K_RIGHT])
     key_action = set([K_RETURN, K_SPACE])
     key_cancel = set([K_ESCAPE])
+
+
+class MenuConfig(Config):
+
+    """
+    The MenuConfig contains attributes related to menus.
     
+    :attr:`theme`
+        MenuTheme to use for menus, except when explicitly specified.
+    """
+
+    _theme = None
+
+    def get_theme(self):
+        if self._theme is None:
+            theme = MenuTheme()
+        return theme
+
+    theme = property(get_theme)
+
 
 graphics_config = GraphicsConfig()
 dialog_config = DialogConfig()
 game_config = GameConfig()
+menu_config = MenuConfig()
 
 from librpg.camera import PartyCentricCameraMode as DEFAULT_CAMERA_MODE
 graphics_config.camera_mode = DEFAULT_CAMERA_MODE()
