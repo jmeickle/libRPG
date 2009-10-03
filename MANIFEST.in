@@ -1,0 +1,4 @@
+include setup.py
+include make_release.py
+recursive-include librpg *
+prune librpg/docs/reference/build

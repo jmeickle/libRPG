@@ -5,6 +5,9 @@ import glob
 import fnmatch
 from os.path import join
 
+NAME = 'LibRPG'
+VERSION = '0.4'
+
 def recursive_list_dir(dir):
     data = []
     for path, _, files in os.walk(join('librpg', dir)):
@@ -13,31 +16,34 @@ def recursive_list_dir(dir):
             data.append(join('\\'.join(p[1:]), filename))
     return data
 
-def  get_data_files():
+def get_data_files(test, tools):
     data = []
 
     data.extend(recursive_list_dir('data'))
 
-    data.append(join('docs', 'roadmap.txt'))
-    data.append(join('docs', 'faq.txt'))
+    if test:
+        data.append(join('test', '*.*'))
+        data.append(join('test', 'worldtest', '*.*'))
     
-    data.append(join('test', '*.*'))
-    data.append(join('test', 'worldtest', '*.*'))
-    
-    data.append(join('tools', 'charset', '*.scm'))
-    data.append(join('tools', 'charset', '*.py'))
-    data.append(join('tools', 'tileset', '*.py'))
+    if tools:
+        data.append(join('tools', 'charset', '*.scm'))
+        data.append(join('tools', 'charset', '*.py'))
+        data.append(join('tools', 'tileset', '*.py'))
     
     return data
 
 def main():
-    if sys.version < '2.6':
-           sys.exit('ERROR: Sorry, python 2.6 is required for LibRPG.')
+    # if sys.version < '2.6':
+        # sys.exit('ERROR: Sorry, python 2.6 is required for LibRPG.')
 
-    data = get_data_files()
-    
-    setup(name='LibRPG',
-          version='0.4',
+    if '--complete' in sys.argv:
+        data = get_data_files(test=True, tools=True)
+        sys.argv.remove('--complete')
+    else:
+        data = get_data_files(test=False, tools=False)
+
+    setup(name=NAME,
+          version=VERSION,
           provides=['librpg'],
           author='Henrique Nakashima',
           author_email='henrique.nakashima@gmail.com',
@@ -64,3 +70,6 @@ if __name__ == '__main__':
 
 # To build an .exe Windows 64-bit installer
 # python setup.py build --plat-name=win-amd64 bdist_wininst
+
+# To include tests/ and tools/ in any dist
+# Add '--complete' to the end of the command line
