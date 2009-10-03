@@ -22,7 +22,6 @@ Contents:
     context
     image
     party
-    log
     virtualscreen
     util
 

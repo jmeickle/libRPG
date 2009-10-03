@@ -1,7 +1,7 @@
 import pygame
 
 from librpg import (virtualscreen, config, party, map, world, mapobject,
-                    camera, image, loader, log, item, util, context, maparea,
+                    camera, image, loader, item, util, context, maparea,
                     tile, dialog, mapview, menu, movement, state, sound, quest,
                     path)
 
