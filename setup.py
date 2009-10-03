@@ -52,8 +52,9 @@ def main():
           description='A framework over Pygame for developing 2D RPGs',
           long_description='A framework based on Pygame for developing \
                             old-school 2D tile-based RPGs.',
-          packages = ['librpg'],
-          package_dir={'librpg': 'librpg'},
+          packages = ['librpg', 'librpg.menu'],
+          package_dir={'librpg': 'librpg',
+                       'librpg.menu': os.path.join('librpg', 'menu')},
           package_data={'librpg': data})
 
 if __name__ == '__main__':
