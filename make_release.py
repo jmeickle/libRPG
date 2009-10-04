@@ -8,8 +8,8 @@ def get_filename(extension):
     return '%s-%s.%s' % (NAME, VERSION, extension)
 
 def cleanup():
-    shutil.rmtree('dist')
-    shutil.rmtree('build')
+    shutil.rmtree('dist', True)
+    shutil.rmtree('build', True)
 
 def main():
     # Clean previous build
