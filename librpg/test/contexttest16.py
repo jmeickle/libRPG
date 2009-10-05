@@ -58,7 +58,7 @@ class CounterContext(Context):
         self.font = pygame.font.SysFont(dialog_config.font_name,
                                         dialog_config.font_size)
 
-    def step(self):
+    def update(self):
         self.amount = len(self.map.objects)
         self.party_pos = self.map.party_avatar.position
 

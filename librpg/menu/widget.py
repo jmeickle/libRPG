@@ -1,11 +1,17 @@
 import pygame
 
+from librpg.config import menu_config
+
 class Widget(object):
 
-    def __init__(self, width, height):
+    def __init__(self, width, height, theme=None):
         self.width = width
         self.height = height
         self.surface = pygame.Surface((width, height)).convert_alpha()
+        if theme is not None:
+            self.theme = theme
+        else:
+            self.theme = menu_config.theme
 
     def get_surface(self):
         """
@@ -21,6 +27,9 @@ class Widget(object):
         Render the widget on its `surface` attribute.
         """
         pass
+
+    def render(self, screen, x_offset, y_offset):
+        screen.blit(self.get_surface(), (x_offset, y_offset))
 
     def update(self):
         """

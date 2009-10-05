@@ -311,3 +311,5 @@ menu_config = MenuConfig()
 
 from librpg.camera import PartyCentricCameraMode as DEFAULT_CAMERA_MODE
 graphics_config.camera_mode = DEFAULT_CAMERA_MODE()
+
+from librpg.menu import MenuTheme

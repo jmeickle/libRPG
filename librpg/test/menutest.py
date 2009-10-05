@@ -1,9 +1,21 @@
-#! /usr/bin/env python
+import librpg
+from librpg.menu import MenuController, Menu, Panel, Div
+from librpg.context import get_context_stack
 
-import pygame
-from pygame.locals import *
+class TestMenu(Menu):
 
-from librpg.menu import *
+    def __init__(self):
+        Menu.__init__(self, 400, 300)
+        self.add_widget(Panel(100, 100), (10, 10))
 
-m = Menu(Position (0,0))
-m.open()
+
+def main():
+    librpg.init()
+
+    c = MenuController(TestMenu())
+    get_context_stack().stack_context(c)
+    get_context_stack().gameloop()
+
+if __name__ == '__main__':
+    main()
+

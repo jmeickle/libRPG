@@ -347,7 +347,7 @@ class MessageQueue(Context):
             surface, dim = self.current.draw()
             get_screen().blit(surface, dim)
 
-    def step(self):
+    def update(self):
         self.pop_next()
 
     def process_event(self, event):

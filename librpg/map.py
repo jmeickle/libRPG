@@ -52,7 +52,7 @@ class MapController(Context):
         for context in map_model.contexts:
             context_stack.stack_context(context)
         
-    def step(self):
+    def update(self):
         if self.map_model.pause_delay > 0:
             self.map_model.pause_delay -= 1
             return

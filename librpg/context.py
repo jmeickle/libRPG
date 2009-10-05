@@ -94,7 +94,7 @@ class ContextStack(object):
         In each cycle, the following will happen:
         
         1) For each active context in the map, bottom-up:
-            a) The step() method of that Context will be called
+            a) The update() method of that Context will be called
             b) The draw() method of that Context will be drawn
         2) The screen will be flipped so that the screen receives all the
            updates at once.
@@ -114,7 +114,7 @@ class ContextStack(object):
             self.clock.tick(game_config.fps)
             for context in self.stack:
                 if context.active:
-                    context.step()
+                    context.update()
                     context.draw()
             get_screen().flip()
 
@@ -169,7 +169,7 @@ class Context(object):
         return False
 
     # Virtual
-    def step(self):
+    def update(self):
         """
         *Virtual.*
         
