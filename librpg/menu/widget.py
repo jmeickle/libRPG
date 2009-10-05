@@ -4,10 +4,14 @@ from librpg.config import menu_config
 
 class Widget(object):
 
-    def __init__(self, width, height, theme=None):
+    def __init__(self, width=0, height=0, theme=None):
         self.width = width
         self.height = height
-        self.surface = pygame.Surface((width, height)).convert_alpha()
+        if width > 0 and height > 0:
+            self.surface = pygame.Surface((width, height)).convert_alpha()
+        else:
+            self.surface = None
+
         if theme is not None:
             self.theme = theme
         else:
@@ -29,7 +33,9 @@ class Widget(object):
         pass
 
     def render(self, screen, x_offset, y_offset):
-        screen.blit(self.get_surface(), (x_offset, y_offset))
+        surf = self.get_surface()
+        if surf is not None:
+            screen.blit(self.get_surface(), (x_offset, y_offset))
 
     def update(self):
         """

@@ -24,6 +24,13 @@ class MenuTheme(object):
         """
         return ('sys', 'Verdana')
 
+    def get_font_anti_alias(self):
+        return True
+
+    def get_font_color(self):
+        DEFAULT_COLOR = (255, 255, 255)
+        return DEFAULT_COLOR
+
     def draw_panel(self, surface, rect):
         """
         *Virtual.*

@@ -3,9 +3,56 @@ import pygame
 from widget import Widget
 
 class Label(Widget):
-    
-    def __init__(self, text=''):
-        self.text = text
+
+    def __init__(self, text='', size=12, bold=False, italic=False):
+        Widget.__init__(self)
+        self._text = text
+        self._size = size
+        self._bold = bold
+        self._italic = italic
+        self.changed = False
 
     def draw(self):
-        pass
+        if self.surface is None or self.changed:
+            self.changed = False
+            font = self.theme.get_font(self.size, self.bold, self.italic)
+            self.surface = font.render(self.text,
+                                       self.theme.get_font_anti_alias(),
+                                       self.theme.get_font_color())
+
+    def get_text(self):
+        return self._text
+
+    def set_text(self, text):
+        self.changed = True
+        self._text = text
+
+    text = property(get_text, set_text)
+
+    def get_size(self):
+        return self._size
+
+    def set_size(self, size):
+        self.changed = True
+        self._size = size
+
+    size = property(get_size, set_size)
+
+    def get_bold(self):
+        return self._bold
+
+    def set_bold(self, bold=True):
+        self.changed = True
+        self._bold = bold
+
+    bold = property(get_bold, set_bold)
+
+    def get_italic(self):
+        return self._italic
+
+    def set_italic(self, italic=True):
+        self.changed = True
+        self._italic = italic
+
+    italic = property(get_italic, set_italic)
+
