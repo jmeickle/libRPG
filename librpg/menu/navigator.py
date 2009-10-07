@@ -1,3 +1,7 @@
+import math
+
+from librpg.locals import *
+
 class WidgetNavigator(object):
 
     def find(self, widget, direction):
@@ -27,20 +31,22 @@ class DistanceNavigator(WidgetNavigator):
 
     def find(self, widget, direction):
         best = None, DistanceNavigator.MAX_DIST
-        for other_widget in widget.parent.widgets:
-            if other_widget is not widget:
-                dist = self.calc_distance(widget.position, other_widget.position, direction)
+        for bound_widget in widget.parent.widgets:
+            if bound_widget.widget is not widget:
+                dist = self.calc_distance(widget.position,
+                                          bound_widget.widget.position,
+                                          direction)
                 if dist < best[1]:
-                    best = other_widget, dist
+                    best = bound_widget, dist
         return best[0]
 
     def enter_div(self, div, direction):
         pos = (div.width / 2, div.height / 2)
         best = None, DistanceNavigator.MAX_DIST
-        for widget in widget.parent.widgets:
-            dist = self.calc_distance(pos, widget.position, direction)
+        for bound in div.widgets:
+            dist = self.calc_distance(pos, bound.widget.position, direction)
             if dist < best[1]:
-                best = widget, dist
+                best = bound.widget, dist
         return best[0]
 
     def calc_distance(self, start, end, direction):

@@ -10,6 +10,7 @@ class TestMenu(Menu):
         self.add_widget(self.panel, (40, 40))
         self.add_widget(Label('Menu'), (10, 10))
         self.panel.add_widget(Label('Panel'), (10, 10))
+        self.crystallize()
 
 
 def main():
