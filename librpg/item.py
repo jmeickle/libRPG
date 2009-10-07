@@ -409,8 +409,8 @@ class OrdinaryItem(Item):
         try:
             self.id
         except AttributeError:
-            raise Exception('Classes derived from OrdinaryItem must have an '\
-                            'id as class attribute')
+            raise Exception, 'Classes derived from OrdinaryItem must have an '\
+                             'id as class attribute'
 
     def __repr__(self):
         #return "%s id=%s" % (self.name, str(self.id))

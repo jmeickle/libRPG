@@ -4,7 +4,7 @@ from librpg.config import menu_config
 
 class Widget(object):
 
-    def __init__(self, width=0, height=0, theme=None):
+    def __init__(self, width=0, height=0, focusable=True, theme=None):
         self.width = width
         self.height = height
         if width > 0 and height > 0:
@@ -16,6 +16,11 @@ class Widget(object):
             self.theme = theme
         else:
             self.theme = menu_config.theme
+
+        self.focusable = focusable
+
+        self.parent = None
+        self.position = None
 
     def get_surface(self):
         """

@@ -222,8 +222,8 @@ class IdFactory(object):
         try:
             _class.id
         except AttributeError:
-            raise Exception('A class must have an id attribute to be '
-                            'registered.')
+            raise Exception, 'A class must have an id attribute to be '\
+                             'registered.'
         assert _class.id not in self.classes.keys(), \
                 'id %s already registered' % _class.id
         self.classes[_class.id] = _class

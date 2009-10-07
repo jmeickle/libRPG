@@ -16,8 +16,8 @@ class Div(Widget):
     A widget container and organizer.
     """
 
-    def __init__(self, width, height, theme=None):
-        Widget.__init__(self, width, height, theme)
+    def __init__(self, width, height, focusable=True, theme=None):
+        Widget.__init__(self, width, height, focusable, theme)
         self.widgets = []
 
     def add_widget(self, widget, position):

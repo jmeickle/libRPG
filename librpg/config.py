@@ -52,7 +52,7 @@ class Config(object):
                 else:
                     scheduled[key] = value
             else:
-                raise Exception('config() does not take %s as parameter' % key)
+                raise Exception, 'config() does not take %s as parameter' % key
 
         for key, value in scheduled.iteritems():
             setattr(self, key, value)

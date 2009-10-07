@@ -358,7 +358,7 @@ class MapModel(object):
         elif obj.is_above():
             self.above_objects.append(obj)
         else:
-            raise Exception('Object is neither below, obstacle or above')
+            raise Exception, 'Object is neither below, obstacle or above'
         if hasattr(obj, 'update'):
             self.updatable_objects.append(obj)
             
@@ -380,7 +380,7 @@ class MapModel(object):
         elif obj.is_above():
             self.above_objects.remove(obj)
         else:
-            raise Exception('Object is neither below, obstacle or above')
+            raise Exception, 'Object is neither below, obstacle or above'
         if hasattr(obj, 'update'):
             self.updatable_objects.remove(obj)
 

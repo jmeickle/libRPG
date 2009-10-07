@@ -4,8 +4,9 @@ from widget import Widget
 
 class Label(Widget):
 
-    def __init__(self, text='', size=12, bold=False, italic=False):
-        Widget.__init__(self)
+    def __init__(self, text='', size=12, bold=False, italic=False,
+                 focusable=True, theme=None):
+        Widget.__init__(self, focusable=focusable, theme=theme)
         self._text = text
         self._size = size
         self._bold = bold

@@ -99,7 +99,7 @@ class Loader:
             cache.update_used(name, temp)
 
     def actual_load(self, name):
-        raise NotImplementedError('Loader.actual_load() is abstract')
+        raise NotImplementedError, 'Loader.actual_load() is abstract'
 
 
 class FileLoader(Loader):
