@@ -85,7 +85,7 @@ class MapController(Context):
             get_context_stack().stop()
             return True
         elif event.type == KEYDOWN:
-            direction = self.check_direction(event.key)
+            direction = check_direction(event.key)
             if direction is not None and\
                not direction in self.map_model.party_movement:
                 self.party_movement_append(direction)
@@ -98,7 +98,7 @@ class MapController(Context):
                 get_context_stack().stop()
                 return True
         elif event.type == KEYUP:
-            direction = self.check_direction(event.key)
+            direction = check_direction(event.key)
             if direction is not None and\
                direction in self.map_model.party_movement:
                 self.party_movement_remove(direction)
@@ -108,18 +108,6 @@ class MapController(Context):
                 self.party_movement_remove(ACTIVATE)
                 return True
         return False
-
-    def check_direction(self, key):
-        if key in game_config.key_up:
-            return UP
-        elif key in game_config.key_down:
-            return DOWN
-        elif key in game_config.key_left:
-            return LEFT
-        elif key in game_config.key_right:
-            return RIGHT
-        else:
-            return None
 
     def flow_object_movement(self):
         party_avatar = self.map_model.party_avatar

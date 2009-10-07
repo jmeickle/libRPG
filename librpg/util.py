@@ -4,6 +4,7 @@ purposes.
 """
 
 from librpg.locals import *
+from librpg.config import *
 
 class Position(object):
 
@@ -198,6 +199,18 @@ def determine_facing(new_pos, old_pos):
         return UP
     elif delta == Position(0, +1):
         return DOWN
+    else:
+        return None
+
+def check_direction(key):
+    if key in game_config.key_up:
+        return UP
+    elif key in game_config.key_down:
+        return DOWN
+    elif key in game_config.key_left:
+        return LEFT
+    elif key in game_config.key_right:
+        return RIGHT
     else:
         return None
 
