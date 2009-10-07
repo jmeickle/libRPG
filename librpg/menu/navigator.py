@@ -73,3 +73,25 @@ class EuclidianNavigator(DistanceNavigator):
             return DistanceNavigator.MAX_DIST
         else:
             return math.sqrt(dx ** 2 + dy ** 2)
+
+
+class WidgetGateway(object):
+
+    def __init__(self, widget, up=None, right=None, down=None, left=None):
+        self.widget = widget
+        self.up = up
+        self.right = right
+        self.down = down
+        self.left = left
+
+    def crystallize(self, widget_navigator):
+        self.up = widget_navigator.find(self.widget, UP)
+        self.right = widget_navigator.find(self.widget, RIGHT)
+        self.down = widget_navigator.find(self.widget, DOWN)
+        self.left = widget_navigator.find(self.widget, LEFT)
+
+    def div_crystallize(self, widget_navigator):
+        self.up = widget_navigator.enter_div(self.widget, UP)
+        self.right = widget_navigator.enter_div(self.widget, RIGHT)
+        self.down = widget_navigator.enter_div(self.widget, DOWN)
+        self.left = widget_navigator.enter_div(self.widget, LEFT)

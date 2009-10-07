@@ -1,6 +1,7 @@
 import pygame
 
 from widget import Widget
+from navigator import EuclidianNavigator
 
 class BoundWidget(object):
 
@@ -47,3 +48,8 @@ class Div(Widget):
             x_pos = w.position[0] + x_offset
             y_pos = w.position[1] + y_offset
             surf = w.widget.render(screen, x_pos, y_pos)
+
+    def crystallize(self, widget_navigator=EuclidianNavigator()):
+        for w in self.widgets:
+            w.widget.crystallize(widget_navigator)
+        self.gateway.div_crystallize(self, widget_navigator)

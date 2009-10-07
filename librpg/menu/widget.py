@@ -1,6 +1,7 @@
 import pygame
 
 from librpg.config import menu_config
+from navigator import WidgetGateway, EuclidianNavigator
 
 class Widget(object):
 
@@ -21,6 +22,8 @@ class Widget(object):
 
         self.parent = None
         self.position = None
+
+        self.gateway = WidgetGateway(self)
 
     def get_surface(self):
         """
@@ -65,3 +68,6 @@ class Widget(object):
         Handle a right mouse click event.
         """
         pass
+
+    def crystallize(self, widget_navigator=EuclidianNavigator()):
+        self.gateway.crystallize(widget_navigator)
