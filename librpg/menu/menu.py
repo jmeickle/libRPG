@@ -14,25 +14,29 @@ class Menu(Div):
         Div.__init__(self, width, height, theme)
         self.x = x
         self.y = y
+        self._cursor = None
 
     def draw(self):
         Div.draw(self)
         Div.render(self, get_screen(), self.x, self.y)
 
+    # Use cursor.bind instead
     def add_cursor(self, cursor):
-        if self.cursor is not None:
+        if self._cursor is not None:
             return False
         else:
-            self.cursor = cursor
+            self._cursor = cursor
             return True
 
     def remove_cursor(self):
-        result = self.cursor
-        self.cursor = None
+        result = self._cursor
+        self._cursor = None
         return result
 
 
 class MenuController(Context):
+
+    COMMAND_COOLDOWN = 5
 
     def __init__(self, menu, parent=None):
         assert menu is not None, 'menu cannot be None'
@@ -40,11 +44,22 @@ class MenuController(Context):
         self.menu = menu
         menu.controller = self
         self.command_queue = []
+        self.command_cooldown = 0
 
     def draw(self):
         self.menu.draw()
 
     def update(self):
+        cursor = self.menu._cursor
+        if cursor is not None:
+            if self.command_cooldown > 0:
+                self.command_cooldown -= 1
+            elif self.command_queue:
+                direction = self.command_queue[0]
+                if direction != ACTIVATE:
+                    cursor.step(direction)
+                    self.command_cooldown = MenuController.COMMAND_COOLDOWN
+            cursor.update()
         self.menu.update()
 
     def process_event(self, event):

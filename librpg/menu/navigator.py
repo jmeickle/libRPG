@@ -37,7 +37,7 @@ class DistanceNavigator(WidgetNavigator):
                                           bound_widget.widget.position,
                                           direction)
                 if dist < best[1]:
-                    best = bound_widget, dist
+                    best = bound_widget.widget, dist
         return best[0]
 
     def enter_div(self, div, direction):
@@ -55,13 +55,13 @@ class DistanceNavigator(WidgetNavigator):
     def inside_angle(self, dy, dx, direction):
         angle = math.atan2(dy, dx)
         if direction == UP:
-            if angle < math.pi / 4 or angle > 3 * math.pi / 4:
+            if angle > - math.pi / 4 or angle < -3 * math.pi / 4:
                 return False
         elif direction == RIGHT:
             if abs(angle) > math.pi / 4:
                 return False
         elif direction == DOWN:
-            if angle > - math.pi / 4 or angle < -3 * math.pi / 4:
+            if angle < math.pi / 4 or angle > 3 * math.pi / 4:
                 return False
         elif direction == LEFT:
             if abs(angle) < 3 * math.pi / 4:
@@ -90,14 +90,34 @@ class WidgetGateway(object):
         self.down = down
         self.left = left
 
+    def build_map(self):
+        self.direction_map = {UP: self.up,
+                              RIGHT: self.right,
+                              DOWN: self.down,
+                              LEFT: self.left}
+        print '%s %s' % (self.widget.position, self.direction_map)
+
     def crystallize(self, widget_navigator):
         self.up = widget_navigator.find(self.widget, UP)
         self.right = widget_navigator.find(self.widget, RIGHT)
         self.down = widget_navigator.find(self.widget, DOWN)
         self.left = widget_navigator.find(self.widget, LEFT)
+        self.widget.crystallized = True
+        self.build_map()
 
     def div_crystallize(self, widget_navigator):
         self.up = widget_navigator.enter_div(self.widget, UP)
         self.right = widget_navigator.enter_div(self.widget, RIGHT)
         self.down = widget_navigator.enter_div(self.widget, DOWN)
         self.left = widget_navigator.enter_div(self.widget, LEFT)
+        self.widget.crystallized = True
+        self.build_map()
+
+    def step(self, direction, widget_navigator=None):
+        if self.widget.crystallized:
+            target = self.direction_map.get(direction, None)
+        else:
+            assert widget_navigator is not None, 'If WidgetGateway is not '\
+                   'crystallized, widget_navigator must be specified'
+            target = widget_navigator.find(self.widget, direction)
+        return target

@@ -24,6 +24,7 @@ class Widget(object):
         self.position = None
 
         self.gateway = WidgetGateway(self)
+        self.crystallized = False
 
     def get_surface(self):
         """
@@ -71,3 +72,6 @@ class Widget(object):
 
     def crystallize(self, widget_navigator=EuclidianNavigator()):
         self.gateway.crystallize(widget_navigator)
+
+    def step(self, direction):
+        return self.gateway.step(direction)
