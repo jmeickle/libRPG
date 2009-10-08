@@ -27,7 +27,9 @@ class Div(Widget):
             widget.theme = self.theme
         self.widgets.append(BoundWidget(widget, old_theme))
         widget.parent = self
+        widget.menu = self.menu
         widget.position = position
+        self.menu.register_widget(widget)
 
     def remove_widget(self, widget):
         if widget.parent is not self:
@@ -38,6 +40,8 @@ class Div(Widget):
                 w.widget.theme = w.old_theme
                 widget.parent = None
                 widget.position = None
+                widget.menu = None
+                self.menu.unregister_widget(widget)
                 return True
         return False
 
@@ -58,4 +62,6 @@ class Div(Widget):
     def crystallize(self, widget_navigator=EuclidianNavigator()):
         for w in self.widgets:
             w.widget.crystallize(widget_navigator)
-        self.gateway.div_crystallize(widget_navigator)
+
+    def is_div(self):
+        return True

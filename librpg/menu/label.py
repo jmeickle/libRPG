@@ -21,6 +21,9 @@ class Label(Widget):
                                        self.theme.get_font_anti_alias(),
                                        self.theme.get_font_color())
 
+    def __repr__(self):
+        return "Label('%s')" % self._text
+
     def get_text(self):
         return self._text
 

@@ -19,21 +19,19 @@ class Cursor(object):
         else:
             self.menu = menu
             self.widget = widget
-            print 'Cursor BOUND to', self.widget
             return True
 
     def step(self, direction):
-        cur = self.widget
-        target = cur.step(direction)
-        if target is None:
-            print 'Cursor COLLIDED'
-            return
-        self.widget = target
-        print 'Cursor STEP %d' % direction
-        print 'Arrived at', self.widget, self.widget.position
+        target = self.widget.step(direction)
+        if target is not None:
+            self.widget = target
+            print 'Arrived at', self.widget, self.widget.get_menu_position()
+        else:
+            print 'Blocked'
 
     def update(self):
-        pass#print 'Cursor @ %s' % self.widget
+        #print 'Cursor @ %s' % self.widget
+        pass
 
 
 class ArrowCursor(Cursor):

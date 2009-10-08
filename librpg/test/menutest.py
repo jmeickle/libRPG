@@ -10,7 +10,7 @@ class TestMenu(Menu):
         self.add_widget(self.panel, (40, 40))
         
         menu_label = Label('Menu')
-        self.add_widget(menu_label, (10, 10))
+        self.add_widget(menu_label, (50, 15))
         
         panel_labels = [None] * 4
         panel_labels[0] = Label('Panel0')

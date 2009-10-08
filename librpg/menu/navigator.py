@@ -30,51 +30,79 @@ class DistanceNavigator(WidgetNavigator):
     MAX_DIST = 999999
 
     def find(self, widget, direction):
+        #print '-' * 60
+        #print 'find(%s, %d)' % (widget, direction)
+        if widget.parent is None:
+            return None
+
+        width = widget.menu.width
+        height = widget.menu.height
+
         best = None, DistanceNavigator.MAX_DIST
-        for bound_widget in widget.parent.widgets:
-            if bound_widget.widget is not widget:
-                dist = self.calc_distance(widget.position,
-                                          bound_widget.widget.position,
-                                          direction)
+        for bound_widget in widget.menu.all_widgets:
+            if not bound_widget.is_div() and bound_widget is not widget:
+                dist = self.calc_distance(widget.get_menu_position(),
+                                          bound_widget.get_menu_position(),
+                                          direction,
+                                          width,
+                                          height)
+                #print 'comparing to %s = dist %d' % (bound_widget, dist)
                 if dist < best[1]:
-                    best = bound_widget.widget, dist
+                    best = bound_widget, dist
         return best[0]
 
-    def enter_div(self, div, direction):
-        pos = (div.width / 2, div.height / 2)
-        best = None, DistanceNavigator.MAX_DIST
-        for bound in div.widgets:
-            dist = self.calc_distance(pos, bound.widget.position, direction)
-            if dist < best[1]:
-                best = bound.widget, dist
-        return best[0]
-
-    def calc_distance(self, start, end, direction):
+    def calc_distance(self, start, end, direction, width, height):
         raise NotImplementedError, 'DistanceNavigator.calc_distance() is abstract'
 
     def inside_angle(self, dy, dx, direction):
-        angle = math.atan2(dy, dx)
         if direction == UP:
-            if angle > - math.pi / 4 or angle < -3 * math.pi / 4:
-                return False
-        elif direction == RIGHT:
-            if abs(angle) > math.pi / 4:
-                return False
+            return dx <= dy
         elif direction == DOWN:
-            if angle < math.pi / 4 or angle > 3 * math.pi / 4:
-                return False
+            return dx <= dy
+        elif direction == RIGHT:
+            return dy <= dx
         elif direction == LEFT:
-            if abs(angle) < 3 * math.pi / 4:
-                return False
-        return True
+            return dy <= dx
+
+    def modulus_distance(self, start, end, n, direction=None):
+        """
+        Calculate the distance from start to end in a modulus n space.
+        """
+        if direction is None:
+            r = abs(end - start)
+            if r > n / 2:
+                return n - r
+            else:
+                return r
+        else:
+            if direction == RIGHT or direction == DOWN:
+                if end < start:
+                    return n + end - start
+                else:
+                    return end - start
+            else:
+                if end < start:
+                    return start - end
+                else:
+                    return n + start - end
 
 
 class EuclidianNavigator(DistanceNavigator):
 
-    def calc_distance(self, start, end, direction):
-        dx = end[0] - start[0]
-        dy = end[1] - start[1]
-        angle = math.atan2(dy, dx)
+    def calc_distance(self, start, end, direction, width, height):
+        if direction == UP:
+            dy = self.modulus_distance(start[1], end[1], height, direction)
+            dx = self.modulus_distance(start[0], end[0], width)
+        elif direction == DOWN:
+            dy = self.modulus_distance(start[1], end[1], height, direction)
+            dx = self.modulus_distance(start[0], end[0], width)
+        elif direction == RIGHT:
+            dx = self.modulus_distance(start[0], end[0], width, direction)
+            dy = self.modulus_distance(start[1], end[1], height)
+        elif direction == LEFT:
+            dx = self.modulus_distance(start[0], end[0], width, direction)
+            dy = self.modulus_distance(start[1], end[1], height)
+        #print 'dx %d, dy %d' % (dx, dy)
         if not self.inside_angle(dy, dx, direction):
             return DistanceNavigator.MAX_DIST
         else:
@@ -95,21 +123,13 @@ class WidgetGateway(object):
                               RIGHT: self.right,
                               DOWN: self.down,
                               LEFT: self.left}
-        print '%s %s' % (self.widget.position, self.direction_map)
+        #print 'MAP %s %s' % (self.widget, self.direction_map)
 
     def crystallize(self, widget_navigator):
         self.up = widget_navigator.find(self.widget, UP)
         self.right = widget_navigator.find(self.widget, RIGHT)
         self.down = widget_navigator.find(self.widget, DOWN)
         self.left = widget_navigator.find(self.widget, LEFT)
-        self.widget.crystallized = True
-        self.build_map()
-
-    def div_crystallize(self, widget_navigator):
-        self.up = widget_navigator.enter_div(self.widget, UP)
-        self.right = widget_navigator.enter_div(self.widget, RIGHT)
-        self.down = widget_navigator.enter_div(self.widget, DOWN)
-        self.left = widget_navigator.enter_div(self.widget, LEFT)
         self.widget.crystallized = True
         self.build_map()
 

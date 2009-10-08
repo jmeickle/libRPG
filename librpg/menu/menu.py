@@ -1,6 +1,6 @@
 from pygame.locals import *
 
-from librpg.context import Context
+from librpg.context import Context, get_context_stack
 from librpg.virtualscreen import get_screen
 from librpg.config import game_config
 from librpg.util import check_direction
@@ -15,6 +15,8 @@ class Menu(Div):
         self.x = x
         self.y = y
         self._cursor = None
+        self.menu = self
+        self.all_widgets = []
 
     def draw(self):
         Div.draw(self)
@@ -32,6 +34,12 @@ class Menu(Div):
         result = self._cursor
         self._cursor = None
         return result
+
+    def register_widget(self, widget):
+        self.all_widgets.append(widget)
+
+    def unregister_widget(self, widget):
+        self.all_widgets.remove(widget)
 
 
 class MenuController(Context):

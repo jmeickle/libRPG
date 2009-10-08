@@ -22,6 +22,7 @@ class Widget(object):
 
         self.parent = None
         self.position = None
+        self.menu = None
 
         self.gateway = WidgetGateway(self)
         self.crystallized = False
@@ -73,5 +74,18 @@ class Widget(object):
     def crystallize(self, widget_navigator=EuclidianNavigator()):
         self.gateway.crystallize(widget_navigator)
 
-    def step(self, direction):
+    def step(self, direction, widget_navigator=None):
         return self.gateway.step(direction)
+
+    def is_div(self):
+        return False
+
+    def get_menu_position(self):
+        if self.parent is None:
+            return (0, 0)
+        else:
+            parent_pos = self.parent.get_menu_position()
+            x = parent_pos[0] + self.position[0]
+            y = parent_pos[1] + self.position[1]
+            return (x, y)
+
