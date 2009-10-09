@@ -292,16 +292,33 @@ class MenuConfig(Config):
     
     :attr:`theme`
         MenuTheme to use for menus, except when explicitly specified.
+
+    :attr:`cursor_theme`
+        CursorTheme to use for Cursors, except when explicitly specified.
     """
 
     _theme = None
+    _cursor_theme = None
+
+    def set_theme(self, theme):
+        self._theme = theme
 
     def get_theme(self):
         if self._theme is None:
-            theme = MenuTheme()
-        return theme
+            self._theme = MenuTheme()
+        return self._theme
 
-    theme = property(get_theme)
+    theme = property(get_theme, set_theme)
+
+    def set_cursor_theme(self, theme):
+        self._cursor_theme = theme
+
+    def get_cursor_theme(self):
+        if self._cursor_theme is None:
+            self._cursor_theme = CursorTheme()
+        return self._cursor_theme
+
+    cursor_theme = property(get_cursor_theme, set_cursor_theme)
 
 
 graphics_config = GraphicsConfig()
