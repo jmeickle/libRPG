@@ -12,20 +12,25 @@ class TestMenu(Menu):
         menu_label = Label('Menu')
         self.add_widget(menu_label, (120, 20))
         
-        panel_labels = [None] * 4
-        panel_labels[0] = Label('Panel0')
-        self.panel.add_widget(panel_labels[0], (40, 40))
-        panel_labels[1] = Label('Panel1')
-        self.panel.add_widget(panel_labels[1], (120, 40))
-        panel_labels[2] = Label('Panel2')
-        self.panel.add_widget(panel_labels[2], (40, 80))
-        panel_labels[3] = Label('Panel3')
-        self.panel.add_widget(panel_labels[3], (120, 80))
+        first_panel_label = Label('Panel0')
+        self.panel.add_widget(first_panel_label, (40, 40))
+        self.panel.add_widget(Label('Panel1'), (120, 40))
+        self.panel.add_widget(Label('Panel2'), (40, 80))
+        self.panel.add_widget(Label('Panel3'), (120, 80))
+
+        self.side_panel = Panel(110, 220)
+        self.add_widget(self.side_panel, (260, 40))
+        
+        for i in range(6):
+            label = Label('SidePanel%d' % i)
+            pos = (20, 20 + 30 * i)
+            self.side_panel.add_widget(label, pos)
 
         self.crystallize()
 
+        # Add cursor
         cursor = ArrowCursor()
-        cursor.bind(self, panel_labels[0])
+        cursor.bind(self, first_panel_label)
 
 
 def main():
