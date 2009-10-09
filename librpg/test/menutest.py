@@ -6,21 +6,21 @@ class TestMenu(Menu):
 
     def __init__(self):
         Menu.__init__(self, 400, 300)
-        self.panel = Panel(100, 120)
-        self.add_widget(self.panel, (40, 40))
+        self.panel = Panel(200, 150)
+        self.add_widget(self.panel, (40, 80))
         
         menu_label = Label('Menu')
-        self.add_widget(menu_label, (50, 15))
+        self.add_widget(menu_label, (80, 20))
         
         panel_labels = [None] * 4
         panel_labels[0] = Label('Panel0')
-        self.panel.add_widget(panel_labels[0], (10, 10))
+        self.panel.add_widget(panel_labels[0], (40, 40))
         panel_labels[1] = Label('Panel1')
-        self.panel.add_widget(panel_labels[1], (50, 10))
+        self.panel.add_widget(panel_labels[1], (120, 40))
         panel_labels[2] = Label('Panel2')
-        self.panel.add_widget(panel_labels[2], (10, 50))
+        self.panel.add_widget(panel_labels[2], (40, 80))
         panel_labels[3] = Label('Panel3')
-        self.panel.add_widget(panel_labels[3], (50, 50))
+        self.panel.add_widget(panel_labels[3], (120, 80))
 
         self.crystallize()
 

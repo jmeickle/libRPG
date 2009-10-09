@@ -85,7 +85,10 @@ class Widget(object):
             return (0, 0)
         else:
             parent_pos = self.parent.get_menu_position()
-            x = parent_pos[0] + self.position[0] + self.width / 2
-            y = parent_pos[1] + self.position[1] + self.height / 2
+            x = parent_pos[0] + self.position[0]
+            y = parent_pos[1] + self.position[1]
             return (x, y)
 
+    def get_center(self):
+        x, y = self.get_menu_position()
+        return (x + self.width / 2, y + self.height / 2)

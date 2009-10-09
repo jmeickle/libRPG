@@ -41,8 +41,8 @@ class DistanceNavigator(WidgetNavigator):
         best = None, DistanceNavigator.MAX_DIST
         for bound_widget in widget.menu.all_widgets:
             if not bound_widget.is_div() and bound_widget is not widget:
-                dist = self.calc_distance(widget.get_menu_position(),
-                                          bound_widget.get_menu_position(),
+                dist = self.calc_distance(widget.get_center(),
+                                          bound_widget.get_center(),
                                           direction,
                                           width,
                                           height)

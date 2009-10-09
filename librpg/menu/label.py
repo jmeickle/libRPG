@@ -12,6 +12,7 @@ class Label(Widget):
         self._bold = bold
         self._italic = italic
         self.changed = False
+        self.draw()
 
     def draw(self):
         if self.surface is None or self.changed:
@@ -20,6 +21,8 @@ class Label(Widget):
             self.surface = font.render(self.text,
                                        self.theme.get_font_anti_alias(),
                                        self.theme.get_font_color())
+            self.width = self.surface.get_width()
+            self.height = self.surface.get_height()
 
     def __repr__(self):
         return "Label('%s')" % self._text

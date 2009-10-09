@@ -1,15 +1,11 @@
 import pygame
 
 from librpg.menu.theme import MenuTheme
+from librpg.config import menu_config
 
 class Cursor(object):
 
-    def __init__(self, theme=None):
-        if theme is None:
-            self.theme = MenuTheme()
-        else:
-            self.theme = theme
-
+    def __init__(self):
         self.menu = None
         self.widget = None
 
@@ -25,7 +21,7 @@ class Cursor(object):
         target = self.widget.step(direction)
         if target is not None:
             self.widget = target
-            print 'Arrived at', self.widget, self.widget.get_menu_position()
+            print 'Arrived at', self.widget, self.widget.get_center()
         else:
             print 'Blocked'
 
@@ -33,9 +29,17 @@ class Cursor(object):
         #print 'Cursor @ %s' % self.widget
         pass
 
+    def draw(self):
+        pass
 
 class ArrowCursor(Cursor):
-    pass
+
+    def __init__(self, theme=None):
+        Cursor.__init__(self)
+        if theme is None:
+            self.theme = menu_config.cursor_theme
+        else:
+            self.theme = theme
 
 
 class HighlightCursor(Cursor):
