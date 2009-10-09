@@ -1,5 +1,5 @@
 import librpg
-from librpg.menu import MenuController, Menu, Panel, Label, HighlightCursor
+from librpg.menu import MenuController, Menu, Panel, Label, ArrowCursor
 from librpg.context import get_context_stack
 
 class TestMenu(Menu):
@@ -10,7 +10,7 @@ class TestMenu(Menu):
         self.add_widget(self.panel, (40, 80))
         
         menu_label = Label('Menu')
-        self.add_widget(menu_label, (80, 20))
+        self.add_widget(menu_label, (120, 20))
         
         panel_labels = [None] * 4
         panel_labels[0] = Label('Panel0')
@@ -24,7 +24,7 @@ class TestMenu(Menu):
 
         self.crystallize()
 
-        cursor = HighlightCursor()
+        cursor = ArrowCursor()
         cursor.bind(self, panel_labels[0])
 
 

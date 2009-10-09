@@ -1,26 +1,38 @@
+import pygame
 from pygame.locals import *
 
 from librpg.context import Context, get_context_stack
 from librpg.virtualscreen import get_screen
 from librpg.config import game_config
-from librpg.util import check_direction
+from librpg.util import check_direction, fill_with_surface
 from librpg.locals import *
 
 from div import Div
 
 class Menu(Div):
 
-    def __init__(self, width, height, x=0, y=0, theme=None):
+    def __init__(self, width, height, x=0, y=0, theme=None, bg=None):
         Div.__init__(self, width, height, theme)
         self.x = x
         self.y = y
         self._cursor = None
         self.menu = self
         self.all_widgets = []
+        self.init_bg(bg)
+
+    def init_bg(self, bg):
+        self.bg = pygame.Surface((self.width, self.height)).convert_alpha()
+        self.bg.fill((0, 0, 0, 255))
+        if bg is not None:
+            fill_with_surface(self.bg, bg)
 
     def draw(self):
+        scr = get_screen()
+        scr.blit(self.bg, (self.x, self.y))
         Div.draw(self)
-        Div.render(self, get_screen(), self.x, self.y)
+        Div.render(self, scr, self.x, self.y)
+        self._cursor.draw()
+        self._cursor.render(scr)
 
     # Use cursor.bind instead
     def add_cursor(self, cursor):

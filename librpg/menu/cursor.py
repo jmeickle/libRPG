@@ -32,6 +32,7 @@ class Cursor(object):
     def draw(self):
         pass
 
+
 class ArrowCursor(Cursor):
 
     def __init__(self, theme=None):
@@ -40,6 +41,17 @@ class ArrowCursor(Cursor):
             self.theme = menu_config.cursor_theme
         else:
             self.theme = theme
+        self.drawn_widget = None
+
+    def draw(self):
+        if self.drawn_widget != self.widget:
+            widget = self.widget
+            rect = widget.get_menu_rect()
+            self.surface, self.target_pos = self.theme.draw_cursor(rect)
+            self.drawn_widget = widget
+
+    def render(self, screen):
+        screen.blit(self.surface, self.target_pos)
 
 
 class HighlightCursor(Cursor):

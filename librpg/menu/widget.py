@@ -92,3 +92,6 @@ class Widget(object):
     def get_center(self):
         x, y = self.get_menu_position()
         return (x + self.width / 2, y + self.height / 2)
+
+    def get_menu_rect(self):
+        return pygame.Rect(self.get_menu_position(), (self.width, self.height))

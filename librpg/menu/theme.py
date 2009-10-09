@@ -70,5 +70,18 @@ class MenuTheme(object):
 
 class CursorTheme(object):
 
+    BORDER = 2
+    HORIZONTAL_OFFSET = 3
+    VERTICAL_OFFSET = 3
+
     def draw_cursor(self, target_rect):
-        pass
+        width = target_rect.w + 2 * (self.BORDER + self.HORIZONTAL_OFFSET)
+        height = target_rect.h + 2 * (self.BORDER + self.VERTICAL_OFFSET)
+        s = pygame.Surface((width, height)).convert_alpha()
+        s.fill((255, 0, 0, 255))
+        pygame.draw.rect(s, (0, 0, 0, 0),
+                         pygame.Rect((self.BORDER, self.BORDER),
+                         (target_rect.w + 2 * self.HORIZONTAL_OFFSET,
+                          target_rect.h + 2 * self.VERTICAL_OFFSET)))
+        return s, (target_rect.left - self.BORDER - self.HORIZONTAL_OFFSET,
+                   target_rect.top - self.BORDER - self.VERTICAL_OFFSET)

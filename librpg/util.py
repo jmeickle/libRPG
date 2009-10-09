@@ -253,3 +253,15 @@ class IdFactory(object):
 
     def __repr__(self):
         return self.classes.__repr__()
+
+
+def fill_with_surface(target, source):
+    x, y = 0, 0
+    t_w, t_h = target.get_width(), target.get_height()
+    s_w, s_h = source.get_width(), source.get_height()
+    while y < t_h:
+        while x < t_w:
+            target.blit(source, (x, y))
+            x += s_w
+        y += s_h
+        x = 0
