@@ -1,6 +1,10 @@
+import pygame
+
 import librpg
-from librpg.menu import MenuController, Menu, Panel, Label, ArrowCursor
+from librpg.menu import (MenuController, Menu, Panel, Label, ArrowCursor,
+                         ImageWidget)
 from librpg.context import get_context_stack
+from librpg.path import data_path
 
 class TestMenu(Menu):
 
@@ -10,7 +14,7 @@ class TestMenu(Menu):
         self.add_widget(self.panel, (40, 80))
         
         self.add_widget(Label('Menu'), (90, 20))
-        self.add_widget(Label('Menu2', focusable=False), (150, 20))
+        self.add_widget(Label('NonFocusable', focusable=False), (150, 20))
         
         first_panel_label = Label('Panel0')
         self.panel.add_widget(first_panel_label, (40, 40))
@@ -20,11 +24,13 @@ class TestMenu(Menu):
 
         self.side_panel = Panel(110, 220)
         self.add_widget(self.side_panel, (260, 40))
-        
         for i in range(6):
             label = Label('SidePanel%d' % i)
             pos = (20, 20 + 30 * i)
             self.side_panel.add_widget(label, pos)
+
+        img = pygame.image.load(data_path('icon.png'))
+        self.add_widget(ImageWidget(img), (8, 8))
 
         self.crystallize()
 
