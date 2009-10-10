@@ -9,8 +9,8 @@ class TestMenu(Menu):
         self.panel = Panel(200, 150)
         self.add_widget(self.panel, (40, 80))
         
-        menu_label = Label('Menu')
-        self.add_widget(menu_label, (120, 20))
+        self.add_widget(Label('Menu'), (90, 20))
+        self.add_widget(Label('Menu2', focusable=False), (150, 20))
         
         first_panel_label = Label('Panel0')
         self.panel.add_widget(first_panel_label, (40, 40))
@@ -26,7 +26,7 @@ class TestMenu(Menu):
             pos = (20, 20 + 30 * i)
             self.side_panel.add_widget(label, pos)
 
-        #self.crystallize()
+        self.crystallize()
 
         # Add cursor
         cursor = ArrowCursor()
