@@ -103,8 +103,8 @@ ok      0.4 Draw basic charset and replace placeholders in tests
 ok      0.5 Code Text widget
 ok      0.5 Code Cursor
 ok      0.5 Test focusable attribute
+ok      0.5 Code Image widget
         0.5 Implement HighlightCursor
-        0.5 Code Image widget
         0.5 Capture quit event before it gets to Contexts?
         0.5 Design more widgets
         0.5 Unify MapController and MenuController process_event() into CommandQueueController

@@ -67,6 +67,15 @@ class MenuTheme(object):
         """
         pass
 
+    def draw_image(self, image):
+        """
+        *Virtual.*
+        
+        Draw an image. This can be overloaded to apply some filters to
+        images used in ImageWidgets.
+        """
+        return image
+
 
 class CursorTheme(object):
 
