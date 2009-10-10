@@ -74,8 +74,8 @@ class Widget(object):
     def crystallize(self, widget_navigator=EuclidianNavigator()):
         self.gateway.crystallize(widget_navigator)
 
-    def step(self, direction, widget_navigator=None):
-        return self.gateway.step(direction)
+    def step(self, direction, widget_navigator=EuclidianNavigator()):
+        return self.gateway.step(direction, widget_navigator)
 
     def is_div(self):
         return False

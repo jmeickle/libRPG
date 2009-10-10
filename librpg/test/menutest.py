@@ -26,7 +26,7 @@ class TestMenu(Menu):
             pos = (20, 20 + 30 * i)
             self.side_panel.add_widget(label, pos)
 
-        self.crystallize()
+        #self.crystallize()
 
         # Add cursor
         cursor = ArrowCursor()

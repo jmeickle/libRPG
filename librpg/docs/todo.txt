@@ -100,22 +100,24 @@ ok      0.4 Add a gameover() method
 ok      0.4 Draw 32 pixel upper world tileset and replace placeholders in tests
 ok      0.4 Draw 16 pixel simple tileset and replace placeholders in tests
 ok      0.4 Draw basic charset and replace placeholders in tests
-        0.5 Capture quit event before it gets to Contexts
-        0.5 Unify MapController and MenuController process_event() into CommandQueueController
+ok      0.5 Code Text widget
+ok      0.5 Code Cursor
+        0.5 Implement HighlightCursor
         0.5 Test focusable attribute
-        0.5 Put sound effects in standard resources and use them in tests
+        0.5 Code Image widget
+        0.5 Capture quit event before it gets to Contexts?
+        0.5 Design more widgets
+        0.5 Unify MapController and MenuController process_event() into CommandQueueController
         0.5 Open a "library" module with stuff like TeleportArea, Rock, Chest, ChatDialog, InventoryMenu, SaveMenu, PartyMenu
         0.5 Design Menu API
         0.5 Define generic menu skin system
-        0.5 Design widgets
-        0.5 Code Text widget
-        0.5 Code Image widget
-        0.5 Code Cursor
         0.5 Change ChoiceDialog to call a callback (either passed in constructor or overridden in a derived class) upon completion
         0.5 Decide if UsableItems should be kept
         0.5 Define item image system and API for menu
+        0.5 Put sound effects in standard resources and use them in tests
         0.6 Add gameloop hooks
         0.6 Write scene module
+        0.6 Write animation module
         0.7 Define generic battle system
         0.7 Write quest module
         ?   Implement A*

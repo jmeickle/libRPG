@@ -5,9 +5,10 @@ from librpg.config import menu_config
 
 class Cursor(object):
 
-    def __init__(self):
+    def __init__(self, navigator=None):
         self.menu = None
         self.widget = None
+        self.navigator = navigator
 
     def bind(self, menu, widget):
         if not menu.add_cursor(self):
@@ -18,7 +19,10 @@ class Cursor(object):
             return True
 
     def step(self, direction):
-        target = self.widget.step(direction)
+        if self.navigator is not None:
+            target = self.widget.step(direction, self.navigator)
+        else:
+            target = self.widget.step(direction)
         if target is not None:
             self.widget = target
             print 'Arrived at', self.widget, self.widget.get_center()
@@ -26,7 +30,6 @@ class Cursor(object):
             print 'Blocked'
 
     def update(self):
-        #print 'Cursor @ %s' % self.widget
         pass
 
     def draw(self):
