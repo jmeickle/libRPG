@@ -49,9 +49,9 @@ class TestMenu(Menu):
         self.add_widget(ImageWidget(img), (8, 8))
 
         group = WidgetGroup(148, 20)
-        self.add_widget(group, (60, 240))
         group.add_widget(Label('Group0'), (10, 0))
         group.add_widget(Label('Group1'), (90, 0))
+        self.add_widget(group, (60, 240))
         self.crystallize()
 
         # Add cursor

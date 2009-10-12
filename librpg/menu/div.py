@@ -27,9 +27,13 @@ class Div(Widget):
             widget.theme = self.theme
         self.widgets.append(BoundWidget(widget, old_theme))
         widget.parent = self
-        widget.menu = self.menu
         widget.position = position
-        self.menu.register_widget(widget)
+        
+        if self.menu is not None:
+            for w in widget.get_tree():
+                if w.menu is not self.menu:
+                    w.menu = self.menu
+                    self.menu.register_widget(w)
 
     def remove_widget(self, widget):
         if widget.parent is not self:
@@ -66,7 +70,7 @@ class Div(Widget):
     def get_tree(self):
         result = [self]
         for w in self.widgets:
-            result.append(w.widget.get_tree())
+            result.extend(w.widget.get_tree())
         return result
 
 
