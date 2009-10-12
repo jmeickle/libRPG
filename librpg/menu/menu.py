@@ -15,7 +15,7 @@ class Menu(Div):
         Div.__init__(self, width, height, theme)
         self.x = x
         self.y = y
-        self._cursor = None
+        self.cursor = None
         self.menu = self
         self.all_widgets = []
         self.init_bg(bg)
@@ -31,20 +31,20 @@ class Menu(Div):
         scr.blit(self.bg, (self.x, self.y))
         Div.draw(self)
         Div.render(self, scr, self.x, self.y)
-        self._cursor.draw()
-        self._cursor.render(scr)
+        self.cursor.draw()
+        self.cursor.render(scr)
 
     # Use cursor.bind instead
     def add_cursor(self, cursor):
-        if self._cursor is not None:
+        if self.cursor is not None:
             return False
         else:
-            self._cursor = cursor
+            self.cursor = cursor
             return True
 
     def remove_cursor(self):
-        result = self._cursor
-        self._cursor = None
+        result = self.cursor
+        self.cursor = None
         return result
 
     def register_widget(self, widget):
@@ -70,7 +70,7 @@ class MenuController(Context):
         self.menu.draw()
 
     def update(self):
-        cursor = self.menu._cursor
+        cursor = self.menu.cursor
         if cursor is not None:
             if self.command_cooldown > 0:
                 self.command_cooldown -= 1
@@ -83,6 +83,15 @@ class MenuController(Context):
         self.menu.update()
 
     def process_event(self, event):
+        if self.menu.cursor is not None:
+            w = self.menu.cursor.widget
+            while w is not None:
+                if w.process_event(event):
+                    return True
+                w = w.parent
+        return self.menu_process_event(event)
+
+    def menu_process_event(self, event):
         if event.type == QUIT:
             get_context_stack().stop()
             return True

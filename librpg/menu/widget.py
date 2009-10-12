@@ -71,6 +71,14 @@ class Widget(object):
         """
         pass
 
+    def process_event(self, event):
+        """
+        *Virtual.*
+        
+        Handle a right mouse click event.
+        """
+        return False
+
     def crystallize(self, widget_navigator=EuclidianNavigator()):
         self.gateway.crystallize(widget_navigator)
 

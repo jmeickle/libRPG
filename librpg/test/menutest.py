@@ -1,10 +1,22 @@
 import pygame
+from pygame import *
 
 import librpg
 from librpg.menu import (MenuController, Menu, Panel, Label, ArrowCursor,
                          ImageWidget)
 from librpg.context import get_context_stack
 from librpg.path import data_path
+
+class MenuLabel(Label):
+
+    def __init__(self):
+        Label.__init__(self, 'Menu')
+
+    def process_event(self, event):
+        if event.type == KEYDOWN:
+            print 'MenuLabel captured key press %d' % event.key
+        return False
+
 
 class TestMenu(Menu):
 
@@ -13,7 +25,7 @@ class TestMenu(Menu):
         self.panel = Panel(200, 150)
         self.add_widget(self.panel, (40, 80))
         
-        self.add_widget(Label('Menu'), (90, 20))
+        self.add_widget(MenuLabel(), (90, 20))
         self.add_widget(Label('NonFocusable', focusable=False), (150, 20))
         
         first_panel_label = Label('Panel0')
