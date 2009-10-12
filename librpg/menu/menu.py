@@ -76,11 +76,21 @@ class MenuController(Context):
                 self.command_cooldown -= 1
             elif self.command_queue:
                 direction = self.command_queue[0]
-                if direction != ACTIVATE:
+                if direction == ACTIVATE:
+                    self.activate()
+                else:
                     cursor.step(direction)
                     self.command_cooldown = MenuController.COMMAND_COOLDOWN
             cursor.update()
         self.menu.update()
+
+    def activate(self):
+        if self.menu.cursor is not None:
+            w = self.menu.cursor.widget
+            while w is not None:
+                if w.activate():
+                    return
+                w = w.parent
 
     def process_event(self, event):
         if self.menu.cursor is not None:

@@ -75,7 +75,15 @@ class Widget(object):
         """
         *Virtual.*
         
-        Handle a right mouse click event.
+        Handle an event triggered while the widget was focused.
+        """
+        return False
+
+    def activate(self):
+        """
+        *Virtual.*
+        
+        Handle an activate event triggered while the widget was focused.
         """
         return False
 

@@ -12,6 +12,10 @@ class MenuLabel(Label):
     def __init__(self):
         Label.__init__(self, 'Menu')
 
+    def activate(self):
+        print 'MenuLabel activated'
+        return True
+
     def process_event(self, event):
         if event.type == KEYDOWN:
             print 'MenuLabel captured key press %d' % event.key

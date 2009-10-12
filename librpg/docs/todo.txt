@@ -107,17 +107,17 @@ ok      0.5 Code Cursor
 ok      0.5 Test focusable attribute
 ok      0.5 Code Image widget
 ok      0.5 Trigger Widget's process_event when it is focused and a key is pressed
-        0.5 Design more widgets
+        0.5 Allow mouse control in menu
         0.5 Code Bar widget
         0.5 Code WidgetGroup widget
         0.5 Code Grid widget
+        0.5 Design more widgets
         0.5 Code other widgets
         0.5 Implement animated themes
         0.5 Implement HighlightCursor
-        0.5 Allow mouse control in menu
         0.5 Code slot interface
         0.5 Capture quit event before it gets to Contexts?
-        0.5 Replace command queues for get key state calls
+        0.5 Replace command queues for get key state calls?
         0.5 Open a "library" module with stuff like TeleportArea, Rock, Chest, ChatDialog, InventoryMenu, SaveMenu, PartyMenu
         0.5 Convert Dialogs to use the menu package
         0.5 Change ChoiceDialog to call a callback (either passed in constructor or overridden in a derived class) upon completion
