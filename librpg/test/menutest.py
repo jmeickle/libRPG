@@ -3,7 +3,7 @@ from pygame import *
 
 import librpg
 from librpg.menu import (MenuController, Menu, Panel, Label, ArrowCursor,
-                         ImageWidget)
+                         ImageWidget, WidgetGroup)
 from librpg.context import get_context_stack
 from librpg.path import data_path
 
@@ -48,6 +48,10 @@ class TestMenu(Menu):
         img = pygame.image.load(data_path('icon.png'))
         self.add_widget(ImageWidget(img), (8, 8))
 
+        group = WidgetGroup(148, 20)
+        self.add_widget(group, (60, 240))
+        group.add_widget(Label('Group0'), (10, 0))
+        group.add_widget(Label('Group1'), (90, 0))
         self.crystallize()
 
         # Add cursor

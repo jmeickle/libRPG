@@ -16,7 +16,7 @@ class Div(Widget):
     A widget container and organizer.
     """
 
-    def __init__(self, width, height, focusable=True, theme=None):
+    def __init__(self, width, height, focusable=False, theme=None):
         Widget.__init__(self, width, height, focusable, theme)
         self.widgets = []
 
@@ -63,5 +63,18 @@ class Div(Widget):
         for w in self.widgets:
             w.widget.crystallize(widget_navigator)
 
-    def is_div(self):
-        return True
+    def get_tree(self):
+        result = [self]
+        for w in self.widgets:
+            result.append(w.widget.get_tree())
+        return result
+
+
+class WidgetGroup(Div):
+    def __init__(self, width, height, theme=None):
+        Div.__init__(self, width, height, True, theme)
+
+    def add_widget(self, widget, position):
+        Div.add_widget(self, widget, position)
+        for w in widget.get_tree():
+            w.focusable = False

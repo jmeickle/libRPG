@@ -107,9 +107,10 @@ ok      0.5 Code Cursor
 ok      0.5 Test focusable attribute
 ok      0.5 Code Image widget
 ok      0.5 Trigger Widget's process_event when it is focused and a key is pressed
+ok      0.5 Code WidgetGroup widget
+        0.5 Fix add_widget() order: widgets have to be added top-down for now
         0.5 Allow mouse control in menu
         0.5 Code Bar widget
-        0.5 Code WidgetGroup widget
         0.5 Code Grid widget
         0.5 Design more widgets
         0.5 Code other widgets

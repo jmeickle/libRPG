@@ -93,9 +93,6 @@ class Widget(object):
     def step(self, direction, widget_navigator=EuclidianNavigator()):
         return self.gateway.step(direction, widget_navigator)
 
-    def is_div(self):
-        return False
-
     def get_menu_position(self):
         if self.parent is None:
             return (0, 0)
@@ -111,3 +108,6 @@ class Widget(object):
 
     def get_menu_rect(self):
         return pygame.Rect(self.get_menu_position(), (self.width, self.height))
+
+    def get_tree(self):
+        return [self]
