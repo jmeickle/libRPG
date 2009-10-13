@@ -86,6 +86,7 @@ class Widget(object):
         
         Handle an activate event triggered while the widget was focused.
         """
+        print self, 'activated'
         return False
 
     def crystallize(self, widget_navigator=EuclidianNavigator()):

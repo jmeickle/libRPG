@@ -86,8 +86,9 @@ class MenuController(Context):
                 self.command_cooldown -= 1
             elif self.command_queue:
                 direction = self.command_queue[0]
-                if direction == ACTIVATE:
+                if direction == ACTIVATE or direction == MOUSE_ACTIVATE:
                     self.activate()
+                    self.command_cooldown = MenuController.COMMAND_COOLDOWN
                 else:
                     cursor.step(direction)
                     self.command_cooldown = MenuController.COMMAND_COOLDOWN
@@ -142,6 +143,16 @@ class MenuController(Context):
                 return True
         elif event.type == MOUSEMOTION:
             self.process_mouse_motion(event)
+        elif event.type == MOUSEBUTTONDOWN:
+            if event.button == 1:
+                if not MOUSE_ACTIVATE in self.command_queue:
+                    self.command_queue.insert(0, MOUSE_ACTIVATE)
+                return True
+        elif event.type == MOUSEBUTTONUP:
+            if event.button == 1:
+                if MOUSE_ACTIVATE in self.command_queue:
+                    self.command_queue.remove(MOUSE_ACTIVATE)
+                return True
         return False
 
     def process_mouse_motion(self, event):
