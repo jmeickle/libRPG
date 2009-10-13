@@ -4,7 +4,7 @@ from pygame.locals import *
 from librpg.context import Context, get_context_stack
 from librpg.virtualscreen import get_screen
 from librpg.config import game_config
-from librpg.util import check_direction, fill_with_surface
+from librpg.util import check_direction, fill_with_surface, descale_point
 from librpg.locals import *
 
 from div import Div
@@ -85,16 +85,18 @@ class MenuController(Context):
         self.menu.update()
 
     def activate(self):
-        if self.menu.cursor is not None:
-            w = self.menu.cursor.widget
+        cursor = self.menu.cursor
+        if cursor is not None:
+            w = cursor.widget
             while w is not None:
                 if w.activate():
                     return
                 w = w.parent
 
     def process_event(self, event):
-        if self.menu.cursor is not None:
-            w = self.menu.cursor.widget
+        cursor = self.menu.cursor
+        if cursor is not None:
+            w = cursor.widget
             while w is not None:
                 if w.process_event(event):
                     return True
@@ -128,4 +130,18 @@ class MenuController(Context):
                  and ACTIVATE in self.command_queue:
                 self.command_queue.remove(ACTIVATE)
                 return True
+        elif event.type == MOUSEMOTION:
+            self.process_mouse_motion(event)
         return False
+
+    def process_mouse_motion(self, event):
+        cursor = self.menu.cursor
+        if cursor is None:
+            return
+        pos = descale_point(event.pos)
+        print 'process_mouse_motion pos', pos
+        if cursor.widget.contains_point(pos):
+            return
+        for w in self.menu.all_widgets:
+            if w.focusable and w.contains_point(pos):
+                cursor.move_to(w)

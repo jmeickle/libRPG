@@ -265,3 +265,7 @@ def fill_with_surface(target, source):
             x += s_w
         y += s_h
         x = 0
+
+def descale_point(pos):
+    return (pos[0] / float(graphics_config.scale),
+            pos[1] / float(graphics_config.scale))

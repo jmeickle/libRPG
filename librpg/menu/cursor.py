@@ -35,6 +35,9 @@ class Cursor(object):
     def draw(self):
         pass
 
+    def move_to(self, widget):
+        self.widget = widget
+
 
 class ArrowCursor(Cursor):
 

@@ -17,6 +17,7 @@ class MenuLabel(Label):
         return True
 
     def process_event(self, event):
+        print event
         if event.type == KEYDOWN:
             print 'MenuLabel captured key press %d' % event.key
         return False

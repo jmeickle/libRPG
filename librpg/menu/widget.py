@@ -111,3 +111,11 @@ class Widget(object):
 
     def get_tree(self):
         return [self]
+
+    def contains_point(self, pos):
+        x, y = pos
+        my_x, my_y = self.get_menu_position()
+        return (x >= my_x
+                and x < my_x + self.width
+                and y >= my_y
+                and y < my_y + self.height)
