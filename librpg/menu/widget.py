@@ -1,3 +1,4 @@
+import math
 import pygame
 
 from librpg.config import menu_config
@@ -119,3 +120,25 @@ class Widget(object):
                 and x < my_x + self.width
                 and y >= my_y
                 and y < my_y + self.height)
+
+    def distance_to_point(self, pos):
+        x, y = pos
+        my_left, my_top = self.get_menu_position()
+        my_right = my_left + self.width
+        my_bottom = my_top + self.height
+
+        if x < my_left:
+            dx = x - my_left
+        elif x < my_right:
+            dx = 0
+        else:
+            dx = x - my_right
+
+        if y < my_top:
+            dy = y - my_top
+        elif y < my_bottom:
+            dy = 0
+        else:
+            dy = y - my_bottom
+
+        return math.sqrt(dx ** 2 + dy ** 2)

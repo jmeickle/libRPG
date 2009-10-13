@@ -25,9 +25,6 @@ class Cursor(object):
             target = self.widget.step(direction)
         if target is not None:
             self.widget = target
-            print 'Arrived at', self.widget, self.widget.get_center()
-        else:
-            print 'Blocked'
 
     def update(self):
         pass

@@ -11,7 +11,12 @@ from div import Div
 
 class Menu(Div):
 
-    def __init__(self, width, height, x=0, y=0, theme=None, bg=None):
+    MOUSE_OFF = 0
+    MOUSE_STRICT = 1
+    MOUSE_LOOSE = 2
+
+    def __init__(self, width, height, x=0, y=0, theme=None, bg=None,
+                 mouse_control=MOUSE_LOOSE):
         Div.__init__(self, width, height, theme)
         self.x = x
         self.y = y
@@ -19,6 +24,11 @@ class Menu(Div):
         self.menu = self
         self.all_widgets = []
         self.init_bg(bg)
+        assert mouse_control in (Menu.MOUSE_OFF,
+                                 Menu.MOUSE_STRICT,
+                                 Menu.MOUSE_LOOSE),\
+                                'mouse_control must be 0, 1 or 2'
+        self.mouse_control = mouse_control
 
     def init_bg(self, bg):
         self.bg = pygame.Surface((self.width, self.height)).convert_alpha()
@@ -135,13 +145,29 @@ class MenuController(Context):
         return False
 
     def process_mouse_motion(self, event):
+        if self.menu.mouse_control == Menu.MOUSE_OFF:
+            return
+
         cursor = self.menu.cursor
         if cursor is None:
             return
+
         pos = descale_point(event.pos)
-        print 'process_mouse_motion pos', pos
-        if cursor.widget.contains_point(pos):
-            return
-        for w in self.menu.all_widgets:
-            if w.focusable and w.contains_point(pos):
-                cursor.move_to(w)
+        
+        if self.menu.mouse_control == Menu.MOUSE_STRICT:
+            if cursor.widget.contains_point(pos):
+                return
+            for w in self.menu.all_widgets:
+                if w.focusable and w.contains_point(pos):
+                    cursor.move_to(w)
+                    return
+        else:
+            best = (None, 999999)
+            for w in self.menu.all_widgets:
+                if w.focusable:
+                    dist = w.distance_to_point(pos)
+                    if dist < best[1]:
+                        best = (w, dist)
+            if best[0] is not None:
+                cursor.move_to(best[0])
+
