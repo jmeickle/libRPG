@@ -56,7 +56,7 @@ class MenuTheme(object):
         """
         pass
 
-    def draw_bar(self, surface, rect, filled=1.0):
+    def draw_bar(self, surface, rect, filled=1.0, border=1):
         """
         *Virtual.*
         
@@ -65,7 +65,27 @@ class MenuTheme(object):
         `filled` should be a number between 0.0 and 1.0, indicating how full
         the bar should be.
         """
-        pass
+        TRANSPARENT = (0, 0, 0, 0)
+        WHITE = (255, 255, 255, 255)
+
+        surface.fill(TRANSPARENT)
+        
+        for i in xrange(border):
+            border_rect = pygame.Rect((rect.top + i, rect.left + i),
+                                      (rect.width - 2 * i,
+                                       rect.height - 2 * i))
+            pygame.draw.rect(surface, WHITE, border_rect, 1)
+
+        width = rect.width - 2 * border
+        vertical_lines = width * filled
+        for i in xrange(vertical_lines):
+            green = (255.0 * (vertical_lines - i)) / width
+            color = (255, green, 0, 255)
+            pygame.draw.line(surface,
+                             color,
+                             (rect.left + i + border, rect.top + border),
+                             (rect.left + i + border, rect.bottom - 1 - border),
+                             1)
 
     def draw_image(self, image):
         """

@@ -3,7 +3,7 @@ from pygame import *
 
 import librpg
 from librpg.menu import (MenuController, Menu, Panel, Label, ArrowCursor,
-                         ImageWidget, WidgetGroup)
+                         ImageWidget, WidgetGroup, Bar)
 from librpg.context import get_context_stack
 from librpg.path import data_path
 
@@ -22,6 +22,16 @@ class MenuLabel(Label):
         return False
 
 
+class AdjustableBar(Bar):
+
+    def process_event(self, event):
+        if event.type == MOUSEBUTTONDOWN:
+            if event.button == 1 or event.button == 4:
+                self.filled += 0.05
+            if event.button == 3 or event.button == 5:
+                self.filled -= 0.05
+
+
 class TestMenu(Menu):
 
     def __init__(self):
@@ -33,10 +43,12 @@ class TestMenu(Menu):
         self.add_widget(Label('NonFocusable', focusable=False), (150, 20))
         
         first_panel_label = Label('Panel0')
-        self.panel.add_widget(first_panel_label, (40, 40))
-        self.panel.add_widget(Label('Panel1'), (120, 40))
-        self.panel.add_widget(Label('Panel2'), (40, 80))
-        self.panel.add_widget(Label('Panel3'), (120, 80))
+        self.panel.add_widget(first_panel_label, (40, 20))
+        self.panel.add_widget(Label('Panel1'), (120, 20))
+        self.panel.add_widget(Label('Panel2'), (40, 60))
+        self.panel.add_widget(Label('Panel3'), (120, 60))
+        self.panel.add_widget(AdjustableBar(100, 14, filled=0.9, border=2),
+                              (50, 100))
 
         self.side_panel = Panel(110, 220)
         self.add_widget(self.side_panel, (260, 40))
@@ -52,6 +64,7 @@ class TestMenu(Menu):
         group.add_widget(Label('Group0'), (10, 0))
         group.add_widget(Label('Group1'), (90, 0))
         self.add_widget(group, (60, 240))
+        
         self.crystallize()
 
         # Add cursor
