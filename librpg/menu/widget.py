@@ -2,7 +2,7 @@ import math
 import pygame
 
 from librpg.config import menu_config
-from navigator import WidgetGateway, EuclidianNavigator
+from librpg.menu.navigator import WidgetGateway, EuclidianNavigator
 
 class Widget(object):
 

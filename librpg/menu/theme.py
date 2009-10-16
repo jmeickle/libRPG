@@ -77,7 +77,7 @@ class MenuTheme(object):
             pygame.draw.rect(surface, WHITE, border_rect, 1)
 
         width = rect.width - 2 * border
-        vertical_lines = width * filled
+        vertical_lines = int(width * filled)
         for i in xrange(vertical_lines):
             green = (255.0 * (vertical_lines - i)) / width
             color = (255, green, 0, 255)

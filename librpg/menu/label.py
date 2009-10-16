@@ -1,6 +1,6 @@
 import pygame
 
-from widget import Widget
+from librpg.menu.widget import Widget
 
 class Label(Widget):
 

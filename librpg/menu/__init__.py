@@ -8,3 +8,4 @@ from panel import *
 from theme import *
 from widget import *
 from imagewidget import *
+from grid import *

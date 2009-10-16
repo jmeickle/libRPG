@@ -7,7 +7,7 @@ from librpg.config import game_config
 from librpg.util import check_direction, fill_with_surface, descale_point
 from librpg.locals import *
 
-from div import Div
+from librpg.menu.div import Div
 
 class Menu(Div):
 

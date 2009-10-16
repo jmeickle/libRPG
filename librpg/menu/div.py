@@ -1,7 +1,7 @@
 import pygame
 
-from widget import Widget
-from navigator import EuclidianNavigator
+from librpg.menu.widget import Widget
+from librpg.menu.navigator import EuclidianNavigator
 
 class BoundWidget(object):
 

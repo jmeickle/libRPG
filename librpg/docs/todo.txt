@@ -111,7 +111,7 @@ ok      0.5 Code WidgetGroup widget
 ok      0.5 Fix add_widget() order: widgets have to be added top-down for now
 ok      0.5 Allow mouse control in menu
 ok      0.5 Make mouse movement configurable in 3 modes: disabled, strict (only when mouse is over the widget), loose (focus nearest widget)
-        0.5 Code Bar widget
+ok      0.5 Code Bar widget
         0.5 Code Grid widget
         0.5 Design more widgets
         0.5 Code other widgets

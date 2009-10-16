@@ -1,7 +1,7 @@
 import pygame
 
-from div import Div
-from widget import Widget
+from librpg.menu.div import Div
+from librpg.menu.widget import Widget
 
 class Panel(Div):
 
