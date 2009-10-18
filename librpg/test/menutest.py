@@ -3,7 +3,7 @@ from pygame import *
 
 import librpg
 from librpg.menu import (MenuController, Menu, Panel, Label, ArrowCursor,
-                         ImageWidget, WidgetGroup, Bar)
+                         ImageWidget, WidgetGroup, Bar, VerticalGrid)
 from librpg.context import get_context_stack
 from librpg.path import data_path
 
@@ -50,12 +50,14 @@ class TestMenu(Menu):
         self.panel.add_widget(AdjustableBar(100, 14, filled=0.9, border=2),
                               (50, 100))
 
-        self.side_panel = Panel(110, 220)
-        self.add_widget(self.side_panel, (260, 40))
+        side_panel = Panel(110, 220)
+        self.add_widget(side_panel, (260, 40))
+
+        grid = VerticalGrid(110, 220, 6)
+        side_panel.add_widget(grid, (0, 0))
         for i in range(6):
             label = Label('SidePanel%d' % i)
-            pos = (20, 20 + 30 * i)
-            self.side_panel.add_widget(label, pos)
+            grid[i].add_widget(label, (20, 10))
 
         img = pygame.image.load(data_path('icon.png'))
         self.add_widget(ImageWidget(img), (8, 8))
