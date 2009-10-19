@@ -56,12 +56,12 @@ class MapView(object):
                         + x * graphics_config.tile_size)
                 bg_y = (graphics_config.map_border_height
                         + y * graphics_config.tile_size)
-                terrain_tile_surface = self.map_model.terrain_layer.\
-                                       get((x, y)).get_surface(animation_phase)
+                terrain_tile_surface = self.map_model.terrain_layer[x, y].\
+                                       get_surface(animation_phase)
                 background.blit(terrain_tile_surface, (bg_x, bg_y))
 
                 for i in range(self.map_model.scenario_number):
-                    scenario_tile = self.map_model.scenario_layer[i].get((x, y))
+                    scenario_tile = self.map_model.scenario_layer[i][x, y]
                     if scenario_tile.obstacle != Tile.ABOVE:
                         scenario_tile_surface = scenario_tile.get_surface()
                         background.blit(scenario_tile_surface, (bg_x, bg_y))
@@ -78,7 +78,7 @@ class MapView(object):
         for y in xrange(self.map_model.height):
             for x in xrange(self.map_model.width):
                 for i in range(self.map_model.scenario_number):
-                    scenario_tile = self.map_model.scenario_layer[i].get((x, y))
+                    scenario_tile = self.map_model.scenario_layer[i][x, y]
                     if scenario_tile.obstacle == Tile.ABOVE:
                         fg_x = (graphics_config.map_border_width
                                 + x * graphics_config.tile_size)

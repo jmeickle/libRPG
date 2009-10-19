@@ -127,19 +127,17 @@ class MapController(Context):
                                                      party_avatar.prev_position)
 
             # Trigger below objects' collide_with_party()
-            for obj in self.map_model.object_layer.\
-                       get_pos(party_avatar.position).below:
+            for obj in self.map_model.object_layer[party_avatar.position].below:
                 obj.collide_with_party(party_avatar,
                                        coming_from_direction)
 
             # Trigger above objects' collide_with_party()
-            for obj in self.map_model.object_layer.\
-                       get_pos(party_avatar.position).above:
+            for obj in self.map_model.object_layer[party_avatar.position].above:
                 obj.collide_with_party(party_avatar,
                                        coming_from_direction)
 
             # Trigger areas' party_entered and party_moved()
-            for area in self.map_model.area_layer.get_pos(party_avatar.position):
+            for area in self.map_model.area_layer[party_avatar.position]:
                 if area not in party_avatar.prev_areas:
                     coming_from_outside = True
                     area.party_entered(party_avatar, party_avatar.position)
@@ -228,17 +226,16 @@ class MapModel(object):
         self.above_objects = []
         self.updatable_objects = []
         self.object_layer = Matrix(self.width, self.height)
-        object_layer_set = self.object_layer.set
         for x in range(self.width):
             for y in range(self.height):
-                object_layer_set((x, y), ObjectCell())
+                self.object_layer[x, y] = ObjectCell()
 
         # Set up areas
         self.areas = []
         self.area_layer = Matrix(self.width, self.height)
         for x in range(self.width):
             for y in range(self.height):
-                self.area_layer.set((x, y), [])
+                self.area_layer[x, y] = []
 
         # Set up context system
         self.pause_delay = 0
@@ -261,8 +258,8 @@ class MapModel(object):
         for line in r:
             if len(line) == self.width:
                 for x, value in enumerate(line):
-                    self.terrain_layer.set((x, y), self.terrain_tileset.\
-                                           tiles[int(value)])
+                    self.terrain_layer[x, y] = self.terrain_tileset.\
+                                               tiles[int(value)]
                 y += 1
             if y >= self.height:
                 break
@@ -273,7 +270,7 @@ class MapModel(object):
                 if len(line) == self.width:
                     for x, value in enumerate(line):
                         tile = self.scenario_tileset[i].tiles[int(value)]
-                        self.scenario_layer[i].set((x, y), tile)
+                        self.scenario_layer[i][x, y] = tile
                     y += 1
                 if y >= self.height:
                     break
@@ -336,7 +333,7 @@ class MapModel(object):
         occupied by an obstacle and the object to be added is also an
         obstacle).
         """
-        self.object_layer.get_pos(position).add_object(obj)
+        self.object_layer[position].add_object(obj)
 
         self.objects.append(obj)
         if obj.is_below():
@@ -351,7 +348,7 @@ class MapModel(object):
             self.updatable_objects.append(obj)
             
         obj.position = position
-        obj.areas = self.area_layer.get_pos(position)
+        obj.areas = self.area_layer[position]
         obj.map = self
         return True
 
@@ -372,7 +369,7 @@ class MapModel(object):
         if hasattr(obj, 'update'):
             self.updatable_objects.remove(obj)
 
-        self.object_layer.get_pos(obj.position).remove_object(obj)
+        self.object_layer[obj.position].remove_object(obj)
         result = obj.position
         obj.position, obj.map = None, None
         return result
@@ -385,7 +382,7 @@ class MapModel(object):
         """
         self.areas.append(area)
         for pos in positions:
-            self.area_layer.get_pos(pos).append(area)
+            self.area_layer[pos].append(area)
         area.area = positions
 
     def remove_area(self, area, positions):
@@ -396,7 +393,7 @@ class MapModel(object):
         """
         self.areas.remove(area)
         for pos in area.area:
-            self.area_layer.get_pos(pos).remove(area)
+            self.area_layer[pos].remove(area)
         area.area = list(set(area.area) - set(positions))
 
     def try_to_move_object(self, obj, direction, slide=False, back=False):
@@ -417,17 +414,17 @@ class MapModel(object):
 
         old_pos = obj.position
         desired = obj.position.step(direction)
-        if not self.terrain_layer.valid_pos(desired):
+        if not self.terrain_layer.valid(desired):
             return False
 
-        old_terrain = self.terrain_layer.get_pos(old_pos)
-        new_terrain = self.terrain_layer.get_pos(desired)
-        old_scenario = [self.scenario_layer[i].get_pos(old_pos) for i in\
+        old_terrain = self.terrain_layer[old_pos]
+        new_terrain = self.terrain_layer[desired]
+        old_scenario = [self.scenario_layer[i][old_pos] for i in\
                         range(self.scenario_number)]
-        new_scenario = [self.scenario_layer[i].get_pos(desired) for i in\
+        new_scenario = [self.scenario_layer[i][desired] for i in\
                         range(self.scenario_number)]
-        old_object = self.object_layer.get_pos(old_pos)
-        new_object = self.object_layer.get_pos(desired)
+        old_object = self.object_layer[old_pos]
+        new_object = self.object_layer[desired]
 
         if not (obj.is_obstacle() and
                 self.is_obstructed(old_terrain, old_scenario, new_terrain,
@@ -435,8 +432,8 @@ class MapModel(object):
             # Move
             self.move_object(obj, old_object, new_object, desired, slide, back)
             if obj is self.party_avatar:
-                for area in self.area_layer.get_pos(old_pos):
-                    if area not in self.area_layer.get_pos(desired):
+                for area in self.area_layer[old_pos]:
+                    if area not in self.area_layer[desired]:
                         area.party_left(self.party_avatar, old_pos)
             return True
         else:
@@ -486,43 +483,43 @@ class MapModel(object):
         obj.prev_position = obj.position
         obj.position = new_pos
         obj.prev_areas = obj.areas
-        obj.areas = self.area_layer.get_pos(new_pos)
+        obj.areas = self.area_layer[new_pos]
 
     def teleport_object(self, obj, new_pos):
         old_pos = obj.position
-        old_object = self.object_layer.get_pos(old_pos)
-        new_object = self.object_layer.get_pos(new_pos)
+        old_object = self.object_layer[old_pos]
+        new_object = self.object_layer[new_pos]
         
         old_object.remove_object(obj)
         new_object.add_object(obj)
         obj.prev_position = old_pos
         obj.position = new_pos
         obj.prev_areas = obj.areas
-        obj.areas = self.area_layer.get_pos(new_pos)
+        obj.areas = self.area_layer[new_pos]
 
     def party_action(self):
         old_pos = self.party_avatar.position
         desired = old_pos.step(self.party_avatar.facing)
 
         # Activate object that the party is looking at
-        if self.terrain_layer.valid_pos(desired):
-            obj_in_front = self.object_layer.get_pos(desired).obstacle
+        if self.terrain_layer.valid(desired):
+            obj_in_front = self.object_layer[desired].obstacle
             if obj_in_front is not None:
                obj_in_front.activate(self.party_avatar,
                                      self.party_avatar.facing)
             across_pos = desired.step(self.party_avatar.facing)
-            if (self.terrain_layer.valid_pos(across_pos) and
+            if (self.terrain_layer.valid(across_pos) and
                ((obj_in_front is not None and obj_in_front.is_counter()) or
-               any([layer.get_pos(desired).is_counter() for layer in\
+               any([layer[desired].is_counter() for layer in\
                     self.scenario_layer]))):
                 # Counter attribute
-                obj_across = self.object_layer.get_pos(across_pos).obstacle
+                obj_across = self.object_layer[across_pos].obstacle
                 if obj_across is not None:
                     obj_across.activate(self.party_avatar,
                                         self.party_avatar.facing)
 
         # Activate objects that the party is standing on or under
-        old_object = self.object_layer.get_pos(old_pos)
+        old_object = self.object_layer[old_pos]
         for obj in old_object.below:
             obj.activate(self.party_avatar, self.party_avatar.facing)
         for obj in old_object.above:

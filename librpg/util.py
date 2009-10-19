@@ -123,7 +123,7 @@ class Matrix(object):
     def __repr__(self):
         return '(Matrix %s x %s)' % (self.width, self.height)
 
-    def get(self, pos):
+    def __getitem__(self, pos):
         """
         Return the element at *pos* == (x, y).
         
@@ -136,7 +136,7 @@ class Matrix(object):
                                                                  x, y)
         return self.m[y][x]
 
-    def set(self, pos, value):
+    def __setitem__(self, pos, value):
         """
         Sets the element at *pos* == (x, y) to *value*.
         
@@ -149,38 +149,12 @@ class Matrix(object):
                                                                  x, y)
         self.m[y][x] = value
 
-    def get_pos(self, pos):
-        """
-        Return the element at x=*pos*.x, y=*pos*.y. Meant to be used
-        with Position.
-        
-        Raises IndexError if x or y are not inside the matrix's
-        limits.
-        """
-        return self.get(pos)
-
-    def set_pos(self, pos, value):
-        """
-        Set the element at x=*pos*.x, y=*pos*.y to *value*. Meant to be
-        used with Position.
-        
-        Raises IndexError if x or y are not inside the matrix's
-        limits.
-        """
-        self.set(pos, value)
-
     def valid(self, pos):
         """
         Return whether *pos* == (x, y) is inside the matrix's limits.
         """
         x, y = pos
         return x < self.width and x >= 0 and y < self.height and y >= 0
-
-    def valid_pos(self, pos):
-        """
-        Return whether *pos* is inside the matrix's limits.
-        """
-        return self.valid(pos)
 
 
 def inverse(direction):
