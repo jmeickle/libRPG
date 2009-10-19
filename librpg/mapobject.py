@@ -175,7 +175,7 @@ class MapObject(object):
         if self.movement_phase > 0:
             self.movement_phase -= 1
         else:
-            no_scheduled_movement = self.scheduled_movement.flow(self)
+            no_scheduled_movement = self.scheduled_movement.flow(self)[0]
             if no_scheduled_movement:
                 self.movement_behavior.flow(self)
 
