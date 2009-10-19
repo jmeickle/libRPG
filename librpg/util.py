@@ -116,9 +116,10 @@ class Matrix(object):
     """
 
     def __init__(self, width, height):
-        self.width = width
-        self.height = height
-        self.m = [[None] * self.width for i in xrange(self.height)]
+        self.width = 0
+        self.height = 0
+        self.m = []
+        self.resize(width, height)
 
     def __repr__(self):
         return '(Matrix %s x %s)' % (self.width, self.height)
@@ -155,6 +156,33 @@ class Matrix(object):
         """
         x, y = pos
         return x < self.width and x >= 0 and y < self.height and y >= 0
+
+    def resize(self, width=None, height=None):
+        new_width = self.width if (width is None) else width
+        new_height = self.height if (height is None) else height
+        
+        if height is not None:
+            if new_height < self.height:
+                self.m = self.m[:new_height]
+                outdated_lines = new_height
+            elif new_height > self.height:
+                for i in xrange(new_height - self.height):
+                    self.m.append([None] * new_width)
+                outdated_lines = self.height
+            else:
+                outdated_lines = self.height
+            self.height = new_height
+        else:
+            outdated_lines = self.height
+
+        if width is not None:
+            if new_width < self.width:
+                for i in xrange(outdated_lines):
+                    self.m[i] = self.m[i][:width]
+            elif new_width > self.width:
+                for i in xrange(outdated_lines):
+                    self.m[i].extend([None] * (new_width - self.width))
+            self.width = new_width
 
 
 def inverse(direction):
