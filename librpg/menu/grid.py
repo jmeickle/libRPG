@@ -55,9 +55,26 @@ class Grid(Div):
             raise IndexError, 'Cannot remove %d lines from a Grid with %d '\
                               'lines' % (number_of_lines, self.height_in_cells)
 
+        old_height = self.height_in_cells
+        self.height_in_cells -= number_of_lines
+
+        for y in xrange(self.height_in_cells, old_height):
+            for x in xrange(self.width_in_cells):
+                self.remove_widget(self.cells[x, y])
+
+        self.cells.resize(self.width_in_cells, self.height_in_cells)
+
     def remove_columns(self, number_of_columns=1):
-            raise IndexError, 'Cannot remove %d columns from a Grid with %d '\
-                              'columns' % (number_of_columns, self.width_in_cells)
+        raise IndexError, 'Cannot remove %d columns from a Grid with %d '\
+                          'columns' % (number_of_columns, self.width_in_cells)
+        old_width = self.width_in_cells
+        self.width_in_cells -= number_of_columns
+
+        for y in xrange(self.height_in_cells):
+            for x in xrange(self.width_in_cells, old_width):
+                self.remove_widget(self.cells[x, y])
+
+        self.cells.resize(self.width_in_cells, self.height_in_cells)
 
 
 class HorizontalGrid(Grid):

@@ -113,7 +113,7 @@ ok      0.5 Allow mouse control in menu
 ok      0.5 Make mouse movement configurable in 3 modes: disabled, strict (only when mouse is over the widget), loose (focus nearest widget)
 ok      0.5 Code Bar widget
 ok      0.5 Improve Matrix: make it expandable, access it with __getitem__ and __setitem__
-        0.5 Code Grid widget
+ok      0.5 Code Grid widget
         0.5 Implement easy alignment inside div
         0.5 Improve navigation algorithm: considering only the widget center leads to distortions
         0.5 Design more widgets

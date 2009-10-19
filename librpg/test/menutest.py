@@ -56,8 +56,8 @@ class AdjustableVerticalGrid(VerticalGrid):
             self[i].add_widget(label, (20, 10))
 
     def remove_line(self):
-        if self.height_in_cells > 0:
-            pass
+        if self.height_in_cells > 1:
+            self.remove_lines()
 
 
 class TestMenu(Menu):
