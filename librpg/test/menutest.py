@@ -32,6 +32,34 @@ class AdjustableBar(Bar):
                 self.filled -= 0.05
 
 
+class AdjustableVerticalGrid(VerticalGrid):
+
+    def __init__(self, width, height, height_in_cells, max_height):
+        VerticalGrid.__init__(self, width, height, height_in_cells)
+        self.max_height = max_height
+        for i in range(height_in_cells):
+            label = Label('SidePanel%d' % i)
+            self[i].add_widget(label, (20, 10))
+
+    def process_event(self, event):
+        if event.type == MOUSEBUTTONDOWN:
+            if event.button == 1 or event.button == 4:
+                self.add_line()
+            if event.button == 3 or event.button == 5:
+                self.remove_line()
+
+    def add_line(self):
+        if self.height_in_cells < self.max_height:
+            i = self.height_in_cells
+            self.add_lines()
+            label = Label('SidePanel%d' % i)
+            self[i].add_widget(label, (20, 10))
+
+    def remove_line(self):
+        if self.height_in_cells > 0:
+            pass
+
+
 class TestMenu(Menu):
 
     def __init__(self):
@@ -53,11 +81,8 @@ class TestMenu(Menu):
         side_panel = Panel(110, 220)
         self.add_widget(side_panel, (260, 40))
 
-        grid = VerticalGrid(110, 220, 6)
+        grid = AdjustableVerticalGrid(110, 74, 2, 6)
         side_panel.add_widget(grid, (0, 0))
-        for i in range(6):
-            label = Label('SidePanel%d' % i)
-            grid[i].add_widget(label, (20, 10))
 
         img = pygame.image.load(data_path('icon.png'))
         self.add_widget(ImageWidget(img), (8, 8))
@@ -67,7 +92,7 @@ class TestMenu(Menu):
         group.add_widget(Label('Group1'), (90, 0))
         self.add_widget(group, (60, 240))
         
-        self.crystallize()
+        #self.crystallize()
 
         # Add cursor
         cursor = ArrowCursor()

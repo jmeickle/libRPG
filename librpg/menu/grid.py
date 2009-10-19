@@ -24,6 +24,41 @@ class Grid(Div):
     def __getitem__(self, pos):
         return self.cells[pos]
 
+    def add_lines(self, number_of_lines=1):
+        old_height = self.height_in_cells
+        self.height_in_cells += number_of_lines
+        self.cells.resize(self.width_in_cells, self.height_in_cells)
+
+        for y in xrange(old_height, self.height_in_cells):
+            for x in xrange(self.width_in_cells):
+                div = Div(self.cell_width, self.cell_height, focusable=False,
+                          theme=self.theme)
+                pos = (x * self.cell_width, y * self.cell_height)
+                self.cells[x, y] = div
+                self.add_widget(div, pos)
+
+    def add_columns(self, number_of_columns=1):
+        old_width = self.width_in_cells
+        self.width_in_cells += number_of_columns
+        self.cells.resize(self.width_in_cells, self.height_in_cells)
+
+        for y in xrange(self.height_in_cells):
+            for x in xrange(old_width, self.width_in_cells):
+                div = Div(self.cell_width, self.cell_height, focusable=False,
+                          theme=self.theme)
+                pos = (x * self.cell_width, y * self.cell_height)
+                self.cells[x, y] = div
+                self.add_widget(div, pos)
+
+    def remove_lines(self, number_of_lines=1):
+        if self.height_in_cells <= number_of_lines:
+            raise IndexError, 'Cannot remove %d lines from a Grid with %d '\
+                              'lines' % (number_of_lines, self.height_in_cells)
+
+    def remove_columns(self, number_of_columns=1):
+            raise IndexError, 'Cannot remove %d columns from a Grid with %d '\
+                              'columns' % (number_of_columns, self.width_in_cells)
+
 
 class HorizontalGrid(Grid):
 
@@ -35,6 +70,9 @@ class HorizontalGrid(Grid):
     def __getitem__(self, x):
         return self.cells[x, 0]
 
+    def add_lines(self, number_of_lines=1):
+        raise Exception, 'HorizontalGrid cannot have more than 1 line'
+
 
 class VerticalGrid(Grid):
 
@@ -45,3 +83,6 @@ class VerticalGrid(Grid):
 
     def __getitem__(self, y):
         return self.cells[0, y]
+
+    def add_columns(self, number_of_columns=1):
+        raise Exception, 'VerticalGrid cannot have more than 1 column'
