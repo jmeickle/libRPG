@@ -417,7 +417,7 @@ class MapModel(object):
         if not self.terrain_layer.valid(desired):
             return False
 
-        if self.can_move(obj, old_pos, desired, direction):
+        if not (obj.is_obstacle() and self.can_move(old_pos, desired, direction)):
             # Move
             old_object = self.object_layer[old_pos]
             new_object = self.object_layer[desired]
@@ -435,7 +435,7 @@ class MapModel(object):
                                                        direction)
             return False
 
-    def can_move(self, obj, old_pos, desired, direction):
+    def can_move(self, old_pos, desired, direction):
 
         old_terrain = self.terrain_layer[old_pos]
         new_terrain = self.terrain_layer[desired]
@@ -445,9 +445,8 @@ class MapModel(object):
                         range(self.scenario_number)]
         new_object = self.object_layer[desired]
 
-        return not (obj.is_obstacle() and
-                self.is_obstructed(old_terrain, old_scenario, new_terrain,
-                                   new_scenario, new_object, direction))
+        return self.is_obstructed(old_terrain, old_scenario, new_terrain,
+                                  new_scenario, new_object, direction)
 
     def is_obstructed(self, old_terrain, old_scenario_list, new_terrain,
                       new_scenario_list, new_object, direction):

@@ -1,4 +1,5 @@
 import heapq
+from pygame.locals import *
 
 class StarA(object):
     def __init__(self, mapmodel, start, goal):
@@ -23,13 +24,14 @@ class StarA(object):
 
                 return follow(least)
 
-            for y in (pos.up(), pos.down(), pos.left(),
-                      pos.right()]:
-
-                next = (value+1+self.h(y), value+1, y)
-                came_from[next] = least
-                heapq.heappush(self.open, least)
-
+            for f, y in zip([UP,DOWN,LEFT,RIGHT],
+                         [x.up(), x.down(), x.left(),x.right()]):
+                
+                if mapmodel.can_move(x, y, f):
+                    next = (value+1+self.h(y), value+1, y)
+                    came_from[next] = least
+                    heapq.heappush(self.open, least)
+                    
     def h(self, pos):
         """
         Manhattan distance
