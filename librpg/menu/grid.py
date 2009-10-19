@@ -1,4 +1,5 @@
 from librpg.menu.div import Div
+from librpg.util import Matrix
 
 class Grid(Div):
 
@@ -11,20 +12,17 @@ class Grid(Div):
         self.cell_width = self.width / self.width_in_cells
         self.cell_height = self.height / self.height_in_cells
 
-        self.cells = []
-        for i in xrange(height_in_cells):
-            line = []
-            for j in xrange(width_in_cells):
+        self.cells = Matrix(width_in_cells, height_in_cells)
+        for y in xrange(height_in_cells):
+            for x in xrange(width_in_cells):
                 div = Div(self.cell_width, self.cell_height, focusable=False,
                           theme=self.theme)
-                pos = (j * self.cell_width, i * self.cell_height)
-                line.append(div)
+                pos = (x * self.cell_width, y * self.cell_height)
+                self.cells[x, y] = div
                 self.add_widget(div, pos)
-            self.cells.append(line)
 
     def __getitem__(self, pos):
-        x, y = pos
-        return self.cells[y][x]
+        return self.cells[pos]
 
 
 class HorizontalGrid(Grid):
@@ -35,7 +33,7 @@ class HorizontalGrid(Grid):
                       focusable, theme)
 
     def __getitem__(self, x):
-        return self.cells[0][x]
+        return self.cells[x, 0]
 
 
 class VerticalGrid(Grid):
@@ -46,4 +44,4 @@ class VerticalGrid(Grid):
                       focusable, theme)
 
     def __getitem__(self, y):
-        return self.cells[y][0]
+        return self.cells[0, y]
