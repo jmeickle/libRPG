@@ -5,7 +5,7 @@ m = Matrix(3, 4)
 def test_set(x, y, value):
     print 'Setting', str(x) + ',', str(y), 'to', value
     try:
-        m.set(x, y, value)
+        m.set((x, y), value)
     except:
         print 'Error setting', value, 'at x=' + str(x), 'y=' + str(y)
     print m
@@ -13,7 +13,7 @@ def test_set(x, y, value):
 
 def test_get(x, y):
     try:
-        value = m.get(x, y)
+        value = m.get((x, y))
         print 'Getting', str(x) + ',', str(y), 'as', value
     except:
         print 'Error getting x=' + str(x), 'y=' + str(y)

@@ -231,14 +231,14 @@ class MapModel(object):
         object_layer_set = self.object_layer.set
         for x in range(self.width):
             for y in range(self.height):
-                object_layer_set(x, y, ObjectCell())
+                object_layer_set((x, y), ObjectCell())
 
         # Set up areas
         self.areas = []
         self.area_layer = Matrix(self.width, self.height)
         for x in range(self.width):
             for y in range(self.height):
-                self.area_layer.set(x, y, [])
+                self.area_layer.set((x, y), [])
 
         # Set up context system
         self.pause_delay = 0
@@ -261,7 +261,7 @@ class MapModel(object):
         for line in r:
             if len(line) == self.width:
                 for x, value in enumerate(line):
-                    self.terrain_layer.set(x, y, self.terrain_tileset.\
+                    self.terrain_layer.set((x, y), self.terrain_tileset.\
                                            tiles[int(value)])
                 y += 1
             if y >= self.height:
@@ -273,7 +273,7 @@ class MapModel(object):
                 if len(line) == self.width:
                     for x, value in enumerate(line):
                         tile = self.scenario_tileset[i].tiles[int(value)]
-                        self.scenario_layer[i].set(x, y, tile)
+                        self.scenario_layer[i].set((x, y), tile)
                     y += 1
                 if y >= self.height:
                     break

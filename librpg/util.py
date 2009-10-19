@@ -86,6 +86,22 @@ class Position(object):
         else:
             return 0
 
+    def __getitem__(self, i):
+        if i == 0:
+            return self.x
+        elif i == 1:
+            return self.y
+        else:
+            raise IndexError, 'Position is only 2 dimensional'
+
+    def __setitem__(self, i, value):
+        if i == 0:
+            self.x = value
+        elif i == 1:
+            self.y = value
+        else:
+            raise IndexError, 'Position is only 2 dimensional'
+
 
 class Matrix(object):
 
@@ -97,54 +113,41 @@ class Matrix(object):
         
     :attr:`height`
         Matrix height.
-        
-    :attr:`size`
-        Number of positions (height * width).
-    
     """
-
-    # m - array of elements. The element at (x,y) is at the
-    # (x + width*y) position
 
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        self.size = width * height
-        self.m = [None] * self.size
+        self.m = [[None] * self.width for i in xrange(self.height)]
 
     def __repr__(self):
         return '(Matrix %s x %s)' % (self.width, self.height)
 
-    def __str__(self):
-        s = ''
-        for y in xrange(self.height):
-            s += str(self.m[y*self.width:(y+1)*self.width])
-            s += '\n'
-        return s
-
-    def get(self, x, y):
+    def get(self, pos):
         """
-        Return the element at (*x*, *y*).
+        Return the element at *pos* == (x, y).
         
-        Raises IndexError if *x* or *y* are not inside the matrix's
+        Raises IndexError if x or y are not inside the matrix's
         limits.
         """
-        if not self.valid(x, y):
+        x, y = pos
+        if not self.valid(pos):
             raise IndexError, '%s was indexed with x=%s y=%s' % (repr(self),
                                                                  x, y)
-        return self.m[x + self.width * y]
+        return self.m[y][x]
 
-    def set(self, x, y, value):
+    def set(self, pos, value):
         """
-        Sets the element at (*x*, *y*) to *value*.
+        Sets the element at *pos* == (x, y) to *value*.
         
-        Raises IndexError if *x* or *y* are not inside the matrix's
+        Raises IndexError if x or y are not inside the matrix's
         limits.
         """
-        if not self.valid(x, y):
+        x, y = pos
+        if not self.valid(pos):
             raise IndexError, '%s was indexed with x=%s y=%s' % (repr(self),
                                                                  x, y)
-        self.m[x + self.width * y] = value
+        self.m[y][x] = value
 
     def get_pos(self, pos):
         """
@@ -154,7 +157,7 @@ class Matrix(object):
         Raises IndexError if x or y are not inside the matrix's
         limits.
         """
-        return self.get(pos.x, pos.y)
+        return self.get(pos)
 
     def set_pos(self, pos, value):
         """
@@ -164,19 +167,20 @@ class Matrix(object):
         Raises IndexError if x or y are not inside the matrix's
         limits.
         """
-        self.set(pos.x, pos.y, value)
+        self.set(pos, value)
 
-    def valid(self, x, y):
+    def valid(self, pos):
         """
-        Return whether (*x*, *y*) are inside the matrix's limits.
+        Return whether *pos* == (x, y) is inside the matrix's limits.
         """
+        x, y = pos
         return x < self.width and x >= 0 and y < self.height and y >= 0
 
     def valid_pos(self, pos):
         """
-        Return whether (*pos*.x, *pos*.y) are inside the matrix's limits.
+        Return whether *pos* is inside the matrix's limits.
         """
-        return self.valid(pos.x, pos.y)
+        return self.valid(pos)
 
 
 def inverse(direction):
