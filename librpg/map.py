@@ -414,19 +414,10 @@ class MapModel(object):
         if not self.terrain_layer.valid(desired):
             return False
 
-        old_terrain = self.terrain_layer[old_pos]
-        new_terrain = self.terrain_layer[desired]
-        old_scenario = [self.scenario_layer[i][old_pos] for i in\
-                        range(self.scenario_number)]
-        new_scenario = [self.scenario_layer[i][desired] for i in\
-                        range(self.scenario_number)]
-        old_object = self.object_layer[old_pos]
-        new_object = self.object_layer[desired]
-
-        if not (obj.is_obstacle() and
-                self.is_obstructed(old_terrain, old_scenario, new_terrain,
-                                   new_scenario, new_object, direction)):
+        if not (obj.is_obstacle() and self.can_move(old_pos, desired, direction)):
             # Move
+            old_object = self.object_layer[old_pos]
+            new_object = self.object_layer[desired]
             self.move_object(obj, old_object, new_object, desired, slide, back)
             if obj is self.party_avatar:
                 for area in self.area_layer[old_pos]:
@@ -435,10 +426,24 @@ class MapModel(object):
             return True
         else:
             # Do not move, something is on the way
+            new_object = self.object_layer[desired]
             if obj is self.party_avatar and new_object.obstacle is not None:
                 new_object.obstacle.collide_with_party(self.party_avatar,
                                                        direction)
             return False
+
+    def can_move(self, old_pos, desired, direction):
+
+        old_terrain = self.terrain_layer[old_pos]
+        new_terrain = self.terrain_layer[desired]
+        old_scenario = [self.scenario_layer[i][old_pos] for i in\
+                        range(self.scenario_number)]
+        new_scenario = [self.scenario_layer[i][desired] for i in\
+                        range(self.scenario_number)]
+        new_object = self.object_layer[desired]
+
+        return self.is_obstructed(old_terrain, old_scenario, new_terrain,
+                                  new_scenario, new_object, direction)
 
     def is_obstructed(self, old_terrain, old_scenario_list, new_terrain,
                       new_scenario_list, new_object, direction):

@@ -48,15 +48,15 @@ class MovementQueue(Movement, list):
 
     def flow(self, obj):
         if len(self) == 0:
-            return True
+            return (True,)
         first = self[0]
-        should_remove = first.flow(obj)
+        should_remove = first.flow(obj)[0]
         if should_remove:
             del self[0]
         if len(self) == 0:
-            return True
+            return (True,)
         else:
-            return False
+            return (False,)
 
     def clear(self):
         del self[:]
@@ -85,12 +85,12 @@ class MovementCycle(Movement):
 
     def flow(self, obj):
         if len(self.movements) == 0:
-            return False
+            return (False,)
         current = self.movements[self.current]
-        should_skip = current.flow(obj)
+        should_skip = current.flow(obj)[0]
         if should_skip:
             self.current = (self.current + 1) % len(self.movements)
-        return False
+        return (False,)
 
 
 class OneTileMovement(Movement):
@@ -123,12 +123,12 @@ class OneTileMovement(Movement):
         done = obj.map.try_to_move_object(obj, self.direction, slide=self.slide,
                                           back=self.back)
         if self.forced:
-            return done
+            return (done,)
         if self.tries_left and not done:
             self.tries_left -= 1
-            return False
+            return (False, done)
         else:
-            return True
+            return (True, done)
 
 
 class Step(OneTileMovement):
@@ -156,7 +156,7 @@ class Face(Movement):
 
     def flow(self, obj):
         obj.facing = self.direction
-        return True
+        return (True,)
 
 
 class Wait(Movement):
@@ -173,9 +173,9 @@ class Wait(Movement):
         self.delay -= 1
         if self.delay == 0:
             self.delay = self.initial_delay
-            return True
+            return (True,)
         else:
-            return False
+            return (False,)
 
 
 class Slide(OneTileMovement):
