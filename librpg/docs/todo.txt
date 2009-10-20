@@ -114,6 +114,7 @@ ok      0.5 Make mouse movement configurable in 3 modes: disabled, strict (only 
 ok      0.5 Code Bar widget
 ok      0.5 Improve Matrix: make it expandable, access it with __getitem__ and __setitem__
 ok      0.5 Code Grid widget
+ok      0.5 Capture quit event before it gets to Contexts
         0.5 Implement easy alignment inside div
         0.5 Improve navigation algorithm: considering only the widget center leads to distortions
         0.5 Design more widgets
@@ -121,7 +122,6 @@ ok      0.5 Code Grid widget
         0.5 Implement animated themes
         0.5 Implement HighlightCursor
         0.5 Code slot interface
-        0.5 Capture quit event before it gets to Contexts?
         0.5 Replace command queues for get key state calls?
         0.5 Open a "library" module with stuff like TeleportArea, Rock, Chest, ChatDialog, InventoryMenu, SaveMenu, PartyMenu
         0.5 Convert Dialogs to use the menu package

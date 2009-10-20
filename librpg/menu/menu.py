@@ -115,10 +115,7 @@ class MenuController(Context):
         return self.menu_process_event(event)
 
     def menu_process_event(self, event):
-        if event.type == QUIT:
-            get_context_stack().stop()
-            return True
-        elif event.type == KEYDOWN:
+        if event.type == KEYDOWN:
             direction = check_direction(event.key)
             if direction is not None and\
                not direction in self.command_queue:
