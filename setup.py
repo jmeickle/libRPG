@@ -6,7 +6,7 @@ import fnmatch
 from os.path import join
 
 NAME = 'LibRPG'
-VERSION = '0.4'
+VERSION = '0.5'
 
 def recursive_list_dir(dir):
     data = []
