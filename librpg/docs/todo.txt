@@ -1,147 +1,152 @@
-Done    Ver What
-ok      0.1 Dissociate ObjectImage from speed, to allow Characters to have ObjectImages
-ok      0.1 Scenario test png (different dimensions than terrain one)
-ok      0.1 Scenario layer
-ok      0.1 Above party level object layer
-ok      0.1 Bigger map
-ok      0.1 Direction specific tile entering
-ok      0.1 Improve 32 pixel map
-ok      0.1 Fix bridges
-ok      0.1 Clean up code ("is None", f(x=42))
-ok      0.1 Improve GraphicsConfig
-ok      0.1 Consider making things Sprites rather than Surfaces
-ok      0.1 Improve keyboard control -> if only a direction key is pressed, do as it says
-ok      0.1 Fix open directions bug
-ok      0.1 Implement configurable scrolling
-ok      0.1 Optimize code: http://wiki.python.org/moin/PythonSpeed/PerformanceTips
-ok      0.1 Draw Party as a MapObject
-ok      0.1 Evaluate API of this iteration
-ok      0.1 Allow scaling (pygame.transform.scale)
-ok      0.2 Write roadmap
-ok      0.2 Other test script for MapObjects
-ok      0.2 Use scheduled_movement [Movement] for the MapObjects
-ok      0.2 Implement Wait and Slide movements
-ok      0.2 Include the PartyAvatar in the objects that move. Create a test object that moves the PartyAvatar.
-ok      0.2 Allow scenario tiles to be used to be used as ObjectImages
-ok      0.2 Create a boulder maze test
-ok      0.2 Use movement behavior for the MapObjects, with a similar mechanism to movement scheduling.
-ok      0.2 Create ForcedStep, a Step that keeps insisting until it works
-ok      0.2 Test below and above objects
-ok      0.2 Allow multiple object images to be loaded from a single file
-ok      0.2 Fix rock in the black bug
-ok      0.2 Choose and implement MapObject drawing algorithm
-ok      0.2 Deprecate Position and use tuples instead OR extend Position's functionality
-ok      0.2 Move Direction constants to some module
-ok      0.2 Evaluate API of this iteration
-ok      0.2 Move MessageDialog config to config module
-ok      0.3 Redo the graphics_config system, make the screen be init'd only in librpg.init()
-ok      0.3 Slow down the party's steps
-ok      0.3 Create World and WorldMap with teleport system
-ok      0.3 Write tests for teleports
-ok      0.3 Carry key down to next map when teleporting
-ok      0.3 Move collide_with_party trigger to when the Party stops at the next tile, rather than leaves the prev tile
-ok      0.3 Create pause() method in MapModel
-ok      0.3 Remove GraphicsConfig.config and make sure that doesn't break anything
-ok      0.3 Design a good way to do synchronous movement
-ok      0.3 Rename Map to MapController
-ok      0.3 Save map state when teleporting from map to map
-ok      0.3 Save map state in save file
-ok      0.3 Make party position be loaded from save file
-ok      0.3 Implement MapAreas
-ok      0.3 Implement PositionList iterable for MapAreas to use
-ok      0.3 Implement librpg.world.TeleportArea
-ok      0.3 Implement __add__ in a PositionList base class
-ok      0.3 Refactor message queue out of MapModel to decrease its complexity
-ok      0.3 Optimize in-map teleports
-ok      0.3 Design context stack based menus
-ok      0.3 Write context stack
-ok      0.3 Integrate MessageDialog in context stack mechanism
-ok      0.3 Improve context stack API - wrap into MicroWorld
-ok      0.3 Make all classes inherit from object
-ok      0.3 Separate internal modules in a special section
-ok      0.3 Update API docs
-ok      0.3 Allow create_map with variable arguments
-ok      0.3 Fix obj.collide_with_party(party_avatar, party_avatar.facing) - cannot use facing, what if the party is knocked back?
-ok      0.3 Solve synchronization problems
-ok      0.3 Allow objects to walk backwards
-ok      0.3 Improve activate key
-ok      0.4 PEP-8 item.py
-ok      0.4 Write item module docs
-ok      0.4 Reevaluate item module
-ok      0.4 Join similar movements (Step, Slide, ForcedStep, ForcedSlide) into a base class, making them just front ends
-ok      0.4 Implement movements with timeout
-ok      0.4 Add global state to MapModel.initialize() parameters
-ok      0.4 Add a way to save inventory, quests, etc when the World is being saved
-ok      0.4 Move CharacterReserve to World
-ok      0.4 Refactor initialization out of World's constructor
-ok      0.4 Improve party/reserve/character configuration API at world creation
-ok      0.4 Update world and party modules docs
-ok      0.4 Write inventory's save() method
-ok      0.4 Write a test for inventory and party persistency
-ok      0.4 Remove the need to bind item ids to item classes twice: implement item factories with class registration
-ok      0.4 Homogenize persistency interface
-ok      0.4 Configurable keys for MapModel
-ok      0.4 Clean constant defines in config and replace for class attributes
-ok      0.4 Fix multiple rock push bug in contexttest16.py
-ok      0.4 Allow FPS configuration
-ok      0.4 Generalize image slicing
-ok      0.4 Separate line spacing for choice dialogs
-ok      0.4 Improve message dialogs - split texts too big into more than 1 dialog. Accept more than one "screen" per Dialog. Use a virtual process_event per dialog.
-ok      0.4 Implement ElasticMessageDialog
-ok      0.4 Change boundaries file schema (type, id, *type_dependent_fields) type contains [normal, animated, smart]
-ok      0.4 Animated tiles (period | 12 allows (1, 2, 3, 4, 6, 12), one surface per phase)
-ok      0.4 Support background music for maps
-ok      0.4 Implement sfx wrappers
-ok      0.4 Write sound module docs
-ok      0.4 Evaluate log module
-ok      0.4 Allow objects to be updated, so that they can be "alarms"
-ok      0.4 Implement a MapObject.destroy() method
-ok      0.4 Add a gameover() method
-ok      0.4 Draw 32 pixel upper world tileset and replace placeholders in tests
-ok      0.4 Draw 16 pixel simple tileset and replace placeholders in tests
-ok      0.4 Draw basic charset and replace placeholders in tests
-ok      0.5 Design Menu API
-ok      0.5 Define generic menu skin system
-ok      0.5 Code Text widget
-ok      0.5 Code Cursor
-ok      0.5 Test focusable attribute
-ok      0.5 Code Image widget
-ok      0.5 Trigger Widget's process_event when it is focused and a key is pressed
-ok      0.5 Code WidgetGroup widget
-ok      0.5 Fix add_widget() order: widgets have to be added top-down for now
-ok      0.5 Allow mouse control in menu
-ok      0.5 Make mouse movement configurable in 3 modes: disabled, strict (only when mouse is over the widget), loose (focus nearest widget)
-ok      0.5 Code Bar widget
-ok      0.5 Improve Matrix: make it expandable, access it with __getitem__ and __setitem__
-ok      0.5 Code Grid widget
-ok      0.5 Capture quit event before it gets to Contexts
-        0.5 Implement easy alignment inside div
-        0.5 Improve navigation algorithm: considering only the widget center leads to distortions
-        0.5 Design more widgets
-        0.5 Code other widgets
-        0.5 Implement animated themes
-        0.5 Implement HighlightCursor
-        0.5 Code slot interface
-        0.5 Replace command queues for get key state calls?
-        0.5 Open a "library" module with stuff like TeleportArea, Rock, Chest, ChatDialog, InventoryMenu, SaveMenu, PartyMenu
-        0.5 Convert Dialogs to use the menu package
-        0.5 Change ChoiceDialog to call a callback (either passed in constructor or overridden in a derived class) upon completion
-        0.5 Decide if UsableItems should be kept
-        0.5 Define item image system and API for menu
-        0.5 Put sound effects in standard resources and use them in tests
-        0.6 Add gameloop hooks
-        0.6 Write scene module
-        0.6 Write animation module
-        0.7 Define generic battle system
-        0.7 Write quest module
-        ?   Implement A*
-        ?   Allow mouse control for psrty
-        ?   Add on_object_touch events
-        ?   Image management module (store the last x loaded images and the y most used images)
-        ?   Group files into submodules?
-        ?   Bank module (stores money and items)
-        ?   Split util module
-        ?   Charset generating tool (clothes/hair/accessories layers, written in librpg itself)
-        ?   Boundaries file editing tool
-        1.0 Write file types reference
-        1.0 Basic tutorial
+Done    Ver     What
+ok      0.1     Dissociate ObjectImage from speed, to allow Characters to have ObjectImages
+ok      0.1     Scenario test png (different dimensions than terrain one)
+ok      0.1     Scenario layer
+ok      0.1     Above party level object layer
+ok      0.1     Bigger map
+ok      0.1     Direction specific tile entering
+ok      0.1     Improve 32 pixel map
+ok      0.1     Fix bridges
+ok      0.1     Clean up code ("is None", f(x=42))
+ok      0.1     Improve GraphicsConfig
+ok      0.1     Consider making things Sprites rather than Surfaces
+ok      0.1     Improve keyboard control -> if only a direction key is pressed, do as it says
+ok      0.1     Fix open directions bug
+ok      0.1     Implement configurable scrolling
+ok      0.1     Optimize code: http://wiki.python.org/moin/PythonSpeed/PerformanceTips
+ok      0.1     Draw Party as a MapObject
+ok      0.1     Evaluate API of this iteration
+ok      0.1     Allow scaling (pygame.transform.scale)
+ok      0.2     Write roadmap
+ok      0.2     Other test script for MapObjects
+ok      0.2     Use scheduled_movement [Movement] for the MapObjects
+ok      0.2     Implement Wait and Slide movements
+ok      0.2     Include the PartyAvatar in the objects that move. Create a test object that moves the PartyAvatar.
+ok      0.2     Allow scenario tiles to be used to be used as ObjectImages
+ok      0.2     Create a boulder maze test
+ok      0.2     Use movement behavior for the MapObjects, with a similar mechanism to movement scheduling.
+ok      0.2     Create ForcedStep, a Step that keeps insisting until it works
+ok      0.2     Test below and above objects
+ok      0.2     Allow multiple object images to be loaded from a single file
+ok      0.2     Fix rock in the black bug
+ok      0.2     Choose and implement MapObject drawing algorithm
+ok      0.2     Deprecate Position and use tuples instead OR extend Position's functionality
+ok      0.2     Move Direction constants to some module
+ok      0.2     Evaluate API of this iteration
+ok      0.2     Move MessageDialog config to config module
+ok      0.3     Redo the graphics_config system, make the screen be init'd only in librpg.init()
+ok      0.3     Slow down the party's steps
+ok      0.3     Create World and WorldMap with teleport system
+ok      0.3     Write tests for teleports
+ok      0.3     Carry key down to next map when teleporting
+ok      0.3     Move collide_with_party trigger to when the Party stops at the next tile, rather than leaves the prev tile
+ok      0.3     Create pause() method in MapModel
+ok      0.3     Remove GraphicsConfig.config and make sure that doesn't break anything
+ok      0.3     Design a good way to do synchronous movement
+ok      0.3     Rename Map to MapController
+ok      0.3     Save map state when teleporting from map to map
+ok      0.3     Save map state in save file
+ok      0.3     Make party position be loaded from save file
+ok      0.3     Implement MapAreas
+ok      0.3     Implement PositionList iterable for MapAreas to use
+ok      0.3     Implement librpg.world.TeleportArea
+ok      0.3     Implement __add__ in a PositionList base class
+ok      0.3     Refactor message queue out of MapModel to decrease its complexity
+ok      0.3     Optimize in-map teleports
+ok      0.3     Design context stack based menus
+ok      0.3     Write context stack
+ok      0.3     Integrate MessageDialog in context stack mechanism
+ok      0.3     Improve context stack API - wrap into MicroWorld
+ok      0.3     Make all classes inherit from object
+ok      0.3     Separate internal modules in a special section
+ok      0.3     Update API docs
+ok      0.3     Allow create_map with variable arguments
+ok      0.3     Fix obj.collide_with_party(party_avatar, party_avatar.facing) - cannot use facing, what if the party is knocked back?
+ok      0.3     Solve synchronization problems
+ok      0.3     Allow objects to walk backwards
+ok      0.3     Improve activate key
+ok      0.4     PEP-8 item.py
+ok      0.4     Write item module docs
+ok      0.4     Reevaluate item module
+ok      0.4     Join similar movements (Step, Slide, ForcedStep, ForcedSlide) into a base class, making them just front ends
+ok      0.4     Implement movements with timeout
+ok      0.4     Add global state to MapModel.initialize() parameters
+ok      0.4     Add a way to save inventory, quests, etc when the World is being saved
+ok      0.4     Move CharacterReserve to World
+ok      0.4     Refactor initialization out of World's constructor
+ok      0.4     Improve party/reserve/character configuration API at world creation
+ok      0.4     Update world and party modules docs
+ok      0.4     Write inventory's save() method
+ok      0.4     Write a test for inventory and party persistency
+ok      0.4     Remove the need to bind item ids to item classes twice: implement item factories with class registration
+ok      0.4     Homogenize persistency interface
+ok      0.4     Configurable keys for MapModel
+ok      0.4     Clean constant defines in config and replace for class attributes
+ok      0.4     Fix multiple rock push bug in contexttest16.py
+ok      0.4     Allow FPS configuration
+ok      0.4     Generalize image slicing
+ok      0.4     Separate line spacing for choice dialogs
+ok      0.4     Improve message dialogs - split texts too big into more than 1 dialog. Accept more than 1 "screen" per Dialog. Use a virtual process_event per dialog.
+ok      0.4     Implement ElasticMessageDialog
+ok      0.4     Change boundaries file schema (type, id, *type_dependent_fields) type contains [normal, animated, smart]
+ok      0.4     Animated tiles (period | 12 allows (1, 2, 3, 4, 6, 12), one surface per phase)
+ok      0.4     Support background music for maps
+ok      0.4     Implement sfx wrappers
+ok      0.4     Write sound module docs
+ok      0.4     Evaluate log module
+ok      0.4     Allow objects to be updated, so that they can be "alarms"
+ok      0.4     Implement a MapObject.destroy() method
+ok      0.4     Add a gameover() method
+ok      0.4     Draw 32 pixel upper world tileset and replace placeholders in tests
+ok      0.4     Draw 16 pixel simple tileset and replace placeholders in tests
+ok      0.4     Draw basic charset and replace placeholders in tests
+ok      0.5     Design Menu API
+ok      0.5     Define generic menu skin system
+ok      0.5     Code Text widget
+ok      0.5     Code Cursor
+ok      0.5     Test focusable attribute
+ok      0.5     Code Image widget
+ok      0.5     Trigger Widget's process_event when it is focused and a key is pressed
+ok      0.5     Code WidgetGroup widget
+ok      0.5     Fix add_widget() order: widgets have to be added top-down for now
+ok      0.5     Allow mouse control in menu
+ok      0.5     Make mouse movement configurable in 3 modes: disabled, strict (only when mouse is over the widget), loose (focus nearest widget)
+ok      0.5     Code Bar widget
+ok      0.5     Improve Matrix: make it expandable, access it with __getitem__ and __setitem__
+ok      0.5     Code Grid widget
+ok      0.5     Capture quit event before it gets to Contexts
+        0.5     Implement easy alignment inside div
+        0.5     Improve navigation algorithm: considering only the widget center leads to distortions
+        0.5     Design more widgets
+        0.5     Code other widgets
+        0.5     Implement animated themes
+        0.5     Implement HighlightCursor
+        0.5     Code slot interface
+        0.5     Replace command queues for get key state calls?
+        0.5     Open a "library" module with stuff like TeleportArea, Rock, Chest, ChatDialog, InventoryMenu, SaveMenu, PartyMenu
+        0.5     Convert Dialogs to use the menu package
+        0.5     Change ChoiceDialog to call a callback (either passed in constructor or overridden in a derived class) upon completion
+        0.5.1   Decide if UsableItems should be kept
+        0.5.1   Define item image system and API for menu
+        0.5.1   Code ItemMenu
+        0.5.1   Define Character face system
+        0.5.1   Code PartyMenu
+        0.5.1   Code SaveMenu
+        0.5.2   Put sound effects in standard resources and use them in tests
+        0.5.2   Write file specifications
+        0.5.2   Charset generating tool (clothes/hair/accessories layers, written in librpg itself)
+        0.5.2   Map viewer tool (writting in librpg)
+        0.6     Write scene module
+        0.6.1   Write animation module
+        0.7     Define generic battle system
+        0.7     Write quest module
+        ?       Implement A*
+        ?       Allow mouse control for party
+        ?       Add on_object_touch events
+        ?       Image management module (store the last x loaded images and the y most used images)
+        ?       Group files into submodules?
+        ?       Bank module (stores money and items)
+        ?       Split util module
+        ?       Boundaries file editing tool
+        1.0     Write file types reference
+        1.0     Basic tutorial
