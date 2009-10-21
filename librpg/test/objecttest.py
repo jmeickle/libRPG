@@ -11,7 +11,7 @@ from librpg.mapobject import MapObject, ScenarioMapObject
 from librpg.world import MicroWorld
 from librpg.util import Position, inverse
 from librpg.party import Character, CharacterReserve
-from librpg.movement import Step, ForcedStep, Face, Wait, Slide
+from librpg.movement import Step, ForcedStep, Face, Wait, Slide, PathMovement
 from librpg.dialog import (MessageDialog, ChoiceDialog, MultiMessageDialog,
                            ElasticMessageDialog)
 from librpg.sound import play_sfx
@@ -37,6 +37,8 @@ class ObjectTestNPC(MapObject):
         self.map.schedule_message(ChoiceDialog(u"Choose NOW:",
                                                ["choice 1", "choice 2"],
                                                block_movement=False))
+        
+        party_avatar.schedule_movement(PathMovement(self.map, party_avatar, Position(0,0)))
         
 class ObjectTestRock(ScenarioMapObject):
 
