@@ -1,4 +1,4 @@
-from librpg.world import WorldMap, RelativeTeleportArea
+from librpg.world import WorldMap
 from librpg.mapobject import ScenarioMapObject, MapObject
 from librpg.maparea import RectangleArea, MapArea
 from librpg.util import Position
@@ -6,6 +6,7 @@ from librpg.movement import Face, Wait
 from librpg.dialog import MessageDialog
 from librpg.locals import *
 from librpg.path import *
+from librpg.collection.maparea import RelativeTeleportArea
 
 SAVE_FILE = 'save'
 LOWER_TILESET = (tileset_path('city_lower.png'),
