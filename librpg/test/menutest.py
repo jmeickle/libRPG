@@ -86,6 +86,7 @@ class TestMenu(Menu):
         side_panel.add_widget(grid, AlignTopLeft())
 
         img = pygame.image.load(data_path('icon.png'))
+        #img = pygame.image.load(data_path('test.png'))
         self.add_widget(ImageWidget(img), (8, 8))
 
         group = WidgetGroup(148, 20)

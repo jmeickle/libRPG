@@ -1,7 +1,6 @@
 import pygame
 
 from librpg.menu.widget import Widget
-from librpg.menu.navigator import EuclidianNavigator
 
 class BoundWidget(object):
 
@@ -68,7 +67,7 @@ class Div(Widget):
             y_pos = w.widget.position[1] + y_offset
             surf = w.widget.render(screen, x_pos, y_pos)
 
-    def crystallize(self, widget_navigator=EuclidianNavigator()):
+    def crystallize(self, widget_navigator=None):
         for w in self.widgets:
             w.widget.crystallize(widget_navigator)
 

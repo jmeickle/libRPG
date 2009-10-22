@@ -2,7 +2,7 @@ import math
 import pygame
 
 from librpg.config import menu_config
-from librpg.menu.navigator import WidgetGateway, EuclidianNavigator
+from librpg.menu.navigator import WidgetGateway
 
 class Widget(object):
 
@@ -89,10 +89,10 @@ class Widget(object):
         print self, 'activated'
         return False
 
-    def crystallize(self, widget_navigator=EuclidianNavigator()):
+    def crystallize(self, widget_navigator=None):
         self.gateway.crystallize(widget_navigator)
 
-    def step(self, direction, widget_navigator=EuclidianNavigator()):
+    def step(self, direction, widget_navigator=None):
         return self.gateway.step(direction, widget_navigator)
 
     def get_menu_position(self):
