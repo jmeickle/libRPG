@@ -1,23 +1,17 @@
-Language
---------
-* Python
+Core
+----
+* Python - Implementation language
+* Pygame - Game programming framework
 
-Framework
----------
-* Pygame
-
-Image Editors
--------------
-* GIMP
-
-Text Editors
-------------
-* Notepad++
-* Kate
+Editors
+-------
+* GIMP - Image editor
+* Notepad++ - Source code editor in Windows
+* Kate - Source code editor in Linux
 
 Tools
 -----
-* Mercurial
-* Sphinx
-* pep8
-* TortoiseHg
+* Mercurial - Distributed version control
+* Sphinx - Documentation generator
+* pep8 - PEP-8 style checker
+* TortoiseHg - Mercurial graphical front-end

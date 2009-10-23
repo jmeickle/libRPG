@@ -118,8 +118,11 @@ ok      0.5     Capture quit event before it gets to Contexts
 ok      0.5     Open a "library" module with stuff like TeleportArea, Rock, Chest, ChatDialog, InventoryMenu, SaveMenu, PartyMenu
 ok      0.5     Implement easy alignment inside div
 ok      0.5     Improve navigation algorithm: considering only the widget center leads to distortions
-        0.5     Design more widgets
-        0.5     Code other widgets
+ok      0.5     Design more widgets
+        0.5     Code NumberSelector
+        0.5     Code TextInput
+        0.5     Code KeyboardWidget
+        0.5     Code AnimatedImageWidget
         0.5     Implement animated themes
         0.5     Implement HighlightCursor
         0.5     Code slot interface
@@ -132,12 +135,15 @@ ok      0.5     Improve navigation algorithm: considering only the widget center
         0.5.1   Define Character face system
         0.5.1   Code PartyMenu
         0.5.1   Code SaveMenu
+        0.5.1   Code EnterNameMenu
+        0.5.1   Code ShopMenu
         0.5.2   Put sound effects in standard resources and use them in tests
         0.5.2   Write file specifications
         0.5.2   Charset generating tool (clothes/hair/accessories layers, written in librpg itself)
         0.5.2   Map viewer tool (writting in librpg)
         0.5.2   Implement Chest, NPC and other MapObjects in collection
         0.5.2   Join MapModel and WorldMap
+        0.6     Implement pictures (bound to map or to screen)
         0.6     Write scene module
         0.6.1   Write animation module
         0.7     Define generic battle system

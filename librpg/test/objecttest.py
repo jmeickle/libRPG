@@ -45,7 +45,7 @@ class ObjectTestNPC(MapObject):
                               block_movement=False)
         self.map.schedule_message(dialog)
 
-        movement = PathMovement(self.map, party_avatar, Position(0, 0))
+        movement = PathMovement(self.map, party_avatar, Position(9, 4))
         party_avatar.schedule_movement(movement)
 
 
