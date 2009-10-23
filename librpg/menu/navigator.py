@@ -92,10 +92,10 @@ class DistanceNavigator(WidgetNavigator):
         dx = self.modulus_distance(start[0], end[0], width, x_dir)
         dy = self.modulus_distance(start[1], end[1], height, y_dir)
         if not self.inside_angle(dy, dx, direction):
-            print 'dx ? y ? not inside angle'
+            #print 'dx ? y ? not inside angle'
             return None, None
         else:
-            print 'dx %d, dy %d' % (dx, dy)
+            #print 'dx %d, dy %d' % (dx, dy)
             return dx, dy
 
     def get_xy_directions(self, direction):
@@ -155,16 +155,10 @@ class LineNavigator(DistanceNavigator):
         d = [None] * 4
         d[0] = self.perpedicular_distance(start1, start2, start_axis, end1,
                                           width, height, direction)
-        if d[0] is not None: print 'd[0] %d' % d[0]
+        #if d[0] is not None: print 'd[0] %d' % d[0]
         d[1] = self.perpedicular_distance(start1, start2, start_axis, end2,
                                           width, height, direction)
-        if d[1] is not None: print 'd[1] %d' % d[1]
-        # d[2] = self.perpedicular_distance(end1, end2, end_axis, start1,
-                                          # width, height, direction)
-        # if d[2] is not None: print 'd[2] %d' % d[2]
-        # d[3] = self.perpedicular_distance(end1, end2, end_axis, start2,
-                                          # width, height, direction)
-        # if d[3] is not None: print 'd[3] %d' % d[3]
+        #if d[1] is not None: print 'd[1] %d' % d[1]
 
         record = DistanceNavigator.MAX_DIST
         for i in xrange(4):
@@ -175,7 +169,7 @@ class LineNavigator(DistanceNavigator):
                 record = new_dist
 
         if record == DistanceNavigator.MAX_DIST:
-            print 'Need diagonals'
+            #print 'Need diagonals'
             dx, dy = [], []
             if start_axis == self.HORIZONTAL:
                 if direction == UP or direction == DOWN:
@@ -225,8 +219,8 @@ class LineNavigator(DistanceNavigator):
                 if new_dist < record:
                     record = new_dist
 
-        print start, end
-        print 'dist(%s and %s) => r %s' % (str((start1, start2)), str((end1, end2)), str(record))
+        #print start, end
+        #print 'dist(%s and %s) => r %s' % (str((start1, start2)), str((end1, end2)), str(record))
         return record
 
     def calc_skeleton(self, widget):
@@ -250,22 +244,40 @@ class LineNavigator(DistanceNavigator):
                               direction):
         dir_x, dir_y = self.get_xy_directions(direction)
         if axis == self.VERTICAL and (direction == LEFT or direction == RIGHT):
-            print 'VERTICAL'
+            #print 'VERTICAL'
             if start[1] <= target[1] and target[1] < end[1]:
-                if dir_x is None:
-                    print 'matched y, disting start.x %d and target.x %d with n %d dir None' % (start[0], target[0], height)
-                else:
-                    print 'matched y, disting start.x %d and target.x %d with n %d dir %d' % (start[0], target[0], height, dir_x)
+                # if dir_x is None:
+                    # print 'matched y, disting start.x %d and target.x %d with n %d dir None' % (start[0], target[0], height)
+                # else:
+                    # print 'matched y, disting start.x %d and target.x %d with n %d dir %d' % (start[0], target[0], height, dir_x)
                 return self.modulus_distance(start[0], target[0], height, dir_x)
         elif axis == self.HORIZONTAL and (direction == UP or direction == DOWN):
-            print 'HORIZONTAL'
+            #print 'HORIZONTAL'
             if start[0] <= target[0] and target[0] < end[0]:
-                if dir_y is None:
-                    print 'matched x, disting start.y %d and target.y %d with n %d dir None' % (start[1], target[1], width)
-                else:
-                    print 'matched x, disting start.y %d and target.y %d with n %d dir %d' % (start[1], target[1], width, dir_y)
+                # if dir_y is None:
+                    # print 'matched x, disting start.y %d and target.y %d with n %d dir None' % (start[1], target[1], width)
+                # else:
+                    # print 'matched x, disting start.y %d and target.y %d with n %d dir %d' % (start[1], target[1], width, dir_y)
                 return self.modulus_distance(start[1], target[1], width, dir_y)
         return None
+
+    def modulus_distance(self, start, end, n, direction=None):
+        WRAP_WEIGHT = 2.0
+        if direction is None:
+            r = abs(end - start)
+            alt = WRAP_WEIGHT * (n - r)
+            return min(alt, r)
+        else:
+            if direction == RIGHT or direction == DOWN:
+                if end < start:
+                    return WRAP_WEIGHT * (n + end - start)
+                else:
+                    return end - start
+            else:
+                if end < start:
+                    return start - end
+                else:
+                    return WRAP_WEIGHT * (n + start - end)
 
     def dist(self, dx, dy):
         return dx + dy
@@ -287,7 +299,9 @@ class WidgetGateway(object):
                               LEFT: self.left}
         #print 'MAP %s %s' % (self.widget, self.direction_map)
 
-    def crystallize(self, widget_navigator=LineNavigator()):
+    def crystallize(self, widget_navigator=None):
+        if widget_navigator is None:
+            widget_navigator = LineNavigator()
         self.up = widget_navigator.find(self.widget, UP)
         self.right = widget_navigator.find(self.widget, RIGHT)
         self.down = widget_navigator.find(self.widget, DOWN)
