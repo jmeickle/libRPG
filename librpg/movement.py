@@ -222,7 +222,7 @@ class PathMovement(Movement):
         self.dest     = dest    
 
     def flow(self, obj):
-        v = starA.StarA(self.mapmodel, obj.postion, self.dest)
+        v = starA.StarA(self.mapmodel, obj.position, self.dest).calculate()
         
         if v:
             Step(v[0]).flow(obj)
