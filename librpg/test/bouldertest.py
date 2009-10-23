@@ -18,28 +18,28 @@ from librpg.path import *
 class Boulder(ScenarioMapObject):
 
     def __init__(self, map):
-    
+
         ScenarioMapObject.__init__(self, map, 0, 5)
-        
+
     def activate(self, party_avatar, direction):
-    
+
         self.schedule_movement(Slide(direction))
 
 
 class Victory(ScenarioMapObject):
 
     def __init__(self, map):
-    
+
         ScenarioMapObject.__init__(self, map, 0, 0)
-        
+
     def collide_with_party(self, party_avatar, direction):
-    
+
         self.map.pause(30)
         self.map.schedule_message(MessageDialog('Gratz! You won!'))
 
 
 class BoulderMaze(MapModel):
-    
+
     MAZE = [
     [1,1,1,1,3,3,1,1,1,1],
     [0,0,0,0,1,2,0,0,0,0],
@@ -58,7 +58,7 @@ class BoulderMaze(MapModel):
                            tileset_path('city_lower.bnd')),
                           [(tileset_path('world_upper.png'),
                             tileset_path('world_upper.bnd'))])
-        
+
     def initialize(self, local_state, global_state):
         for y, line in enumerate(BoulderMaze.MAZE):
             for x, cell in enumerate(line):

@@ -35,12 +35,12 @@ class ObjectTestRock(ScenarioMapObject):
 
     def __init__(self, map):
         ScenarioMapObject.__init__(self, map, 0, 11)
-        
+
     def collide_with_party(self, party_avatar, direction):
         if not self.scheduled_movement:
             print 'Pushed rock'
             self.schedule_movement(Slide(direction))
-        
+
     def activate(self, party_avatar, direction):
         if not self.scheduled_movement:
             print 'Grabbed and pulled rock'
@@ -51,7 +51,7 @@ class ObjectTestRock(ScenarioMapObject):
 
 
 class ObjectTestMap(MapModel):
-    
+
     def __init__(self):
         MapModel.__init__(self, 'objecttest16.map',
                           ('test16_lower_tileset.png',
@@ -65,7 +65,7 @@ class ObjectTestMap(MapModel):
             for j in range(3, 1, -1):
                 self.add_object(ObjectTestNPC(index), Position(i, j))
                 index = (index + 1) % 8
-                
+
         self.add_object(ObjectTestRock(self), Position(7, 2))
 
 def char_factory(name):

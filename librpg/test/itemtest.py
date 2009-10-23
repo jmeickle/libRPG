@@ -51,7 +51,7 @@ def remove_test(id, amount, by_id=False):
         print "Item", id, ": Removed", r, "trying to remove", amount
     else:
         print "Item", id, ": Removed", r
-        
+
 i = OrdinaryInventory(item_factory, max_item_pile=99)
 
 add_test(19, 1, True)

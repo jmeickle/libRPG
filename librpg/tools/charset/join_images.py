@@ -22,7 +22,7 @@ def join_files(target, sources, images_per_line):
         lines += 1
     first = pygame.image.load(sources[0])
     w, h = first.get_width(), first.get_height()
-    
+
     result = Surface((w * images_per_line, h * lines)).convert_alpha()
     result.fill((255,255,255,0))
 
@@ -32,7 +32,7 @@ def join_files(target, sources, images_per_line):
         if im.get_width() != w or im.get_height() != h:
             print 'Image %s is not of the same size as the first'
             exit()
-        
+
         x = w * (i % images_per_line)
         y = h * (i / images_per_line)
         result.blit(im, (x, y))
@@ -54,4 +54,4 @@ if __name__ == '__main__':
     print 'Source files: %s' % ', '.join(sources)
 
     join_files(target, sources, images_per_line)
-    
+

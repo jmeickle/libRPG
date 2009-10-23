@@ -8,21 +8,21 @@ class Image(object):
 
     """
     A simple static image.
-    
+
     This is the base class for more complex and animated images.
     """
 
     def __init__(self, surface):
         """
         *Constructor.*
-        
+
         Pass the *surface* that will be stored in the image. Note
         that the surface is not copied, which means it should not be
         altered after being passed to this class.
-    
+
         :attr:`surface`
             Pygame Surface containing the image.
-            
+
         :attr:`width`
             Image width in pixels.
 
@@ -36,7 +36,7 @@ class Image(object):
     def get_surface(self, obj=None):
         """
         *Virtual.*
-        
+
         Return a surface with how the image is to be rendered at the
         moment.
         """
@@ -60,7 +60,7 @@ class TileImage(Image):
     def get_surface(self, obj=None, animation_phase=0):
         """
         *Virtual.*
-        
+
         Return a surface with how the tile is to be rendered at the
         moment.
         """
@@ -83,19 +83,19 @@ class ObjectImage(Image):
                  frame_number=None):
         """
         *Constructor.*
-        
+
         The frames will be loaded from *filename*, which should be a
         map object image file - a bitmap with a special format for the
         frames. Since there can be more than one map object image in
         the file, which of them should be loaded is specified by the
         *index* parameter.
-        
+
         The image's animation is described by *basic_animation*.
         The animation of an object during a step is described by a list
         of the ids of the frames to be shown. *basic_animation*
         should be a list of these lists with the order in which these
         animations will represent a step.
-        
+
         The default animation map is [[1, 2], [1, 0]], which means that
         every other step will be animated with [1, 2] and the others
         with [1, 0]. [1, 2] means half of the frames will show frame[2]
@@ -103,7 +103,7 @@ class ObjectImage(Image):
         This default animation will cause the object to take each step
         with a leg, provided 0 and 2 are frames of it walking with
         opposite legs and 1 is a frame of it standing.
-        
+
         The frame number, important to slice correctly the image file
         into object images, is determined automatically by looking at the
         highest number in the animation map. If there are frames beyond
@@ -177,19 +177,19 @@ class SlicedImage(Image):
 
     """
     An image that can be sliced in pieces of the same size.
-    
+
     Useful for easily loading images that are all bundled in a single
     file, such as tilesets and object images.
     """
-    
+
     def __init__(self, surface, slice_width, slice_height):
         """
         *Constructor.*
-        
+
         *surface* should be the Pygame surface with the pre-loaded
         image. *slice_width* and *slice_height* specify the size of
         each part of the image in pixels.
-        
+
         :attr:`slice_width`
             Width of each slice in pixels.
 
@@ -218,7 +218,7 @@ class SlicedImage(Image):
     def get_slice(self, index):
         """
         Return a subsurface indexed by *index*, given in slices.
-        
+
         *index* starts at 0 (the topmost and leftmost slice), and
         grows to the left, then when the line ends, down. For example:
         0  1  2  3

@@ -67,10 +67,10 @@ class TestMenu(Menu):
         Menu.__init__(self, 400, 300)
         self.panel = Panel(200, 150)
         self.add_widget(self.panel, (40, 80))
-        
+
         self.add_widget(MenuLabel(), (90, 20))
         self.add_widget(Label('NonFocusable', focusable=False), (150, 20))
-        
+
         first_panel_label = Label('Panel0')
         self.panel.add_widget(first_panel_label, (40, 20))
         self.panel.add_widget(Label('Panel1'), (120, 20))
@@ -93,7 +93,7 @@ class TestMenu(Menu):
         group.add_widget(Label('Group0'), (10, 0))
         group.add_widget(Label('Group1'), (90, 0))
         self.add_widget(group, (60, 240))
-        
+
         #self.crystallize()
 
         # Add cursor

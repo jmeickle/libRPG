@@ -161,7 +161,7 @@ class MenuController(Context):
             return
 
         pos = descale_point(event.pos)
-        
+
         if self.menu.mouse_control == Menu.MOUSE_STRICT:
             if cursor.widget.contains_point(pos):
                 return

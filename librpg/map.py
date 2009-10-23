@@ -45,18 +45,18 @@ class MapController(Context):
         self.party_movement = map_model.party_movement
         self.party_movement_append = self.party_movement.append
         self.party_movement_remove = self.party_movement.remove
-        
+
         # Initialize contexts
         context_stack = get_context_stack()
         context_stack.stack_context(self.message_queue)
         for context in map_model.contexts:
             context_stack.stack_context(context)
-        
+
     def update(self):
         if self.map_model.pause_delay > 0:
             self.map_model.pause_delay -= 1
             return
-            
+
         if self.moving_sync:
             sync_stopped = self.sync_movement_step()
             if not sync_stopped:
@@ -79,7 +79,7 @@ class MapController(Context):
     def draw(self):
         self.map_view_draw()
         self.map_music.update()
-        
+
     def process_event(self, event):
         if event.type == KEYDOWN:
             direction = check_direction(event.key)
@@ -140,14 +140,14 @@ class MapController(Context):
                     area.party_entered(party_avatar, party_avatar.position)
                 else:
                     coming_from_outside = False
-                
+
                 area.party_moved(party_avatar, party_avatar.prev_position,
                                  party_avatar.position, coming_from_outside)
 
     def sync_movement(self, objects):
         self.sync_objects = objects
         self.moving_sync = True
-   
+
     def sync_movement_step(self):
         if all([not o.scheduled_movement for o in self.sync_objects]):
             self.moving_sync = False
@@ -177,15 +177,15 @@ class MapModel(object):
                  scenario_tileset_files_list):
         """
         *Constructor:*
-        
+
         Initialize the MapModel with a layout defined by *map_file* (a .map
         file).
-        
+
         The terrain tileset is specified by *terrain_tileset_files*, which
         is a tuple (tileset image filename, tileset boundaries filename).
         Tileset image filename should be a bitmap file (.png typically)
         and tileset boundaries filename) should be a .bnd file.
-        
+
         The scenario tilesets are specified by
         *scenario_tileset_files_list*, a list of tuples like the one passed
         as *terrain_tileset_files*. Each will correspond to a scenario
@@ -278,11 +278,11 @@ class MapModel(object):
     def initialize(self, local_state, global_state):
         """
         *Virtual*
-        
+
         Put the map in an initial, virgin state if the *local_state*
         specified is None. Puts the map in a state loaded from the
         *local_state*, and the *global_state* otherwise.
-        
+
         *local_state* is the serializable object returned by
         MapModel.save_state() when this map was saved. *global_state*
         is a dict mapping all feature strings to their local states.
@@ -293,7 +293,7 @@ class MapModel(object):
     def save_state(self):
         """
         *Virtual*
-        
+
         Save the map's state to a local state and return it.
         """
         return None
@@ -343,7 +343,7 @@ class MapModel(object):
             raise Exception, 'Object is neither below, obstacle or above'
         if hasattr(obj, 'update'):
             self.updatable_objects.append(obj)
-            
+
         obj.position = position
         obj.areas = self.area_layer[position]
         obj.map = self
@@ -397,7 +397,7 @@ class MapModel(object):
         """
         Try to move an object to the specified direction (UP, DOWN, LEFT or
         RIGHT). Return whether the object could be moved.
-        
+
         If *slide* is True, the movement will use only the static frame of
         the object. If *back* is True, the movement will be backwards.
         """
@@ -493,7 +493,7 @@ class MapModel(object):
         old_pos = obj.position
         old_object = self.object_layer[old_pos]
         new_object = self.object_layer[new_pos]
-        
+
         old_object.remove_object(obj)
         new_object.add_object(obj)
         obj.prev_position = old_pos
@@ -605,7 +605,7 @@ class MapModel(object):
     def custom_gameover(self):
         """
         *Virtual.*
-        
+
         Overload to perform any reaction necessary to a MapModel.gameover()
         call.
         """

@@ -20,7 +20,7 @@ class QuestBook(dict):
         quest = self.factory.fabricate(quest_id, *([self.owner] + list(args)))
         self[quest_id] = quest
         quest.book = self
-        
+
         quest.start()
 
     def get_quests(self):

@@ -38,7 +38,7 @@ class Widget(object):
     def draw(self):
         """
         *Virtual.*
-        
+
         Render the widget on its `surface` attribute.
         """
         pass
@@ -51,7 +51,7 @@ class Widget(object):
     def update(self):
         """
         *Virtual.*
-        
+
         Update the widget's data.
         """
         pass
@@ -59,15 +59,15 @@ class Widget(object):
     def left_click(self, x, y):
         """
         *Virtual.*
-        
+
         Handle a left mouse click event.
         """
         pass
-    
+
     def right_click(self, x, y):
         """
         *Virtual.*
-        
+
         Handle a right mouse click event.
         """
         pass
@@ -75,7 +75,7 @@ class Widget(object):
     def process_event(self, event):
         """
         *Virtual.*
-        
+
         Handle an event triggered while the widget was focused.
         """
         return False
@@ -83,7 +83,7 @@ class Widget(object):
     def activate(self):
         """
         *Virtual.*
-        
+
         Handle an activate event triggered while the widget was focused.
         """
         # print self, 'activated'

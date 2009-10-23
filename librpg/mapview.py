@@ -112,7 +112,7 @@ class MapView(object):
 
         # Draw the foreground
         get_screen().blit(self.foreground, (0, 0), bg_rect)
-        
+
         # Update phase
         self.phase = (self.phase + 1) % (ANIMATION_PERIOD
                                        * graphics_config.animation_frame_period)

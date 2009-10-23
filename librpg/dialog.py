@@ -62,7 +62,7 @@ class MessageDialog(Dialog):
 
     """
     A MessageDialog is a simple message to be displayed on the screen.
-    
+
     *text* is the string that will be displayed and *block_movement*
     tells the map whether the movement in the map should be blocked while
     the message is shown.
@@ -162,12 +162,12 @@ class ElasticMessageDialog(MessageDialog):
 
 
 class MultiMessageDialog(MessageDialog):
-    
+
     """
     Same as a MessageDialog but splits messages bigger than the default
     box size into multiple dialogs.
     """
-    
+
     def __init__(self, text, block_movement=True):
         MessageDialog.__init__(self, text, block_movement)
         self.surfaces = None
@@ -182,7 +182,7 @@ class MultiMessageDialog(MessageDialog):
             lines = build_lines(self.text,
                                 box_width,
                                 font)
-            
+
             # Split into boxes
             box_height = g_cfg.screen_height / 2 - 4 * cfg.border_width
             self.boxes = split_boxes(lines, box_height, cfg.line_spacing)
@@ -229,27 +229,27 @@ class ChoiceDialog(Dialog):
     """
     A ChoiceDialog is a message that comes along a list of options from
     which the player has to pick one option.
-    
+
     *text* is the string that will be displayed and *block_movement*
     tells the map whether the movement in the map should be blocked while
     the message is shown.
-    
+
     *choices* is a list of the options, which should be strings.
     """
-    
+
     def __init__(self, text, choices=[], block_movement=True):
         Dialog.__init__(self, block_movement)
         self.text = text
         self.choices = choices
         self.surface = None
         self.selected = 0
-    
+
     def get(self):
         return self.selected
-    
+
     def update(self):
         self.surface = None
-        
+
     def draw(self):
         if not self.surface:
             font = pygame.font.SysFont(cfg.font_name, cfg.font_size)
@@ -315,7 +315,7 @@ class ChoiceDialog(Dialog):
         elif event.key in m_cfg.key_down:
             self.selected = (self.selected + 1) % len(self.choice_lines)
             self.update()
-            
+
         return True
 
 
@@ -325,7 +325,7 @@ class MessageQueue(Context):
         Context.__init__(self, parent)
         self.current = None
         self.queue = []
-    
+
     def is_busy(self):
         return self.current is not None and self.current.block_movement
 
@@ -353,10 +353,10 @@ class MessageQueue(Context):
     def process_event(self, event):
         if not self.current:
             return False
-            
+
         if event.type == KEYDOWN:
             if not self.current.process_event(event):
                 self.close()
             return True
-                
+
         return False

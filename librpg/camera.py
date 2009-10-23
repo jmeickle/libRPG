@@ -19,10 +19,10 @@ class CameraMode(object):
     def attach_to_map(self, map_model):
         """
         *Virtual.*
-        
+
         Callback called when a map is initialized to be used with the
         camera. Typically, map-specific initialization is be done here.
-        
+
         *map_model* is a handle to the MapModel, so that information such
         as the map size can be retrieved.
         """
@@ -44,15 +44,15 @@ class CameraMode(object):
     def calc_bg_slice_topleft(self, party_pos, party_x_offset, party_y_offset):
         """
         *Abstract.*
-        
+
         Return the position to which the top left corner of the screen
         should be aligned in the background.
-        
+
         The background is the map plus black borders in every side, as
         thick as half the screen size in that direction. For example, a
         screen with width=640 and height=480 has 320 black lines in each
         side and 240 black lines up and down.
-        
+
         Given the *party_pos* (position of the party in tiles),
         *party_x_offset* and *party_y_offset* (offset in pixels to apply to
         *party_pos* due to animation), this function should return an

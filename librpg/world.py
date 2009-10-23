@@ -19,7 +19,7 @@ class BaseWorld(object):
     *Abstract.*
 
     Worlds are the starting point for a LibRPG game.
-    
+
     A World contains one or more maps around which the Party will walk
     and act. The BaseWorld is an abstract class, with the functionality
     that is common to all worlds. Instantiate MicroWorld or World to
@@ -93,7 +93,7 @@ class BaseWorld(object):
     def gameloop():
         """
         *Abstract.*
-        
+
         This method will start the game's actual gameloop. From this
         point, LibRPG will have the control flow and will start from the
         initial state or loaded state as initialized in the world's
@@ -104,7 +104,7 @@ class BaseWorld(object):
     def custom_gameover(self):
         """
         *Virtual.*
-        
+
         Overload to perform any reaction necessary to a MapModel.gameover()
         or World.gameover() call.
         """
@@ -158,7 +158,7 @@ class World(BaseWorld):
 
         while self.scheduled_teleport:
             # print self.state.locals
-        
+
             # Create new map
             map_id, position, args = self.scheduled_teleport
             map_model = self.create_map(map_id, *args)
@@ -186,7 +186,7 @@ class World(BaseWorld):
             prev_facing = map_model.party_avatar.facing
             prev_party_movement = map_model.party_movement
             map_model.remove_party()
-            
+
             gc.collect()
 
 
@@ -205,10 +205,10 @@ class MicroWorld(BaseWorld):
                  party_factory=default_party_factory):
         """
         *Constructor.*
-        
+
         *map* should be an instantiated map inherited from MapModel,
         which will run as the single map in the world.
-        
+
         *party_members* should be a list of the names of the characters
         in the default Party.
 
@@ -276,14 +276,14 @@ class WorldMap(MapModel):
 
     """
     A WorldMap is merely a MapModel that belongs to a World (the world
-    that contains multiple maps). 
+    that contains multiple maps).
     """
 
     def __init__(self, map_file, terrain_tileset_files,
                  scenario_tileset_files_list):
         """
         *Constructor.*
-        
+
         A WorldMap's constructor does not differ from the base MapModel's,
         but it generally should not be called, except for by
         World.create_map().
@@ -296,13 +296,13 @@ class WorldMap(MapModel):
         After the current iteration of the WorldMap's context stack, the
         party will be teleported to the WorldMap represented by *map_id*
         at *position*.
-        
+
         This method may also be used to teleport to another place in the
         same map, by passing None. If the map id of the current map is
         passed, the party will be removed and added to the map, causing
         the state to be saved and the map to be reinitialized as if it
         were just entered.
-        
+
         If the target map takes arguments for creation, pass them as
         *map_args*.
         """

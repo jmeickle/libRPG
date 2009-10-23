@@ -15,14 +15,14 @@ class Inventory(object):
     """
     An inventory is a place to store items.
     """
-    
+
     def __init__(self, max_weight = None):
         """
         *Constructor.*
-        
+
         The inventory will be able to hold items totaling up to
         *max_weight*.
-        
+
         :attr:`weight`
             Current total weight in the inventory.
 
@@ -48,7 +48,7 @@ class Inventory(object):
     def custom_save(self):
         """
         *Virtual.*
-        
+
         Return serializable data specific for a derived class for
         rebuilding the inventory when the state is loaded with
         load_state().
@@ -70,7 +70,7 @@ class Inventory(object):
     def custom_load(self, state):
         """
         *Virtual.*
-        
+
         Load data specific for a derived class from what a custom_save()
         call returned previously.
         """
@@ -89,13 +89,13 @@ class OrdinaryInventory(Inventory):
     def __init__(self, factory, max_weight=None, max_item_pile=None):
         """
         *Constructor.*
-        
+
         Create an empty inventory, which holds up to *max_weight* in weight
         and *max_item_pile* items in each pile.
-        
+
         *factory* should be an IdFactory with which all OrdinaryItems to
         be stored in this inventory have been registered.
-        
+
         :attr:`items`
             Dict mapping item ids to the amount of that item in the
             inventory.
@@ -124,16 +124,16 @@ class OrdinaryInventory(Inventory):
     def add_item(self, item, amount=1):
         """
         Add one or more copies of an item to the inventory.
-        
+
         The *item* should be an OrdinaryItem. The *amount* of copies
         inserted defaults to 1.
-        
+
         Return the amount of copies actually added to the inventory. A
         number smaller than *amount* means that there was not enough
         room (either because of weight constraints or pile constraints).
         """
         final_amount = amount
-        
+
         #check for overweight problems
         if self.max_weight is not None:
             available_weight = self.max_weight - self.weight
@@ -151,10 +151,10 @@ class OrdinaryInventory(Inventory):
     def remove_item(self, item, amount=1):
         """
         Remove one or more copies of an item from the inventory.
-        
+
         The *item* should be an OrdinaryItem. The *amount* of copies
         removed defaults to 1.
-        
+
         Return the amount of copies actually removed from the inventory. A
         number smaller than *amount* means that there were not enough
         items with the same id as the one given.
@@ -174,11 +174,11 @@ class OrdinaryInventory(Inventory):
     def add_item_by_id(self, item_id, amount=1):
         """
         Add one or more items fabricated by an id to the inventory.
-        
+
         *item_id* should be a valid id that can be fabricated by the
         factory function into an OrdinaryItem. The *amount* of copies
         inserted defaults to 1.
-        
+
         Return the amount of copies actually added to the inventory. A
         number smaller than *amount* means that there was not enough
         room (either because of weight constraints or pile constraints).
@@ -188,11 +188,11 @@ class OrdinaryInventory(Inventory):
     def remove_item_by_id(self, item_id, amount=1):
         """
         Remove one or more items fabricated by an id from the inventory.
-        
+
         *item_id* should be a valid id that can be fabricated by the
         factory function into an OrdinaryItem. The *amount* of copies
         removed defaults to 1.
-        
+
         Return the amount of copies actually removed from the inventory. A
         number smaller than *amount* means that there were not enough
         items with that id.
@@ -259,7 +259,7 @@ class OrdinaryInventory(Inventory):
         """
         Return an ordered list of all different OrdinaryItems in the
         inventory.
-        
+
         The default ordering is by ascending item ids. Different orders can
         be specified by passing *extract_function*, which should extract
         from the OrdinaryItem the field by which to order, and
@@ -313,7 +313,7 @@ class UniquesInventory(Inventory):
     def add_item(self, item):
         """
         Add an *item* to the inventory.
-        
+
         Return True if the item was inserted, False if that would have
         exceed the inventory weight or item limit.
         """
@@ -332,7 +332,7 @@ class UniquesInventory(Inventory):
     def remove_item(self, item):
         """
         Remove an *item* from the inventory.
-        
+
         Return True if the item was there and was removed, False if it
         was not in inventory.
         """
@@ -395,10 +395,10 @@ class OrdinaryItem(Item):
 
     """
     An OrdinaryItem is a stackable item.
-    
+
     That means that the item can be uniquely represented by an id - which
     can be any hashable immutable object, typically an integer.
-    
+
     :attr:`id`
         Unique identification for that item, so that it can be fabricated.
         May be any hashable type, but typically an integer.
@@ -421,25 +421,25 @@ class UniqueItem(Item):
 
     """
     A UniqueItem is an item that is not stackable.
-    
+
     UniqueItems cannot be uniquely represented by an id like
     OrdinaryItems they are not stored stacked, but individually. A
     factory function is not necessary to use them.
-    
+
     UniqueItems need to be serializable and should be carefully
     implemented, since to be saved they have to be pickled.
     """
 
     def __init__(self, name, weight=0):
         Item.__init__(self, name, weight)
-        
+
     def __repr__(self):
         return "%s" % (self.name)
 
 
 class UsableItem(Item):
     def use(self):
-        raise NotImplementedError, 'UsableItem.use() is abstract' 
+        raise NotImplementedError, 'UsableItem.use() is abstract'
 
 
 class UsableOrdinaryItem(UsableItem, OrdinaryItem):

@@ -38,7 +38,7 @@ class StarA(object):
                     heapq.heappush(self.open, next)
 
         return None
- 
+
     def h(self, pos):
         """
         Manhattan distance

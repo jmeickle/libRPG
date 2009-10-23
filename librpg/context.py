@@ -18,12 +18,12 @@ class ContextStack(object):
 
     """
     A ContextStack organizes Contexts in a stack and runs them.
-    
+
     The stack of Contexts defines the orders of updating, drawing and
     receiving events. The latter happens from the most recently inserted
     Contexts to the oldest ones (top-down), which the formers do the
     opposite (bottom-up).
-    
+
     :attr:`stack`
     List representing the Context stack. Do not modify it directly.
     Instead use the insert_context() and remove_context() methods.
@@ -37,7 +37,7 @@ class ContextStack(object):
         *context* is inserted as the top Context in the stack, meaning
         it will be the first to be offered in incoming event, and the last
         to be updated and drawn.
-        
+
         This method causes the Context to be initialized.
         """
         self.stack.append(context)
@@ -47,7 +47,7 @@ class ContextStack(object):
         """
         *context* is inserted at the given *index*, pushing the ones above
         one position upwards.
-        
+
         This method causes the Context to be initialized.
         """
         self.stack.insert(index, context)
@@ -56,7 +56,7 @@ class ContextStack(object):
     def remove_context(self, context):
         """
         Remove *context* from the stack, wherever it is.
-        
+
         This method causes the Context and all Contexts that were created
         as its child to be destroyed.
         """
@@ -89,10 +89,10 @@ class ContextStack(object):
         which will keep its stacked Contexts running until one of them
         calls ContextStack.stop() or they are all removed from the
         ContextStack.
-        
+
         The ContextStack will cap the cycles/second at game_config.fps.
         In each cycle, the following will happen:
-        
+
         1) For each active context in the map, bottom-up:
             a) The update() method of that Context will be called
             b) The draw() method of that Context will be drawn
@@ -137,7 +137,7 @@ class Context(object):
     """
     A Context is an asynchronous process that will be run
     concurrently with other processes.
-    
+
     Contexts may be a variety of features, ranging from information
     on the screen (life bars, money counters, compasses), custom actions
     (a button to change the party order, capturing mouse clicks to give
@@ -148,7 +148,7 @@ class Context(object):
     def __init__(self, parent=None):
         """
         *Constructor.*
-        
+
         *parent* should be another Context that, when removed from the
         stack, will cause this Context to also be removed. Contexts might
         not have a parent.
@@ -160,11 +160,11 @@ class Context(object):
     def process_event(self, event):
         """
         *Virtual.*
-        
+
         Handle the incoming event. Return True if it should NOT be passed
         down to the lower Contexts (that is, if it should be captured).
         Return False if it should be passed down.
-        
+
         Note that not passing down events of a certain type (eg. direction
         key presses) will deprive lower Contexts of that event, which can
         be used to block movement for example.
@@ -175,9 +175,9 @@ class Context(object):
     def update(self):
         """
         *Virtual.*
-        
+
         Update the Context for the current iteration.
-        
+
         This method should do whatever periodic processing the context
         needs, information updates, etc.
         """
@@ -187,9 +187,9 @@ class Context(object):
     def initialize(self):
         """
         *Virtual.*
-        
+
         Initialize a context to be run.
-        
+
         This method will be called when the Context is added to a
         ContextStack.
         """
@@ -199,9 +199,9 @@ class Context(object):
     def draw(self):
         """
         *Virtual.*
-        
+
         Draw whatever output the Context wants to blit on the screen.
-        
+
         This method should access the screen by calling
         virtual_screen.get_screen() and then blit into it. The flip()
         method should not be called, as the ContextStack will do so after
@@ -213,9 +213,9 @@ class Context(object):
     def destroy(self):
         """
         *Virtual.*
-        
+
         Destroy a context that just stopped.
-        
+
         This method will be called when the Context is removed from a
         ContextStack. It does not have to actually destroy the Context,
         but do whatever deinitialization that applies.

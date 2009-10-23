@@ -26,7 +26,7 @@ class ObjectTestNPC(MapObject):
                            image_file='man_undies.png')
         self.movement_behavior.movements.extend([Wait(30), ForcedStep(UP),
                                                  Wait(30), ForcedStep(DOWN)])
-        
+
     def activate(self, party_avatar, direction):
         print 'Activated NPC'
         for i in xrange(2):
@@ -37,20 +37,20 @@ class ObjectTestNPC(MapObject):
         self.map.schedule_message(ChoiceDialog(u"Choose NOW:",
                                                ["choice 1", "choice 2"],
                                                block_movement=False))
-        
+
         party_avatar.schedule_movement(PathMovement(self.map, party_avatar, Position(0,0)))
-        
+
 class ObjectTestRock(ScenarioMapObject):
 
     def __init__(self, map):
         ScenarioMapObject.__init__(self, map, 0, 5)
-        
+
     def activate(self, party_avatar, direction):
         print 'Activated rock'
         for i in xrange(3):
             self.schedule_movement(Step(direction))
         self.schedule_movement(Face(inverse(direction)))
-        
+
     def collide_with_party(self, party_avatar, direction):
         if not self.scheduled_movement:
             print 'Collided rock'
@@ -103,10 +103,10 @@ class ObjectTestTowerUpper(ScenarioMapObject):
 
     def __init__(self, map):
         ScenarioMapObject.__init__(self, map, 0, 12)
-        
+
     def activate(self, party_avatar, direction):
         print 'Activated upper tower object'
-        
+
     def collide_with_party(self, party_avatar, direction):
         print 'Collided upper tower object'
 
@@ -139,12 +139,12 @@ class ObjectTestTowerLower(ScenarioMapObject):
 
     def __init__(self, map):
         ScenarioMapObject.__init__(self, map, 0, 22)
-        
+
     def activate(self, party_avatar, direction):
         print 'Activated lower tower object'
         text = choice(ObjectTestTowerLower.RANDOM_TEXTS)
         self.map.schedule_message(ElasticMessageDialog(text))
-        
+
     def collide_with_party(self, party_avatar, direction):
         print 'Collided lower tower object'
 
@@ -190,11 +190,11 @@ class ObjectTestCity(ScenarioMapObject):
 
     def __init__(self, map):
         ScenarioMapObject.__init__(self, map, 0, 30)
-        
+
     def activate(self, party_avatar, direction):
         print 'Activated city object'
         self.map.schedule_message(MultiMessageDialog(ObjectTestCity.TEXT))
-        
+
     def collide_with_party(self, party_avatar, direction):
         print 'Collided city object'
 
@@ -210,7 +210,7 @@ class ObjectTestGameOverBarrel(ScenarioMapObject):
 
 
 class ObjectTestMap(MapModel):
-    
+
     def __init__(self):
         map_file = 'objecttest.map'
         lower_tile_image = tileset_path('town2.png')

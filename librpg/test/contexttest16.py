@@ -34,12 +34,12 @@ class ObjectTestRock(ScenarioMapObject):
 
     def __init__(self, map):
         ScenarioMapObject.__init__(self, map, 0, 11)
-        
+
     def collide_with_party(self, party_avatar, direction):
         if not self.scheduled_movement:
             print 'Pushed rock'
             self.schedule_movement(Slide(direction))
-        
+
     def activate(self, party_avatar, direction):
         if not self.scheduled_movement:
             print 'Grabbed and pulled rock'
@@ -66,7 +66,7 @@ class CounterContext(Context):
         surface = self.font.render("Object#: %d" % (self.amount), True,
                                    dialog_config.font_color)
         get_screen().blit(surface, (20, 20))
-        
+
         surface = self.font.render("Party: (%d, %d)" % (self.party_pos.x,
                                                         self.party_pos.y),
                                    True,
@@ -75,14 +75,14 @@ class CounterContext(Context):
 
 
 class ObjectTestMap(MapModel):
-    
+
     def __init__(self):
         MapModel.__init__(self, 'objecttest16.map',
                           ('test16_lower_tileset.png',
                            'test16_lower_tileset.bnd'),
                           [('test16_upper_tileset.png',
                             'test16_upper_tileset.bnd'),])
-        
+
     def initialize(self, local_state, global_state):
         # Add yummy NPCs
         index = 0

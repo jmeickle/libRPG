@@ -15,9 +15,9 @@ class MenuTheme(object):
     def get_font_name(self):
         """
         *Virtual.*
-        
+
         Return which font should be used for rendering labels.
-        
+
         The return value should be (type, fontname), where type is 'sys'
         or 'user', indicating respectively if the font is a SysFont or a
         Font for pygame.
@@ -34,7 +34,7 @@ class MenuTheme(object):
     def draw_panel(self, surface, rect):
         """
         *Virtual.*
-        
+
         Draw a Panel delimited by rect onto surface.
         """
         DEFAULT_COLOR = (128, 0, 128, 128)
@@ -43,7 +43,7 @@ class MenuTheme(object):
     def draw_selected_tab(self, surface, rect):
         """
         *Virtual.*
-        
+
         Draw an active tab header delimited by rect onto surface.
         """
         pass
@@ -51,7 +51,7 @@ class MenuTheme(object):
     def draw_unselected_tab(self, surface, rect):
         """
         *Virtual.*
-        
+
         Draw an inactive tab header delimited by rect onto surface.
         """
         pass
@@ -59,7 +59,7 @@ class MenuTheme(object):
     def draw_bar(self, surface, rect, filled=1.0, border=1):
         """
         *Virtual.*
-        
+
         Draw a bar delimited by rect onto surface.
 
         `filled` should be a number between 0.0 and 1.0, indicating how full
@@ -69,7 +69,7 @@ class MenuTheme(object):
         WHITE = (255, 255, 255, 255)
 
         surface.fill(TRANSPARENT)
-        
+
         for i in xrange(border):
             border_rect = pygame.Rect((rect.top + i, rect.left + i),
                                       (rect.width - 2 * i,
@@ -90,7 +90,7 @@ class MenuTheme(object):
     def draw_image(self, image):
         """
         *Virtual.*
-        
+
         Draw an image. This can be overloaded to apply some filters to
         images used in ImageWidgets.
         """

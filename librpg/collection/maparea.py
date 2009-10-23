@@ -5,10 +5,10 @@ class TeleportArea(MapArea):
     """
     A TeleportArea is a MapArea that, when entered, will teleport the
     Party to *position* at the WorldMap with *map_id*.
-    
+
     If *map_id* is not passed, the teleport will be internal to the map,
     preventing it from being reinitialized.
-            
+
     If the target map takes arguments for creation, pass them as
     *map_args*.
     """
@@ -29,17 +29,17 @@ class RelativeTeleportArea(MapArea):
     A TeleportArea is a MapArea that, when entered, will teleport the
     Party to the WorldMap with *map_id*, to a position that is relative
     to party's current position in the current map.
-    
-    The position where the party will "land" is (cur_x + *x_offset*, 
+
+    The position where the party will "land" is (cur_x + *x_offset*,
     cur_y + *y_offset*), where (cur_x, cur_y) is the party's current
     position.
-    
+
     This class is useful to create boundaries between maps, allowing the
     "landing" position to be consistent with the "leaving" position.
-    
+
     If *map_id* is not passed, the teleport will be internal to the map,
     preventing it from being reinitialized.
-    
+
     If the target map takes arguments for creation, pass them as
     *map_args*.
     """

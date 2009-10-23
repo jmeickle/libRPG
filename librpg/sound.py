@@ -32,9 +32,9 @@ __sfx_loader = SoundEffectLoader()
 def play_sfx(sfx_name, times=1, force_load=False):
     """
     Play a sound effect.
-    
+
     *sfx_name* should be the name of the file containing the sound effect.
-    
+
     *times*, if specified, will make the sound be played that many times.
 
     *force_load*, if specified, will force the sound to be loaded again

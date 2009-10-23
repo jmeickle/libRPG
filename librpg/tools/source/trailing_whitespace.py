@@ -20,7 +20,7 @@ def remove_whitespace(source, replace):
     f = file(source, 'r')
     in_file = [line for line in f]
     f.close()
-    
+
     if replace:
         out_file = file(source, 'w')
     else:

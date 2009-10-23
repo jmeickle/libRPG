@@ -11,7 +11,7 @@ class Position(object):
     """
     Represents a pair (x, y) of 2D coordinates. It considers that the
     x axis goes from left to right and the y axis goes downwards.
-    
+
     :attr:`x`
         Horizontal position.
 
@@ -107,10 +107,10 @@ class Matrix(object):
 
     """
     Represents a 2-dimensional matrix with fast random access.
-    
+
     :attr:`width`
         Matrix width.
-        
+
     :attr:`height`
         Matrix height.
     """
@@ -127,7 +127,7 @@ class Matrix(object):
     def __getitem__(self, pos):
         """
         Return the element at *pos* == (x, y).
-        
+
         Raises IndexError if x or y are not inside the matrix's
         limits.
         """
@@ -140,7 +140,7 @@ class Matrix(object):
     def __setitem__(self, pos, value):
         """
         Sets the element at *pos* == (x, y) to *value*.
-        
+
         Raises IndexError if x or y are not inside the matrix's
         limits.
         """
@@ -160,7 +160,7 @@ class Matrix(object):
     def resize(self, width=None, height=None):
         new_width = self.width if (width is None) else width
         new_height = self.height if (height is None) else height
-        
+
         if height is not None:
             if new_height < self.height:
                 self.m = self.m[:new_height]
@@ -234,7 +234,7 @@ class IdFactory(object):
     def register(self, _class):
         """
         Register a class-id pair.
-        
+
         *_class* should be the class created when its id is passed
         to fabricate(). It should have id as a class attribute.
         """
@@ -251,7 +251,7 @@ class IdFactory(object):
         """
         Return a newly created instance of the class registers with the
         given *id*.
-        
+
         If more arguments are passed, they will be forwarded to the
         class constructor.
         """

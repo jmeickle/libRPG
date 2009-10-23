@@ -75,7 +75,7 @@ class AreaAroundWell(MapArea):
     def party_left(self, party_avatar, position):
         print 'party_left(%s, %s)' % (party_avatar, position)
 
-    
+
 class Map1(WorldMap):
 
     def __init__(self):
@@ -109,7 +109,7 @@ class Map2(WorldMap):
     def initialize(self, local_state, global_state):
         self.add_area(RelativeTeleportArea(x_offset=+8, map_id=1),
                       RectangleArea((0, 0), (0, 9)))
-                      
+
         self.add_area(RelativeTeleportArea(x_offset=-8, map_id=3),
                       RectangleArea((9, 0), (9, 9)))
 
@@ -135,10 +135,10 @@ class Map3(WorldMap):
 
     def initialize(self, local_state, global_state):
         self.add_object(GameOverBarrel(self), Position(6, 4))
-        
+
         self.add_area(RelativeTeleportArea(x_offset=+8, map_id=2),
                       RectangleArea((0, 0), (0, 9)))
-                      
+
         self.add_area(RelativeTeleportArea(y_offset=+8),
                       RectangleArea((0, 0), (9, 0)))
         self.add_area(RelativeTeleportArea(y_offset=-8),

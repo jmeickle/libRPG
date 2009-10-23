@@ -6,11 +6,11 @@ class ScaledScreen(pygame.Surface):
     It has the blit() and flip() methods, behaving like the display,
     except it scales whatever is blitted to it to the number configured
     thought *graphics_config*.
-    
+
     The singleton ScaledScreen may be obtained by calling the
     *librpg.virtualscreen.get_screen()* function. The result will be a
     handle to it, which can be blitted on.
-    
+
     This is especially important to implement the draw() methods of
     Contexts that display objects on the screen.
     """

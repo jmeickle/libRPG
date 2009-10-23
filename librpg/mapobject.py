@@ -58,10 +58,10 @@ class MapObject(object):
             - ABOVE if OBSTACLES would walk under the object
             - COUNTER if it is an OBSTACLE and activate events coming from one
               side will be routed to the position on the opposite side.
-              
+
         :attr:`facing`
             Direction that the object is facing.
-            
+
         :attr:`speed`
             Object speed, in the number of frames to move that object by 1 tile.
             Use VERY_FAST_SPEED, FAST_SPEED, NORMAL_SPEED, SLOW_SPEED and
@@ -73,7 +73,7 @@ class MapObject(object):
 
         :attr:`movement_behavior`
             MovementCycle with the Movements routinely executed by the object.
-        
+
         :attr:`areas`
             MapAreas in which the object currently is.
         """
@@ -98,7 +98,7 @@ class MapObject(object):
 
         self.areas = []
         self.prev_areas = []
-        
+
         if image is not None:
             self.image = image
         elif image_file is not None:
@@ -109,12 +109,12 @@ class MapObject(object):
     def activate(self, party_avatar, direction):
         """
         *Virtual*
-        
+
         Callback called when the player, through a PartyAvatar, activates
         the object. This happens when he presses the action button and
         is in the same tile as the object (for BELOW and ABOVE objects)
         or facing the object (for OBSTACLE and COUNTER objects).
-        
+
         For example, for a chest, this routine will award the party's
         inventory some items, while for an NPC, this routine will trigger
         a message dialog.
@@ -125,7 +125,7 @@ class MapObject(object):
     def collide_with_party(self, party_avatar, direction):
         """
         *Virtual*
-        
+
         Callback called when the player, through a PartyAvatar, collides
         with the object. This happens when he walks over the object
         (for BELOW and ABOVE objects), when the party tries to move towards
@@ -183,14 +183,14 @@ class MapObject(object):
         """
         Enqueue a Movement for the object to execute after the ones
         already requested.
-        
+
         If *override* is passed as True, this movement will cancel
         whatever other scheduled movements there are already in the
         queue.
         """
         if override:
             self.scheduled_movement.clear()
-        
+
         self.scheduled_movement.append(movement)
 
     def destroy(self):
@@ -208,7 +208,7 @@ class PartyAvatar(MapObject):
     It is controlled by the player input, and triggers the *activate*
     and *collide_with_party* callbacks that usually do the most
     important interactions in the map.
-    
+
     :attr:`party`
         Party represented by the avatar.
     """
@@ -233,11 +233,11 @@ class ScenarioMapObject(MapObject):
                  facing=DOWN, speed=NORMAL_SPEED):
         """
         *Constructor.*
-        
+
         *map* is the MapModel from which the scenario tile image will be
         taken. *scenario_number* is the number of the scenario layer and
         *scenario_index* is the tile index containing the image.
-        
+
         *obstacle*, *facing* and *speed* are the same as in MapObject.
         """
         tile = map.scenario_tileset[scenario_number].tiles[scenario_index]
