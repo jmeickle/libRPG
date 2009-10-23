@@ -1,0 +1,23 @@
+Language
+--------
+* Python
+
+Framework
+---------
+* Pygame
+
+Image Editors
+-------------
+* GIMP
+
+Text Editors
+------------
+* Notepad++
+* Kate
+
+Tools
+-----
+* Mercurial
+* Sphinx
+* pep8
+* TortoiseHg
