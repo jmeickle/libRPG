@@ -1,5 +1,6 @@
 from librpg.loader import Loader, TemporalCache
 
+
 class StringResource(object):
 
     def __init__(self, key, val):
@@ -14,6 +15,7 @@ strings = {'0': StringResource('0', 'aaaa'),
            '1': StringResource('1', 'bbbb'),
            '2': StringResource('2', 'cccc'),
            '3': StringResource('3', 'dddd')}
+
 
 class StringLoader(Loader):
 

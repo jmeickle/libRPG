@@ -5,28 +5,44 @@ from librpg.util import IdFactory
 
 item_factory = IdFactory()
 
+
 class Item19(OrdinaryItem):
+
     id = 19
+
     def __init__(self):
         OrdinaryItem.__init__(self, 'Item19')
+
 item_factory.register(Item19)
 
+
 class Item42(OrdinaryItem):
+
     id = 42
+
     def __init__(self):
         OrdinaryItem.__init__(self, 'Item42')
+
 item_factory.register(Item42)
 
+
 class Item66(OrdinaryItem):
+
     id = 66
+
     def __init__(self):
         OrdinaryItem.__init__(self, 'Item66')
+
 item_factory.register(Item66)
 
+
 class Item67(OrdinaryItem):
+
     id = 67
+
     def __init__(self):
         OrdinaryItem.__init__(self, 'Item67')
+
 item_factory.register(Item67)
 
 
@@ -40,6 +56,7 @@ def add_test(id, amount, by_id=False):
         print "Item", id, ": Added", a, "trying to add", amount
     else:
         print "Item", id, ": Added", a
+
 
 def remove_test(id, amount, by_id=False):
     if by_id:

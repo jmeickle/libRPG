@@ -18,4 +18,3 @@ s.load("statetest")
 
 print s.load_local("d")
 print s.load_local("c")
-

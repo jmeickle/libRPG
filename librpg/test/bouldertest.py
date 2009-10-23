@@ -15,6 +15,7 @@ from librpg.dialog import MessageDialog
 from librpg.world import MicroWorld
 from librpg.path import *
 
+
 class Boulder(ScenarioMapObject):
 
     def __init__(self, map):
@@ -41,16 +42,16 @@ class Victory(ScenarioMapObject):
 class BoulderMaze(MapModel):
 
     MAZE = [
-    [1,1,1,1,3,3,1,1,1,1],
-    [0,0,0,0,1,2,0,0,0,0],
-    [0,1,1,2,2,1,1,2,1,0],
-    [0,1,2,1,1,1,2,1,2,0],
-    [0,2,1,1,1,2,1,1,2,0],
-    [0,1,2,2,2,1,1,2,1,0],
-    [0,2,2,1,1,1,2,2,1,0],
-    [0,1,1,1,2,2,1,1,1,0],
-    [0,0,0,0,1,1,0,0,0,0],
-    [1,1,1,1,1,1,1,1,1,1]]
+    [1, 1, 1, 1, 3, 3, 1, 1, 1, 1],
+    [0, 0, 0, 0, 1, 2, 0, 0, 0, 0],
+    [0, 1, 1, 2, 2, 1, 1, 2, 1, 0],
+    [0, 1, 2, 1, 1, 1, 2, 1, 2, 0],
+    [0, 2, 1, 1, 1, 2, 1, 1, 2, 0],
+    [0, 1, 2, 2, 2, 1, 1, 2, 1, 0],
+    [0, 2, 2, 1, 1, 1, 2, 2, 1, 0],
+    [0, 1, 1, 1, 2, 2, 1, 1, 1, 0],
+    [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
 
     def __init__(self):
         MapModel.__init__(self, 'bouldertest.map',
@@ -66,6 +67,7 @@ class BoulderMaze(MapModel):
                     self.add_object(Boulder(self), Position(x, y))
                 elif cell == 3:
                     self.add_object(Victory(self), Position(x, y))
+
 
 def char_factory(name):
     return librpg.party.Character('Andy', charset_path('naked_man.png'))

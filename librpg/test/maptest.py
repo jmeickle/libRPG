@@ -12,7 +12,7 @@ m = librpg.map.MapModel('maptest.map',
                         [('test16_upper_tileset.png',
                           'test16_upper_tileset.bnd'),
                          ('test16_upper_tileset.png',
-                          'test16_upper_tileset.bnd')] )
+                          'test16_upper_tileset.bnd')])
 
 print m
 
@@ -21,6 +21,7 @@ print m.terrain_layer
 
 print 'Scenario layer:'
 print m.scenario_layer
+
 
 def char_factory(name):
     return librpg.party.Character('Andy', 'test16_charset.png', 0)

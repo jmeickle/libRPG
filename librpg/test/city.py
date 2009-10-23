@@ -6,7 +6,7 @@ librpg.init()
 librpg.config.graphics_config.config(tile_size=32,
                                      object_height=32,
                                      object_width=32)
-camera = camera_mode=librpg.camera.PartyConfinementCameraMode(50, 40)
+camera = librpg.camera.PartyConfinementCameraMode(50, 40)
 librpg.config.graphics_config.config(camera_mode=camera,
                                      screen_width=500,
                                      screen_height=400)
@@ -23,6 +23,7 @@ m = librpg.map.MapModel('city.map',
                         [(librpg.path.tileset_path('city_upper.png'),
                           librpg.path.tileset_path('city_upper.bnd'))])
 m.set_music('park_1.ogg')
+
 
 def char_factory(name):
     return librpg.party.Character('Andy',

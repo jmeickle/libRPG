@@ -19,6 +19,7 @@ from librpg.image import ObjectImage
 from librpg.locals import *
 from librpg.path import *
 
+
 class ObjectTestNPC(MapObject):
 
     def __init__(self):
@@ -30,15 +31,23 @@ class ObjectTestNPC(MapObject):
     def activate(self, party_avatar, direction):
         print 'Activated NPC'
         for i in xrange(2):
-            party_avatar.schedule_movement(Step(inverse(direction), back=True))
-        self.map.schedule_message(MessageDialog(u"Ouch!", block_movement=False))
-        self.map.schedule_message(MessageDialog(u"Hey, why are you hitting me?",
-                                                block_movement=False))
-        self.map.schedule_message(ChoiceDialog(u"Choose NOW:",
-                                               ["choice 1", "choice 2"],
-                                               block_movement=False))
+            step = Step(inverse(direction), back=True)
+            party_avatar.schedule_movement(step)
 
-        party_avatar.schedule_movement(PathMovement(self.map, party_avatar, Position(0,0)))
+        dialog = MessageDialog(u"Ouch!", block_movement=False)
+        self.map.schedule_message(dialog)
+
+        dialog = MessageDialog(u"Hey, why are you hitting me?",
+                               block_movement=False)
+        self.map.schedule_message(dialog)
+
+        dialog = ChoiceDialog(u"Choose NOW:", ["choice 1", "choice 2"],
+                              block_movement=False)
+        self.map.schedule_message(dialog)
+
+        movement = PathMovement(self.map, party_avatar, Position(0, 0))
+        party_avatar.schedule_movement(movement)
+
 
 class ObjectTestRock(ScenarioMapObject):
 
@@ -151,38 +160,38 @@ class ObjectTestTowerLower(ScenarioMapObject):
 
 class ObjectTestCity(ScenarioMapObject):
 
-    TEXT = 'Python is an easy to learn, powerful programming language. It has '\
-           'efficient high-level data structures and a simple but effective '\
-           'approach to object-oriented programming. Python\'s elegant syntax '\
-           'and dynamic typing, together with its interpreted nature, make it '\
-           'an ideal language for scripting and rapid application development '\
-           'in many areas on most platforms. '\
+    TEXT = 'Python is an easy to learn, powerful programming language. It '\
+           'has efficient high-level data structures and a simple but '\
+           'effective approach to object-oriented programming. Python\'s '\
+           'elegant syntax and dynamic typing, together with its interpreted '\
+           'nature, make it an ideal language for scripting and rapid '\
+           'application development in many areas on most platforms. '\
            'The Python interpreter and the extensive standard library are '\
-           'freely available in source or binary form for all major platforms '\
-           'from the Python Web site, http://www.python.org/, and may be '\
-           'freely distributed. The same site also contains distributions of '\
-           'and pointers to many free third party Python modules, programs '\
-           'and tools, and additional documentation. '\
+           'freely available in source or binary form for all major '\
+           'platforms from the Python Web site, http://www.python.org/, and '\
+           'may be freely distributed. The same site also contains '\
+           'distributions of and pointers to many free third party Python '\
+           'modules, programs and tools, and additional documentation. '\
            'The Python interpreter is easily extended with new functions and '\
            'data types implemented in C or C++ (or other languages callable '\
            'from C). Python is also suitable as an extension language for '\
            'customizable applications. '\
            'This tutorial introduces the reader informally to the basic '\
-           'concepts and features of the Python language and system. It helps '\
-           'to have a Python interpreter handy for hands-on experience, but '\
-           'all examples are self-contained, so the tutorial can be read '\
-           'off-line as well. '\
-           'For a description of standard objects and modules, see the Python '\
-           'Library Reference document. The Python Reference Manual gives a '\
-           'more formal definition of the language. To write extensions in C '\
-           'or C++, read Extending and Embedding the Python Interpreter and '\
-           'Python/C API Reference. There are also several books covering '\
-           'Python in depth. '\
+           'concepts and features of the Python language and system. It '\
+           'helps to have a Python interpreter handy for hands-on '\
+           'experience, but all examples are self-contained, so the tutorial '\
+           'can be read off-line as well. '\
+           'For a description of standard objects and modules, see the '\
+           'Python Library Reference document. The Python Reference Manual '\
+           'gives a more formal definition of the language. To write '\
+           'extensions in C or C++, read Extending and Embedding the Python '\
+           'Interpreter and Python/C API Reference. There are also several '\
+           'books covering Python in depth. '\
            'This tutorial does not attempt to be comprehensive and cover '\
            'every single feature, or even every commonly used feature. '\
            'Instead, it introduces many of Python\'s most noteworthy '\
-           'features, and will give you a good idea of the language\'s flavor '\
-           'and style. '\
+           'features, and will give you a good idea of the language\'s '\
+           'flavor and style. '\
            'After reading it, you will be able to read and write Python '\
            'modules and programs, and you will be ready to learn more about '\
            'the various Python library modules described in the Python '\
@@ -219,7 +228,7 @@ class ObjectTestMap(MapModel):
         upper_bnd_file = tileset_path('world_upper.bnd')
         MapModel.__init__(self, 'objecttest.map',
                           (lower_tile_image, lower_bnd_file),
-                          [(upper_tile_image, upper_bnd_file),])
+                          [(upper_tile_image, upper_bnd_file), ])
 
     def initialize(self, local_state, global_state):
         self.add_object(ObjectTestNPC(), Position(2, 2))

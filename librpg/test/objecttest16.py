@@ -17,13 +17,15 @@ from librpg.movement import Slide, Wait, ForcedStep
 from librpg.dialog import MessageDialog
 from librpg.locals import *
 
+
 class ObjectTestNPC(MapObject):
 
     def __init__(self, index):
         MapObject.__init__(self, MapObject.OBSTACLE,
                            image_file='test16_charset.png', image_index=index)
         for dir in [LEFT, DOWN, RIGHT, UP]:
-            self.movement_behavior.movements.extend([Wait(30), ForcedStep(dir)])
+            self.movement_behavior.movements.extend([Wait(30),
+                                                     ForcedStep(dir)])
 
     def activate(self, party_avatar, direction):
         print 'GLOMPed NPC'
@@ -67,6 +69,7 @@ class ObjectTestMap(MapModel):
                 index = (index + 1) % 8
 
         self.add_object(ObjectTestRock(self), Position(7, 2))
+
 
 def char_factory(name):
     return librpg.party.Character('Andy', 'test16_charset.png', 3)

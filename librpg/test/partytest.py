@@ -1,5 +1,6 @@
 from librpg.party import *
 
+
 def test_add(p, r, char):
     if p.add_char(char):
         print 'Added', char
@@ -9,6 +10,7 @@ def test_add(p, r, char):
     print 'Reserve:', r
     print
 
+
 def test_remove(p, r, char):
     if p.remove_char(char):
         print 'Removed', char
@@ -17,6 +19,7 @@ def test_remove(p, r, char):
     print 'Party:', p
     print 'Reserve:', r
     print
+
 
 def char_factory(name):
     return Character(name)

@@ -1,5 +1,6 @@
 from librpg.util import *
 
+
 def test_set(x, y, value):
     print 'Setting', str(x) + ',', str(y), 'to', value
     try:
@@ -9,6 +10,7 @@ def test_set(x, y, value):
     print m
     print
 
+
 def test_get(x, y):
     try:
         value = m[x, y]
@@ -17,6 +19,7 @@ def test_get(x, y):
         print 'Error getting x=' + str(x), 'y=' + str(y)
     print m
     print
+
 
 if __name__ == '__main__':
     m = Matrix(3, 4)

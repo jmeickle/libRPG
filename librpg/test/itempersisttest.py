@@ -20,15 +20,20 @@ SAVE_FILE = "itempersisttest_save"
 
 item_factory = IdFactory()
 
+
 class LogItem(OrdinaryItem):
+
     id = 'log'
+
     def __init__(self):
         OrdinaryItem.__init__(self, 'Log')
 item_factory.register(LogItem)
 
 
 class LeafItem(OrdinaryItem):
+
     id = 'leaf'
+
     def __init__(self):
         OrdinaryItem.__init__(self, 'Leaf')
 item_factory.register(LeafItem)
@@ -57,9 +62,11 @@ class Tree(ScenarioMapObject):
     def activate(self, party_avatar, direction):
         added = party_avatar.party.inventory.add_item_by_id('leaf')
         if added:
-            self.map.schedule_message(MessageDialog("Got a Leaf."))
+            msg = "Got a Leaf."
         else:
-            self.map.schedule_message(MessageDialog("Inventory full of Leaves."))
+            msg = "Inventory full of Leaves."
+        self.map.schedule_message(msg)
+
 
 class SavePoint(ScenarioMapObject):
 
@@ -72,6 +79,8 @@ class SavePoint(ScenarioMapObject):
         self.map.save_world(SAVE_FILE)
         self.map.schedule_message(MessageDialog('Game saved.',
                                                 block_movement=True))
+
+
 # Map
 
 class PersistTestMap(MapModel):
@@ -117,6 +126,7 @@ def char_factory(name):
                    'Dylan': ('test_chars.png', 2)}
     image_and_index = CHAR_IMAGES[name]
     return Character(name, image_and_index[0], image_and_index[1])
+
 
 def party_factory(reserve):
     return TestParty(reserve)

@@ -8,6 +8,7 @@ from librpg.menu import (MenuController, Menu, Panel, Label, ArrowCursor,
 from librpg.context import get_context_stack
 from librpg.path import data_path
 
+
 class MenuLabel(Label):
 
     def __init__(self):
@@ -110,4 +111,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

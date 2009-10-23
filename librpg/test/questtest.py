@@ -3,6 +3,7 @@ from librpg.util import IdFactory
 
 quest_factory = IdFactory()
 
+
 # Quests ###################################################
 
 class TeaAtFiveQuest(Quest):
