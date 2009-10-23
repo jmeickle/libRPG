@@ -5,6 +5,7 @@ from sys import argv
 pygame.display.init()
 d = pygame.display.set_mode((640, 480), 0, 32)
 
+
 def check_parameters():
     argc = len(argv)
     if argc < 4 or not argv[2].isdigit():
@@ -12,9 +13,11 @@ def check_parameters():
               '[file1] [file2] ... [file n]'
         exit()
 
+
 def parse_parameters():
     argc = len(argv)
     return argv[1], int(argv[2]), [s for s in argv[3:]]
+
 
 def join_files(target, sources, images_per_line):
     lines = len(sources) / images_per_line
@@ -24,7 +27,7 @@ def join_files(target, sources, images_per_line):
     w, h = first.get_width(), first.get_height()
 
     result = Surface((w * images_per_line, h * lines)).convert_alpha()
-    result.fill((255,255,255,0))
+    result.fill((255, 255, 255, 0))
 
     for i, source in enumerate(sources):
         im = pygame.image.load(source)
@@ -54,4 +57,3 @@ if __name__ == '__main__':
     print 'Source files: %s' % ', '.join(sources)
 
     join_files(target, sources, images_per_line)
-
