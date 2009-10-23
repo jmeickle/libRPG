@@ -2,6 +2,7 @@ import math
 
 from librpg.locals import *
 
+
 class WidgetNavigator(object):
 
     def find(self, widget, direction):
@@ -12,7 +13,7 @@ class WidgetNavigator(object):
 
         Return None if there is no other widget in that direction.
         """
-        raise NotImplementedError, 'WidgetNavigator.find() is abstract'
+        raise NotImplementedError('WidgetNavigator.find() is abstract')
 
     def enter_div(self, div, direction):
         """
@@ -22,7 +23,7 @@ class WidgetNavigator(object):
 
         Return None if the *div* should be skipped.
         """
-        raise NotImplementedError, 'WidgetNavigator.enter_div() is abstract'
+        raise NotImplementedError('WidgetNavigator.enter_div() is abstract')
 
 
 class DistanceNavigator(WidgetNavigator):
@@ -53,7 +54,8 @@ class DistanceNavigator(WidgetNavigator):
         return best[0]
 
     def calc_distance(self, start, end, direction, width, height):
-        raise NotImplementedError, 'DistanceNavigator.calc_distance() is abstract'
+        raise NotImplementedError('DistanceNavigator.calc_distance() is '
+                                  'abstract')
 
     def inside_angle(self, dy, dx, direction):
         if direction == UP:
@@ -173,41 +175,46 @@ class LineNavigator(DistanceNavigator):
             dx, dy = [], []
             if start_axis == self.HORIZONTAL:
                 if direction == UP or direction == DOWN:
-                    x1, y1 = self.modulus_point_distance(start.get_center(), end1, width, height,
-                                                           direction)
-                    x2, y2 = self.modulus_point_distance(start.get_center(), end2, width, height,
-                                                           direction)
+                    x1, y1 = self.modulus_point_distance(start.get_center(),
+                                                         end1, width, height,
+                                                         direction)
+                    x2, y2 = self.modulus_point_distance(start.get_center(),
+                                                         end2, width, height,
+                                                         direction)
                 elif direction == LEFT:
-                    x1, y1 = self.modulus_point_distance(start1, end1, width, height,
-                                                           direction)
-                    x2, y2 = self.modulus_point_distance(start1, end2, width, height,
-                                                           direction)
+                    x1, y1 = self.modulus_point_distance(start1, end1, width,
+                                                         height, direction)
+                    x2, y2 = self.modulus_point_distance(start1, end2, width,
+                                                         height, direction)
                 else:
-                    x1, y1 = self.modulus_point_distance(start2, end1, width, height,
-                                                           direction)
-                    x2, y2 = self.modulus_point_distance(start2, end2, width, height,
-                                                           direction)
+                    x1, y1 = self.modulus_point_distance(start2, end1, width,
+                                                         height,
+                                                         direction)
+                    x2, y2 = self.modulus_point_distance(start2, end2, width,
+                                                         height, direction)
             elif start_axis == self.VERTICAL:
                 if direction == LEFT or direction == RIGHT:
-                    x1, y1 = self.modulus_point_distance(start.get_center(), end1, width, height,
-                                                           direction)
-                    x2, y2 = self.modulus_point_distance(start.get_center(), end2, width, height,
-                                                           direction)
+                    x1, y1 = self.modulus_point_distance(start.get_center(),
+                                                         end1, width, height,
+                                                         direction)
+                    x2, y2 = self.modulus_point_distance(start.get_center(),
+                                                         end2, width, height,
+                                                         direction)
                 elif direction == UP:
-                    x1, y1 = self.modulus_point_distance(start1, end1, width, height,
-                                                           direction)
-                    x2, y2 = self.modulus_point_distance(start1, end2, width, height,
-                                                           direction)
+                    x1, y1 = self.modulus_point_distance(start1, end1, width,
+                                                         height, direction)
+                    x2, y2 = self.modulus_point_distance(start1, end2, width,
+                                                         height, direction)
                 else:
-                    x1, y1 = self.modulus_point_distance(start2, end1, width, height,
-                                                           direction)
-                    x2, y2 = self.modulus_point_distance(start2, end2, width, height,
-                                                           direction)
+                    x1, y1 = self.modulus_point_distance(start2, end1, width,
+                                                         height, direction)
+                    x2, y2 = self.modulus_point_distance(start2, end2, width,
+                                                         height, direction)
             else:
-                    x1, y1 = self.modulus_point_distance(start1, end1, width, height,
-                                                           direction)
-                    x2, y2 = self.modulus_point_distance(start1, end2, width, height,
-                                                           direction)
+                    x1, y1 = self.modulus_point_distance(start1, end1, width,
+                                                         height, direction)
+                    x2, y2 = self.modulus_point_distance(start1, end2, width,
+                                                         height, direction)
             dx.append(x1)
             dy.append(y1)
             dx.append(x2)
@@ -220,21 +227,26 @@ class LineNavigator(DistanceNavigator):
                     record = new_dist
 
         #print start, end
-        #print 'dist(%s and %s) => r %s' % (str((start1, start2)), str((end1, end2)), str(record))
+        #print 'dist(%s and %s) => r %s'\
+        # % (str((start1, start2)), str((end1, end2)), str(record))
         return record
 
     def calc_skeleton(self, widget):
         center = widget.get_center()
         if widget.width < widget.height:
             offset = widget.width / 2
+            start_y = widget.get_menu_position()[1] + offset
+            end_y = widget.get_menu_position()[1] + widget.height - offset
             return (self.VERTICAL,
-                    (center[0], widget.get_menu_position()[1] + offset),
-                    (center[0], widget.get_menu_position()[1] + widget.height - offset))
+                    (center[0], start_y),
+                    (center[0], end_y))
         elif widget.width > widget.height:
             offset = widget.height / 2
+            start_x = widget.get_menu_position()[0] + offset
+            end_x = widget.get_menu_position()[0] + widget.width - offset
             return (self.HORIZONTAL,
-                    (widget.get_menu_position()[0] + offset, center[1]),
-                    (widget.get_menu_position()[0] + widget.width - offset, center[1]))
+                    (start_x, center[1]),
+                    (end_x, center[1]))
         else:
             return (self.POINT,
                     center,
@@ -243,21 +255,14 @@ class LineNavigator(DistanceNavigator):
     def perpedicular_distance(self, start, end, axis, target, width, height,
                               direction):
         dir_x, dir_y = self.get_xy_directions(direction)
-        if axis == self.VERTICAL and (direction == LEFT or direction == RIGHT):
-            #print 'VERTICAL'
+        if axis == self.VERTICAL\
+           and (direction == LEFT or direction == RIGHT):
             if start[1] <= target[1] and target[1] < end[1]:
-                # if dir_x is None:
-                    # print 'matched y, disting start.x %d and target.x %d with n %d dir None' % (start[0], target[0], height)
-                # else:
-                    # print 'matched y, disting start.x %d and target.x %d with n %d dir %d' % (start[0], target[0], height, dir_x)
-                return self.modulus_distance(start[0], target[0], height, dir_x)
-        elif axis == self.HORIZONTAL and (direction == UP or direction == DOWN):
-            #print 'HORIZONTAL'
+                return self.modulus_distance(start[0], target[0], height,
+                                             dir_x)
+        elif axis == self.HORIZONTAL\
+             and (direction == UP or direction == DOWN):
             if start[0] <= target[0] and target[0] < end[0]:
-                # if dir_y is None:
-                    # print 'matched x, disting start.y %d and target.y %d with n %d dir None' % (start[1], target[1], width)
-                # else:
-                    # print 'matched x, disting start.y %d and target.y %d with n %d dir %d' % (start[1], target[1], width, dir_y)
                 return self.modulus_distance(start[1], target[1], width, dir_y)
         return None
 

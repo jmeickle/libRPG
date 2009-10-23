@@ -38,8 +38,8 @@ class Quest(object):
         try:
             self.id
         except AttributeError:
-            raise Exception, 'Classes derived from Quest must have an id as'\
-                             'class attribute'
+            raise Exception('Classes derived from Quest must have an id as'\
+                            'class attribute')
 
         self.owner = owner
         self.name = name

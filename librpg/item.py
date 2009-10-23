@@ -10,13 +10,14 @@ UniqueItems (stored in UniquesInventories) are items that will not be
 stacked, being stored in the inventory individually.
 """
 
+
 class Inventory(object):
 
     """
     An inventory is a place to store items.
     """
 
-    def __init__(self, max_weight = None):
+    def __init__(self, max_weight=None):
         """
         *Constructor.*
 
@@ -409,8 +410,8 @@ class OrdinaryItem(Item):
         try:
             self.id
         except AttributeError:
-            raise Exception, 'Classes derived from OrdinaryItem must have an '\
-                             'id as class attribute'
+            raise Exception('Classes derived from OrdinaryItem must have an '
+                            'id as class attribute')
 
     def __repr__(self):
         #return "%s id=%s" % (self.name, str(self.id))
@@ -438,15 +439,18 @@ class UniqueItem(Item):
 
 
 class UsableItem(Item):
+
     def use(self):
-        raise NotImplementedError, 'UsableItem.use() is abstract'
+        raise NotImplementedError('UsableItem.use() is abstract')
 
 
 class UsableOrdinaryItem(UsableItem, OrdinaryItem):
+
     def __init__(self, name, weight=0):
         OrdinaryItem.__init__(self, name, weight)
 
 
 class UsableUniqueItem(UsableItem, UniqueItem):
+
     def __init__(self, name, weight=0):
         UniqueItem.__init__(self, name, weight)

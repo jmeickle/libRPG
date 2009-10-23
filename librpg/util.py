@@ -6,6 +6,7 @@ purposes.
 from librpg.locals import *
 from librpg.config import *
 
+
 class Position(object):
 
     """
@@ -92,7 +93,7 @@ class Position(object):
         elif i == 1:
             return self.y
         else:
-            raise IndexError, 'Position is only 2 dimensional'
+            raise IndexError('Position is only 2 dimensional')
 
     def __setitem__(self, i, value):
         if i == 0:
@@ -100,7 +101,7 @@ class Position(object):
         elif i == 1:
             self.y = value
         else:
-            raise IndexError, 'Position is only 2 dimensional'
+            raise IndexError('Position is only 2 dimensional')
 
 
 class Matrix(object):
@@ -133,8 +134,8 @@ class Matrix(object):
         """
         x, y = pos
         if not self.valid(pos):
-            raise IndexError, '%s was indexed with x=%s y=%s' % (repr(self),
-                                                                 x, y)
+            raise IndexError('%s was indexed with x=%s y=%s'
+                             % (repr(self), x, y))
         return self.m[y][x]
 
     def __setitem__(self, pos, value):
@@ -146,8 +147,8 @@ class Matrix(object):
         """
         x, y = pos
         if not self.valid(pos):
-            raise IndexError, '%s was indexed with x=%s y=%s' % (repr(self),
-                                                                 x, y)
+            raise IndexError('%s was indexed with x=%s y=%s'
+                             % (repr(self), x, y))
         self.m[y][x] = value
 
     def valid(self, pos):
@@ -191,22 +192,25 @@ def inverse(direction):
     """
     return {UP: DOWN, DOWN: UP, LEFT: RIGHT, RIGHT: LEFT}[direction]
 
+
 def determine_facing(new_pos, old_pos):
     """
     Returns the direction that has to be followed to get from *old_pos*
     to *new_pos*. Returns None if they are not adjacent.
     """
+
     delta = new_pos - old_pos
     if delta == Position(-1, 0):
         return LEFT
-    elif delta == Position(+1, 0):
+    elif delta == Position(1, 0):
         return RIGHT
     elif delta == Position(0, -1):
         return UP
-    elif delta == Position(0, +1):
+    elif delta == Position(0, 1):
         return DOWN
     else:
         return None
+
 
 def check_direction(key):
     if key in game_config.key_up:
@@ -241,8 +245,8 @@ class IdFactory(object):
         try:
             _class.id
         except AttributeError:
-            raise Exception, 'A class must have an id attribute to be '\
-                             'registered.'
+            raise Exception('A class must have an id attribute to be '
+                            'registered.')
         assert _class.id not in self.classes.keys(), \
                 'id %s already registered' % _class.id
         self.classes[_class.id] = _class
@@ -271,6 +275,7 @@ def fill_with_surface(target, source):
             x += s_w
         y += s_h
         x = 0
+
 
 def descale_point(pos):
     return (pos[0] / float(graphics_config.scale),

@@ -2,9 +2,11 @@ import pygame
 
 from librpg.menu.widget import Widget
 
+
 class Bar(Widget):
 
-    def __init__(self, width, height, filled=1.0, border=1, focusable=True, theme=None):
+    def __init__(self, width, height, filled=1.0, border=1, focusable=True,
+                 theme=None):
         Widget.__init__(self, width, height, focusable, theme)
         self.filled = filled
         self.border = border

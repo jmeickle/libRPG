@@ -14,6 +14,7 @@ from librpg.locals import *
 from librpg.config import game_config
 from librpg.virtualscreen import get_screen
 
+
 class ContextStack(object):
 
     """
@@ -231,6 +232,7 @@ class Context(object):
             self.destroy()
 
 context_stack = ContextStack()
+
 
 def get_context_stack():
     return context_stack

@@ -140,10 +140,11 @@ class ObjectImage(Image):
 
         # Build animation maps
         self.basic_animation = basic_animation
-        self.animation_maps = [(dict((speed, [animation[(phase*len(animation))/\
-                                                        speed] for phase in\
-                                              range(speed)]) for speed in\
-                                     SPEEDS)) for animation in basic_animation]
+        self.animation_maps = [(dict((speed,
+                                      [animation[(phase * len(animation))
+                                       / speed] for phase in range(speed)])
+                                      for speed in SPEEDS))
+                                for animation in basic_animation]
         self.current_animation = 0
         self.last_observed_movement_phase = 0
 

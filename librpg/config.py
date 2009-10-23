@@ -52,7 +52,7 @@ class Config(object):
                 else:
                     scheduled[key] = value
             else:
-                raise Exception, 'config() does not take %s as parameter' % key
+                raise Exception('config() does not take %s as parameter' % key)
 
         for key, value in scheduled.iteritems():
             setattr(self, key, value)
@@ -195,10 +195,10 @@ class GraphicsConfig(Config):
 
     def recreate_screeens(self):
         virtualscreen.screen_container.create_screen(
-                                                    self.real_screen_dimensions,
-                                                    self.display_mode,
-                                                    self.screen_dimensions,
-                                                    self.scale)
+                                                   self.real_screen_dimensions,
+                                                   self.display_mode,
+                                                   self.screen_dimensions,
+                                                   self.scale)
 
 
 class DialogConfig(Config):

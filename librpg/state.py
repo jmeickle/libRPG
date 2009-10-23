@@ -1,6 +1,7 @@
 from __future__ import with_statement
 import pickle
 
+
 class State(object):
 
     # Read-Only Attibutes

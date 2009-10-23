@@ -1,5 +1,6 @@
 import pygame
 
+
 class MenuTheme(object):
 
     def get_font(self, size, bold=False, italic=False):
@@ -83,8 +84,10 @@ class MenuTheme(object):
             color = (255, green, 0, 255)
             pygame.draw.line(surface,
                              color,
-                             (rect.left + i + border, rect.top + border),
-                             (rect.left + i + border, rect.bottom - 1 - border),
+                             (rect.left + i + border,
+                              rect.top + border),
+                             (rect.left + i + border,
+                              rect.bottom - 1 - border),
                              1)
 
     def draw_image(self, image):

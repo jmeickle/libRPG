@@ -9,6 +9,7 @@ from librpg.locals import *
 
 from librpg.menu.div import Div
 
+
 class Menu(Div):
 
     MOUSE_OFF = 0
@@ -178,4 +179,3 @@ class MenuController(Context):
                         best = (w, dist)
             if best[0] is not None:
                 cursor.move_to(best[0])
-

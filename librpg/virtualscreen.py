@@ -1,5 +1,6 @@
 import pygame
 
+
 class ScaledScreen(pygame.Surface):
     """
     The ScaledScreen is a replacement for the Pygame display surface.
@@ -59,12 +60,13 @@ class VirtualScreen(object):
         self.init_real_screen(real_screen_dimensions, display_mode)
         self.init_virtual_screen(screen_dimensions, scale)
 
-
 screen_container = VirtualScreen()
+
 
 def init(real_screen_dimensions, display_mode, screen_dimensions, scale):
     screen_container.create_screen(real_screen_dimensions, display_mode,
                                    screen_dimensions, scale)
+
 
 def get_screen():
     """
@@ -72,4 +74,3 @@ def get_screen():
     except it is scaled as configured in *graphics_config*.
     """
     return screen_container.screen
-

@@ -14,6 +14,7 @@ from librpg.context import ContextStack, get_context_stack
 from librpg.party import CharacterReserve, default_party_factory
 from librpg.locals import *
 
+
 class BaseWorld(object):
     """
     *Abstract.*
@@ -99,7 +100,7 @@ class BaseWorld(object):
         initial state or loaded state as initialized in the world's
         constructor.
         """
-        raise NotImplementedError, 'BaseWorld.gameloop() is abstract'
+        raise NotImplementedError('BaseWorld.gameloop() is abstract')
 
     def custom_gameover(self):
         """
@@ -311,4 +312,3 @@ class WorldMap(MapModel):
             self.controller.stop()
         else:
             self.teleport_object(self.party_avatar, position)
-

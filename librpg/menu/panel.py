@@ -3,6 +3,7 @@ import pygame
 from librpg.menu.div import Div
 from librpg.menu.widget import Widget
 
+
 class Panel(Div):
 
     def draw(self):

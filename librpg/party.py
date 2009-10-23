@@ -8,8 +8,10 @@ import pygame
 from librpg.image import ObjectImage
 from librpg.locals import *
 
+
 def default_party_factory(reserve):
     return Party(reserve)
+
 
 class Party(object):
 
@@ -143,7 +145,8 @@ class Party(object):
         Party wants to have an image that depends on it and overloads
         this function.
         """
-        assert self.leader is not None, 'A Party with no characters may not be \
+        assert self.leader is not None, 'A Party with no characters may not \
+                                         be \
                                         displayed'
         return self.get_char(self.leader).image
 
@@ -178,8 +181,8 @@ class Party(object):
         Initialize whatever fields depend on the state that was saved in a
         previous game.
 
-        *party_state* is the local state returned by save_state() when the state
-        was saved.
+        *party_state* is the local state returned by save_state() when the
+        state was saved.
         """
         pass
 
@@ -269,7 +272,7 @@ class CharacterReserve(object):
 
         Return the Character if he was in the reserve, None otherwise.
         """
-        if self.chars.has_key(name):
+        if name in self.chars:
             char = self.chars[name]
             if self.party_allocation[name] is not None:
                 self.party_allocation[name].remove_char(name)
@@ -293,7 +296,8 @@ class CharacterReserve(object):
 
     def _allocate_char(self, name, party):
         assert name in self.get_names(), 'Character is not in reserve'
-        assert party is None or party in self.parties, 'Party is not in reserve'
+        assert party is None or party in self.parties, 'Party is not in \
+                                                        reserve'
         self.party_allocation[name] = party
 
     def set_default_party(self, party):
@@ -343,9 +347,9 @@ class CharacterReserve(object):
         return result
 
     def load_state(self, state):
-        assert state.has_key(CHARACTERS_LOCAL_STATE), 'State does not have '\
+        assert CHARACTERS_LOCAL_STATE in state, 'State does not have '\
                'character information.'
-        assert state.has_key(CHARACTERS_LOCAL_STATE), 'State does not have '\
+        assert PARTIES_LOCAL_STATE in state, 'State does not have '\
                'party information.'
         for name, char_state in state[CHARACTERS_LOCAL_STATE].iteritems():
             self.add_char(name, char_state)

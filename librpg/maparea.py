@@ -1,5 +1,6 @@
 from librpg.util import Position
 
+
 class MapArea(object):
     """
     MapAreas represent areas that, when entered, moved over or left,
@@ -87,7 +88,7 @@ class RectangleArea(PositionList):
 
     def __getitem__(self, index):
         if self.cur_y > self.bottom:
-            raise IndexError, 'Finished'
+            raise IndexError('Finished')
         result = Position(self.cur_x, self.cur_y)
         self.cur_x += 1
         if self.cur_x > self.right:

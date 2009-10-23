@@ -4,6 +4,7 @@ import pygame
 from librpg.config import menu_config
 from librpg.menu.navigator import WidgetGateway
 
+
 class Widget(object):
 
     def __init__(self, width=0, height=0, focusable=True, theme=None):

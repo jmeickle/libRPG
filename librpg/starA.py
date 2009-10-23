@@ -1,7 +1,9 @@
 import heapq
 from librpg.locals import *
 
+
 class StarA(object):
+
     def __init__(self, mapmodel, start, goal):
 
         self.came_from = {}
@@ -20,20 +22,21 @@ class StarA(object):
             prediction, value, x, _ = least
 
             if x == self.goal:
+
                 def follow(n):
                     _, _, y, f = n
                     if y == self.start:
                         return []
                     else:
-                        return follow(self.came_from[n])+[f,]
+                        return follow(self.came_from[n]) + [f, ]
 
                 return follow(least)
 
-            for f, y in zip([UP,DOWN,LEFT,RIGHT],
-                            [x.up(), x.down(), x.left(),x.right()]):
+            for f, y in zip([UP, DOWN, LEFT, RIGHT],
+                            [x.up(), x.down(), x.left(), x.right()]):
 
                 if self.mm.can_move(x, y, f):
-                    next = (value+1+self.h(y), value+1, y, f)
+                    next = (value + 1 + self.h(y), value + 1, y, f)
                     self.came_from[next] = least
                     heapq.heappush(self.open, next)
 
@@ -44,4 +47,4 @@ class StarA(object):
         Manhattan distance
         """
 
-        return abs(pos.x-self.goal.x)+abs(pos.y-self.goal.y)
+        return abs(pos.x - self.goal.x) + abs(pos.y - self.goal.y)

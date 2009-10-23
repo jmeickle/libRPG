@@ -2,6 +2,7 @@ import pygame
 
 from librpg.menu.widget import Widget
 
+
 class Label(Widget):
 
     def __init__(self, text='', size=12, bold=False, italic=False,
@@ -62,4 +63,3 @@ class Label(Widget):
         self._italic = italic
 
     italic = property(get_italic, set_italic)
-

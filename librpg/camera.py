@@ -7,7 +7,7 @@ This module also defines a CameraMode abstract class that can be used to
 write custom camera modes.
 """
 
-from librpg.config import graphics_config
+from librpg.config import graphics_config as g_cfg
 
 
 class CameraMode(object):
@@ -30,14 +30,14 @@ class CameraMode(object):
 
     def calc_object_topleft(self, bg_slice_topleft, object_pos, object_width,
                             object_height, object_x_offset, object_y_offset):
-        object_pixel_x = (object_pos.x * graphics_config.tile_size -
-                          (object_width - graphics_config.tile_size) / 2)
-        object_pixel_y = (object_pos.y * graphics_config.tile_size -
-                          (object_height - graphics_config.tile_size))
+        object_pixel_x = (object_pos.x * g_cfg.tile_size -
+                          (object_width - g_cfg.tile_size) / 2)
+        object_pixel_y = (object_pos.y * g_cfg.tile_size -
+                          (object_height - g_cfg.tile_size))
 
-        x = (graphics_config.map_border_width + object_pixel_x -
+        x = (g_cfg.map_border_width + object_pixel_x -
              bg_slice_topleft[0] + object_x_offset)
-        y = (graphics_config.map_border_height + object_pixel_y -
+        y = (g_cfg.map_border_height + object_pixel_y -
              bg_slice_topleft[1] + object_y_offset)
         return (x, y)
 
@@ -59,8 +59,8 @@ class CameraMode(object):
         (x, y) tuple representing where the top left of the camera should
         aim for in the background.
         """
-        raise NotImplementedError, \
-              'CameraMode.calc_bg_slice_topleft() is abstract'
+        raise NotImplementedError('CameraMode.calc_bg_slice_topleft() '
+                                  'is abstract')
 
 
 class PartyConfinementCameraMode(CameraMode):
@@ -93,10 +93,10 @@ class PartyConfinementCameraMode(CameraMode):
         self.current_place = None
 
     def calc_bg_slice_topleft(self, party_pos, party_x_offset, party_y_offset):
-        proj_x = (party_pos.x * graphics_config.tile_size +
-                  graphics_config.tile_size / 2 + party_x_offset)
-        proj_y = (party_pos.y * graphics_config.tile_size +
-                  graphics_config.tile_size / 2 + party_y_offset)
+        proj_x = (party_pos.x * g_cfg.tile_size +
+                  g_cfg.tile_size / 2 + party_x_offset)
+        proj_y = (party_pos.y * g_cfg.tile_size +
+                  g_cfg.tile_size / 2 + party_y_offset)
 
         if self.current_place is not None:
             old_x, old_y = (self.current_place[0], self.current_place[1])
@@ -120,10 +120,10 @@ class PartyCentricCameraMode(CameraMode):
     """
 
     def calc_bg_slice_topleft(self, party_pos, party_x_offset, party_y_offset):
-        x = (party_pos.x * graphics_config.tile_size +
-             graphics_config.tile_size / 2 + party_x_offset)
-        y = (party_pos.y * graphics_config.tile_size +
-             graphics_config.tile_size / 2 + party_y_offset)
+        x = (party_pos.x * g_cfg.tile_size +
+             g_cfg.tile_size / 2 + party_x_offset)
+        y = (party_pos.y * g_cfg.tile_size +
+             g_cfg.tile_size / 2 + party_y_offset)
         return (x, y)
 
 
@@ -138,28 +138,28 @@ class ScreenConfinementCameraMode(CameraMode):
     """
 
     def attach_to_map(self, map_model):
-        self.map_width_in_pixels = graphics_config.tile_size * map_model.width
-        self.map_height_in_pixels = graphics_config.tile_size * map_model.height
-        self.x_max = self.map_width_in_pixels - graphics_config.map_border_width
-        self.y_max = self.map_height_in_pixels - graphics_config.map_border_height
+        self.map_width_in_pixels = g_cfg.tile_size * map_model.width
+        self.map_height_in_pixels = g_cfg.tile_size * map_model.height
+        self.x_max = self.map_width_in_pixels - g_cfg.map_border_width
+        self.y_max = self.map_height_in_pixels - g_cfg.map_border_height
 
     def calc_bg_slice_topleft(self, party_pos, party_x_offset, party_y_offset):
-        x = (party_pos.x * graphics_config.tile_size +
-             graphics_config.tile_size / 2 + party_x_offset)
-        y = (party_pos.y * graphics_config.tile_size +
-             graphics_config.tile_size / 2 + party_y_offset)
+        x = (party_pos.x * g_cfg.tile_size +
+             g_cfg.tile_size / 2 + party_x_offset)
+        y = (party_pos.y * g_cfg.tile_size +
+             g_cfg.tile_size / 2 + party_y_offset)
 
-        if self.map_width_in_pixels <= graphics_config.screen_width:
+        if self.map_width_in_pixels <= g_cfg.screen_width:
             x = self.map_width_in_pixels / 2
-        elif x < graphics_config.map_border_width:
-            x = graphics_config.map_border_width
+        elif x < g_cfg.map_border_width:
+            x = g_cfg.map_border_width
         elif x > self.x_max:
             x = self.x_max
 
-        if self.map_height_in_pixels <= graphics_config.screen_height:
+        if self.map_height_in_pixels <= g_cfg.screen_height:
             y = self.map_height_in_pixels / 2
-        elif y < graphics_config.map_border_height:
-            y = graphics_config.map_border_height
+        elif y < g_cfg.map_border_height:
+            y = g_cfg.map_border_height
         elif y > self.y_max:
             y = self.y_max
 
@@ -180,6 +180,5 @@ class FixedCameraMode(CameraMode):
         self.y = y
 
     def calc_bg_slice_topleft(self, party_pos, party_x_offset, party_y_offset):
-        return (graphics_config.map_border_width -
-                self.x, graphics_config.map_border_height - self.y)
-
+        return (g_cfg.map_border_width -
+                self.x, g_cfg.map_border_height - self.y)

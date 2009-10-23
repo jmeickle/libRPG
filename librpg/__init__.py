@@ -5,6 +5,7 @@ from librpg import (virtualscreen, config, party, map, world, mapobject,
                     tile, dialog, mapview, menu, movement, state, sound, quest,
                     path)
 
+
 def init(game_name='LibRPG Game', icon=None):
     pygame.init()
     sound.init()

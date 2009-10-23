@@ -2,6 +2,7 @@ import pygame
 
 from librpg.menu.widget import Widget
 
+
 class BoundWidget(object):
 
     def __init__(self, widget, old_theme):
@@ -41,7 +42,7 @@ class Div(Widget):
 
     def remove_widget(self, widget):
         if widget.parent is not self:
-               return False
+            return False
         for w in self.widgets:
             if w.widget is widget:
                 self.widgets.remove(w)
@@ -79,6 +80,7 @@ class Div(Widget):
 
 
 class WidgetGroup(Div):
+
     def __init__(self, width, height, theme=None):
         Div.__init__(self, width, height, True, theme)
 

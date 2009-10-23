@@ -31,6 +31,7 @@ def build_lines(text, box_width, font):
     lines.append([height, cur_line])
     return lines
 
+
 def split_boxes(lines, box_height, line_spacing):
     boxes = []
     box_cur_height = lines[0][0]
@@ -49,13 +50,14 @@ def split_boxes(lines, box_height, line_spacing):
 
     return boxes
 
+
 class Dialog(object):
 
     def __init__(self, block_movement=True):
         self.block_movement = block_movement
 
     def process_event(self, event):
-        raise NotImplementedError, 'Dialog.process_event() is abstract'
+        raise NotImplementedError('Dialog.process_event() is abstract')
 
 
 class MessageDialog(Dialog):
@@ -119,6 +121,7 @@ class ElasticMessageDialog(MessageDialog):
     Same as a MessageDialog but resizes the box as needed for the text to
     fit in.
     """
+
     def draw(self):
         if not self.surface:
             font = pygame.font.SysFont(cfg.font_name, cfg.font_size)
@@ -195,9 +198,10 @@ class MultiMessageDialog(MessageDialog):
                                           32)
 
                 # Draw dialog background
+                w = g_cfg.screen_width - 2 * cfg.border_width
+                h = g_cfg.screen_height / 2 - 2 * cfg.border_width
                 dim = pygame.Rect((cfg.border_width, cfg.border_width),
-                                  (g_cfg.screen_width - 2 * cfg.border_width,
-                                   g_cfg.screen_height / 2 - 2 * cfg.border_width))
+                                  (w, h))
                 pygame.draw.rect(surface, cfg.bg_color, dim)
 
                 # Draw message
@@ -223,6 +227,7 @@ class MultiMessageDialog(MessageDialog):
                 return False
         else:
             return True
+
 
 class ChoiceDialog(Dialog):
 

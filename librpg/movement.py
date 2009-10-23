@@ -4,6 +4,7 @@ a MapObject's movements. These can be used both for one-time movement
 or for routine movement.
 """
 
+
 class Movement(object):
 
     """
@@ -26,7 +27,7 @@ class Movement(object):
         after the MapObject's *movement_phase* becomes 0, that is, the object
         stops. Return False if it requires more flow() calls to complete.
         """
-        raise NotImplementedError, 'Movement.flow() is abstract'
+        raise NotImplementedError('Movement.flow() is abstract')
 
 
 class MovementQueue(Movement, list):
@@ -120,7 +121,8 @@ class OneTileMovement(Movement):
             self.tries_left = tries
 
     def flow(self, obj):
-        done = obj.map.try_to_move_object(obj, self.direction, slide=self.slide,
+        done = obj.map.try_to_move_object(obj, self.direction,
+                                          slide=self.slide,
                                           back=self.back)
         if self.forced:
             return (done,)
@@ -212,10 +214,13 @@ class ForcedSlide(OneTileMovement):
     def __init__(self, direction, back=False):
         OneTileMovement.__init__(self, direction, True, back, tries=None)
 
+
 class PathMovement(Movement):
+
     def __init__(self, mapmodel, obj, dest):
         import starA
-        self.path = [Step(k) for k in starA.StarA(mapmodel, obj.position, dest).calculate()]
+        plan = starA.StarA(mapmodel, obj.position, dest).calculate()
+        self.path = [Step(k) for k in plan]
 
     def flow(self, obj):
         if len(self.path) == 0:

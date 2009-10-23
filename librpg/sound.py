@@ -8,8 +8,9 @@ import pygame
 
 from librpg.loader import FileLoader
 
+
 def init():
-    try :
+    try:
         pygame.mixer.init(buffer=1024)
     except pygame.error:
         print "no sound device available"
@@ -26,8 +27,8 @@ class SoundEffectLoader(FileLoader):
     def actual_load(self, name):
         return pygame.mixer.Sound(name)
 
-
 __sfx_loader = SoundEffectLoader()
+
 
 def play_sfx(sfx_name, times=1, force_load=False):
     """

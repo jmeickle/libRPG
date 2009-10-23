@@ -1,6 +1,7 @@
 from librpg.menu.div import Div
 from librpg.util import Matrix
 
+
 class Grid(Div):
 
     def __init__(self, width, height, width_in_cells, height_in_cells,
@@ -52,8 +53,8 @@ class Grid(Div):
 
     def remove_lines(self, number_of_lines=1):
         if self.height_in_cells <= number_of_lines:
-            raise IndexError, 'Cannot remove %d lines from a Grid with %d '\
-                              'lines' % (number_of_lines, self.height_in_cells)
+            raise IndexError('Cannot remove %d lines from a Grid with %d '
+                             'lines' % (number_of_lines, self.height_in_cells))
 
         old_height = self.height_in_cells
         self.height_in_cells -= number_of_lines
@@ -65,8 +66,8 @@ class Grid(Div):
         self.cells.resize(self.width_in_cells, self.height_in_cells)
 
     def remove_columns(self, number_of_columns=1):
-        raise IndexError, 'Cannot remove %d columns from a Grid with %d '\
-                          'columns' % (number_of_columns, self.width_in_cells)
+        raise IndexError('Cannot remove %d columns from a Grid with %d '\
+                         'columns' % (number_of_columns, self.width_in_cells))
         old_width = self.width_in_cells
         self.width_in_cells -= number_of_columns
 
@@ -88,7 +89,7 @@ class HorizontalGrid(Grid):
         return self.cells[x, 0]
 
     def add_lines(self, number_of_lines=1):
-        raise Exception, 'HorizontalGrid cannot have more than 1 line'
+        raise Exception('HorizontalGrid cannot have more than 1 line')
 
 
 class VerticalGrid(Grid):
@@ -102,4 +103,4 @@ class VerticalGrid(Grid):
         return self.cells[0, y]
 
     def add_columns(self, number_of_columns=1):
-        raise Exception, 'VerticalGrid cannot have more than 1 column'
+        raise Exception('VerticalGrid cannot have more than 1 column')

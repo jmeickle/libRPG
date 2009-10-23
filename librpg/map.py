@@ -117,32 +117,32 @@ class MapController(Context):
         self.trigger_collisions()
 
     def trigger_collisions(self):
-        party_avatar = self.map_model.party_avatar
-        if party_avatar.just_completed_movement:
-            party_avatar.just_completed_movement = False
-            coming_from_direction = determine_facing(party_avatar.position,
-                                                     party_avatar.prev_position)
+        avatar = self.map_model.party_avatar
+        if avatar.just_completed_movement:
+            avatar.just_completed_movement = False
+            coming_from_direction = determine_facing(avatar.position,
+                                                     avatar.prev_position)
 
             # Trigger below objects' collide_with_party()
-            for obj in self.map_model.object_layer[party_avatar.position].below:
-                obj.collide_with_party(party_avatar,
+            for obj in self.map_model.object_layer[avatar.position].below:
+                obj.collide_with_party(avatar,
                                        coming_from_direction)
 
             # Trigger above objects' collide_with_party()
-            for obj in self.map_model.object_layer[party_avatar.position].above:
-                obj.collide_with_party(party_avatar,
+            for obj in self.map_model.object_layer[avatar.position].above:
+                obj.collide_with_party(avatar,
                                        coming_from_direction)
 
             # Trigger areas' party_entered and party_moved()
-            for area in self.map_model.area_layer[party_avatar.position]:
-                if area not in party_avatar.prev_areas:
+            for area in self.map_model.area_layer[avatar.position]:
+                if area not in avatar.prev_areas:
                     coming_from_outside = True
-                    area.party_entered(party_avatar, party_avatar.position)
+                    area.party_entered(avatar, avatar.position)
                 else:
                     coming_from_outside = False
 
-                area.party_moved(party_avatar, party_avatar.prev_position,
-                                 party_avatar.position, coming_from_outside)
+                area.party_moved(avatar, avatar.prev_position,
+                                 avatar.position, coming_from_outside)
 
     def sync_movement(self, objects):
         self.sync_objects = objects
@@ -340,7 +340,7 @@ class MapModel(object):
         elif obj.is_above():
             self.above_objects.append(obj)
         else:
-            raise Exception, 'Object is neither below, obstacle or above'
+            raise Exception('Object is neither below, obstacle or above')
         if hasattr(obj, 'update'):
             self.updatable_objects.append(obj)
 
@@ -362,7 +362,7 @@ class MapModel(object):
         elif obj.is_above():
             self.above_objects.remove(obj)
         else:
-            raise Exception, 'Object is neither below, obstacle or above'
+            raise Exception('Object is neither below, obstacle or above')
         if hasattr(obj, 'update'):
             self.updatable_objects.remove(obj)
 
@@ -414,7 +414,7 @@ class MapModel(object):
         if not self.terrain_layer.valid(desired):
             return False
 
-        if not (obj.is_obstacle() and not self.can_move(old_pos, desired, direction)):
+        if not obj.is_obstacle() or self.can_move(old_pos, desired, direction):
             # Move
             old_object = self.object_layer[old_pos]
             new_object = self.object_layer[desired]
@@ -509,8 +509,8 @@ class MapModel(object):
         if self.terrain_layer.valid(desired):
             obj_in_front = self.object_layer[desired].obstacle
             if obj_in_front is not None:
-               obj_in_front.activate(self.party_avatar,
-                                     self.party_avatar.facing)
+                obj_in_front.activate(self.party_avatar,
+                                      self.party_avatar.facing)
             across_pos = desired.step(self.party_avatar.facing)
             if (self.terrain_layer.valid(across_pos) and
                ((obj_in_front is not None and obj_in_front.is_counter()) or
@@ -640,4 +640,3 @@ class ObjectCell(object):
             self.below_remove(obj)
         else:
             self.above_remove(obj)
-

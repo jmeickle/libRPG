@@ -11,6 +11,7 @@ from librpg.locals import *
 from librpg.movement import MovementQueue, MovementCycle
 from librpg.image import ObjectImage
 
+
 class MapObject(object):
 
     """
@@ -63,7 +64,8 @@ class MapObject(object):
             Direction that the object is facing.
 
         :attr:`speed`
-            Object speed, in the number of frames to move that object by 1 tile.
+            Object speed, in the number of frames to move that object by 1
+            tile.
             Use VERY_FAST_SPEED, FAST_SPEED, NORMAL_SPEED, SLOW_SPEED and
             VERY_SLOW_SPEED.
 
@@ -245,4 +247,3 @@ class ScenarioMapObject(MapObject):
             MapObject.__init__(self, tile.obstacle, tile.image, facing, speed)
         else:
             MapObject.__init__(self, obstacle, tile.image, facing, speed)
-

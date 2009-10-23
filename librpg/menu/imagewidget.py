@@ -2,6 +2,7 @@ import pygame
 
 from librpg.menu.widget import Widget
 
+
 class ImageWidget(Widget):
 
     def __init__(self, image, focusable=True, theme=None):
