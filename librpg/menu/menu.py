@@ -95,6 +95,7 @@ class MenuController(Context):
                     self.command_cooldown = MenuController.COMMAND_COOLDOWN
             cursor.update()
         self.menu.update()
+        return False
 
     def activate(self):
         cursor = self.menu.cursor

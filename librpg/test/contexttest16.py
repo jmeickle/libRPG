@@ -64,6 +64,7 @@ class CounterContext(Context):
     def update(self):
         self.amount = len(self.map.objects)
         self.party_pos = self.map.party_avatar.position
+        return False
 
     def draw(self):
         surface = self.font.render("Object#: %d" % (self.amount), True,

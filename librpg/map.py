@@ -55,12 +55,12 @@ class MapController(Context):
     def update(self):
         if self.map_model.pause_delay > 0:
             self.map_model.pause_delay -= 1
-            return
+            return False
 
         if self.moving_sync:
             sync_stopped = self.sync_movement_step()
             if not sync_stopped:
-                return
+                return False
 
         if not self.message_queue.is_busy():
             self.flow_object_movement()
@@ -75,6 +75,8 @@ class MapController(Context):
                 self.map_model.party_action()
             else:
                 self.party_avatar.schedule_movement(Step(action))
+
+        return False
 
     def draw(self):
         self.map_view_draw()

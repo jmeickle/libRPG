@@ -112,13 +112,27 @@ class ContextStack(object):
         self.keep_going = True
         self.clock = pygame.time.Clock()
         while self.stack and self.keep_going:
+            # Limit FPS
             self.clock.tick(game_config.fps)
-            for context in self.stack:
+
+            # Update contexts in reverse order
+            stop = False
+            active_contexts = []
+            for context in reversed(self.stack):
                 if context.active:
-                    context.update()
-                    context.draw()
+                    stop = context.update()
+                    active_contexts.append(context)
+                if stop:
+                    break
+
+            # Draw active contexts in normal order
+            for context in reversed(active_contexts):
+                context.draw()
+
+            # Flip display
             get_screen().flip()
 
+            # Distribute pygame events to contexts
             self.__process_events()
 
     def __process_events(self):
@@ -169,6 +183,8 @@ class Context(object):
         Note that not passing down events of a certain type (eg. direction
         key presses) will deprive lower Contexts of that event, which can
         be used to block movement for example.
+
+        By default, process_event() returns False.
         """
         return False
 
@@ -181,8 +197,11 @@ class Context(object):
 
         This method should do whatever periodic processing the context
         needs, information updates, etc.
+
+        Return True if the contexts below it should not be updated this
+        cycle, False otherwise. By default, update() returns False.
         """
-        pass
+        return False
 
     # Virtual
     def initialize(self):

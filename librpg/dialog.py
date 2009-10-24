@@ -354,6 +354,7 @@ class MessageQueue(Context):
 
     def update(self):
         self.pop_next()
+        return False
 
     def process_event(self, event):
         if not self.current:
