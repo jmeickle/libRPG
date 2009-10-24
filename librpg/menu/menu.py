@@ -79,7 +79,7 @@ class Menu(Div):
     def process_event(self, event):
         return False
 
-        
+
 class MenuController(Context):
 
     COMMAND_COOLDOWN = 5

@@ -119,6 +119,10 @@ ok      0.5     Open a "library" module with stuff like TeleportArea, Rock, Ches
 ok      0.5     Implement easy alignment inside div
 ok      0.5     Improve navigation algorithm: considering only the widget center leads to distortions
 ok      0.5     Design more widgets
+ok      0.5     Convert Dialogs to use the menu package
+        0.5     Change ChoiceDialog to call a callback (either passed in constructor or overridden in a derived class) upon completion
+        0.5     Replace command queues for get key state calls - avoid command queue desync
+        0.5     Create actual ArrowCursor
         0.5     Code NumberSelector
         0.5     Code TextInput
         0.5     Code KeyboardWidget
@@ -126,9 +130,6 @@ ok      0.5     Design more widgets
         0.5     Implement animated themes
         0.5     Implement HighlightCursor
         0.5     Code slot interface
-        0.5     Replace command queues for get key state calls?
-        0.5     Convert Dialogs to use the menu package
-        0.5     Change ChoiceDialog to call a callback (either passed in constructor or overridden in a derived class) upon completion
         0.5.1   Decide if UsableItems should be kept
         0.5.1   Define item image system and API for menu
         0.5.1   Code ItemMenu

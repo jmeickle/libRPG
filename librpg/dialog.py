@@ -67,13 +67,13 @@ class MessageDialog(Menu):
     def __init__(self, text, block_movement=True):
         self.text = text
         self.block_movement = block_movement
-        
+
         Menu.__init__(self, g_cfg.screen_width - 2 * cfg.border_width,
                             g_cfg.screen_height / 2 - 2 * cfg.border_width,
                             cfg.border_width,
                             g_cfg.screen_height / 2 + cfg.border_width,
                             bg=(0, 0, 0, 0))
-        
+
         panel = Panel(self.width, self.height)
         self.add_widget(panel, (0, 0))
 
@@ -130,7 +130,7 @@ class ElasticMessageDialog(Menu):
                             g_cfg.screen_height - self.box_height\
                             + cfg.border_width,
                             bg=(0, 0, 0, 0))
-        
+
         panel = Panel(self.width, self.height)
         self.add_widget(panel, (0, 0))
 
@@ -161,13 +161,13 @@ class MultiMessageDialog(Menu):
         self.text = text
         self.block_movement = block_movement
         self.current_panel = None
-        
+
         Menu.__init__(self, g_cfg.screen_width - 2 * cfg.border_width,
                             g_cfg.screen_height / 2 - 2 * cfg.border_width,
                             cfg.border_width,
                             g_cfg.screen_height / 2 + cfg.border_width,
                             bg=(0, 0, 0, 0))
-        
+
         # Split into lines
         font = self.theme.get_font(cfg.font_size)
         box_width = g_cfg.screen_width - 4 * cfg.border_width
@@ -192,7 +192,7 @@ class MultiMessageDialog(Menu):
                 y_acc += line[0] + cfg.line_spacing
             self.panels.append(panel)
 
-        self.advance_panel()    
+        self.advance_panel()
 
     def advance_panel(self):
         if self.current_panel is not None:

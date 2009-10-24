@@ -215,15 +215,17 @@ class ForcedSlide(OneTileMovement):
         OneTileMovement.__init__(self, direction, True, back, tries=None)
 
 import starA
+
+
 class PathMovement(Movement):
 
     def __init__(self, mapmodel, obj, dest):
         self.mapmodel = mapmodel
-        self.dest     = dest    
+        self.dest = dest
 
     def flow(self, obj):
         v = starA.StarA(self.mapmodel, obj.position, self.dest).calculate()
-        
+
         if v:
             Step(v[0]).flow(obj)
             return (False,)
