@@ -31,19 +31,28 @@ class Menu(Div):
                                 'mouse_control must be 0, 1 or 2'
         self.mouse_control = mouse_control
 
+        self.should_close = False
+
     def init_bg(self, bg):
-        self.bg = pygame.Surface((self.width, self.height)).convert_alpha()
-        self.bg.fill((0, 0, 0, 255))
+        self.bg = pygame.Surface((self.width, self.height), SRCALPHA, 32)\
+                  .convert_alpha()
         if bg is not None:
-            fill_with_surface(self.bg, bg)
+            if isinstance(bg, tuple) and len(bg) >= 3:
+                self.bg.fill(bg)
+            else:
+                fill_with_surface(self.bg, bg)
+        else:
+            BLACK = (0, 0, 0, 255)
+            self.bg.fill(BLACK)
 
     def draw(self):
         scr = get_screen()
         scr.blit(self.bg, (self.x, self.y))
         Div.draw(self)
         Div.render(self, scr, self.x, self.y)
-        self.cursor.draw()
-        self.cursor.render(scr)
+        if self.cursor is not None:
+            self.cursor.draw()
+            self.cursor.render(scr)
 
     # Use cursor.bind instead
     def add_cursor(self, cursor):
@@ -64,7 +73,13 @@ class Menu(Div):
     def unregister_widget(self, widget):
         self.all_widgets.remove(widget)
 
+    def close(self):
+        self.should_close = True
 
+    def process_event(self, event):
+        return False
+
+        
 class MenuController(Context):
 
     COMMAND_COOLDOWN = 5
@@ -76,11 +91,17 @@ class MenuController(Context):
         menu.controller = self
         self.command_queue = []
         self.command_cooldown = 0
+        self.done = False
 
     def draw(self):
         self.menu.draw()
 
     def update(self):
+        if self.menu.should_close:
+            self.done = True
+            self.stop()
+            return False
+
         cursor = self.menu.cursor
         if cursor is not None:
             if self.command_cooldown > 0:
@@ -114,6 +135,8 @@ class MenuController(Context):
                 if w.process_event(event):
                     return True
                 w = w.parent
+        if self.menu.process_event(event):
+            return True
         return self.menu_process_event(event)
 
     def menu_process_event(self, event):
@@ -180,3 +203,6 @@ class MenuController(Context):
                         best = (w, dist)
             if best[0] is not None:
                 cursor.move_to(best[0])
+
+    def is_done(self):
+        return self.done

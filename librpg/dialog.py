@@ -7,11 +7,14 @@ are a tool for displaying conversations, questions, etc.
 import pygame
 
 from librpg.locals import *
+from librpg.context import get_context_stack
 from librpg.config import dialog_config as cfg
 from librpg.config import graphics_config as g_cfg
 from librpg.config import game_config as m_cfg
+from librpg.config import menu_config
 from librpg.virtualscreen import get_screen
 from librpg.context import Context
+from librpg.menu import Menu, Label, Panel, MenuController, ArrowCursor
 
 
 def build_lines(text, box_width, font):
@@ -51,16 +54,7 @@ def split_boxes(lines, box_height, line_spacing):
     return boxes
 
 
-class Dialog(object):
-
-    def __init__(self, block_movement=True):
-        self.block_movement = block_movement
-
-    def process_event(self, event):
-        raise NotImplementedError('Dialog.process_event() is abstract')
-
-
-class MessageDialog(Dialog):
+class MessageDialog(Menu):
 
     """
     A MessageDialog is a simple message to be displayed on the screen.
@@ -71,100 +65,92 @@ class MessageDialog(Dialog):
     """
 
     def __init__(self, text, block_movement=True):
-        Dialog.__init__(self, block_movement)
         self.text = text
-        self.surface = None
+        self.block_movement = block_movement
+        
+        Menu.__init__(self, g_cfg.screen_width - 2 * cfg.border_width,
+                            g_cfg.screen_height / 2 - 2 * cfg.border_width,
+                            cfg.border_width,
+                            g_cfg.screen_height / 2 + cfg.border_width,
+                            bg=(0, 0, 0, 0))
+        
+        panel = Panel(self.width, self.height)
+        self.add_widget(panel, (0, 0))
 
-    def draw(self):
-        if not self.surface:
-            font = pygame.font.SysFont(cfg.font_name, cfg.font_size)
+        font = self.theme.get_font(cfg.font_size)
+        box_width = g_cfg.screen_width - 4 * cfg.border_width
+        lines = build_lines(self.text,
+                            box_width,
+                            font)
 
-            # Create empty surface
-            self.surface = pygame.Surface((g_cfg.screen_width,
-                                           g_cfg.screen_height / 2), SRCALPHA,
-                                           32)
-
-            # Draw dialog background
-            dim = pygame.Rect((cfg.border_width, cfg.border_width),
-                              (g_cfg.screen_width - 2 * cfg.border_width,
-                               g_cfg.screen_height / 2 - 2 * cfg.border_width))
-            pygame.draw.rect(self.surface, cfg.bg_color, dim)
-
-            # Split into lines
-            box_width = g_cfg.screen_width - 4 * cfg.border_width
-            lines = build_lines(self.text,
-                                box_width,
-                                font)
-
-            # Draw message
-            y_acc = 0
-            for line in lines:
-                self.surface.blit(font.render(line[1], True, cfg.font_color),
-                                  (2 * cfg.border_width, 2 * cfg.border_width +
-                                   y_acc))
-                y_acc += line[0] + cfg.line_spacing
-
-        return self.surface, pygame.Rect(0, g_cfg.screen_height / 2,
-                                         g_cfg.screen_width,
-                                         g_cfg.screen_height / 2)
+        # Draw message
+        y_acc = 0
+        for line in lines:
+            label = Label(line[1])
+            panel.add_widget(label,
+                             (cfg.border_width,
+                              cfg.border_width + y_acc))
+            y_acc += line[0] + cfg.line_spacing
 
     def process_event(self, event):
-        if event.key in m_cfg.key_action:
-            return False
-        else:
-            return True
+        if event.type == KEYDOWN:
+            if event.key in m_cfg.key_action:
+                self.close()
+        return self.block_movement
 
 
-class ElasticMessageDialog(MessageDialog):
+class ElasticMessageDialog(Menu):
 
     """
     Same as a MessageDialog but resizes the box as needed for the text to
     fit in.
     """
 
-    def draw(self):
-        if not self.surface:
-            font = pygame.font.SysFont(cfg.font_name, cfg.font_size)
+    def __init__(self, text, block_movement=True):
+        self.text = text
+        self.block_movement = block_movement
 
-            # Split into lines
-            box_width = g_cfg.screen_width - 4 * cfg.border_width
-            lines = build_lines(self.text,
-                                box_width,
-                                font)
+        # Split into lines
+        font = menu_config.theme.get_font(cfg.font_size)
+        box_width = g_cfg.screen_width - 4 * cfg.border_width
+        lines = build_lines(self.text,
+                            box_width,
+                            font)
 
-            # Calculate box size
-            self.box_height = (sum([line[0] for line in lines])
-                          + (len(lines) - 1) * cfg.line_spacing
-                          + 4 * cfg.border_width)
-            assert self.box_height < g_cfg.screen_height,\
-                   'Too much text for one box.'
+        # Calculate box size
+        self.box_height = (sum([line[0] for line in lines])
+                           + (len(lines) - 1) * cfg.line_spacing
+                           + 4 * cfg.border_width)
+        assert self.box_height < g_cfg.screen_height,\
+               'Too much text for one box.'
 
-            # Create empty surface
-            self.surface = pygame.Surface((g_cfg.screen_width,
-                                           self.box_height), SRCALPHA,
-                                           32)
+        Menu.__init__(self, g_cfg.screen_width - 2 * cfg.border_width,
+                            self.box_height - 2 * cfg.border_width,
+                            cfg.border_width,
+                            g_cfg.screen_height - self.box_height\
+                            + cfg.border_width,
+                            bg=(0, 0, 0, 0))
+        
+        panel = Panel(self.width, self.height)
+        self.add_widget(panel, (0, 0))
 
-            # Draw dialog background
-            dim = pygame.Rect((cfg.border_width, cfg.border_width),
-                              (g_cfg.screen_width - 2 * cfg.border_width,
-                               self.box_height - 2 * cfg.border_width))
-            pygame.draw.rect(self.surface, cfg.bg_color, dim)
+        # Draw message
+        y_acc = 0
+        for line in lines:
+            label = Label(line[1])
+            panel.add_widget(label,
+                             (cfg.border_width,
+                              cfg.border_width + y_acc))
+            y_acc += line[0] + cfg.line_spacing
 
-            # Draw message
-            y_acc = 0
-            for line in lines:
-                self.surface.blit(font.render(line[1], True, cfg.font_color),
-                                  (2 * cfg.border_width, 2 * cfg.border_width +
-                                   y_acc))
-                y_acc += line[0] + cfg.line_spacing
-
-        return self.surface, pygame.Rect(0,
-                                         g_cfg.screen_height - self.box_height,
-                                         g_cfg.screen_width,
-                                         self.box_height)
+    def process_event(self, event):
+        if event.type == KEYDOWN:
+            if event.key in m_cfg.key_action:
+                self.close()
+        return self.block_movement
 
 
-class MultiMessageDialog(MessageDialog):
+class MultiMessageDialog(Menu):
 
     """
     Same as a MessageDialog but splits messages bigger than the default
@@ -172,64 +158,60 @@ class MultiMessageDialog(MessageDialog):
     """
 
     def __init__(self, text, block_movement=True):
-        MessageDialog.__init__(self, text, block_movement)
-        self.surfaces = None
+        self.text = text
+        self.block_movement = block_movement
+        self.current_panel = None
+        
+        Menu.__init__(self, g_cfg.screen_width - 2 * cfg.border_width,
+                            g_cfg.screen_height / 2 - 2 * cfg.border_width,
+                            cfg.border_width,
+                            g_cfg.screen_height / 2 + cfg.border_width,
+                            bg=(0, 0, 0, 0))
+        
+        # Split into lines
+        font = self.theme.get_font(cfg.font_size)
+        box_width = g_cfg.screen_width - 4 * cfg.border_width
+        lines = build_lines(self.text,
+                            box_width,
+                            font)
 
-    def draw(self):
-        if not self.surfaces:
-            self.surfaces = []
-            font = pygame.font.SysFont(cfg.font_name, cfg.font_size)
+        # Split into boxes
+        box_height = g_cfg.screen_height / 2 - 4 * cfg.border_width
+        self.boxes = split_boxes(lines, box_height, cfg.line_spacing)
+        self.panels = []
 
-            # Split into lines
-            box_width = g_cfg.screen_width - 4 * cfg.border_width
-            lines = build_lines(self.text,
-                                box_width,
-                                font)
+        # Draw panels
+        for box in self.boxes:
+            panel = Panel(self.width, self.height)
+            y_acc = 0
+            for line in box:
+                label = Label(line[1])
+                panel.add_widget(label,
+                                 (cfg.border_width,
+                                  cfg.border_width + y_acc))
+                y_acc += line[0] + cfg.line_spacing
+            self.panels.append(panel)
 
-            # Split into boxes
-            box_height = g_cfg.screen_height / 2 - 4 * cfg.border_width
-            self.boxes = split_boxes(lines, box_height, cfg.line_spacing)
+        self.advance_panel()    
 
-            for box in self.boxes:
-
-                # Create empty surface
-                surface = pygame.Surface((g_cfg.screen_width,
-                                          g_cfg.screen_height / 2), SRCALPHA,
-                                          32)
-
-                # Draw dialog background
-                w = g_cfg.screen_width - 2 * cfg.border_width
-                h = g_cfg.screen_height / 2 - 2 * cfg.border_width
-                dim = pygame.Rect((cfg.border_width, cfg.border_width),
-                                  (w, h))
-                pygame.draw.rect(surface, cfg.bg_color, dim)
-
-                # Draw message
-                y_acc = 0
-                for line in box:
-                    surface.blit(font.render(line[1], True, cfg.font_color),
-                                             (2 * cfg.border_width,
-                                              2 * cfg.border_width + y_acc))
-                    y_acc += line[0] + cfg.line_spacing
-
-                self.surfaces.append(surface)
-
-        return self.surfaces[0], pygame.Rect(0, g_cfg.screen_height / 2,
-                                             g_cfg.screen_width,
-                                             g_cfg.screen_height / 2)
+    def advance_panel(self):
+        if self.current_panel is not None:
+            self.remove_widget(self.current_panel)
+            self.current_panel = None
+        if self.panels:
+            self.current_panel = self.panels.pop(0)
+            self.add_widget(self.current_panel, (0, 0))
 
     def process_event(self, event):
-        if event.key in m_cfg.key_action:
-            del self.surfaces[0]
-            if self.surfaces:
-                return True
-            else:
-                return False
-        else:
-            return True
+        if event.type == KEYDOWN:
+            if event.key in m_cfg.key_action:
+                self.advance_panel()
+                if self.current_panel is None:
+                    self.close()
+        return self.block_movement
 
 
-class ChoiceDialog(Dialog):
+class ChoiceDialog(Menu):
 
     """
     A ChoiceDialog is a message that comes along a list of options from
@@ -242,68 +224,52 @@ class ChoiceDialog(Dialog):
     *choices* is a list of the options, which should be strings.
     """
 
-    def __init__(self, text, choices=[], block_movement=True):
-        Dialog.__init__(self, block_movement)
+    def __init__(self, text, choices, block_movement=True):
+        self.block_movement = block_movement
         self.text = text
         self.choices = choices
-        self.surface = None
-        self.selected = 0
 
-    def get(self):
-        return self.selected
+        Menu.__init__(self, g_cfg.screen_width - 2 * cfg.border_width,
+                            g_cfg.screen_height / 2 - 2 * cfg.border_width,
+                            cfg.border_width,
+                            g_cfg.screen_height / 2 + cfg.border_width,
+                            bg=(0, 0, 0, 0))
 
-    def update(self):
-        self.surface = None
+        panel = Panel(self.width, self.height)
+        self.add_widget(panel, (0, 0))
 
-    def draw(self):
-        if not self.surface:
-            font = pygame.font.SysFont(cfg.font_name, cfg.font_size)
+        # Build lines and choice lines
+        font = self.theme.get_font(cfg.font_size)
+        self.__build_lines(font)
 
-            # Create empty surface
-            self.surface = pygame.Surface((g_cfg.screen_width,
-                                           g_cfg.screen_height / 2), SRCALPHA,
-                                           32)
+        # Draw message
+        y_acc = 0
+        for line in self.lines:
+            label = Label(line[1], focusable=False)
+            panel.add_widget(label,
+                             (cfg.border_width,
+                              cfg.border_width + y_acc))
+            y_acc += line[0] + cfg.line_spacing
 
-            # Draw dialog background
-            dim = pygame.Rect((cfg.border_width, cfg.border_width),
-                              (g_cfg.screen_width - 2 * cfg.border_width,
-                               g_cfg.screen_height / 2 - 2 * cfg.border_width))
-            pygame.draw.rect(self.surface, cfg.bg_color, dim)
+        self.starting_option = None
+        for line in self.choice_lines:
+            label = Label(line[1], focusable=True)
+            panel.add_widget(label,
+                             (2 * cfg.border_width,
+                              cfg.border_width + y_acc))
+            y_acc += line[0] + cfg.choice_line_spacing
+            if self.starting_option is None:
+                self.starting_option = label
 
-            # Split into lines
-            self.__build_lines(font)
-
-            # Draw message
-            y_acc = 0
-            for line in self.lines:
-                self.surface.blit(font.render(line[1], True, cfg.font_color),
-                                  (2 * cfg.border_width,
-                                   2 * cfg.border_width + y_acc))
-                y_acc += line[0] + cfg.line_spacing
-
-            for n, line in enumerate(self.choice_lines):
-                if n == self.selected:
-                    color = cfg.selected_font_color
-                else:
-                    color = cfg.not_selected_font_color
-
-                self.surface.blit(font.render(line[1], True, color),
-                                  (3 * cfg.border_width,
-                                   2 * cfg.border_width + y_acc))
-                y_acc += line[0] + cfg.choice_line_spacing
-
-
-        return self.surface, pygame.Rect(0, g_cfg.screen_height / 2,
-                                         g_cfg.screen_width,
-                                         g_cfg.screen_height / 2)
+        ArrowCursor().bind(self, self.starting_option)
 
     def __build_lines(self, font):
-        box_width = g_cfg.screen_width - 4 * cfg.border_width
+        box_width = self.width - 2 * cfg.border_width
         self.lines = build_lines(self.text,
                                  box_width,
                                  font)
 
-        box_width = g_cfg.screen_width - 5 * cfg.border_width
+        box_width = self.width - 3 * cfg.border_width
         self.choice_lines = []
         for choice in self.choices:
             choice_line = build_lines(choice,
@@ -312,16 +278,12 @@ class ChoiceDialog(Dialog):
             self.choice_lines.extend(choice_line)
 
     def process_event(self, event):
-        if event.key in m_cfg.key_action:
-            return False
-        elif event.key in m_cfg.key_up:
-            self.selected = (self.selected - 1) % len(self.choice_lines)
-            self.update()
-        elif event.key in m_cfg.key_down:
-            self.selected = (self.selected + 1) % len(self.choice_lines)
-            self.update()
-
-        return True
+        if event.type == KEYDOWN:
+            if event.key in m_cfg.key_action:
+                self.close()
+            if event.key in m_cfg.key_left or event.key in m_cfg.key_right:
+                return True
+        return self.block_movement
 
 
 class MessageQueue(Context):
@@ -329,6 +291,7 @@ class MessageQueue(Context):
     def __init__(self, parent=None):
         Context.__init__(self, parent)
         self.current = None
+        self.controller = None
         self.queue = []
 
     def is_busy(self):
@@ -340,29 +303,14 @@ class MessageQueue(Context):
     def pop_next(self):
         if self.current is None and self.queue:
             self.current = self.queue.pop(0)
-
-    def close(self):
-        self.current = None
+            self.controller = MenuController(self.current)
+            get_context_stack().stack_context(self.controller)
 
     def push(self, message):
         self.queue.append(message)
 
-    def draw(self):
-        if self.current:
-            surface, dim = self.current.draw()
-            get_screen().blit(surface, dim)
-
     def update(self):
+        if self.controller is not None and self.controller.is_done():
+            self.current = None
         self.pop_next()
-        return False
-
-    def process_event(self, event):
-        if not self.current:
-            return False
-
-        if event.type == KEYDOWN:
-            if not self.current.process_event(event):
-                self.close()
-            return True
-
         return False

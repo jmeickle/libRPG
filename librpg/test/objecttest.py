@@ -41,7 +41,8 @@ class ObjectTestNPC(MapObject):
                                block_movement=False)
         self.map.schedule_message(dialog)
 
-        dialog = ChoiceDialog(u"Choose NOW:", ["choice 1", "choice 2"],
+        dialog = ChoiceDialog(u"Choose NOW:",
+                              ["choice 1", "choice 2", "choice 3", "choice 4"],
                               block_movement=False)
         self.map.schedule_message(dialog)
 

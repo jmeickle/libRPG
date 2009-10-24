@@ -1,5 +1,6 @@
 import math
 import pygame
+from pygame.locals import SRCALPHA
 
 from librpg.config import menu_config
 from librpg.menu.navigator import WidgetGateway
@@ -11,7 +12,8 @@ class Widget(object):
         self.width = width
         self.height = height
         if width > 0 and height > 0:
-            self.surface = pygame.Surface((width, height)).convert_alpha()
+            self.surface = pygame.Surface((width, height), SRCALPHA, 32)\
+                           .convert_alpha()
         else:
             self.surface = None
 
@@ -98,7 +100,7 @@ class Widget(object):
 
     def get_menu_position(self):
         if self.parent is None:
-            return (0, 0)
+            return (self.x, self.y)
         else:
             parent_pos = self.parent.get_menu_position()
             x = parent_pos[0] + self.position[0]

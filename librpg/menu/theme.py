@@ -1,4 +1,5 @@
 import pygame
+from pygame.locals import SRCALPHA
 
 
 class MenuTheme(object):
@@ -109,7 +110,7 @@ class CursorTheme(object):
     def draw_cursor(self, target_rect):
         width = target_rect.w + 2 * (self.BORDER + self.HORIZONTAL_OFFSET)
         height = target_rect.h + 2 * (self.BORDER + self.VERTICAL_OFFSET)
-        s = pygame.Surface((width, height)).convert_alpha()
+        s = pygame.Surface((width, height), SRCALPHA, 32).convert_alpha()
         s.fill((255, 0, 0, 255))
         pygame.draw.rect(s, (0, 0, 0, 0),
                          pygame.Rect((self.BORDER, self.BORDER),
