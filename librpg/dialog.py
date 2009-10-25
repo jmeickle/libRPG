@@ -222,13 +222,16 @@ class ChoiceDialog(Menu):
     tells the map whether the movement in the map should be blocked while
     the message is shown.
 
-    *choices* is a list of the options, which should be strings.
+    *choices* is a list of tuples with the options, which should be strings.
     """
 
-    def __init__(self, text, choices, block_movement=True):
+    def __init__(self, text, choices, user_data=None, completion_callback=None,
+                 block_movement=True):
         self.block_movement = block_movement
         self.text = text
         self.choices = choices
+        self.completion_callback = completion_callback
+        self.user_data = user_data
 
         Menu.__init__(self, g_cfg.screen_width - 2 * cfg.border_width,
                             g_cfg.screen_height / 2 - 2 * cfg.border_width,
@@ -253,8 +256,8 @@ class ChoiceDialog(Menu):
             y_acc += line[0] + cfg.line_spacing
 
         self.starting_option = None
-        for line in self.choice_lines:
-            label = Label(line[1], focusable=True)
+        for index, line in enumerate(self.choice_lines):
+            label = ChoiceLabel(line[1], index)
             panel.add_widget(label,
                              (2 * cfg.border_width,
                               cfg.border_width + y_acc))
@@ -278,13 +281,47 @@ class ChoiceDialog(Menu):
                                       font)
             self.choice_lines.extend(choice_line)
 
+    def complete(self, choice):
+        if self.completion_callback is not None:
+            self.completion_callback(self.user_data, choice)
+        else:
+            self.on_choice(self.user_data, choice)
+
+    def on_choice(self, user_data, choice):
+        """
+        Execute an action depending on what the player chose.
+
+        If no *completion_callback* is specified in constructor, this
+        method has to be overridden.
+
+        *user_data* is the user_data passed to the ChoiceDialog when it was
+        written.
+
+        *choice* is the index of the choice. The first option is 0, the
+        second is 1, and so on.
+        """
+        raise NotImplementedError('Either completion_callback has to be '
+                                  'specified in constructor or on_choice()'
+                                  'has to be implemented.')
+
+    def process_event(self, event):
+        return self.block_movement
+
+
+class ChoiceLabel(Label):
+
+    def __init__(self, text, index):
+        Label.__init__(self, text, focusable=True)
+        self.index = index
+
+    def activate(self):
+        self.menu.complete(self.index)
+        self.menu.close()
+
     def process_event(self, event):
         if event.type == KEYDOWN:
-            if event.key in m_cfg.key_action:
-                self.close()
             if event.key in m_cfg.key_left or event.key in m_cfg.key_right:
                 return True
-        return self.block_movement
 
 
 class MessageQueue(Context):

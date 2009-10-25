@@ -41,8 +41,13 @@ class ObjectTestNPC(MapObject):
                                block_movement=False)
         self.map.schedule_message(dialog)
 
+        def on_choice(user_data, choice):
+            map = user_data
+            map.schedule_message(MessageDialog('Chose %d' % (choice + 1)))
         dialog = ChoiceDialog(u"Choose NOW:",
                               ["Choice 1", "Choice 2", "Choice 3", "Choice 4"],
+                              user_data=self.map,
+                              completion_callback=on_choice,
                               block_movement=False)
         self.map.schedule_message(dialog)
 
