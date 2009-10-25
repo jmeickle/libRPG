@@ -97,7 +97,8 @@ class MessageDialog(Menu):
         if event.type == KEYDOWN:
             if event.key in m_cfg.key_action:
                 self.close()
-        return self.block_movement
+                return True
+        return False
 
 
 class ElasticMessageDialog(Menu):
@@ -148,7 +149,8 @@ class ElasticMessageDialog(Menu):
         if event.type == KEYDOWN:
             if event.key in m_cfg.key_action:
                 self.close()
-        return self.block_movement
+                return True
+        return False
 
 
 class MultiMessageDialog(Menu):
@@ -209,7 +211,8 @@ class MultiMessageDialog(Menu):
                 self.advance_panel()
                 if self.current_panel is None:
                     self.close()
-        return self.block_movement
+                return True
+        return False
 
 
 class ChoiceDialog(Menu):
@@ -305,7 +308,7 @@ class ChoiceDialog(Menu):
                                   'has to be implemented.')
 
     def process_event(self, event):
-        return self.block_movement
+        return False
 
 
 class ChoiceLabel(Label):

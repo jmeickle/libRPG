@@ -137,13 +137,15 @@ class ContextStack(object):
 
     def __process_events(self):
         for event in pygame.event.get():
-            # print event
+            # print 'processing', event
             if event.type == QUIT:
                 self.stop()
                 break
             for context in reversed(self.stack):
+                # print 'offering to', context
                 consumed_event = context.process_event(event)
                 if consumed_event:
+                    # print context, 'consumed the event'
                     break
 
 

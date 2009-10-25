@@ -123,7 +123,6 @@ ok      0.5     Implement A*
 ok      0.5     Convert Dialogs to use the menu package
 ok      0.5     Create actual ArrowCursor
 ok      0.5     Change ChoiceDialog to call a callback (either passed in constructor or overridden in a derived class) upon completion
-        0.5     Replace command queues for get key state calls - avoid command queue desync
         0.5     Code NumberSelector
         0.5     Code TextInput
         0.5     Code KeyboardWidget
