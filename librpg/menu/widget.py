@@ -81,22 +81,30 @@ class Widget(object):
         *Virtual.*
 
         Handle a left mouse click event.
+        
+        Return whether the event was captured.
         """
-        pass
+        print self, 'got left_click(%d, %d)' % (x, y)
+        return False
 
     def right_click(self, x, y):
         """
         *Virtual.*
 
         Handle a right mouse click event.
+        
+        Return whether the event was captured.
         """
-        pass
+        print self, 'got right_click(%d, %d)' % (x, y)
+        return False
 
     def process_event(self, event):
         """
         *Virtual.*
 
         Handle an event triggered while the widget was focused.
+        
+        Return whether the event was captured.
         """
         return False
 
@@ -105,6 +113,8 @@ class Widget(object):
         *Virtual.*
 
         Handle an activate event triggered while the widget was focused.
+        
+        Return whether the event was captured.
         """
         # print self, 'activated'
         return False

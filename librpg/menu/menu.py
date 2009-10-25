@@ -177,59 +177,97 @@ class MenuController(Context):
 
     def menu_process_event(self, event):
         if event.type == KEYDOWN:
-            direction = check_direction(event.key)
-            if direction is not None and\
-               not direction in self.command_queue:
-                self.command_queue.append(direction)
-                return True
-            elif event.key in game_config.key_action:
-                if not ACTIVATE in self.command_queue:
-                    self.command_queue.insert(0, ACTIVATE)
-                return True
-            elif event.key in game_config.key_cancel:
-                self.stop()
+            if self.process_key_down(event):
                 return True
         elif event.type == KEYUP:
-            direction = check_direction(event.key)
-            if direction is not None and\
-               direction in self.command_queue:
-                self.command_queue.remove(direction)
-                return True
-            elif event.key in game_config.key_action \
-                 and ACTIVATE in self.command_queue:
-                self.command_queue.remove(ACTIVATE)
+            if self.process_key_up(event):
                 return True
         elif event.type == MOUSEMOTION:
-            self.process_mouse_motion(event)
+            if self.process_mouse_motion(event):
+                return True
         elif event.type == MOUSEBUTTONDOWN:
-            if event.button == 1:
-                if not MOUSE_ACTIVATE in self.command_queue:
-                    self.command_queue.insert(0, MOUSE_ACTIVATE)
+            if self.process_mouse_down(event):
                 return True
         elif event.type == MOUSEBUTTONUP:
-            if event.button == 1:
-                if MOUSE_ACTIVATE in self.command_queue:
-                    self.command_queue.remove(MOUSE_ACTIVATE)
+            if self.process_mouse_up(event):
                 return True
+        return False
+
+    def process_key_down(self, event):
+        direction = check_direction(event.key)
+        if direction is not None and\
+           not direction in self.command_queue:
+            self.command_queue.append(direction)
+            return True
+        elif event.key in game_config.key_action:
+            if not ACTIVATE in self.command_queue:
+                self.command_queue.insert(0, ACTIVATE)
+            return True
+        elif event.key in game_config.key_cancel:
+            self.stop()
+            return True
+        return False
+
+    def process_key_up(self, event):
+        direction = check_direction(event.key)
+        if direction is not None and\
+           direction in self.command_queue:
+            self.command_queue.remove(direction)
+            return True
+        elif event.key in game_config.key_action \
+             and ACTIVATE in self.command_queue:
+            self.command_queue.remove(ACTIVATE)
+            return True
+        return False
+
+    def process_mouse_down(self, event):
+        if event.button == 1:
+            if self.menu.cursor is not None:
+                w = self.menu.cursor.widget
+                if w is not None:
+                    x, y = descale_point(event.pos)
+                    widget_x, widget_y = w.get_menu_position()
+                    captured = w.left_click(x - widget_x, y - widget_y)
+                    if captured:
+                        return True
+            if not MOUSE_ACTIVATE in self.command_queue:
+                self.command_queue.insert(0, MOUSE_ACTIVATE)
+            return True
+        if event.button == 3:
+            if self.menu.cursor is not None:
+                w = self.menu.cursor.widget
+                if w is not None:
+                    x, y = descale_point(event.pos)
+                    widget_x, widget_y = w.get_menu_position()
+                    captured = w.right_click(x - widget_x, y - widget_y)
+                    if captured:
+                        return True
+        return False
+
+    def process_mouse_up(self, event):
+        if event.button == 1:
+            if MOUSE_ACTIVATE in self.command_queue:
+                self.command_queue.remove(MOUSE_ACTIVATE)
+            return True
         return False
 
     def process_mouse_motion(self, event):
         if self.menu.mouse_control == Menu.MOUSE_OFF:
-            return
+            return False
 
         cursor = self.menu.cursor
         if cursor is None:
-            return
+            return False
 
         pos = descale_point(event.pos)
 
         if self.menu.mouse_control == Menu.MOUSE_STRICT:
             if cursor.widget.contains_point(pos):
-                return
+                return False
             for w in self.menu.all_widgets:
                 if w.focusable and w.contains_point(pos):
                     cursor.move_to(w)
-                    return
+                    return False
         else:
             best = (None, 999999)
             for w in self.menu.all_widgets:
