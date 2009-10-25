@@ -1,11 +1,5 @@
 import librpg
 
-librpg.init('Boulder Test')
-librpg.config.graphics_config.config(tile_size=32,
-                                     object_height=32,
-                                     object_width=32,
-                                     scale=1.7)
-
 from librpg.map import MapModel
 from librpg.mapobject import ScenarioMapObject
 from librpg.util import Position
@@ -72,8 +66,18 @@ class BoulderMaze(MapModel):
 def char_factory(name):
     return librpg.party.Character('Andy', charset_path('naked_man.png'))
 
-world = librpg.world.MicroWorld(BoulderMaze(), char_factory)
-world.initial_state(position=Position(4, 9),
-                     chars=['Andy'])
-world.gameloop()
-exit()
+def main():
+    librpg.init('Boulder Test')
+    librpg.config.graphics_config.config(tile_size=32,
+                                         object_height=32,
+                                         object_width=32,
+                                         scale=1.7)
+
+    world = librpg.world.MicroWorld(BoulderMaze(), char_factory)
+    world.initial_state(position=Position(4, 9),
+                         chars=['Andy'])
+    world.gameloop()
+    exit()
+
+if __name__ == '__main__':
+    main()

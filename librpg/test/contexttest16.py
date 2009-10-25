@@ -1,11 +1,6 @@
 import librpg
 import pygame
 
-librpg.init()
-librpg.config.graphics_config.config(tile_size=16,
-                                     object_height=32,
-                                     object_width=24)
-
 from librpg.map import MapModel, MapController
 from librpg.mapobject import MapObject, ScenarioMapObject
 from librpg.util import Position, inverse
@@ -106,9 +101,19 @@ class ObjectTestMap(MapModel):
 def char_factory(name):
     return librpg.party.Character('Andy', 'test16_charset.png', 3)
 
-game_config.config(fps=40)
-world = librpg.world.MicroWorld(ObjectTestMap(), char_factory)
-world.initial_state(Position(8, 8), ['Andy'])
-world.gameloop()
 
-exit()
+def main():
+    librpg.init()
+    librpg.config.graphics_config.config(tile_size=16,
+                                         object_height=32,
+                                         object_width=24)
+
+    game_config.config(fps=40)
+    world = librpg.world.MicroWorld(ObjectTestMap(), char_factory)
+    world.initial_state(Position(8, 8), ['Andy'])
+    world.gameloop()
+
+    exit()
+
+if __name__ == '__main__':
+    main()

@@ -119,6 +119,7 @@ ok      0.5     Open a "library" module with stuff like TeleportArea, Rock, Ches
 ok      0.5     Implement easy alignment inside div
 ok      0.5     Improve navigation algorithm: considering only the widget center leads to distortions
 ok      0.5     Design more widgets
+ok      0.5     Implement A*
 ok      0.5     Convert Dialogs to use the menu package
         0.5     Change ChoiceDialog to call a callback (either passed in constructor or overridden in a derived class) upon completion
         0.5     Replace command queues for get key state calls - avoid command queue desync
@@ -144,16 +145,15 @@ ok      0.5     Convert Dialogs to use the menu package
         0.5.2   Map viewer tool (writting in librpg)
         0.5.2   Implement Chest, NPC and other MapObjects in collection
         0.5.2   Join MapModel and WorldMap
+        0.5.2   Organize pacakges: open map package
         0.6     Implement pictures (bound to map or to screen)
         0.6     Write scene module
         0.6.1   Write animation module
         0.7     Define generic battle system
         0.7     Write quest module
-        ?       Implement A*
         ?       Allow mouse control for party
         ?       Add on_object_touch events
         ?       Image management module (store the last x loaded images and the y most used images)
-        ?       Group files into submodules?
         ?       Bank module (stores money and items)
         ?       Split util module
         ?       Boundaries file editing tool
