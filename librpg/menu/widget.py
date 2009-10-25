@@ -8,6 +8,21 @@ from librpg.menu.navigator import WidgetGateway
 
 class Widget(object):
 
+    """
+    A Widget is a menu component.
+    
+    Widgets are typically graphic components that can be added to menus,
+    tat may be interactive.
+    
+    *width* and *height* specify the widget's size in pixels.
+    
+    *focusable*, if True (default value), will allow cursors to focus that
+    widget, so that it receives events while focused.
+    
+    *theme* is a MenuTheme that will be used to render that widget, and
+    defaults to the default_theme in librpg.config.menu_config.
+    """
+
     def __init__(self, width=0, height=0, focusable=True, theme=None):
         self.width = width
         self.height = height
@@ -33,6 +48,8 @@ class Widget(object):
 
     def get_surface(self):
         """
+        *Virtual.*
+
         Return a pygame Surface with the widget's image as it should be
         rendered.
         """
@@ -55,7 +72,7 @@ class Widget(object):
         """
         *Virtual.*
 
-        Update the widget's data.
+        Update the widget's data. Called every cycle the menu is active.
         """
         pass
 

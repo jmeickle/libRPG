@@ -1,7 +1,3 @@
-"""
-Menu.
-"""
-
 from alignment import *
 from bar import *
 from cursor import *

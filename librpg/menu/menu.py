@@ -12,6 +12,30 @@ from librpg.menu.div import Div
 
 class Menu(Div):
 
+    """
+    A Menu is the outermost container for widgets, representing a whole
+    menu ran by a MenuController.
+    
+    Menus provide all methods a Div does, most notably add_widget(),
+    which is used to put any widgets or Divs on the Menu.
+
+    *width* and *height* specify the dimensions of the menu in pixels.
+    *x* and *y* specify the position at which the top left of the menu
+    will be on the screen.
+    
+    *theme* is a MenuTheme that will be used to render that menu, and
+    defaults to the default_theme in librpg.config.menu_config.
+    
+    *bg* can be a color or a pygame Surface that will be drawn as the
+    menu's background.
+    
+    *mouse_control* can be Menu.MOUSE_OFF, Menu.MOUSE_STRICT or
+    Menu.MOUSE_LOOSE. MOUSE_OFF will disable mouse control for the menu,
+    MOUSE_STRICT will cause the cursor to move to widgets touched by the
+    mouse pointer, and MOUSE_LOOSE will move it always to the nearest
+    widget.
+    """
+
     MOUSE_OFF = 0
     MOUSE_STRICT = 1
     MOUSE_LOOSE = 2
@@ -74,9 +98,21 @@ class Menu(Div):
         self.all_widgets.remove(widget)
 
     def close(self):
+        """
+        Close the menu.
+        """
         self.should_close = True
 
     def process_event(self, event):
+        """
+        *Virtual.*
+
+        Handle the incoming event. Return True if it should NOT be passed
+        down to the lower Contexts (that is, if it should be captured).
+        Return False if it should be passed down.
+
+        By default, process_event() returns False.
+        """
         return False
 
 

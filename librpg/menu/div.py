@@ -14,6 +14,13 @@ class Div(Widget):
 
     """
     A widget container and organizer.
+    
+    A Div is an invisible rectangular area that stores widgets
+    logically. As a Widget, Divs can be nested (Divs may be added to
+    other Divs.
+    
+    *width*, *height*, *focusable* and *theme* behave like in any other
+    Widget.
     """
 
     def __init__(self, width, height, focusable=False, theme=None):
@@ -21,6 +28,12 @@ class Div(Widget):
         self.widgets = []
 
     def add_widget(self, widget, position):
+        """
+        Add a *widget* to the Div at a given *position*.
+        
+        *position* should be an (x, y) tuple in pixels, and relative
+        to the Div's top left.
+        """
         assert widget.parent is None, 'Widget is already added to a div'
         old_theme = widget.theme
         if widget.theme is None:
@@ -41,6 +54,13 @@ class Div(Widget):
                     self.menu.register_widget(w)
 
     def remove_widget(self, widget):
+        """
+        Remove a *widget* from the Div.
+        
+        If *widget* is a Widget container, that is, its get_tree()
+        returns a list of all widgets it contains, as is the case of Divs,
+        all child widgets will be removed as well from this Div.
+        """
         if widget.parent is not self:
             return False
         for w in self.widgets:
@@ -71,6 +91,14 @@ class Div(Widget):
             surf = w.widget.render(screen, x_pos, y_pos)
 
     def crystallize(self, widget_navigator=None):
+        """
+        Build static navigation links between widgets.
+        
+        This preprocessing will create a "crystalline" structure
+        with the widgets, speeding up navigation. Widgets should not be
+        added to or removed from the Div after it is crystallized,
+        therefore dynamic menu structures should not use it.
+        """
         for w in self.widgets:
             w.widget.crystallize(widget_navigator)
 
@@ -82,6 +110,10 @@ class Div(Widget):
 
 
 class WidgetGroup(Div):
+
+    """
+    A WidgetGroup is a Div that is focused a whole.
+    """
 
     def __init__(self, width, height, theme=None):
         Div.__init__(self, width, height, True, theme)
