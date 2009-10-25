@@ -14,7 +14,8 @@ from librpg.config import game_config as m_cfg
 from librpg.config import menu_config
 from librpg.virtualscreen import get_screen
 from librpg.context import Context
-from librpg.menu import Menu, Label, Panel, MenuController, ArrowCursor
+from librpg.menu import (Menu, Label, Panel, MenuController, Cursor,
+                         ArrowCursorTheme)
 
 
 def build_lines(text, box_width, font):
@@ -261,7 +262,7 @@ class ChoiceDialog(Menu):
             if self.starting_option is None:
                 self.starting_option = label
 
-        ArrowCursor().bind(self, self.starting_option)
+        Cursor(ArrowCursorTheme()).bind(self, self.starting_option)
 
     def __build_lines(self, font):
         box_width = self.width - 2 * cfg.border_width

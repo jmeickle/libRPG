@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import SRCALPHA
 
+from librpg.path import cursor_theme_path
 
 class MenuTheme(object):
 
@@ -118,3 +119,25 @@ class CursorTheme(object):
                           target_rect.h + 2 * self.VERTICAL_OFFSET)))
         return s, (target_rect.left - self.BORDER - self.HORIZONTAL_OFFSET,
                    target_rect.top - self.BORDER - self.VERTICAL_OFFSET)
+
+
+class PictureCursorTheme(CursorTheme):
+
+    def __init__(self, filename, x_offset=0, y_offset=0):
+        self.filename = filename
+        self.x_offset = x_offset
+        self.y_offset = y_offset
+        self.image = pygame.image.load(self.filename)
+
+    def draw_cursor(self, target_rect):
+        center_x = target_rect.left + self.x_offset
+        center_y = target_rect.top + target_rect.h / 2 + self.y_offset
+        return self.image, (center_x - self.image.get_width() / 2,
+                            center_y - self.image.get_height() / 2)
+
+
+class ArrowCursorTheme(PictureCursorTheme):
+
+    def __init__(self, x_offset=-10, y_offset=1):
+        PictureCursorTheme.__init__(self, cursor_theme_path('arrow.png'),
+                                    x_offset, y_offset)

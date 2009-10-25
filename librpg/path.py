@@ -34,3 +34,12 @@ def charset_path(relative_path='.'):
     """
     path = os.path.join('charset', relative_path)
     return data_path(path)
+
+
+def cursor_theme_path(relative_path='.'):
+    """
+    Return the absolute file path of a file, specified by a *relative_path*
+    to the librpg data/cursor_theme directory.
+    """
+    path = os.path.join('cursor_theme', relative_path)
+    return data_path(path)

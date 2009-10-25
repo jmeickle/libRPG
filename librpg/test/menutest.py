@@ -2,7 +2,7 @@ import pygame
 from pygame import *
 
 import librpg
-from librpg.menu import (MenuController, Menu, Panel, Label, ArrowCursor,
+from librpg.menu import (MenuController, Menu, Panel, Label, Cursor,
                          ImageWidget, WidgetGroup, Bar, VerticalGrid,
                          AlignCenter, AlignTopLeft)
 from librpg.context import get_context_stack
@@ -98,7 +98,7 @@ class TestMenu(Menu):
         #self.crystallize()
 
         # Add cursor
-        cursor = ArrowCursor()
+        cursor = Cursor()
         cursor.bind(self, first_panel_label)
 
 
