@@ -49,8 +49,10 @@ class Div(Widget):
                 w.widget.theme = w.old_theme
                 widget.parent = None
                 widget.position = None
-                widget.menu = None
-                self.menu.unregister_widget(widget)
+                widget_and_children = w.widget.get_tree()
+                for x in widget_and_children:
+                    x.menu = None
+                    self.menu.unregister_widget(x)
                 return True
         return False
 
