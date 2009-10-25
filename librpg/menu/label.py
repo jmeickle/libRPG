@@ -1,9 +1,17 @@
+"""
+Label.
+"""
+
 import pygame
 
 from librpg.menu.widget import Widget
 
 
 class Label(Widget):
+
+    """
+    A Label is a widget that displays text.
+    """
 
     def __init__(self, text='', size=12, bold=False, italic=False,
                  focusable=True, theme=None):
