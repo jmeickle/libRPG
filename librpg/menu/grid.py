@@ -4,6 +4,27 @@ from librpg.util import Matrix
 
 class Grid(Div):
 
+    """
+    A Grid is a Div that contains cells in a matrix-like disposition.
+
+    All cells in a Grid will have the same size. Each cell is a Div
+    itself, whose parent is the Grid. Any widget can be added to these
+    cells.
+
+    *width* and *height* specify the Grid's total size.
+
+    *width_in_cells* and *height_in_cells* are the number of cells in a
+    line and the number of cells in a column of the Grid, respectively.
+
+    The size of each cell will be calculated from *width*, *height*,
+    *width_in_cells* and *height_in_cells*.
+
+    *visible* is unused for now, but will cause the Grid to be displayed
+    in the future.
+
+    *focusable* and *theme* behave like in any other Widget.
+    """
+
     def __init__(self, width, height, width_in_cells, height_in_cells,
                  visible=False, focusable=False, theme=None):
         Div.__init__(self, width, height, focusable, theme)
@@ -23,9 +44,24 @@ class Grid(Div):
                 self.add_widget(div, pos)
 
     def __getitem__(self, pos):
+        """
+        Return the Div representing a cell of the Grid.
+
+        *pos* should be an (x, y) tuple with the indexes of the intended
+        cell.
+        """
         return self.cells[pos]
 
     def add_lines(self, number_of_lines=1):
+        """
+        Add one or more cell lines to the Grid.
+
+        The Grid's dimensions will be expanded, while the size of each
+        cell will remain unchanged.
+
+        *number_of_lines* specifies how many lines will be added. This
+        defaults to 1.
+        """
         old_height = self.height_in_cells
         self.height_in_cells += number_of_lines
         self.cells.resize(self.width_in_cells, self.height_in_cells)
@@ -39,6 +75,15 @@ class Grid(Div):
                 self.add_widget(div, pos)
 
     def add_columns(self, number_of_columns=1):
+        """
+        Add one or more cell columns to the Grid.
+
+        The Grid's dimensions will be expanded, while the size of each
+        cell will remain unchanged.
+
+        *number_of_columns* specifies how many columns will be added. This
+        defaults to 1.
+        """
         old_width = self.width_in_cells
         self.width_in_cells += number_of_columns
         self.cells.resize(self.width_in_cells, self.height_in_cells)
@@ -52,6 +97,15 @@ class Grid(Div):
                 self.add_widget(div, pos)
 
     def remove_lines(self, number_of_lines=1):
+        """
+        Remove one or more cell lines from the Grid.
+
+        The Grid's dimensions will be shrunk, while the size of each
+        cell will remain unchanged.
+
+        *number_of_lines* specifies how many lines will be removed. This
+        defaults to 1.
+        """
         if self.height_in_cells <= number_of_lines:
             raise IndexError('Cannot remove %d lines from a Grid with %d '
                              'lines' % (number_of_lines, self.height_in_cells))
@@ -66,6 +120,15 @@ class Grid(Div):
         self.cells.resize(self.width_in_cells, self.height_in_cells)
 
     def remove_columns(self, number_of_columns=1):
+        """
+        Remove one or more cell columns from the Grid.
+
+        The Grid's dimensions will be shrunk, while the size of each
+        cell will remain unchanged.
+
+        *number_of_columns* specifies how many columns will be removed.
+        This defaults to 1.
+        """
         raise IndexError('Cannot remove %d columns from a Grid with %d '\
                          'columns' % (number_of_columns, self.width_in_cells))
         old_width = self.width_in_cells
@@ -80,6 +143,10 @@ class Grid(Div):
 
 class HorizontalGrid(Grid):
 
+    """
+    A HorizontalGrid is a Grid composed of only one line.
+    """
+
     def __init__(self, width, height, width_in_cells, visible=False,
                  focusable=False, theme=None):
         Grid.__init__(self, width, height, width_in_cells, 1, visible,
@@ -93,6 +160,10 @@ class HorizontalGrid(Grid):
 
 
 class VerticalGrid(Grid):
+
+    """
+    A HorizontalGrid is a Grid composed of only one column.
+    """
 
     def __init__(self, width, height, height_in_cells, visible=False,
                  focusable=False, theme=None):

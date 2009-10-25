@@ -10,15 +10,15 @@ class Widget(object):
 
     """
     A Widget is a menu component.
-    
+
     Widgets are typically graphic components that can be added to menus,
     tat may be interactive.
-    
+
     *width* and *height* specify the widget's size in pixels.
-    
+
     *focusable*, if True (default value), will allow cursors to focus that
     widget, so that it receives events while focused.
-    
+
     *theme* is a MenuTheme that will be used to render that widget, and
     defaults to the default_theme in librpg.config.menu_config.
     """
@@ -81,10 +81,9 @@ class Widget(object):
         *Virtual.*
 
         Handle a left mouse click event.
-        
+
         Return whether the event was captured.
         """
-        print self, 'got left_click(%d, %d)' % (x, y)
         return False
 
     def right_click(self, x, y):
@@ -92,10 +91,9 @@ class Widget(object):
         *Virtual.*
 
         Handle a right mouse click event.
-        
+
         Return whether the event was captured.
         """
-        print self, 'got right_click(%d, %d)' % (x, y)
         return False
 
     def process_event(self, event):
@@ -103,7 +101,7 @@ class Widget(object):
         *Virtual.*
 
         Handle an event triggered while the widget was focused.
-        
+
         Return whether the event was captured.
         """
         return False
@@ -113,7 +111,7 @@ class Widget(object):
         *Virtual.*
 
         Handle an activate event triggered while the widget was focused.
-        
+
         Return whether the event was captured.
         """
         # print self, 'activated'

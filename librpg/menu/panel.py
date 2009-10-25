@@ -6,6 +6,12 @@ from librpg.menu.widget import Widget
 
 class Panel(Div):
 
+    """
+    A Panel is a visible Div.
+
+    The Panel will be rendered with its theme's draw_panel() method.
+    """
+
     def draw(self):
         r = pygame.Rect(0, 0, self.width, self.height)
         self.theme.draw_panel(self.surface, r)

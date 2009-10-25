@@ -15,20 +15,20 @@ class Menu(Div):
     """
     A Menu is the outermost container for widgets, representing a whole
     menu ran by a MenuController.
-    
+
     Menus provide all methods a Div does, most notably add_widget(),
     which is used to put any widgets or Divs on the Menu.
 
     *width* and *height* specify the dimensions of the menu in pixels.
     *x* and *y* specify the position at which the top left of the menu
     will be on the screen.
-    
+
     *theme* is a MenuTheme that will be used to render that menu, and
     defaults to the default_theme in librpg.config.menu_config.
-    
+
     *bg* can be a color or a pygame Surface that will be drawn as the
     menu's background.
-    
+
     *mouse_control* can be Menu.MOUSE_OFF, Menu.MOUSE_STRICT or
     Menu.MOUSE_LOOSE. MOUSE_OFF will disable mouse control for the menu,
     MOUSE_STRICT will cause the cursor to move to widgets touched by the

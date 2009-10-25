@@ -7,6 +7,11 @@ class Label(Widget):
 
     """
     A Label is a widget that displays text.
+
+    *text* is a string with the text to be displayed in the label.
+    *size*, *bold* and *italic* are font properties to render the label.
+
+    *focusable* and *theme* behave like in any other Widget.
     """
 
     def __init__(self, text='', size=12, bold=False, italic=False,
@@ -40,6 +45,9 @@ class Label(Widget):
         self._text = text
 
     text = property(get_text, set_text)
+    """
+    The string to be displayed in the label.
+    """
 
     def get_size(self):
         return self._size
@@ -49,6 +57,9 @@ class Label(Widget):
         self._size = size
 
     size = property(get_size, set_size)
+    """
+    The font size to render the label.
+    """
 
     def get_bold(self):
         return self._bold
@@ -58,6 +69,9 @@ class Label(Widget):
         self._bold = bold
 
     bold = property(get_bold, set_bold)
+    """
+    Whether the letters should be rendered as bold.
+    """
 
     def get_italic(self):
         return self._italic
@@ -67,3 +81,6 @@ class Label(Widget):
         self._italic = italic
 
     italic = property(get_italic, set_italic)
+    """
+    Whether the letters should be rendered as italic.
+    """
