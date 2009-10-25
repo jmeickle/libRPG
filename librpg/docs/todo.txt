@@ -123,12 +123,13 @@ ok      0.5     Implement A*
 ok      0.5     Convert Dialogs to use the menu package
 ok      0.5     Create actual ArrowCursor
 ok      0.5     Change ChoiceDialog to call a callback (either passed in constructor or overridden in a derived class) upon completion
+ok      0.5     Draw a better arrow
+        0.5     Write menu docs
+        0.5     Bind A* navigation to mouse
         0.5     Code NumberSelector
         0.5     Code TextInput
         0.5     Code KeyboardWidget
         0.5     Code AnimatedImageWidget
-        0.5     Draw a better arrow
-        0.5     Write menu docs
         0.5     Implement HighlightCursor
         0.5     Implement animated themes
         0.5     Code slot interface
@@ -152,7 +153,6 @@ ok      0.5     Change ChoiceDialog to call a callback (either passed in constru
         0.6.1   Write animation module
         0.7     Define generic battle system
         0.7     Write quest module
-        ?       Allow mouse control for party
         ?       Add on_object_touch events
         ?       Image management module (store the last x loaded images and the y most used images)
         ?       Bank module (stores money and items)
