@@ -77,7 +77,7 @@ class TestMenu(Menu):
         self.panel.add_widget(Label('Panel1'), (120, 20))
         self.panel.add_widget(Label('Panel2'), (40, 60))
         self.panel.add_widget(Label('Panel3'), (120, 60))
-        self.panel.add_widget(AdjustableBar(100, 14, filled=0.9, border=2),
+        self.panel.add_widget(AdjustableBar(100, 14, filled=0.9),
                               (50, 100))
 
         side_panel = Panel(110, 220)

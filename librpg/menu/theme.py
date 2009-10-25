@@ -59,7 +59,7 @@ class MenuTheme(object):
         """
         pass
 
-    def draw_bar(self, surface, rect, filled=1.0, border=1):
+    def draw_bar(self, surface, rect, filled=1.0):
         """
         *Virtual.*
 
@@ -73,6 +73,7 @@ class MenuTheme(object):
 
         surface.fill(TRANSPARENT)
 
+        border = min(rect.width, rect.height) / 6
         for i in xrange(border):
             border_rect = pygame.Rect((rect.top + i, rect.left + i),
                                       (rect.width - 2 * i,

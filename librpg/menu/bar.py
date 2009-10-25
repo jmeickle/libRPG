@@ -5,11 +5,23 @@ from librpg.menu.widget import Widget
 
 class Bar(Widget):
 
-    def __init__(self, width, height, filled=1.0, border=1, focusable=True,
+    """
+    A Bar is a Widget that displays a recipient that can be from 0% to
+    100% filled.
+    
+    *width* and *height* are the Bar's dimensions, and how it scales will
+    depend on the theme.
+    
+    *filled* is a float from 0.0 to 1.0 representing how full the bar is,
+    initially.
+    
+    *focusable* and *theme* behave like in any other Widget.
+    """
+
+    def __init__(self, width, height, filled=1.0, focusable=True,
                  theme=None):
         Widget.__init__(self, width, height, focusable, theme)
         self.filled = filled
-        self.border = border
         self.changed = True
         self.draw()
 
@@ -18,7 +30,7 @@ class Bar(Widget):
             self.changed = False
             self.theme.draw_bar(self.surface,
                                 pygame.Rect((0, 0), (self.width, self.height)),
-                                self.filled, self.border)
+                                self.filled)
 
     def __repr__(self):
         return "Bar(%.2f%%)" % self.filled
@@ -35,12 +47,15 @@ class Bar(Widget):
         self.changed = True
 
     filled = property(get_filled, set_filled)
+    """
+    Float from 0.0 to 1.0 representing how full the bar is.
+    """
 
-    def get_border(self):
-        return self._border
+    # def get_border(self):
+        # return self._border
 
-    def set_border(self, border):
-        self._border = border
-        self.changed = True
+    # def set_border(self, border):
+        # self._border = border
+        # self.changed = True
 
-    border = property(get_border, set_border)
+    # border = property(get_border, set_border)
