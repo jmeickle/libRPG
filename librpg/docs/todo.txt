@@ -125,7 +125,8 @@ ok      0.5     Create actual ArrowCursor
 ok      0.5     Change ChoiceDialog to call a callback (either passed in constructor or overridden in a derived class) upon completion
 ok      0.5     Draw a better arrow
         0.5     Write menu docs
-        0.5     Bind A* navigation to mouse
+        0.5     Create DefaultMenuTheme and DefaultCursorTheme in collection, making MenuTheme and CursorTheme abstract
+        0.5     When widget is removed, if the menu's cursor in pointing at it, point it at somewhere else.
         0.5     Code NumberSelector
         0.5     Code TextInput
         0.5     Code KeyboardWidget
@@ -133,6 +134,7 @@ ok      0.5     Draw a better arrow
         0.5     Implement HighlightCursor
         0.5     Implement animated themes
         0.5     Code slot interface
+        0.5     Bind A* navigation to mouse
         0.5.1   Decide if UsableItems should be kept
         0.5.1   Define item image system and API for menu
         0.5.1   Code ItemMenu

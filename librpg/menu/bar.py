@@ -8,13 +8,13 @@ class Bar(Widget):
     """
     A Bar is a Widget that displays a recipient that can be from 0% to
     100% filled.
-    
+
     *width* and *height* are the Bar's dimensions, and how it scales will
     depend on the theme.
-    
+
     *filled* is a float from 0.0 to 1.0 representing how full the bar is,
     initially.
-    
+
     *focusable* and *theme* behave like in any other Widget.
     """
 

@@ -6,6 +6,18 @@ from librpg.config import menu_config
 
 class Cursor(object):
 
+    """
+    A Cursor is a player-controlled component to interact with the menu.
+
+    *theme* is the CursorTheme to render that Cursor. If None is passed
+    (or the default is kept), the cursor will use
+    librpg.config.menu_config.cursor_theme.
+
+    *navigator* is the WidgetNavigator with the navigation algorithm
+    to be used. If None is passed (or the default is kept), the cursor
+    will use LineNavigator.
+    """
+
     def __init__(self, theme=None, navigator=None):
         self.menu = None
         self.widget = None
@@ -17,6 +29,11 @@ class Cursor(object):
         self.drawn_widget = None
 
     def bind(self, menu, widget):
+        """
+        Bind the cursor to a *menu*, starting at *widget*.
+
+        Returns whether the operation succeeded.
+        """
         if not menu.add_cursor(self):
             return False
         else:
@@ -43,6 +60,12 @@ class Cursor(object):
             self.drawn_widget = widget
 
     def move_to(self, widget):
+        """
+        Move the cursor to another widget.
+        """
+        if widget not in self.menu.get_tree():
+            raise Exception('Cursor is being moved to a widget not in '
+                            'its Menu.')
         self.widget = widget
 
     def render(self, screen):

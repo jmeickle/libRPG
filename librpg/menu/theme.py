@@ -5,6 +5,13 @@ from librpg.path import cursor_theme_path
 
 class MenuTheme(object):
 
+    """
+    A MenuTheme is a set of methods to draw common widgets.
+
+    When MenuThemes are provided to widgets, those widgets will use
+    the theme's methods to draw themselves.
+    """
+
     def get_font(self, size, bold=False, italic=False):
         """
         Return a pygame font to render labels.
@@ -28,11 +35,21 @@ class MenuTheme(object):
         return ('sys', 'Verdana')
 
     def get_font_anti_alias(self):
+        """
+        *Virtual.*
+
+        Return whether the font should be drawn with anti-aliasing.
+        """
         return True
 
     def get_font_color(self):
-        DEFAULT_COLOR = (255, 255, 255)
-        return DEFAULT_COLOR
+        """
+        *Virtual.*
+
+        Return the color to be used for fonts.
+        """
+        WHITE = (255, 255, 255)
+        return WHITE
 
     def draw_panel(self, surface, rect):
         """
@@ -105,11 +122,26 @@ class MenuTheme(object):
 
 class CursorTheme(object):
 
+    """
+    A CursorTheme describes how to draw a cursor.
+    """
+
     BORDER = 2
     HORIZONTAL_OFFSET = 3
     VERTICAL_OFFSET = 3
 
     def draw_cursor(self, target_rect):
+        """
+        *Virtual.*
+
+        Provide a pygame Surface with the cursor's image.
+
+        Return a tuple of two elements, the first being a pygame Surface
+        with the cursor's image and the second an (x, y) tuple with the
+        position at which the top left of that Surface should be drawn.
+
+        *target_rect* is the pygame Rect describing the cursor's target.
+        """
         width = target_rect.w + 2 * (self.BORDER + self.HORIZONTAL_OFFSET)
         height = target_rect.h + 2 * (self.BORDER + self.VERTICAL_OFFSET)
         s = pygame.Surface((width, height), SRCALPHA, 32).convert_alpha()
@@ -124,6 +156,15 @@ class CursorTheme(object):
 
 class PictureCursorTheme(CursorTheme):
 
+    """
+    A CursorTheme that renders an image loaded from a file as cursor.
+
+    *filename* specifies which file contains the cursor's image.
+
+    The cursor will be drawn to the left of its target. *x_offset* and
+    *y_offset* can be used to adjust the cursor's position.
+    """
+
     def __init__(self, filename, x_offset=0, y_offset=0):
         self.filename = filename
         self.x_offset = x_offset
@@ -133,12 +174,16 @@ class PictureCursorTheme(CursorTheme):
     def draw_cursor(self, target_rect):
         center_x = target_rect.left + self.x_offset
         center_y = target_rect.top + target_rect.h / 2 + self.y_offset
-        return self.image, (center_x - self.image.get_width() / 2,
+        return self.image, (center_x - self.image.get_width(),
                             center_y - self.image.get_height() / 2)
 
 
 class ArrowCursorTheme(PictureCursorTheme):
 
-    def __init__(self, x_offset=-10, y_offset=1):
+    """
+    Default CursorTheme for ChoiceDialogs. Displays an arrow by the target.
+    """
+
+    def __init__(self, x_offset=-1, y_offset=1):
         PictureCursorTheme.__init__(self, cursor_theme_path('arrow.png'),
                                     x_offset, y_offset)

@@ -1,6 +1,9 @@
 :mod:`menu` -- Generic menus
 ============================
 
+Menu
+----
+
 .. automodule:: librpg.menu
    :members:
    :show-inheritance:
@@ -9,7 +12,18 @@
    :members:
    :show-inheritance:
 
+.. automodule:: librpg.menu.widget
+   :members:
+   :show-inheritance:
+
+Structural widgets
+------------------
+
 .. automodule:: librpg.menu.div
+   :members:
+   :show-inheritance:
+
+.. automodule:: librpg.menu.panel
    :members:
    :show-inheritance:
 
@@ -17,9 +31,12 @@
    :members:
    :show-inheritance:
 
-.. automodule:: librpg.menu.widget
+.. automodule:: librpg.menu.alignment
    :members:
    :show-inheritance:
+
+Navigation
+----------
 
 .. automodule:: librpg.menu.cursor
    :members:
@@ -29,17 +46,15 @@
    :members:
    :show-inheritance:
 
+Theme
+-----
+
 .. automodule:: librpg.menu.theme
    :members:
    :show-inheritance:
 
-.. automodule:: librpg.menu.alignment
-   :members:
-   :show-inheritance:
-
-.. automodule:: librpg.menu.panel
-   :members:
-   :show-inheritance:
+Component Widgets
+-----------------
 
 .. automodule:: librpg.menu.label
    :members:
