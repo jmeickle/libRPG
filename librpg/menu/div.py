@@ -32,7 +32,8 @@ class Div(Widget):
         Add a *widget* to the Div at a given *position*.
 
         *position* should be an (x, y) tuple in pixels, and relative
-        to the Div's top left.
+        to the Div's top left. Alternatively, an Alignment can be passed
+        to calculate the position automatically.
         """
         assert widget.parent is None, 'Widget is already added to a div'
         old_theme = widget.theme

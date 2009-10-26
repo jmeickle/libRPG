@@ -5,6 +5,12 @@ from librpg.locals import *
 
 class WidgetNavigator(object):
 
+    """
+    A WidgetNavigator is an algorithm to decide which widget is reached
+    when going towards a direction, starting at a widget. This defines a
+    Cursor's behavior when controlled by the keyboard.
+    """
+
     def find(self, widget, direction):
         """
         *Abstract.*
@@ -27,6 +33,12 @@ class WidgetNavigator(object):
 
 
 class DistanceNavigator(WidgetNavigator):
+
+    """
+    An abstract WidgetNavigator that calculates the distance between
+    the starting widget and all others in the menu, and navigates to
+    the one nearest.
+    """
 
     MAX_DIST = 999999
 
@@ -54,6 +66,15 @@ class DistanceNavigator(WidgetNavigator):
         return best[0]
 
     def calc_distance(self, start, end, direction, width, height):
+        """
+        *Abstract.*
+
+        Return the distance between *start* and *end* widgets, going
+        from *start* towards *direction* in a menu with dimensions
+        *width* x *height*.
+
+        Return DistanceNavigator.MAX_DIST if *end* should not be reached.
+        """
         raise NotImplementedError('DistanceNavigator.calc_distance() is '
                                   'abstract')
 
@@ -118,6 +139,11 @@ class DistanceNavigator(WidgetNavigator):
 
 class EuclidianNavigator(DistanceNavigator):
 
+    """
+    A DistanceNavigator that uses the distance between the centers of the
+    widgets as cost function.
+    """
+
     def calc_distance(self, start, end, direction, width, height):
         start_center = start.get_center()
         end_center = end.get_center()
@@ -145,6 +171,12 @@ class EuclidianNavigator(DistanceNavigator):
 
 
 class LineNavigator(DistanceNavigator):
+
+    """
+    A DistanceNavigator that uses the distance between the skeletons
+    of the widgets as cost function. A Widget's skeleton is the line
+    segment that is farthest from its borders.
+    """
 
     HORIZONTAL = 1
     VERTICAL = 2
