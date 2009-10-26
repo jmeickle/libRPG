@@ -5,6 +5,14 @@ from librpg.menu.widget import Widget
 
 class ImageWidget(Widget):
 
+    """
+    A Widget that displays a static image.
+
+    *image* should be a pygame Surface with the image to be drawn.
+
+    *focusable* and *theme* behave like in any other Widget.
+    """
+
     def __init__(self, image, focusable=True, theme=None):
         Widget.__init__(self, focusable=focusable, theme=theme)
         self.image = image
@@ -28,3 +36,6 @@ class ImageWidget(Widget):
         self.draw()
 
     image = property(get_image, set_image)
+    """
+    A pygame Surface with the widget's image.
+    """

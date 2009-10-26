@@ -226,6 +226,15 @@ class ChoiceDialog(Menu):
     the message is shown.
 
     *choices* is a list of tuples with the options, which should be strings.
+
+    *completion_callback* is a function that will be called passing
+    *user_data* and the number of the choice made by the player, when
+    they do so. If is it not specified, the on_choice() method has
+    to be implemented.
+
+    *user_data* will be passed to *completion_callback*. This can be used
+    to access anything the callback is supposed to use, like the map,
+    the party avatar, the map object, and so on.
     """
 
     def __init__(self, text, choices, user_data=None, completion_callback=None,
@@ -292,6 +301,8 @@ class ChoiceDialog(Menu):
 
     def on_choice(self, user_data, choice):
         """
+        *Abstract.*
+
         Execute an action depending on what the player chose.
 
         If no *completion_callback* is specified in constructor, this
