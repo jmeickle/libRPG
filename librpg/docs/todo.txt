@@ -124,10 +124,14 @@ ok      0.5     Convert Dialogs to use the menu package
 ok      0.5     Create actual ArrowCursor
 ok      0.5     Change ChoiceDialog to call a callback (either passed in constructor or overridden in a derived class) upon completion
 ok      0.5     Draw a better arrow
-        0.5     Write menu docs
-        0.5     Create DefaultMenuTheme and DefaultCursorTheme in collection, making MenuTheme and CursorTheme abstract
+ok      0.5     Write menu docs
+ok      0.5     Create DefaultMenuTheme and DefaultCursorTheme, making MenuTheme and CursorTheme abstract
+        0.5     Create a Bar test
+        0.5     Implement Tabs
+        0.5     Write a theme tester
         0.5     When widget is removed, if the menu's cursor in pointing at it, point it at somewhere else.
-        0.5     Code NumberSelector
+        0.5     Update usage sections in docs
+        0.5     Code NumberSpinner
         0.5     Code TextInput
         0.5     Code KeyboardWidget
         0.5     Code AnimatedImageWidget

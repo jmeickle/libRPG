@@ -24,7 +24,7 @@ class MenuTheme(object):
 
     def get_font_name(self):
         """
-        *Virtual.*
+        *Abstract.*
 
         Return which font should be used for rendering labels.
 
@@ -32,7 +32,7 @@ class MenuTheme(object):
         or 'user', indicating respectively if the font is a SysFont or a
         Font for pygame.
         """
-        return ('sys', 'Verdana')
+        raise NotImplementedError('MenuTheme.get_font_name() is abstract')
 
     def get_font_anti_alias(self):
         """
@@ -44,47 +44,81 @@ class MenuTheme(object):
 
     def get_font_color(self):
         """
-        *Virtual.*
+        *Abstract.*
 
         Return the color to be used for fonts.
         """
-        WHITE = (255, 255, 255)
-        return WHITE
+        raise NotImplementedError('MenuTheme.get_font_color() is abstract')
 
     def draw_panel(self, surface, rect):
         """
-        *Virtual.*
+        *Abstract.*
 
         Draw a Panel delimited by rect onto surface.
         """
-        DEFAULT_COLOR = (128, 0, 128, 128)
-        pygame.draw.rect(surface, DEFAULT_COLOR, rect)
+        raise NotImplementedError('MenuTheme.draw_panel() is abstract')
 
     def draw_selected_tab(self, surface, rect):
         """
-        *Virtual.*
+        *Abstract.*
 
         Draw an active tab header delimited by rect onto surface.
         """
-        pass
+        raise NotImplementedError('MenuTheme.draw_selected_tab() is abstract')
 
     def draw_unselected_tab(self, surface, rect):
         """
-        *Virtual.*
+        *Abstract.*
 
         Draw an inactive tab header delimited by rect onto surface.
         """
-        pass
+        raise NotImplementedError('MenuTheme.draw_unselected_tab() is abstract')
 
     def draw_bar(self, surface, rect, filled=1.0):
         """
-        *Virtual.*
+        *Abstract.*
 
         Draw a bar delimited by rect onto surface.
 
         `filled` should be a number between 0.0 and 1.0, indicating how full
         the bar should be.
         """
+        raise NotImplementedError('MenuTheme.draw_bar() is abstract')
+
+    def draw_image(self, image):
+        """
+        *Virtual.*
+
+        Draw an image. This can be overloaded to apply some filters to
+        images used in ImageWidgets.
+        """
+        return image
+
+
+class DefaultMenuTheme(MenuTheme):
+
+    """
+    The default MenuTheme. Simple widgets and no special effects.
+    """
+
+    def get_font_name(self):
+        return ('sys', 'Verdana')
+
+    def get_font_color(self):
+        WHITE = (255, 255, 255)
+        return WHITE
+
+    def draw_panel(self, surface, rect):
+        DEFAULT_COLOR = (128, 0, 128, 128)
+        pygame.draw.rect(surface, DEFAULT_COLOR, rect)
+
+    def draw_selected_tab(self, surface, rect):
+        pass
+
+    def draw_unselected_tab(self, surface, rect):
+        pass
+
+    def draw_bar(self, surface, rect, filled=1.0):
         TRANSPARENT = (0, 0, 0, 0)
         WHITE = (255, 255, 255, 255)
 
@@ -110,14 +144,6 @@ class MenuTheme(object):
                               rect.bottom - 1 - border),
                              1)
 
-    def draw_image(self, image):
-        """
-        *Virtual.*
-
-        Draw an image. This can be overloaded to apply some filters to
-        images used in ImageWidgets.
-        """
-        return image
 
 
 class CursorTheme(object):
@@ -126,13 +152,9 @@ class CursorTheme(object):
     A CursorTheme describes how to draw a cursor.
     """
 
-    BORDER = 2
-    HORIZONTAL_OFFSET = 3
-    VERTICAL_OFFSET = 3
-
     def draw_cursor(self, target_rect):
         """
-        *Virtual.*
+        *Abstract.*
 
         Provide a pygame Surface with the cursor's image.
 
@@ -142,6 +164,21 @@ class CursorTheme(object):
 
         *target_rect* is the pygame Rect describing the cursor's target.
         """
+        raise NotImplementedError('CursorTheme.draw_cursor() is abstract')
+
+
+class DefaultCursorTheme(CursorTheme):
+
+    """
+    The default CursorTheme. The cursor is rendered as a simple rectangle
+    around the target.
+    """
+
+    BORDER = 2
+    HORIZONTAL_OFFSET = 3
+    VERTICAL_OFFSET = 3
+
+    def draw_cursor(self, target_rect):
         width = target_rect.w + 2 * (self.BORDER + self.HORIZONTAL_OFFSET)
         height = target_rect.h + 2 * (self.BORDER + self.VERTICAL_OFFSET)
         s = pygame.Surface((width, height), SRCALPHA, 32).convert_alpha()

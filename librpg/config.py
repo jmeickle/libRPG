@@ -291,10 +291,10 @@ class MenuConfig(Config):
     The MenuConfig contains attributes related to menus.
 
     :attr:`theme`
-        MenuTheme to use for menus, except when explicitly specified.
+        DefaultMenuTheme to use for menus, except when explicitly specified.
 
     :attr:`cursor_theme`
-        CursorTheme to use for Cursors, except when explicitly specified.
+        DefaultMenuTheme to use for Cursors, except when explicitly specified.
     """
 
     _theme = None
@@ -305,7 +305,7 @@ class MenuConfig(Config):
 
     def get_theme(self):
         if self._theme is None:
-            self._theme = MenuTheme()
+            self._theme = DefaultMenuTheme()
         return self._theme
 
     theme = property(get_theme, set_theme)
@@ -315,7 +315,7 @@ class MenuConfig(Config):
 
     def get_cursor_theme(self):
         if self._cursor_theme is None:
-            self._cursor_theme = CursorTheme()
+            self._cursor_theme = DefaultCursorTheme()
         return self._cursor_theme
 
     cursor_theme = property(get_cursor_theme, set_cursor_theme)
@@ -329,4 +329,4 @@ menu_config = MenuConfig()
 from librpg.camera import PartyCentricCameraMode as DEFAULT_CAMERA_MODE
 graphics_config.camera_mode = DEFAULT_CAMERA_MODE()
 
-from librpg.menu import MenuTheme, CursorTheme
+from librpg.menu import DefaultMenuTheme, DefaultCursorTheme
