@@ -124,7 +124,7 @@ class DefaultMenuTheme(MenuTheme):
 
         surface.fill(TRANSPARENT)
 
-        border = min(rect.width, rect.height) / 6
+        border = 0 if (rect.width < 4 or rect.height < 4) else 1
         for i in xrange(border):
             border_rect = pygame.Rect((rect.top + i, rect.left + i),
                                       (rect.width - 2 * i,
@@ -143,7 +143,6 @@ class DefaultMenuTheme(MenuTheme):
                              (rect.left + i + border,
                               rect.bottom - 1 - border),
                              1)
-
 
 
 class CursorTheme(object):
