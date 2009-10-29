@@ -57,8 +57,8 @@ class Tab(Div):
 
     def __init__(self, tab_group, width, height, id, theme=None):
         Div.__init__(self, width, height, False, theme)
-        label = TabLabel(tab_group, id, theme=self.theme)
-        self.add_widget(label, AlignCenter())
+        self.label = TabLabel(tab_group, id, theme=self.theme)
+        self.add_widget(self.label, AlignCenter())
 
 
 class TabLabel(Label):

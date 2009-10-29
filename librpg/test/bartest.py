@@ -46,7 +46,7 @@ class BarMenu(Menu):
 
         # Add cursor
         cursor = Cursor()
-        cursor.bind(self, tab_group.tabs[0])
+        cursor.bind(self)
 
 
 def main():

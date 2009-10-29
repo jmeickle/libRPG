@@ -28,15 +28,31 @@ class Cursor(object):
             self.theme = theme
         self.drawn_widget = None
 
-    def bind(self, menu, widget):
+    def bind(self, menu, widget=None):
         """
         Bind the cursor to a *menu*, starting at *widget*.
 
         Returns whether the operation succeeded.
+        
+        If *widget* is not specified, the cursor is bound to the first
+        widget found in the menu.
         """
-        if not menu.add_cursor(self):
+        if widget is None:
+            # Bind to the first widget in the menu found
+            for candidate in menu.get_tree():
+                if candidate.focusable:
+                    if not menu.add_cursor(self):
+                        return False
+                    self.menu = menu
+                    self.widget = candidate
+                    return True
             return False
         else:
+            # Bind to *widget*
+            if widget not in menu.get_tree():
+                return False
+            if not menu.add_cursor(self):
+                return False
             self.menu = menu
             self.widget = widget
             return True
