@@ -23,6 +23,10 @@ Structural widgets
    :members:
    :show-inheritance:
 
+.. automodule:: librpg.menu.tab
+   :members:
+   :show-inheritance:
+
 .. automodule:: librpg.menu.panel
    :members:
    :show-inheritance:

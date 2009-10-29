@@ -8,5 +8,6 @@ from label import *
 from menu import *
 from navigator import *
 from panel import *
+from tab import *
 from theme import *
 from widget import *

@@ -1,7 +1,7 @@
 import librpg
 from librpg.config import graphics_config
 from librpg.menu import (MenuController, Menu, Cursor, Bar, Grid, Panel,
-                         AlignCenter)
+                         AlignCenter, TabGroup)
 from librpg.context import get_context_stack
 
 class CrazyBar(Bar):
@@ -25,23 +25,28 @@ class CrazyBar(Bar):
 
 class BarMenu(Menu):
 
+    TABS = 5
+
     def __init__(self):
         Menu.__init__(self, 480, 320)
-        grid = Grid(480, 320, 4, 10)
-        for i in xrange(4):
-            for j in xrange(10):
-                grid[i, j].add_widget(Panel(118, 30), AlignCenter())
-                width = 10 + 10 * (i + 1)
-                height = 1 + j
-                bar = CrazyBar(width, height)
-                grid[i, j].add_widget(bar, AlignCenter())
-        self.add_widget(grid, AlignCenter())
+        tab_group = TabGroup(['Bars%d' % (i + 1) for i in xrange(self.TABS)],
+                             480, 320, tab_height=20)
+        self.add_widget(tab_group, AlignCenter())
         
-        self.crystallize()
+        for k in xrange(self.TABS):
+            grid = Grid(480, 300, 4, 10)
+            for i in xrange(4):
+                for j in xrange(10):
+                    grid[i, j].add_widget(Panel(118, 30), AlignCenter())
+                    width = 10 + 10 * (i + 1)
+                    height = 1 + j
+                    bar = CrazyBar(width, height)
+                    grid[i, j].add_widget(bar, AlignCenter())
+            tab_group[k].add_widget(grid, AlignCenter())
 
         # Add cursor
         cursor = Cursor()
-        cursor.bind(self, grid[0, 0].widgets[0].widget)
+        cursor.bind(self, tab_group.tabs[0])
 
 
 def main():
