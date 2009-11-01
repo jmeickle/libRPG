@@ -6,7 +6,7 @@ so that maps have connections.
 
 import gc
 
-from librpg.map import MapModel, MapController
+from librpg.map import MapModel
 from librpg.state import State
 from librpg.maparea import MapArea
 from librpg.util import Position
@@ -176,9 +176,8 @@ class World(BaseWorld):
 
             # Transfer control to map
             self.scheduled_teleport = None
-            get_context_stack().stack_context(MapController(map_model,
-                                                            local_state,
-                                                            self.state))
+            map_model.set_states(local_state, self.state)
+            get_context_stack().stack_model(map_model)
             get_context_stack().gameloop()
 
             # Store data that we wish to carry
@@ -262,9 +261,8 @@ class MicroWorld(BaseWorld):
         local_state = self.state.load_local(map_id)
 
         # Transfer control to map
-        get_context_stack().stack_context(MapController(self.only_map,
-                                                        local_state,
-                                                        self.state))
+        self.only_map.set_states(local_state, self.state)
+        get_context_stack().stack_model(self.only_map)
         get_context_stack().gameloop()
 
         # Store data that we wish to carry

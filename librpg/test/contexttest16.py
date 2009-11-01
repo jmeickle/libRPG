@@ -1,7 +1,7 @@
 import librpg
 import pygame
 
-from librpg.map import MapModel, MapController
+from librpg.map import MapModel
 from librpg.mapobject import MapObject, ScenarioMapObject
 from librpg.util import Position, inverse
 from librpg.party import Character, CharacterReserve

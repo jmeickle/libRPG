@@ -1,6 +1,6 @@
 import librpg
 from librpg.config import graphics_config
-from librpg.menu import (MenuController, Menu, Cursor, Bar, Grid, Panel,
+from librpg.menu import (Menu, Cursor, Bar, Grid, Panel,
                          AlignCenter, TabGroup)
 from librpg.context import get_context_stack
 
@@ -53,8 +53,7 @@ def main():
     librpg.init()
     graphics_config.config(screen_width=480, screen_height=320)
 
-    c = MenuController(BarMenu())
-    get_context_stack().stack_context(c)
+    get_context_stack().stack_model(BarMenu())
     get_context_stack().gameloop()
 
 if __name__ == '__main__':

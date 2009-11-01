@@ -14,8 +14,7 @@ from librpg.config import game_config as m_cfg
 from librpg.config import menu_config
 from librpg.virtualscreen import get_screen
 from librpg.context import Context
-from librpg.menu import (Menu, Label, Panel, MenuController, Cursor,
-                         ArrowCursorTheme)
+from librpg.menu import (Menu, Label, Panel, Cursor, ArrowCursorTheme)
 
 
 def build_lines(text, box_width, font):
@@ -355,8 +354,8 @@ class MessageQueue(Context):
     def pop_next(self):
         if self.current is None and self.queue:
             self.current = self.queue.pop(0)
-            self.controller = MenuController(self.current)
-            get_context_stack().stack_context(self.controller)
+            get_context_stack().stack_model(self.current)
+            self.controller = self.current.get_controller()
 
     def push(self, message):
         self.queue.append(message)

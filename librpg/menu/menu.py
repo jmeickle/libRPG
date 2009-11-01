@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 
-from librpg.context import Context, get_context_stack
+from librpg.context import Context, Model, get_context_stack
 from librpg.virtualscreen import get_screen
 from librpg.config import game_config
 from librpg.util import check_direction, fill_with_surface, descale_point
@@ -10,7 +10,7 @@ from librpg.locals import *
 from librpg.menu.div import Div
 
 
-class Menu(Div):
+class Menu(Model, Div):
 
     """
     A Menu is the outermost container for widgets, representing a whole
@@ -42,6 +42,7 @@ class Menu(Div):
 
     def __init__(self, width, height, x=0, y=0, theme=None, bg=None,
                  mouse_control=MOUSE_LOOSE):
+        Model.__init__(self)
         Div.__init__(self, width, height, theme)
         self.x = x
         self.y = y
@@ -114,6 +115,9 @@ class Menu(Div):
         By default, process_event() returns False.
         """
         return False
+
+    def create_controller(self):
+        return MenuController(self, self.controller_parent)
 
 
 class MenuController(Context):

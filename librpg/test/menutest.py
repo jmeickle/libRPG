@@ -2,7 +2,7 @@ import pygame
 from pygame import *
 
 import librpg
-from librpg.menu import (MenuController, Menu, Panel, Label, Cursor,
+from librpg.menu import (Menu, Panel, Label, Cursor,
                          ImageWidget, WidgetGroup, Bar, VerticalGrid,
                          AlignCenter, AlignTopLeft)
 from librpg.context import get_context_stack
@@ -105,8 +105,7 @@ class TestMenu(Menu):
 def main():
     librpg.init()
 
-    c = MenuController(TestMenu())
-    get_context_stack().stack_context(c)
+    get_context_stack().stack_model(TestMenu())
     get_context_stack().gameloop()
 
 if __name__ == '__main__':

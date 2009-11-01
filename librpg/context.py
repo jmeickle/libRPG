@@ -148,6 +148,13 @@ class ContextStack(object):
                     # print context, 'consumed the event'
                     break
 
+    def stack_model(self, model):
+        """
+        
+        """
+        context = model.get_controller()
+        self.stack_context(context)
+
 
 class Context(object):
 
@@ -251,6 +258,30 @@ class Context(object):
         removed = get_context_stack().remove_context(self)
         if removed is not None:
             self.destroy()
+
+
+class Model(object):
+
+    """
+    """
+
+    def __init__(self, controller_parent=None):
+        self.controller = None
+        self.controller_parent = controller_parent
+
+    def create_controller(self):
+        """
+        *Abstract.*
+
+        Create a controller derived from Context for this model.
+        """
+        raise NotImplementedError('Model.create_controller() is abstract.')
+
+    def get_controller(self):
+        if self.controller is None:
+            self.controller = self.create_controller()
+        return self.controller
+
 
 context_stack = ContextStack()
 

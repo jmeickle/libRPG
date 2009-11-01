@@ -18,7 +18,7 @@ from librpg.tile import *
 from librpg.config import *
 from librpg.locals import *
 from librpg.movement import Step
-from librpg.context import Context, get_context_stack
+from librpg.context import Context, Model, get_context_stack
 from librpg.dialog import MessageQueue
 
 
@@ -28,11 +28,12 @@ class MapController(Context):
     # map_view - MapView (View component of MVC)
     # map_model - MapModel (Model component of MVC)
 
-    def __init__(self, map_model, local_state=None, global_state=None):
-        Context.__init__(self)
+    def __init__(self, map_model, parent=None):
+        Context.__init__(self, parent)
         self.map_model = map_model
         self.map_model.controller = self
-        self.map_model.initialize(local_state, global_state)
+        self.map_model.initialize(self.map_model.local_state,
+                                  self.map_model.global_state)
         self.map_view = MapView(self.map_model)
         self.map_music = MapMusic(self.map_model)
         self.moving_sync = False
@@ -166,7 +167,7 @@ class MapController(Context):
         get_context_stack().stop()
 
 
-class MapModel(object):
+class MapModel(Model):
 
     """
     The MapModel is the class that models a map's data and behaviour. It
@@ -193,6 +194,8 @@ class MapModel(object):
         as *terrain_tileset_files*. Each will correspond to a scenario
         layer.
         """
+        Model.__init__(self)
+
         self.world = None
         self.id = None
 
@@ -612,6 +615,13 @@ class MapModel(object):
         call.
         """
         pass
+
+    def create_controller(self):
+        return MapController(self, self.controller_parent)
+
+    def set_states(self, local_state, global_state):
+        self.local_state = local_state
+        self.global_state = global_state
 
 
 class ObjectCell(object):

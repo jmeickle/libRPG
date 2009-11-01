@@ -6,7 +6,7 @@ from random import choice, randint
 import librpg
 import pygame
 
-from librpg.map import MapModel, MapController
+from librpg.map import MapModel
 from librpg.mapobject import MapObject, ScenarioMapObject
 from librpg.world import MicroWorld
 from librpg.util import Position, inverse
