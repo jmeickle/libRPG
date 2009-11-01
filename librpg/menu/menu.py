@@ -97,6 +97,8 @@ class Menu(Model, Div):
 
     def unregister_widget(self, widget):
         self.all_widgets.remove(widget)
+        if self.cursor is not None and self.cursor.widget is widget:
+            self.cursor.move_to()
 
     def close(self):
         """

@@ -39,14 +39,15 @@ class Cursor(object):
         """
         if widget is None:
             # Bind to the first widget in the menu found
-            for candidate in menu.get_tree():
-                if candidate.focusable:
-                    if not menu.add_cursor(self):
-                        return False
-                    self.menu = menu
-                    self.widget = candidate
-                    return True
-            return False
+            old_menu = self.menu
+            self.menu = menu
+            if not self.move_to():
+                self.menu = old_menu
+                return False
+            if not menu.add_cursor(self):
+                self.menu = old_menu
+                return False
+            return True
         else:
             # Bind to *widget*
             if widget not in menu.get_tree():
@@ -54,7 +55,7 @@ class Cursor(object):
             if not menu.add_cursor(self):
                 return False
             self.menu = menu
-            self.widget = widget
+            self.move_to(widget)
             return True
 
     def step(self, direction):
@@ -75,14 +76,22 @@ class Cursor(object):
             self.surface, self.target_pos = self.theme.draw_cursor(rect)
             self.drawn_widget = widget
 
-    def move_to(self, widget):
+    def move_to(self, widget=None):
         """
         Move the cursor to another widget.
         """
-        if widget not in self.menu.get_tree():
-            raise Exception('Cursor is being moved to a widget not in '
-                            'its Menu.')
-        self.widget = widget
+        if widget is None:
+            for candidate in self.menu.get_tree():
+                if candidate.focusable:
+                    self.widget = candidate
+                    return True
+            return False
+        else:
+            if widget not in self.menu.get_tree():
+                raise Exception('Cursor is being moved to a widget not in '
+                                'its Menu.')
+            self.widget = widget
+            return True
 
     def render(self, screen):
         screen.blit(self.surface, self.target_pos)
