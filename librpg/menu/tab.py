@@ -1,4 +1,6 @@
-from librpg.menu import Div, Label, AlignCenter
+import pygame
+
+from librpg.menu import Div, Label, AlignCenter, Widget
 
 
 class TabGroup(Div):
@@ -57,8 +59,22 @@ class Tab(Div):
 
     def __init__(self, tab_group, width, height, id, theme=None):
         Div.__init__(self, width, height, False, theme)
+        self.tab_group = tab_group
+
         self.label = TabLabel(tab_group, id, theme=self.theme)
         self.add_widget(self.label, AlignCenter())
+
+    def draw(self):
+        r = pygame.Rect(0, 0, self.width, self.height)
+        if self.tab_group.current is self.tab_group[self.label.id]:
+            self.theme.draw_selected_tab(self.surface, r)
+        else:
+            self.theme.draw_unselected_tab(self.surface, r)
+        Div.draw(self)
+
+    def render(self, screen, x_offset, y_offset):
+        Widget.render(self, screen, x_offset, y_offset)
+        Div.render(self, screen, x_offset, y_offset)
 
 
 class TabLabel(Label):

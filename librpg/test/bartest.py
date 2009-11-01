@@ -30,14 +30,14 @@ class BarMenu(Menu):
     def __init__(self):
         Menu.__init__(self, 480, 320)
         tab_group = TabGroup(['Bars%d' % (i + 1) for i in xrange(self.TABS)],
-                             480, 320, tab_height=20)
+                             480, 320, tab_height=30)
         self.add_widget(tab_group, AlignCenter())
         
         for k in xrange(self.TABS):
-            grid = Grid(480, 300, 4, 10)
+            grid = Grid(480, 290, 4, 10)
             for i in xrange(4):
                 for j in xrange(10):
-                    grid[i, j].add_widget(Panel(118, 30), AlignCenter())
+                    grid[i, j].add_widget(Panel(120, 29), AlignCenter())
                     width = 10 + 10 * (i + 1)
                     height = 1 + j
                     bar = CrazyBar(width, height)

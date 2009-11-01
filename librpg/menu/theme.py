@@ -113,10 +113,18 @@ class DefaultMenuTheme(MenuTheme):
         pygame.draw.rect(surface, DEFAULT_COLOR, rect)
 
     def draw_selected_tab(self, surface, rect):
-        pass
+        DEFAULT_COLOR = (128, 0, 128, 128)
+        BORDER = 2
+        internal_rect = pygame.Rect((rect.top + BORDER, rect.left + BORDER),
+                                    (rect.w - 2 * BORDER, rect.h - BORDER))
+        pygame.draw.rect(surface, DEFAULT_COLOR, internal_rect)
 
     def draw_unselected_tab(self, surface, rect):
-        pass
+        DEFAULT_COLOR = (75, 0, 75, 128)
+        BORDER = 2
+        internal_rect = pygame.Rect((rect.top + BORDER, rect.left + BORDER),
+                                    (rect.w - 2 * BORDER, rect.h - BORDER))
+        pygame.draw.rect(surface, DEFAULT_COLOR, internal_rect)
 
     def draw_bar(self, surface, rect, filled=1.0):
         TRANSPARENT = (0, 0, 0, 0)
