@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 
-from librpg.context import Context, Model, get_context_stack
+from librpg.context import Context, Model
 from librpg.virtualscreen import get_screen
 from librpg.config import game_config
 from librpg.util import check_direction, fill_with_surface, descale_point

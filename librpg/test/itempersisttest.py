@@ -8,7 +8,7 @@ from librpg.party import Character, CharacterReserve, Party
 from librpg.world import MicroWorld
 from librpg.item import OrdinaryInventory, OrdinaryItem
 from librpg.dialog import MessageDialog
-from librpg.context import Context, get_context_stack
+from librpg.context import Context
 from librpg.path import *
 
 from pygame.locals import *

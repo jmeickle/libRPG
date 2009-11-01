@@ -8,7 +8,7 @@ from librpg.party import Character, CharacterReserve
 from librpg.movement import Slide, Wait, ForcedStep, Face
 from librpg.dialog import MessageDialog
 from librpg.config import dialog_config, game_config
-from librpg.context import Context, get_context_stack
+from librpg.context import Context
 from librpg.virtualscreen import get_screen
 from librpg.locals import *
 

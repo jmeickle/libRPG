@@ -150,7 +150,10 @@ class ContextStack(object):
 
     def stack_model(self, model):
         """
-        
+        Insert the Context created by *model*.create_context() as the
+        top Context of the stack.
+
+        This method causes the Context to be initialized.
         """
         context = model.get_controller()
         self.stack_context(context)
@@ -263,6 +266,13 @@ class Context(object):
 class Model(object):
 
     """
+    A Model is an object controlled by a Context. Inheriting from this
+    class allows the model to be stacked onto the ContextStack with the
+    stack_model() method.
+
+    *controller_parent* should be a Context that will be the parent of
+    the Model's controller. If None or not specified, it will not have
+    a parent.
     """
 
     def __init__(self, controller_parent=None):
@@ -278,6 +288,10 @@ class Model(object):
         raise NotImplementedError('Model.create_controller() is abstract.')
 
     def get_controller(self):
+        """
+        Return the model's controller, creating with create_controller()
+        it if it has not been created already.
+        """
         if self.controller is None:
             self.controller = self.create_controller()
         return self.controller
@@ -287,4 +301,7 @@ context_stack = ContextStack()
 
 
 def get_context_stack():
+    """
+    Return the global ContextStack.
+    """
     return context_stack
