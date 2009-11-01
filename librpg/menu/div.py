@@ -109,6 +109,9 @@ class Div(Widget):
             result.extend(w.widget.get_tree())
         return result
 
+    def get_contents(self):
+        return [w.widget for w in self.widgets]
+
 
 class WidgetGroup(Div):
 

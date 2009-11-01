@@ -128,7 +128,7 @@ ok      0.5     Write menu docs
 ok      0.5     Create DefaultMenuTheme and DefaultCursorTheme, making MenuTheme and CursorTheme abstract
 ok      0.5     Create a Bar test
 ok      0.5     Implement Tabs
-        0.5     Create accessor for widgets in Div
+ok      0.5     Create accessor for widgets in Div
         0.5     Make Model base class for MapModel and Menu with get_controller() method
         0.5     Write a theme tester
         0.5     When widget is removed, if the menu's cursor in pointing at it, point it at somewhere else.
