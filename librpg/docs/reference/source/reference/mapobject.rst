@@ -23,34 +23,8 @@ To have a MapObject be updated every cycle, define an update() method for it and
 Example
 -------
 
-::
+**test/objecttest.py** (fragment)
 
-    class ObjectTestChest(MapObject):
-
-        def __init__(self):
-            MapObject.__init__(self, MapObject.OBSTACLE, image_file='chest2.png',
-                               image_index=5, facing=UP)
-            self.closed = True
-            self.filled = True
-            
-        def activate(self, party_avatar, direction):
-            if self.closed:
-                self.closed = False
-                self.schedule_movement(Face(RIGHT))
-                self.schedule_movement(Wait(2))
-                self.schedule_movement(Face(DOWN))
-                self.schedule_movement(Wait(2))
-                self.schedule_movement(Face(LEFT))
-                self.map.sync_movement([self])
-                if self.filled:
-                    print 'Opened chest and added item'
-                    self.map.schedule_message(MessageDialog(u"You got Hookshot!"))
-                    self.filled = False
-                else:
-                    print 'Opened chest but it was empty'
-                    self.map.schedule_message(MessageDialog(u"The chest is empty\
-                                                            =("))
-            else:
-                print 'Chest is open, closing'
-                self.schedule_movement(Face(UP))
-                self.closed = True  
+.. literalinclude:: ../../../../test/objecttest.py
+    :start-after: # mapobject.rst example starts here
+    :end-before: # mapobject.rst example ends here

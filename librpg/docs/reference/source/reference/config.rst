@@ -105,29 +105,8 @@ Examples
                                      key_action=set([K_e]),
                                      key_cancel=set([K_q]))
 
-::
+**test/maptest32.py** (fragment)
 
-    mode = int(sys.argv[1])
-    if mode == 1:
-        pass
-    elif mode == 2:
-        librpg.config.graphics_config.config(camera_mode=librpg.camera.FixedCameraMode(50, 50),
-                                             screen_width=480,
-                                             screen_height=480,
-                                             scale=1)
-    elif mode == 3:
-        librpg.config.graphics_config.config(camera_mode=librpg.camera.PartyConfinementCameraMode(50, 40),
-                                             screen_width=450,
-                                             screen_height=400)
-    elif mode == 4:
-        librpg.config.graphics_config.config(camera_mode=librpg.camera.ScreenConfinementCameraMode(),
-                                             screen_width=200,
-                                             screen_height=200,
-                                             scale=3)
-    elif mode == 5:
-        librpg.config.graphics_config.config(camera_mode=librpg.camera.ScreenConfinementCameraMode(),
-                                             screen_width=400,
-                                             screen_height=400)
-    else:
-        print 'Pass a number from 1 to 5 for the screen and camera mode.'
-        exit()
+.. literalinclude:: ../../../../test/maptest32.py
+    :start-after: # config.rst example starts here
+    :end-before: # config.rst example ends here

@@ -22,17 +22,8 @@ The two ways to use Movements on a MapObject:
 Example
 -------
 
-::
+**test/objecttest16.py** (fragment)
 
-    class ObjectTestNPC(MapObject):
-
-        def __init__(self):
-            MapObject.__init__(self, MapObject.OBSTACLE, image_file='actor1.png',
-                               image_index=7)
-            self.movement_behavior.movements.extend([Wait(30), ForcedStep(UP),
-                                                     Wait(30), ForcedStep(DOWN)])
-
-        def activate(self, party_avatar, direction):
-            for i in xrange(2):
-                party_avatar.schedule_movement(Step(inverse(direction)))
-            party_avatar.schedule_movement(Face(direction))
+.. literalinclude:: ../../../../test/objecttest16.py
+    :start-after: # movement.rst example starts here
+    :end-before: # movement.rst example ends here

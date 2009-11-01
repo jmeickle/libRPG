@@ -52,30 +52,6 @@ class Chest(MapObject):
             self.closed = True
 
 
-class GameOverBarrel(ScenarioMapObject):
-
-    def __init__(self, map):
-        ScenarioMapObject.__init__(self, map, 0, 4)
-
-    def activate(self, party_avatar, direction):
-        print 'The barrel explodes and you die.'
-        self.map.gameover()
-
-
-class AreaAroundWell(MapArea):
-
-    def party_entered(self, party_avatar, position):
-        print 'party_entered(%s, %s)' % (party_avatar, position)
-
-    def party_moved(self, party_avatar, left_position, entered_position,
-                    from_outside):
-        print 'party_moved(%s, %s, %s, %s)' % (party_avatar, left_position,
-                                               entered_position, from_outside)
-
-    def party_left(self, party_avatar, position):
-        print 'party_left(%s, %s)' % (party_avatar, position)
-
-
 class Map1(WorldMap):
 
     def __init__(self):
@@ -97,6 +73,22 @@ class Map1(WorldMap):
 
     def save_state(self):
         return {'chest_closed': self.chest.closed}
+
+
+# maparea.rst example starts here
+
+class AreaAroundWell(MapArea):
+
+    def party_entered(self, party_avatar, position):
+        print 'party_entered(%s, %s)' % (party_avatar, position)
+
+    def party_moved(self, party_avatar, left_position, entered_position,
+                    from_outside):
+        print 'party_moved(%s, %s, %s, %s)' % (party_avatar, left_position,
+                                               entered_position, from_outside)
+
+    def party_left(self, party_avatar, position):
+        print 'party_left(%s, %s)' % (party_avatar, position)
 
 
 class Map2(WorldMap):
@@ -124,6 +116,18 @@ class Map2(WorldMap):
 
     def save_state(self):
         return {'chest_closed': self.chest.closed}
+
+# maparea.rst example ends here
+
+
+class GameOverBarrel(ScenarioMapObject):
+
+    def __init__(self, map):
+        ScenarioMapObject.__init__(self, map, 0, 4)
+
+    def activate(self, party_avatar, direction):
+        print 'The barrel explodes and you die.'
+        self.map.gameover()
 
 
 class Map3(WorldMap):

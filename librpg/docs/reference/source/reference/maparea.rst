@@ -15,27 +15,8 @@ To create a MapArea, write a class that inherits from it (say, MyArea), overload
 Example
 -------
 
-::
+**test/worldtest/mymaps.py** (fragment)
 
-    class AreaAroundWell(MapArea):
-
-        def party_entered(self, party_avatar, position):
-            print 'party_entered(%s, %s)' % (party_avatar, position)
-
-        def party_moved(self, party_avatar, left_position, entered_position,
-                        from_outside):
-            print 'party_moved(%s, %s, %s, %s)' % (party_avatar, left_position,
-                                                   entered_position, from_outside)
-
-        def party_left(self, party_avatar, position):
-            print 'party_left(%s, %s)' % (party_avatar, position)
-
-    class Map2(WorldMap):
-
-        def __init__(self):
-            WorldMap.__init__(self, 'worldtest/map2.map',
-                              ('lower_tileset32.png', 'lower_tileset32.bnd'),
-                              [('upper_tileset32.png', 'upper_tileset32.bnd'),])
-
-        def initialize(self, local_state):
-            self.add_area(AreaAroundWell(), RectangleArea((2, 3), (4, 5)))
+.. literalinclude:: ../../../../test/worldtest/mymaps.py
+    :start-after: # maparea.rst example starts here
+    :end-before: # maparea.rst example ends here

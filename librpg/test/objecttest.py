@@ -20,6 +20,8 @@ from librpg.locals import *
 from librpg.path import *
 
 
+# dialog.rst example starts here
+
 class ObjectTestNPC(MapObject):
 
     def __init__(self):
@@ -54,6 +56,8 @@ class ObjectTestNPC(MapObject):
         movement = PathMovement(self.map, party_avatar, Position(9, 4))
         party_avatar.schedule_movement(movement)
 
+# dialog.rst example ends here
+
 
 class ObjectTestRock(ScenarioMapObject):
 
@@ -71,6 +75,8 @@ class ObjectTestRock(ScenarioMapObject):
             print 'Collided rock'
             self.schedule_movement(Slide(direction))
 
+
+# mapobject.rst example starts here
 
 class ObjectTestChest(MapObject):
 
@@ -112,6 +118,8 @@ class ObjectTestChest(MapObject):
             self.image = ObjectImage(charset_path('chest.png'),
                                      randint(0, 1), [[0]])
             self.shapeshift = 0
+
+# mapobject.rst example ends here
 
 
 class ObjectTestTowerUpper(ScenarioMapObject):

@@ -28,22 +28,6 @@ Characters in the Party to an available state.
 Example
 -------
 
-::
+**test/partytest.py**
 
-    def char_factory(name):
-        return Character(name)
-
-    reserve = CharacterReserve(char_factory)
-    c = ['Andy', 'Bernie', 'Chris', 'Dylan', 'Emma']
-    for char in c:
-        reserve.add_char(char)
-
-    party = Party(reserve)
-    party.initial_state(3, ['Andy', 'Emma'], 'Andy')
-    party.add_char('Chris')
-    party.remove_char('Andy')
-
-    print party
-    
-    party.destroy()
-    
+.. literalinclude:: ../../../../test/partytest.py
