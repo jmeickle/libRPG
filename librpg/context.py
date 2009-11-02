@@ -13,6 +13,7 @@ import pygame
 from librpg.locals import *
 from librpg.config import game_config
 from librpg.virtualscreen import get_screen
+from librpg.animation import get_metronome
 
 
 class ContextStack(object):
@@ -114,6 +115,7 @@ class ContextStack(object):
         while self.stack and self.keep_going:
             # Limit FPS
             self.clock.tick(game_config.fps)
+            get_metronome().step()
 
             # Update contexts in reverse order
             stop = False

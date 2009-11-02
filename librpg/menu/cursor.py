@@ -73,7 +73,7 @@ class Cursor(object):
         if self.drawn_widget != self.widget:
             widget = self.widget
             rect = widget.get_menu_rect()
-            self.surface, self.target_pos = self.theme.draw_cursor(rect)
+            self.image, self.target_pos = self.theme.draw_cursor(rect)
             self.drawn_widget = widget
 
     def move_to(self, widget=None):
@@ -94,7 +94,7 @@ class Cursor(object):
             return True
 
     def render(self, screen):
-        screen.blit(self.surface, self.target_pos)
+        screen.blit(self.image.get_surface(), self.target_pos)
 
 
 class HighlightCursor(Cursor):

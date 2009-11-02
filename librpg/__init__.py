@@ -3,7 +3,7 @@ import pygame
 from librpg import (virtualscreen, config, party, map, world, mapobject,
                     camera, image, loader, item, util, context, maparea,
                     tile, dialog, mapview, menu, movement, state, sound, quest,
-                    path)
+                    path, animation)
 
 
 def init(game_name='LibRPG Game', icon=None):

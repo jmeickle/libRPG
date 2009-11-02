@@ -2,6 +2,9 @@ import pygame
 from pygame.locals import SRCALPHA
 
 from librpg.path import cursor_theme_path
+from librpg.image import Image
+from librpg.animation import AnimatedImage
+
 
 class MenuTheme(object):
 
@@ -163,11 +166,11 @@ class CursorTheme(object):
         """
         *Abstract.*
 
-        Provide a pygame Surface with the cursor's image.
+        Provide an Image Surface with the cursor's image.
 
-        Return a tuple of two elements, the first being a pygame Surface
-        with the cursor's image and the second an (x, y) tuple with the
-        position at which the top left of that Surface should be drawn.
+        Return a tuple of two elements, the first being the cursor's
+        Image and the second an (x, y) tuple with the position at which
+        the top left of that Image should be drawn.
 
         *target_rect* is the pygame Rect describing the cursor's target.
         """
@@ -184,18 +187,24 @@ class DefaultCursorTheme(CursorTheme):
     BORDER = 2
     HORIZONTAL_OFFSET = 3
     VERTICAL_OFFSET = 3
+    ANIMATION_PERIOD = 4
 
     def draw_cursor(self, target_rect):
-        width = target_rect.w + 2 * (self.BORDER + self.HORIZONTAL_OFFSET)
-        height = target_rect.h + 2 * (self.BORDER + self.VERTICAL_OFFSET)
-        s = pygame.Surface((width, height), SRCALPHA, 32).convert_alpha()
-        s.fill((255, 0, 0, 255))
-        pygame.draw.rect(s, (0, 0, 0, 0),
-                         pygame.Rect((self.BORDER, self.BORDER),
-                         (target_rect.w + 2 * self.HORIZONTAL_OFFSET,
-                          target_rect.h + 2 * self.VERTICAL_OFFSET)))
-        return s, (target_rect.left - self.BORDER - self.HORIZONTAL_OFFSET,
-                   target_rect.top - self.BORDER - self.VERTICAL_OFFSET)
+        frames = []
+        for i in xrange(2):
+            width = target_rect.w + 2 * (self.BORDER + self.HORIZONTAL_OFFSET)
+            height = target_rect.h + 2 * (self.BORDER + self.VERTICAL_OFFSET)
+            s = pygame.Surface((width, height), SRCALPHA, 32).convert_alpha()
+            s.fill((255 - 64 * i, 0, 0, 255))
+            pygame.draw.rect(s, (0, 0, 0, 0),
+                             pygame.Rect((self.BORDER, self.BORDER),
+                             (target_rect.w + 2 * self.HORIZONTAL_OFFSET,
+                              target_rect.h + 2 * self.VERTICAL_OFFSET)))
+            frames.append(s)
+
+        return AnimatedImage(frames, self.ANIMATION_PERIOD), \
+               (target_rect.left - self.BORDER - self.HORIZONTAL_OFFSET,
+                target_rect.top - self.BORDER - self.VERTICAL_OFFSET)
 
 
 class PictureCursorTheme(CursorTheme):
@@ -213,7 +222,7 @@ class PictureCursorTheme(CursorTheme):
         self.filename = filename
         self.x_offset = x_offset
         self.y_offset = y_offset
-        self.image = pygame.image.load(self.filename)
+        self.image = Image(pygame.image.load(self.filename))
 
     def draw_cursor(self, target_rect):
         center_x = target_rect.left + self.x_offset
