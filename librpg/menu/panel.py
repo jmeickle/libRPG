@@ -14,7 +14,8 @@ class Panel(Div):
 
     def draw(self):
         r = pygame.Rect(0, 0, self.width, self.height)
-        self.image = self.theme.draw_panel(r)
+        if self.image is None:
+            self.image = self.theme.draw_panel(r)
         Div.draw(self)
 
     def render(self, screen, x_offset, y_offset):

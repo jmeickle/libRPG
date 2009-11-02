@@ -53,6 +53,8 @@ class TabGroup(Div):
                 self.remove_widget(self.current)
             self.add_widget(self[id], (0, self.tab_height))
             self.current = self[id]
+        for tab in self.tabs:
+            tab.changed = True
 
 
 class Tab(Div):
@@ -63,13 +65,16 @@ class Tab(Div):
 
         self.label = TabLabel(tab_group, id, theme=self.theme)
         self.add_widget(self.label, AlignCenter())
+        self.changed = True
 
     def draw(self):
-        r = pygame.Rect(0, 0, self.width, self.height)
-        if self.tab_group.current is self.tab_group[self.label.id]:
-            self.image = self.theme.draw_selected_tab(r)
-        else:
-            self.image = self.theme.draw_unselected_tab(r)
+        if self.image is None or self.changed:
+            r = pygame.Rect(0, 0, self.width, self.height)
+            if self.tab_group.current is self.tab_group[self.label.id]:
+                self.image = self.theme.draw_selected_tab(r)
+            else:
+                self.image = self.theme.draw_unselected_tab(r)
+            self.changed = False
         Div.draw(self)
 
     def render(self, screen, x_offset, y_offset):
