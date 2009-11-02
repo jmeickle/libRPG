@@ -17,9 +17,6 @@ class Panel(Div):
         self.image = self.theme.draw_panel(r)
         Div.draw(self)
 
-    def get_surface(self):
-        return self.image.get_surface()
-
     def render(self, screen, x_offset, y_offset):
         Widget.render(self, screen, x_offset, y_offset)
         Div.render(self, screen, x_offset, y_offset)

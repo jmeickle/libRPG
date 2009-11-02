@@ -1,6 +1,7 @@
 import pygame
 
 from librpg.menu.widget import Widget
+from librpg.image import Image
 
 
 class Label(Widget):
@@ -22,17 +23,18 @@ class Label(Widget):
         self._bold = bold
         self._italic = italic
         self.changed = False
+        self.image = None
         self.draw()
 
     def draw(self):
-        if self.surface is None or self.changed:
+        if self.image is None or self.changed:
             self.changed = False
             font = self.theme.get_font(self.size, self.bold, self.italic)
-            self.surface = font.render(self.text,
-                                       self.theme.get_font_anti_alias(),
-                                       self.theme.get_font_color())
-            self.width = self.surface.get_width()
-            self.height = self.surface.get_height()
+            self.image = Image(font.render(self.text,
+                                           self.theme.get_font_anti_alias(),
+                                           self.theme.get_font_color()))
+            self.width = self.image.width
+            self.height = self.image.height
 
     def __repr__(self):
         return "Label('%s')" % self._text

@@ -32,9 +32,6 @@ class Bar(Widget):
                                              (self.width, self.height)),
                                              self.filled)
 
-    def get_surface(self):
-        return self.image.get_surface()
-
     def __repr__(self):
         return "Bar(%.2f%%)" % self.filled
 

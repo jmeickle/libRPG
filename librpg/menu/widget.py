@@ -26,11 +26,7 @@ class Widget(object):
     def __init__(self, width=0, height=0, focusable=True, theme=None):
         self.width = width
         self.height = height
-        if width > 0 and height > 0:
-            self.surface = pygame.Surface((width, height), SRCALPHA, 32)\
-                           .convert_alpha()
-        else:
-            self.surface = None
+        self.image = None
 
         if theme is not None:
             self.theme = theme
@@ -53,13 +49,13 @@ class Widget(object):
         Return a pygame Surface with the widget's image as it should be
         rendered.
         """
-        return self.surface
+        return self.image.get_surface()
 
     def draw(self):
         """
         *Virtual.*
 
-        Render the widget on its `surface` attribute.
+        Render the widget on its `image` attribute.
         """
         pass
 

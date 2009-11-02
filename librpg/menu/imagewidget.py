@@ -29,7 +29,7 @@ class ImageWidget(Widget):
         return "Image(%dx%d)" % (self.width, self.height)
 
     def get_surf(self):
-        return self.image.get_surface()
+        return self._surf
 
     def set_surf(self, surf):
         self._surf = surf
@@ -40,6 +40,3 @@ class ImageWidget(Widget):
     """
     A pygame Surface with the widget's image.
     """
-
-    def get_surface(self):
-        return self.image.get_surface()
