@@ -1,3 +1,10 @@
+"""
+The :mod:`animation` module provides the AnimatedImage class, an Image
+that wraps animation funcionalities for easy usage by other modules
+or applications.
+"""
+
+
 from librpg.image import Image
 
 

@@ -1,3 +1,8 @@
+"""
+The :mod:`path` module provides functions for portable access to
+LibRPG's installed folders, especially the ones that contain data.
+"""
+
 import os
 
 

@@ -1,3 +1,9 @@
+"""
+The :mod:`virtualscreen` module wraps the pygame display into a screen
+that can be blitted to the same way, but scales everything blitted
+onto it to the scale configured in graphic_config.
+"""
+
 import pygame
 
 

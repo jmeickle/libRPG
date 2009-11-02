@@ -1,3 +1,9 @@
+"""
+The :mod:`menu` module is one of the main modules in LibRPG. It contains
+the definition of classes that compose the core functionality of LibRPG
+menus, most notably Menu, Widget, Cursor and Div.
+"""
+
 from alignment import *
 from bar import *
 from cursor import *

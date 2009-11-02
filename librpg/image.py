@@ -1,3 +1,12 @@
+"""
+The :mod:`image` module contains the Image class, a wrapper for
+pygame Surfaces, which is used by several other modules.
+
+Specialized images for tiles, map objects are also provided in this
+module, as well as the SlicedImage class, which is an Image divisible
+in pieces of the same size.
+"""
+
 import pygame
 
 from librpg.locals import *
