@@ -124,12 +124,15 @@ class DefaultMenuTheme(MenuTheme):
 
     def draw_selected_tab(self, rect):
         DEFAULT_COLOR = (128, 0, 128, 128)
-        BORDER = 2
-        internal_rect = pygame.Rect((rect.top + BORDER, rect.left + BORDER),
-                                    (rect.w - 2 * BORDER, rect.h - BORDER))
-        surface = pygame.Surface((rect.width, rect.height), SRCALPHA, 32)
-        pygame.draw.rect(surface, DEFAULT_COLOR, internal_rect)
-        return Image(surface)
+        surfaces = []
+        for i in xrange(2):
+            BORDER = 2 + i
+            internal_rect = pygame.Rect((rect.top + BORDER, rect.left + BORDER),
+                                        (rect.w - 2 * BORDER, rect.h - BORDER))
+            surface = pygame.Surface((rect.width, rect.height), SRCALPHA, 32)
+            pygame.draw.rect(surface, DEFAULT_COLOR, internal_rect)
+            surfaces.append(surface)
+        return AnimatedImage(surfaces, 10)
 
     def draw_unselected_tab(self, rect):
         DEFAULT_COLOR = (75, 0, 75, 128)

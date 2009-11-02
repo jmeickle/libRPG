@@ -1,5 +1,8 @@
+from librpg.image import Image
+
+
 class Metronome(object):
-    
+
     def __init__(self):
         self.n = 0
 
@@ -21,7 +24,26 @@ def get_tick():
     return metronome.get()
 
 
-class AnimatedImage(object):
+class AnimatedImage(Image):
+
+    """
+    An AnimatedImage is an Image that returns various Surfaces through
+    get_surface(), causing the illusion of animation.
+
+    *surfaces* should be a list or tuple of the pygame Surfaces that
+    compose the animation.
+
+    *frame_duration* should be an integer indicating the number of frames
+    for which each Surface will be displayed before switching to the next.
+
+    Note that::
+
+        AnimatedImage([a, b, c])
+
+    is equavalent to::
+
+        AnimatedImage([a, a, b, b, c, c], 2)
+    """
 
     def __init__(self, surfaces, frame_duration=1):
         assert surfaces, 'First paramater has to be a list of Surfaces'
@@ -40,3 +62,9 @@ class AnimatedImage(object):
     def calc_frame(self):
         n = get_tick()
         return ((n - self.phase) % self.period) / self.frame_duration
+
+    def get_width(self):
+        return self.get_surface().get_width()
+
+    def get_height(self):
+        return self.get_surface().get_height()

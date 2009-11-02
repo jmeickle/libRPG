@@ -22,16 +22,8 @@ class Image(object):
 
         :attr:`surface`
             Pygame Surface containing the image.
-
-        :attr:`width`
-            Image width in pixels.
-
-        :attr:`height`
-            Image height in pixels.
         """
         self.surface = surface
-        self.width = self.surface.get_width()
-        self.height = self.surface.get_height()
 
     def get_surface(self, obj=None):
         """
@@ -41,6 +33,22 @@ class Image(object):
         moment.
         """
         return self.surface
+
+    def get_width(self):
+        return self.surface.get_width()
+    
+    width = property(get_width)
+    """
+    Image width in pixels.
+    """
+    
+    def get_height(self):
+        return self.surface.get_height()
+
+    height = property(get_height)
+    """
+    Image height in pixels.
+    """
 
 
 class TileImage(Image):

@@ -21,6 +21,7 @@ Contents:
     camera
     context
     image
+    animation
     party
     virtualscreen
     util

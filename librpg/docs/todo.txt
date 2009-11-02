@@ -133,7 +133,8 @@ ok      0.5     Make Model base class for MapModel and Menu with get_controller(
 ok      0.5     When widget is removed, if the menu's cursor in pointing at it, point it at somewhere else.
 ok      0.5     Update usage sections in docs
 ok      0.5     Change rsts to use :pyobject: in examples
-        0.5     Implement animated themes
+ok      0.5     Implement animated themes
+ok      0.5     Write animation docstrings
         0.5     Include menu example in docs
         0.5     Bind A* navigation to mouse
         0.5.1   Code NumberSpinner
