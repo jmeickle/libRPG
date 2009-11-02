@@ -53,27 +53,27 @@ class MenuTheme(object):
         """
         raise NotImplementedError('MenuTheme.get_font_color() is abstract')
 
-    def draw_panel(self, surface, rect):
+    def draw_panel(self, rect):
         """
         *Abstract.*
 
-        Draw a Panel delimited by rect onto surface.
+        Return an Image of a Panel delimited by *rect*.
         """
         raise NotImplementedError('MenuTheme.draw_panel() is abstract')
 
-    def draw_selected_tab(self, surface, rect):
+    def draw_selected_tab(self, rect):
         """
         *Abstract.*
 
-        Draw an active tab header delimited by rect onto surface.
+        Return an Image of an active tab header delimited by *rect*.
         """
         raise NotImplementedError('MenuTheme.draw_selected_tab() is abstract')
 
-    def draw_unselected_tab(self, surface, rect):
+    def draw_unselected_tab(self, rect):
         """
         *Abstract.*
 
-        Draw an inactive tab header delimited by rect onto surface.
+        Return an Image of an inactive tab header delimited by *rect*.
         """
         raise NotImplementedError('MenuTheme.draw_unselected_tab() is abstract')
 
@@ -116,23 +116,29 @@ class DefaultMenuTheme(MenuTheme):
         WHITE = (255, 255, 255)
         return WHITE
 
-    def draw_panel(self, surface, rect):
+    def draw_panel(self, rect):
         DEFAULT_COLOR = (128, 0, 128, 128)
+        surface = pygame.Surface((rect.width, rect.height), SRCALPHA, 32)
         pygame.draw.rect(surface, DEFAULT_COLOR, rect)
+        return Image(surface)
 
-    def draw_selected_tab(self, surface, rect):
+    def draw_selected_tab(self, rect):
         DEFAULT_COLOR = (128, 0, 128, 128)
         BORDER = 2
         internal_rect = pygame.Rect((rect.top + BORDER, rect.left + BORDER),
                                     (rect.w - 2 * BORDER, rect.h - BORDER))
+        surface = pygame.Surface((rect.width, rect.height), SRCALPHA, 32)
         pygame.draw.rect(surface, DEFAULT_COLOR, internal_rect)
+        return Image(surface)
 
-    def draw_unselected_tab(self, surface, rect):
+    def draw_unselected_tab(self, rect):
         DEFAULT_COLOR = (75, 0, 75, 128)
         BORDER = 2
         internal_rect = pygame.Rect((rect.top + BORDER, rect.left + BORDER),
                                     (rect.w - 2 * BORDER, rect.h - BORDER))
+        surface = pygame.Surface((rect.width, rect.height), SRCALPHA, 32)
         pygame.draw.rect(surface, DEFAULT_COLOR, internal_rect)
+        return Image(surface)
 
     def draw_bar(self, rect, filled=1.0):
         TRANSPARENT = (0, 0, 0, 0)

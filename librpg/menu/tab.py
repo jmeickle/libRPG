@@ -67,10 +67,13 @@ class Tab(Div):
     def draw(self):
         r = pygame.Rect(0, 0, self.width, self.height)
         if self.tab_group.current is self.tab_group[self.label.id]:
-            self.theme.draw_selected_tab(self.surface, r)
+            self.image = self.theme.draw_selected_tab(r)
         else:
-            self.theme.draw_unselected_tab(self.surface, r)
+            self.image = self.theme.draw_unselected_tab(r)
         Div.draw(self)
+
+    def get_surface(self):
+        return self.image.get_surface()
 
     def render(self, screen, x_offset, y_offset):
         Widget.render(self, screen, x_offset, y_offset)
