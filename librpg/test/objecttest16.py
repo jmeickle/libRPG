@@ -13,8 +13,6 @@ from librpg.dialog import MessageDialog
 from librpg.locals import *
 
 
-# movement.rst example starts here
-
 class ObjectTestNPC(MapObject):
 
     def __init__(self, index):
@@ -28,8 +26,6 @@ class ObjectTestNPC(MapObject):
         print 'GLOMPed NPC'
         self.map.schedule_message(MessageDialog('GLOMP'))
         self.destroy()
-
-# movement.rst example ends here
 
 
 class ObjectTestRock(ScenarioMapObject):

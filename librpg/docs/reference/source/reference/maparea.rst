@@ -18,5 +18,7 @@ Example
 **test/worldtest/mymaps.py** (fragment)
 
 .. literalinclude:: ../../../../test/worldtest/mymaps.py
-    :start-after: # maparea.rst example starts here
-    :end-before: # maparea.rst example ends here
+    :pyobject: AreaAroundWell
+
+.. literalinclude:: ../../../../test/worldtest/mymaps.py
+    :pyobject: Map2

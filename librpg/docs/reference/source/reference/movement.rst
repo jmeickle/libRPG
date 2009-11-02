@@ -25,5 +25,4 @@ Example
 **test/objecttest16.py** (fragment)
 
 .. literalinclude:: ../../../../test/objecttest16.py
-    :start-after: # movement.rst example starts here
-    :end-before: # movement.rst example ends here
+    :pyobject: ObjectTestNPC

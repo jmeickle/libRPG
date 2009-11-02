@@ -75,8 +75,6 @@ class Map1(WorldMap):
         return {'chest_closed': self.chest.closed}
 
 
-# maparea.rst example starts here
-
 class AreaAroundWell(MapArea):
 
     def party_entered(self, party_avatar, position):
@@ -116,8 +114,6 @@ class Map2(WorldMap):
 
     def save_state(self):
         return {'chest_closed': self.chest.closed}
-
-# maparea.rst example ends here
 
 
 class GameOverBarrel(ScenarioMapObject):

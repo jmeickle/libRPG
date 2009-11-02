@@ -6,8 +6,6 @@ def char_factory(name):
     return librpg.party.Character('Andy', 'test_chars.png', 1)
 
 
-# config.rst example starts here
-
 def config():
     librpg.config.graphics_config.config(tile_size=32, object_height=32,
                                          object_width=32)
@@ -42,8 +40,6 @@ def config():
         exit()
 
     librpg.config.graphics_config.config(**kwargs)
-
-# config.rst example ends here
 
 
 def main():

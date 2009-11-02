@@ -108,5 +108,4 @@ Examples
 **test/maptest32.py** (fragment)
 
 .. literalinclude:: ../../../../test/maptest32.py
-    :start-after: # config.rst example starts here
-    :end-before: # config.rst example ends here
+    :pyobject: config

@@ -26,5 +26,4 @@ Example
 **test/objecttest.py** (fragment)
 
 .. literalinclude:: ../../../../test/objecttest.py
-    :start-after: # mapobject.rst example starts here
-    :end-before: # mapobject.rst example ends here
+    :pyobject: ObjectTestChest

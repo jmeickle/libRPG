@@ -16,5 +16,4 @@ Example
 **test/objecttest.py** (fragment)
 
 .. literalinclude:: ../../../../test/objecttest.py
-    :start-after: # dialog.rst example starts here
-    :end-before: # dialog.rst example ends here
+    :pyobject: ObjectTestNPC
