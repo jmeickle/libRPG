@@ -17,7 +17,7 @@ from librpg.image import *
 from librpg.tile import *
 from librpg.config import *
 from librpg.locals import *
-from librpg.movement import Step
+from librpg.movement import Step, PathMovement
 from librpg.context import Context, Model, get_context_stack
 from librpg.dialog import MessageQueue
 
@@ -107,6 +107,13 @@ class MapController(Context):
                  and ACTIVATE in self.party_movement:
                 self.party_movement_remove(ACTIVATE)
                 return True
+        if (game_config.map_mouse_enabled
+            and event.type == MOUSEBUTTONDOWN
+            and event.button == 1):
+            if (not self.party_movement
+                and not self.party_avatar.scheduled_movement):
+                self.mouse_movement(event.pos)
+                return True
         return False
 
     def flow_object_movement(self):
@@ -165,6 +172,14 @@ class MapController(Context):
 
     def gameover(self):
         get_context_stack().stop()
+
+    def mouse_movement(self, pos):
+        target_x, target_y = self.map_view.calc_pos_from_mouse(pos)
+        if self.map_model.terrain_layer.valid((target_x, target_y)):
+            movement = PathMovement(self.map_model, 
+                                    self.map_model.party_avatar,
+                                    Position(target_x, target_y))
+            self.map_model.party_avatar.schedule_movement(movement)
 
 
 class MapModel(Model):

@@ -69,6 +69,8 @@ The default values are:
     :attr:`key_action` - set([K_RETURN, K_SPACE])
     
     :attr:`key_cancel` - set([K_ESCAPE])
+
+    :attr:`map_mouse_enabled` - True
     
 Examples
 --------

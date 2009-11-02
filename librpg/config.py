@@ -274,6 +274,9 @@ class GameConfig(Config):
 
     :attr:`key_cancel`
         Set of keys that quit the game, cancel actions, go back.
+
+    :attr:`map_mouse_enabled`
+        Whether the party will be mouse controllable in map.
     """
 
     fps = 30
@@ -283,6 +286,7 @@ class GameConfig(Config):
     key_right = set([K_RIGHT])
     key_action = set([K_RETURN, K_SPACE])
     key_cancel = set([K_ESCAPE])
+    map_mouse_enabled = True
 
 
 class MenuConfig(Config):

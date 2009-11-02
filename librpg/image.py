@@ -24,6 +24,8 @@ class Image(object):
             Pygame Surface containing the image.
         """
         self.surface = surface
+        self.height = surface.get_height()
+        self.width = surface.get_width()
 
     def get_surface(self, obj=None):
         """
@@ -35,17 +37,23 @@ class Image(object):
         return self.surface
 
     def get_width(self):
-        return self.surface.get_width()
+        return self._width
     
-    width = property(get_width)
+    def set_width(self, width):
+        self._width = width
+    
+    width = property(get_width, set_width)
     """
     Image width in pixels.
     """
     
     def get_height(self):
-        return self.surface.get_height()
+        return self._height
 
-    height = property(get_height)
+    def set_height(self, height):
+        self._height = height
+    
+    height = property(get_height, set_height)
     """
     Image height in pixels.
     """

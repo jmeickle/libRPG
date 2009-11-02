@@ -103,6 +103,9 @@ class Position(object):
         else:
             raise IndexError('Position is only 2 dimensional')
 
+    def __hash__(self):
+        return hash((self.x, self.y))
+
 
 class Matrix(object):
 

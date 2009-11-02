@@ -55,9 +55,9 @@ class MovementQueue(Movement, list):
         if should_remove:
             del self[0]
         if len(self) == 0:
-            return (True,)
+            return (True, True)
         else:
-            return (False,)
+            return (False, False)
 
     def clear(self):
         del self[:]
@@ -86,12 +86,12 @@ class MovementCycle(Movement):
 
     def flow(self, obj):
         if len(self.movements) == 0:
-            return (False,)
+            return (False, False)
         current = self.movements[self.current]
         should_skip = current.flow(obj)[0]
         if should_skip:
             self.current = (self.current + 1) % len(self.movements)
-        return (False,)
+        return (False, False)
 
 
 class OneTileMovement(Movement):
@@ -125,12 +125,14 @@ class OneTileMovement(Movement):
                                           slide=self.slide,
                                           back=self.back)
         if self.forced:
-            return (done,)
-        if self.tries_left and not done:
+            return (done, done)
+        elif done:
+            return (True, True)
+        elif self.tries_left:
             self.tries_left -= 1
-            return (False, done)
+            return (False, False)
         else:
-            return (True, done)
+            return (True, False)
 
 
 class Step(OneTileMovement):
@@ -158,7 +160,7 @@ class Face(Movement):
 
     def flow(self, obj):
         obj.facing = self.direction
-        return (True,)
+        return (True, True)
 
 
 class Wait(Movement):
@@ -175,9 +177,9 @@ class Wait(Movement):
         self.delay -= 1
         if self.delay == 0:
             self.delay = self.initial_delay
-            return (True,)
+            return (True, True)
         else:
-            return (False,)
+            return (False, False)
 
 
 class Slide(OneTileMovement):
@@ -222,12 +224,22 @@ class PathMovement(Movement):
     def __init__(self, mapmodel, obj, dest):
         self.mapmodel = mapmodel
         self.dest = dest
+        self.cur_step = None
 
     def flow(self, obj):
-        v = starA.StarA(self.mapmodel, obj.position, self.dest).calculate()
+        if self.cur_step is None:
+            v = starA.StarA(self.mapmodel, obj.position,
+                            self.dest).calculate()
+            if not v:
+                return (True, True)
+            self.cur_step = Step(v[0])
 
-        if v:
-            Step(v[0]).flow(obj)
-            return (False,)
-        else:
-            return (True,)
+        done, worked = self.cur_step.flow(obj)
+        if done:
+            self.cur_step = None
+            if worked:
+                return (False, False)
+            else:
+                return (True, False)
+        return (False, False)
+

@@ -3,6 +3,7 @@ from librpg.config import graphics_config as g_cfg
 from librpg.tile import *
 from librpg.locals import *
 from librpg.virtualscreen import get_screen
+from librpg.util import descale_point
 
 
 class MapView(object):
@@ -100,17 +101,18 @@ class MapView(object):
         else:
             party_pos = Position(0, 0)
             party_x_offset, party_y_offset = 0, 0
-        bg_topleft = self.camera_mode.calc_bg_slice_topleft(party_pos,
+        self.bg_topleft = self.camera_mode.calc_bg_slice_topleft(
+                                                            party_pos,
                                                             party_x_offset,
                                                             party_y_offset)
-        bg_rect = pygame.Rect(bg_topleft, g_cfg.screen_dimensions)
+        bg_rect = pygame.Rect(self.bg_topleft, g_cfg.screen_dimensions)
         phase = self.phase / g_cfg.animation_frame_period
         get_screen().blit(self.backgrounds[phase], (0, 0), bg_rect)
 
         # Draw the map objects
-        self.draw_object_layer(self.map_model.below_objects, bg_topleft)
-        self.draw_object_layer(self.map_model.obstacle_objects, bg_topleft)
-        self.draw_object_layer(self.map_model.above_objects, bg_topleft)
+        self.draw_object_layer(self.map_model.below_objects)
+        self.draw_object_layer(self.map_model.obstacle_objects)
+        self.draw_object_layer(self.map_model.above_objects)
 
         # Draw the foreground
         get_screen().blit(self.foreground, (0, 0), bg_rect)
@@ -119,7 +121,7 @@ class MapView(object):
         self.phase = (self.phase + 1) % (ANIMATION_PERIOD
                                        * g_cfg.animation_frame_period)
 
-    def draw_object_layer(self, object_layer, bg_topleft):
+    def draw_object_layer(self, object_layer):
         if g_cfg.object_width > g_cfg.tile_size or\
            g_cfg.object_height > g_cfg.tile_size:
             object_layer.sort(key=lambda x: x.position)
@@ -127,7 +129,7 @@ class MapView(object):
         for obj in object_layer:
             obj_x_offset, obj_y_offset = self.calc_object_movement_offset(obj)
             obj_topleft = self.camera_mode.\
-                    calc_object_topleft(bg_topleft, obj.position,
+                    calc_object_topleft(self.bg_topleft, obj.position,
                                         obj.image.width, obj.image.height,
                                         obj_x_offset, obj_y_offset)
             obj_rect = pygame.Rect(obj_topleft,
@@ -157,3 +159,11 @@ class MapView(object):
                 elif obj.facing == LEFT:
                     obj_x_offset = - offset
         return obj_x_offset, obj_y_offset
+
+    def calc_pos_from_mouse(self, pos):
+        scr_x, scr_y = descale_point(pos)
+        x = int((scr_x + self.bg_topleft[0] - g_cfg.map_border_width)
+                / g_cfg.tile_size)
+        y = int((scr_y + self.bg_topleft[1] - g_cfg.map_border_height)
+                / g_cfg.tile_size)
+        return x, y
