@@ -5,7 +5,7 @@ from librpg.menu import Div, Label, AlignCenter, Widget
 
 class TabGroup(Div):
 
-    def __init__(self, ids, width, height, tab_width=None, tab_height=None, 
+    def __init__(self, ids, width, height, tab_width=None, tab_height=None,
                  focusable=False, theme=None, initial_tab=None):
         Div.__init__(self, width, height, focusable, theme)
 

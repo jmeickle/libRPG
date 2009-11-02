@@ -23,7 +23,8 @@ def config():
                   'screen_height': 480,
                   'scale': 1}
     elif mode == 3:
-        kwargs = {'camera_mode': librpg.camera.PartyConfinementCameraMode(50, 40),
+        kwargs = {'camera_mode': \
+                              librpg.camera.PartyConfinementCameraMode(50, 40),
                   'screen_width': 400,
                   'screen_height': 300}
     elif mode == 4:

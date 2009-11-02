@@ -4,6 +4,7 @@ from librpg.menu import (Menu, Cursor, Bar, Grid, Panel,
                          AlignCenter, TabGroup)
 from librpg.context import get_context_stack
 
+
 class CrazyBar(Bar):
 
     def __init__(self, width, height, filled=1.0, focusable=True,
@@ -32,7 +33,7 @@ class BarMenu(Menu):
         tab_group = TabGroup(['Bars%d' % (i + 1) for i in xrange(self.TABS)],
                              480, 320, tab_height=30)
         self.add_widget(tab_group, AlignCenter())
-        
+
         for k in xrange(self.TABS):
             grid = Grid(480, 290, 4, 10)
             for i in xrange(4):

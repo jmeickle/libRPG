@@ -242,4 +242,3 @@ class PathMovement(Movement):
             else:
                 return (True, False)
         return (False, False)
-

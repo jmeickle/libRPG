@@ -176,7 +176,7 @@ class MapController(Context):
     def mouse_movement(self, pos):
         target_x, target_y = self.map_view.calc_pos_from_mouse(pos)
         if self.map_model.terrain_layer.valid((target_x, target_y)):
-            movement = PathMovement(self.map_model, 
+            movement = PathMovement(self.map_model,
                                     self.map_model.party_avatar,
                                     Position(target_x, target_y))
             self.map_model.party_avatar.schedule_movement(movement)

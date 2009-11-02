@@ -33,7 +33,7 @@ class Cursor(object):
         Bind the cursor to a *menu*, starting at *widget*.
 
         Returns whether the operation succeeded.
-        
+
         If *widget* is not specified, the cursor is bound to the first
         widget found in the menu.
         """

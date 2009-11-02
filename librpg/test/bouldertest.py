@@ -66,6 +66,7 @@ class BoulderMaze(MapModel):
 def char_factory(name):
     return librpg.party.Character('Andy', charset_path('naked_man.png'))
 
+
 def main():
     librpg.init('Boulder Test')
     librpg.config.graphics_config.config(tile_size=32,
