@@ -8,34 +8,38 @@ class ImageWidget(Widget):
     """
     A Widget that displays a static image.
 
-    *image* should be a pygame Surface with the image to be drawn.
+    *surface* should be a pygame Surface with the image to be drawn.
 
     *focusable* and *theme* behave like in any other Widget.
     """
 
-    def __init__(self, image, focusable=True, theme=None):
+    def __init__(self, surface, focusable=True, theme=None):
         Widget.__init__(self, focusable=focusable, theme=theme)
-        self.image = image
+        self.image = None
+        self.surf = surface
 
     def draw(self):
-        if self.surface is None or self.changed:
-            self.surface = self.theme.draw_image(self._image)
-            self.width = self.surface.get_width()
-            self.height = self.surface.get_height()
+        if self.image is None or self.changed:
+            self.image = self.theme.draw_image(self._surf)
+            self.width = self.image.width
+            self.height = self.image.height
             self.changed = False
 
     def __repr__(self):
         return "Image(%dx%d)" % (self.width, self.height)
 
-    def get_image(self):
-        return self._image
+    def get_surf(self):
+        return self.image.get_surface()
 
-    def set_image(self, image):
-        self._image = image
+    def set_surf(self, surf):
+        self._surf = surf
         self.changed = True
         self.draw()
 
-    image = property(get_image, set_image)
+    surf = property(get_surf, set_surf)
     """
     A pygame Surface with the widget's image.
     """
+
+    def get_surface(self):
+        return self.surf

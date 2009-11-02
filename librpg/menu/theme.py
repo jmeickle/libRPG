@@ -92,10 +92,15 @@ class MenuTheme(object):
         """
         *Virtual.*
 
-        Draw an image. This can be overloaded to apply some filters to
+        Return an Image with how an ImageWidget should be rendered.
+
+        *image* should be a pygame Surface with the ImageWidget's
+        appearance.
+
+        This can be overloaded to apply some filters to
         images used in ImageWidgets.
         """
-        return image
+        return Image(image)
 
 
 class DefaultMenuTheme(MenuTheme):
