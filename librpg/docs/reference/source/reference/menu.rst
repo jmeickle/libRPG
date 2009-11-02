@@ -71,3 +71,10 @@ Component Widgets
 .. automodule:: librpg.menu.bar
    :members:
    :show-inheritance:
+
+Example
+-------
+
+**test/menutest.py** (fragment)
+
+.. literalinclude:: ../../../../test/menutest.py

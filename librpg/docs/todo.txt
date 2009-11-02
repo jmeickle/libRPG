@@ -135,7 +135,7 @@ ok      0.5     Update usage sections in docs
 ok      0.5     Change rsts to use :pyobject: in examples
 ok      0.5     Implement animated themes
 ok      0.5     Write animation docstrings
-        0.5     Include menu example in docs
+ok      0.5     Include menu example in docs
         0.5     Bind A* navigation to mouse
         0.5.1   Code NumberSpinner
         0.5.1   Code TextInput
