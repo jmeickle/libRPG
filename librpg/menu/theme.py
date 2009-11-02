@@ -77,11 +77,11 @@ class MenuTheme(object):
         """
         raise NotImplementedError('MenuTheme.draw_unselected_tab() is abstract')
 
-    def draw_bar(self, surface, rect, filled=1.0):
+    def draw_bar(self, rect, filled=1.0):
         """
         *Abstract.*
 
-        Draw a bar delimited by rect onto surface.
+        Return an Image with a bar delimited by *rect*.
 
         `filled` should be a number between 0.0 and 1.0, indicating how full
         the bar should be.
@@ -134,10 +134,11 @@ class DefaultMenuTheme(MenuTheme):
                                     (rect.w - 2 * BORDER, rect.h - BORDER))
         pygame.draw.rect(surface, DEFAULT_COLOR, internal_rect)
 
-    def draw_bar(self, surface, rect, filled=1.0):
+    def draw_bar(self, rect, filled=1.0):
         TRANSPARENT = (0, 0, 0, 0)
         WHITE = (255, 255, 255, 255)
 
+        surface = pygame.Surface((rect.width, rect.height), SRCALPHA, 32)
         surface.fill(TRANSPARENT)
 
         border = 0 if (rect.width < 4 or rect.height < 4) else 1
@@ -159,6 +160,7 @@ class DefaultMenuTheme(MenuTheme):
                              (rect.left + i + border,
                               rect.bottom - 1 - border),
                              1)
+        return Image(surface)
 
 
 class CursorTheme(object):

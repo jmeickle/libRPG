@@ -28,9 +28,12 @@ class Bar(Widget):
     def draw(self):
         if self.changed:
             self.changed = False
-            self.theme.draw_bar(self.surface,
-                                pygame.Rect((0, 0), (self.width, self.height)),
-                                self.filled)
+            self.image = self.theme.draw_bar(pygame.Rect((0, 0),
+                                             (self.width, self.height)),
+                                             self.filled)
+
+    def get_surface(self):
+        return self.image.get_surface()
 
     def __repr__(self):
         return "Bar(%.2f%%)" % self.filled

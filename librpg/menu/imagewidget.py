@@ -42,4 +42,4 @@ class ImageWidget(Widget):
     """
 
     def get_surface(self):
-        return self.surf
+        return self.image.get_surface()
