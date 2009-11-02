@@ -227,8 +227,8 @@ class PictureCursorTheme(CursorTheme):
     def draw_cursor(self, target_rect):
         center_x = target_rect.left + self.x_offset
         center_y = target_rect.top + target_rect.h / 2 + self.y_offset
-        return self.image, (center_x - self.image.get_width(),
-                            center_y - self.image.get_height() / 2)
+        return self.image, (center_x - self.image.width,
+                            center_y - self.image.height / 2)
 
 
 class ArrowCursorTheme(PictureCursorTheme):
