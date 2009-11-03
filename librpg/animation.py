@@ -73,5 +73,9 @@ class AnimatedImage(Image):
     def get_width(self):
         return self.get_surface().get_width()
 
+    width = property(get_width)
+
     def get_height(self):
         return self.get_surface().get_height()
+
+    height = property(get_height)

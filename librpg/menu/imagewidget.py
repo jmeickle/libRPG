@@ -40,3 +40,34 @@ class ImageWidget(Widget):
     """
     A pygame Surface with the widget's image.
     """
+
+
+class AnimatedImageWidget(Widget):
+
+    """
+    A Widget that displays an animated image.
+
+    *animation* should be an AnimatedImage with the animation to be
+    displayed.
+    
+    *focusable* behaves like in any other Widget.
+    """
+    """
+    A Widget that displays a static image.
+
+    *surface* should be a pygame Surface with the image to be drawn.
+
+    *focusable* and *theme* behave like in any other Widget.
+    """
+
+    def __init__(self, animation, focusable=True):
+        Widget.__init__(self, focusable=focusable, theme=None)
+        self.image = animation
+        self.width = animation.width
+        self.height = animation.height
+
+    def draw(self):
+        pass
+
+    def __repr__(self):
+        return "AnimatedImageWidget(%d frames)" % (len(self.image.surfaces))

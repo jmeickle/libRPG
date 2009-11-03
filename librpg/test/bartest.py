@@ -1,8 +1,10 @@
+import pygame
 import librpg
 from librpg.config import graphics_config
-from librpg.menu import (Menu, Cursor, Bar, Grid, Panel,
-                         AlignCenter, TabGroup)
+from librpg.menu import (Menu, Cursor, Bar, Grid, Panel, AlignTop,
+                         AlignCenter, TabGroup, AnimatedImageWidget)
 from librpg.context import get_context_stack
+from librpg.animation import AnimatedImage
 
 
 class CrazyBar(Bar):
@@ -34,7 +36,8 @@ class BarMenu(Menu):
                              480, 320, tab_height=30)
         self.add_widget(tab_group, AlignCenter())
 
-        for k in xrange(self.TABS):
+        # Bar tabs
+        for k in xrange(4):
             grid = Grid(480, 290, 4, 10)
             for i in xrange(4):
                 for j in xrange(10):
@@ -44,6 +47,24 @@ class BarMenu(Menu):
                     bar = CrazyBar(width, height)
                     grid[i, j].add_widget(bar, AlignCenter())
             tab_group[k].add_widget(grid, AlignCenter())
+
+        # Animated image tab
+        surfaces = []
+        for k in xrange(25):
+            s = pygame.Surface((100, 100))
+            s.fill(((25 - k) * 10, 0, k * 10))
+            surfaces.append(s)
+        for k in xrange(25):
+            s = pygame.Surface((100, 100))
+            s.fill((0, k * 10, (25 - k) * 10))
+            surfaces.append(s)
+        for k in xrange(25):
+            s = pygame.Surface((100, 100))
+            s.fill((k * 10, (25 - k) * 10, 0))
+            surfaces.append(s)
+        animation = AnimatedImage(surfaces, 1)
+        a = AnimatedImageWidget(animation, False)
+        tab_group[4].add_widget(a, AlignTop())
 
         # Add cursor
         cursor = Cursor()
