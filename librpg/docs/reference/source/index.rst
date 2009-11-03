@@ -9,6 +9,14 @@ LibRPG documentation
 A framework based on Pygame/Python for developing tile based old-school 2D
 tile-based RPGs. 
 
+.. image:: .static/ss.png
+    :width: 400
+    :height: 300
+
+.. image:: .static/ss2.png
+    :width: 400
+    :height: 300
+
 ..  toctree::
     :maxdepth: 2
 
