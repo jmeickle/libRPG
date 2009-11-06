@@ -137,12 +137,14 @@ def party_factory(reserve):
 class InventoryContext(CommandContext):
 
     def __init__(self, map):
-        CommandContext.__init__(self, {K_i: self.open_inventory,
-                                       K_p: self.open_party,
-                                       K_a: (self.switch_char, 'Andy'),
-                                       K_b: (self.switch_char, 'Brenda'),
-                                       K_c: (self.switch_char, 'Charles'),
-                                       K_d: (self.switch_char, 'Dylan')}, map)
+        CommandContext.__init__(self,
+                                {K_i: self.open_inventory,
+                                 K_p: self.open_party,
+                                 K_a: (self.switch_char, 'Andy'),
+                                 K_b: (self.switch_char, 'Brenda'),
+                                 K_c: (self.switch_char, 'Charles'),
+                                 K_d: (self.switch_char, 'Dylan')},
+                                map.controller)
         self.map = map
         self.reserve = map.world.reserve
         self.party = map.party
