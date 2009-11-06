@@ -8,7 +8,7 @@ from librpg.party import Character, CharacterReserve, Party
 from librpg.world import MicroWorld
 from librpg.item import OrdinaryInventory, OrdinaryItem
 from librpg.dialog import MessageDialog
-from librpg.context import Context
+from librpg.collection.context import CommandContext
 from librpg.path import *
 
 from pygame.locals import *
@@ -65,7 +65,7 @@ class Tree(ScenarioMapObject):
             msg = "Got a Leaf."
         else:
             msg = "Inventory full of Leaves."
-        self.map.schedule_message(msg)
+        self.map.schedule_message(MessageDialog(msg))
 
 
 class SavePoint(ScenarioMapObject):
@@ -134,46 +134,52 @@ def party_factory(reserve):
 
 # Inventory context
 
-class InventoryContext(Context):
+class InventoryContext(CommandContext):
 
     def __init__(self, map):
-        Context.__init__(self, map)
+        CommandContext.__init__(self, {K_i: self.open_inventory,
+                                       K_p: self.open_party,
+                                       K_a: (self.switch_char, 'Andy'),
+                                       K_b: (self.switch_char, 'Brenda'),
+                                       K_c: (self.switch_char, 'Charles'),
+                                       K_d: (self.switch_char, 'Dylan')}, map)
         self.map = map
         self.reserve = map.world.reserve
         self.party = map.party
         self.inv = map.party.inventory
 
-    KEY_TO_CHAR = {K_a: 'Andy', K_b: 'Brenda', K_c: 'Charles', K_d: 'Dylan'}
+    def open_inventory(self):
+        if self.map.controller.message_queue.is_active():
+            return False
+        msg = 'Inventory:' + str(self.inv.get_items_with_amounts())
+        self.map.schedule_message(MessageDialog(msg))
+        return True
 
-    def process_event(self, event):
-        if not self.map.controller.message_queue.is_active() \
-           and event.type == KEYDOWN:
-            if event.key == K_i:
-                msg = 'Inventory:' + str(self.inv.get_items_with_amounts())
-                self.map.schedule_message(MessageDialog(msg))
-                return True
-            elif event.key == K_p:
-                msg = 'Party:' + str(self.party)
-                self.map.schedule_message(MessageDialog(msg))
-                msg = 'Reserve:' + str(self.reserve.get_names())
-                self.map.schedule_message(MessageDialog(msg))
-                return True
-            elif event.key in InventoryContext.KEY_TO_CHAR.keys():
-                char = InventoryContext.KEY_TO_CHAR[event.key]
-                if char in self.party.chars:
-                    if (len(self.party.chars) > 1
-                        and self.party.remove_char(char)):
-                            msg = 'Removed %s.' % char
-                    else:
-                        msg = 'Cannot remove %s.' % char
-                else:
-                    if self.party.add_char(char):
-                        msg = 'Added %s.' % char
-                    else:
-                        msg = 'Could not add %s.' % char
-                self.map.schedule_message(MessageDialog(msg))
-                return True
-        return False
+    def open_party(self):
+        if self.map.controller.message_queue.is_active():
+            return False
+        msg = 'Party:' + str(self.party)
+        self.map.schedule_message(MessageDialog(msg))
+        msg = 'Reserve:' + str(self.reserve.get_names())
+        self.map.schedule_message(MessageDialog(msg))
+        return True
+
+    def switch_char(self, char):
+        if self.map.controller.message_queue.is_active():
+            return False
+        if char in self.party.chars:
+            if (len(self.party.chars) > 1
+                and self.party.remove_char(char)):
+                    msg = 'Removed %s.' % char
+            else:
+                msg = 'Cannot remove %s.' % char
+        else:
+            if self.party.add_char(char):
+                msg = 'Added %s.' % char
+            else:
+                msg = 'Could not add %s.' % char
+        self.map.schedule_message(MessageDialog(msg))
+        return True
 
 
 # Main
