@@ -52,13 +52,6 @@ class AnimatedImageWidget(Widget):
     
     *focusable* behaves like in any other Widget.
     """
-    """
-    A Widget that displays a static image.
-
-    *surface* should be a pygame Surface with the image to be drawn.
-
-    *focusable* and *theme* behave like in any other Widget.
-    """
 
     def __init__(self, animation, focusable=True):
         Widget.__init__(self, focusable=focusable, theme=None)
