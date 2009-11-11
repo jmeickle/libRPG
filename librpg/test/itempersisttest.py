@@ -9,6 +9,7 @@ from librpg.world import MicroWorld
 from librpg.item import OrdinaryInventory, OrdinaryItem
 from librpg.dialog import MessageDialog
 from librpg.collection.context import CommandContext
+from librpg.collection.menu import ItemMenu
 from librpg.path import *
 
 from pygame.locals import *
@@ -149,13 +150,20 @@ class InventoryContext(CommandContext):
         self.reserve = map.world.reserve
         self.party = map.party
         self.inv = map.party.inventory
+        self.item_menu = None
 
     def open_inventory(self):
         if self.map.controller.message_queue.is_active():
             return False
-        msg = 'Inventory:' + str(self.inv.get_items_with_amounts())
-        self.map.schedule_message(MessageDialog(msg))
-        return True
+        # msg = 'Inventory:' + str(self.inv.get_items_with_amounts())
+        # self.map.schedule_message(MessageDialog(msg))
+        if (self.item_menu is None
+            or self.item_menu.is_done()):
+            self.item_menu = ItemMenu(self.inv, 300, 300)
+            self.item_menu.open()
+            return True
+        else:
+            return False
 
     def open_party(self):
         if self.map.controller.message_queue.is_active():

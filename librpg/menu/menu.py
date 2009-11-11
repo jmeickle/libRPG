@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 
-from librpg.context import Context, Model
+from librpg.context import Context, Model, get_context_stack
 from librpg.virtualscreen import get_screen
 from librpg.config import game_config
 from librpg.util import check_direction, fill_with_surface, descale_point
@@ -100,6 +100,12 @@ class Menu(Model, Div):
         if self.cursor is not None and self.cursor.widget is widget:
             self.cursor.move_to()
 
+    def open(self):
+        """
+        Open the menu.
+        """
+        get_context_stack().stack_model(self)
+
     def close(self):
         """
         Close the menu.
@@ -120,6 +126,9 @@ class Menu(Model, Div):
 
     def create_controller(self):
         return MenuController(self, self.controller_parent)
+
+    def is_done(self):
+        return self.controller.is_done()
 
 
 class MenuController(Context):
