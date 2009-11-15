@@ -153,7 +153,6 @@ class MenuController(Context):
             self.done = True
             self.stop()
             return False
-
         cursor = self.menu.cursor
         if cursor is not None:
             if self.command_cooldown > 0:
@@ -166,17 +165,9 @@ class MenuController(Context):
                 else:
                     cursor.step(direction)
                     self.command_cooldown = MenuController.COMMAND_COOLDOWN
-            # self.check_input()
             cursor.update()
         self.menu.update()
         return self.menu.blocking
-
-    def check_input(self):
-        k = pygame.key.get_pressed()
-        for action_k in game_config.key_action:
-            if k[action_k]:
-                self.activate()
-                self.command_cooldown = MenuController.COMMAND_COOLDOWN
 
     def activate(self):
         cursor = self.menu.cursor
@@ -215,10 +206,7 @@ class MenuController(Context):
         elif event.type == MOUSEBUTTONUP:
             if self.process_mouse_up(event):
                 return True
-        if self.menu.blocking:
-            return True
-        else:
-            return False
+        return False
 
     def process_key_down(self, event):
         direction = check_direction(event.key)
@@ -304,6 +292,7 @@ class MenuController(Context):
                         best = (w, dist)
             if best[0] is not None:
                 cursor.move_to(best[0])
+        return True
 
     def is_done(self):
         return self.done
