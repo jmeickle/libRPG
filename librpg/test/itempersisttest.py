@@ -153,20 +153,14 @@ class InventoryContext(CommandContext):
         self.item_menu = None
 
     def open_inventory(self):
-        if self.map.controller.message_queue.is_active():
+        if self.any_menu_open():
             return False
-        # msg = 'Inventory:' + str(self.inv.get_items_with_amounts())
-        # self.map.schedule_message(MessageDialog(msg))
-        if (self.item_menu is None
-            or self.item_menu.is_done()):
-            self.item_menu = ItemMenu(self.inv, 300, 300, bg=(0, 0, 100, 128))
-            self.item_menu.open()
-            return True
-        else:
-            return False
+        self.item_menu = ItemMenu(self.inv, 300, 300, bg=(0, 0, 100, 128))
+        self.item_menu.open()
+        return True
 
     def open_party(self):
-        if self.map.controller.message_queue.is_active():
+        if self.any_menu_open():
             return False
         msg = 'Party:' + str(self.party)
         self.map.schedule_message(MessageDialog(msg))
@@ -175,7 +169,7 @@ class InventoryContext(CommandContext):
         return True
 
     def switch_char(self, char):
-        if self.map.controller.message_queue.is_active():
+        if self.any_menu_open():
             return False
         if char in self.party.chars:
             if (len(self.party.chars) > 1
@@ -190,6 +184,13 @@ class InventoryContext(CommandContext):
                 msg = 'Could not add %s.' % char
         self.map.schedule_message(MessageDialog(msg))
         return True
+
+    def any_menu_open(self):
+        if self.map.controller.message_queue.is_active():
+            return True
+        if self.item_menu is not None and not self.item_menu.is_done():
+            return True
+        return False
 
 
 # Main
