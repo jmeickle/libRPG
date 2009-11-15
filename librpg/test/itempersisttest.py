@@ -159,7 +159,7 @@ class InventoryContext(CommandContext):
         # self.map.schedule_message(MessageDialog(msg))
         if (self.item_menu is None
             or self.item_menu.is_done()):
-            self.item_menu = ItemMenu(self.inv, 300, 300)
+            self.item_menu = ItemMenu(self.inv, 300, 300, bg=(0, 0, 100, 128))
             self.item_menu.open()
             return True
         else:

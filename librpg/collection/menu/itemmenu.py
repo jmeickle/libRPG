@@ -1,4 +1,4 @@
-from librpg.menu import Menu, Label, AlignTopRight, Cursor, Panel, AlignCenter
+from librpg.menu import Menu, Label, Cursor, Panel, Div
 
 
 class ExitLabel(Label):
@@ -17,18 +17,15 @@ class ItemMenu(Menu):
         self.inventory = inventory
         Menu.__init__(self, width, height, x, y, theme, bg, mouse_control)
 
-        self.master_panel = Panel(width, height)
-        self.add_widget(self.master_panel, AlignCenter())
-
         self.exit_label = ExitLabel(theme)
-        self.master_panel.add_widget(self.exit_label, AlignTopRight(8))
+        self.add_widget(self.exit_label, (20, 12))
 
         self.build_inventory()
         cursor = Cursor()
         cursor.bind(self)
 
     def build_inventory(self):
-        self.inventory_panel = Panel(self.width, self.height - 40)
+        self.inventory_panel = Div(self.width, self.height - 40)
         self.add_widget(self.inventory_panel, (0, 40))
 
         d = self.inventory.get_items_with_amounts()
