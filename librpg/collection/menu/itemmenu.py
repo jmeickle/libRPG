@@ -21,7 +21,7 @@ class ItemMenu(Menu):
         self.add_widget(self.master_panel, AlignCenter())
 
         self.exit_label = ExitLabel(theme)
-        self.master_panel.add_widget(self.exit_label, AlignTopRight())
+        self.master_panel.add_widget(self.exit_label, AlignTopRight(8))
 
         cursor = Cursor()
         cursor.bind(self)

@@ -1,25 +1,25 @@
-def _x_left(widget, div):
-    return 0
+def _x_left(widget, div, border):
+    return border
 
 
 def _x_center(widget, div):
     return (div.width - widget.width) / 2
 
 
-def _x_right(widget, div):
-    return (div.width - widget.width)
+def _x_right(widget, div, border):
+    return (div.width - widget.width - border)
 
 
-def _y_top(widget, div):
-    return 0
+def _y_top(widget, div, border):
+    return border
 
 
 def _y_center(widget, div):
     return (div.height - widget.height) / 2
 
 
-def _y_bottom(widget, div):
-    return (div.height - widget.height)
+def _y_bottom(widget, div, border):
+    return (div.height - widget.height - border)
 
 
 class Alignment(object):
@@ -27,7 +27,12 @@ class Alignment(object):
     """
     Alignments can be passed to Div.add_widget() calls as the
     *position* parameter to calculate it automatically.
+    
+    *border* should be the offset in pixels from the location specified.
     """
+
+    def __init__(self, border=0):
+        self.border = border
 
     def align_widget(self, widget, div):
         """
@@ -45,7 +50,7 @@ class AlignTop(Alignment):
     """
 
     def align_widget(self, widget, div):
-        return (_x_center(widget, div), _y_top(widget, div))
+        return (_x_center(widget, div), _y_top(widget, div, self.border))
 
 
 class AlignLeft(Alignment):
@@ -55,7 +60,7 @@ class AlignLeft(Alignment):
     """
 
     def align_widget(self, widget, div):
-        return (_x_left(widget, div), _y_center(widget, div))
+        return (_x_left(widget, div, self.border), _y_center(widget, div))
 
 
 class AlignBottom(Alignment):
@@ -65,7 +70,7 @@ class AlignBottom(Alignment):
     """
 
     def align_widget(self, widget, div):
-        return (_x_center(widget, div), _y_bottom(widget, div))
+        return (_x_center(widget, div), _y_bottom(widget, div, self.border))
 
 
 class AlignRight(Alignment):
@@ -75,7 +80,7 @@ class AlignRight(Alignment):
     """
 
     def align_widget(self, widget, div):
-        return (_x_right(widget, div), _y_center(widget, div))
+        return (_x_right(widget, div, self.border), _y_center(widget, div))
 
 
 class AlignTopLeft(Alignment):
@@ -85,7 +90,8 @@ class AlignTopLeft(Alignment):
     """
 
     def align_widget(self, widget, div):
-        return (_x_left(widget, div), _y_top(widget, div))
+        return (_x_left(widget, div, self.border),
+                _y_top(widget, div, self.border))
 
 
 class AlignBottomLeft(Alignment):
@@ -95,7 +101,8 @@ class AlignBottomLeft(Alignment):
     """
 
     def align_widget(self, widget, div):
-        return (_x_left(widget, div), _y_bottom(widget, div))
+        return (_x_left(widget, div, self.border),
+                _y_bottom(widget, div, self.border))
 
 
 class AlignTopRight(Alignment):
@@ -105,7 +112,8 @@ class AlignTopRight(Alignment):
     """
 
     def align_widget(self, widget, div):
-        return (_x_right(widget, div), _y_top(widget, div))
+        return (_x_right(widget, div, self.border),
+                _y_top(widget, div, self.border))
 
 
 class AlignBottomRight(Alignment):
@@ -115,7 +123,8 @@ class AlignBottomRight(Alignment):
     """
 
     def align_widget(self, widget, div):
-        return (_x_right(widget, div), _y_bottom(widget, div))
+        return (_x_right(widget, div, self.border),
+                _y_bottom(widget, div, self.border))
 
 
 class AlignCenter(Alignment):
