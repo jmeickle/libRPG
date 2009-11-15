@@ -219,7 +219,7 @@ class MenuController(Context):
                 self.command_queue.insert(0, ACTIVATE)
             return True
         elif event.key in game_config.key_cancel:
-            self.stop()
+            self.menu.close()
             return True
         return False
 
