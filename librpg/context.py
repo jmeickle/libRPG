@@ -119,16 +119,14 @@ class ContextStack(object):
 
             # Update contexts in reverse order
             stop = False
-            active_contexts = []
             for context in reversed(self.stack):
                 if context.active:
                     stop = context.update()
-                    active_contexts.append(context)
                 if stop:
                     break
 
             # Draw active contexts in normal order
-            for context in reversed(active_contexts):
+            for context in self.stack:
                 context.draw()
 
             # Flip display

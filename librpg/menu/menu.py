@@ -41,7 +41,7 @@ class Menu(Model, Div):
     MOUSE_LOOSE = 2
 
     def __init__(self, width, height, x=0, y=0, theme=None, bg=None,
-                 mouse_control=MOUSE_LOOSE):
+                 mouse_control=MOUSE_LOOSE, blocking=True):
         Model.__init__(self)
         Div.__init__(self, width, height, theme)
         self.x = x
@@ -55,6 +55,7 @@ class Menu(Model, Div):
                                  Menu.MOUSE_LOOSE),\
                                 'mouse_control must be 0, 1 or 2'
         self.mouse_control = mouse_control
+        self.blocking = blocking
 
         self.should_close = False
 
@@ -165,9 +166,17 @@ class MenuController(Context):
                 else:
                     cursor.step(direction)
                     self.command_cooldown = MenuController.COMMAND_COOLDOWN
+            # self.check_input()
             cursor.update()
         self.menu.update()
-        return False
+        return self.menu.blocking
+
+    def check_input(self):
+        k = pygame.key.get_pressed()
+        for action_k in game_config.key_action:
+            if k[action_k]:
+                self.activate()
+                self.command_cooldown = MenuController.COMMAND_COOLDOWN
 
     def activate(self):
         cursor = self.menu.cursor
@@ -206,7 +215,10 @@ class MenuController(Context):
         elif event.type == MOUSEBUTTONUP:
             if self.process_mouse_up(event):
                 return True
-        return False
+        if self.menu.blocking:
+            return True
+        else:
+            return False
 
     def process_key_down(self, event):
         direction = check_direction(event.key)

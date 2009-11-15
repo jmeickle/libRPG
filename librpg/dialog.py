@@ -72,7 +72,8 @@ class MessageDialog(Menu):
                             g_cfg.screen_height / 2 - 2 * cfg.border_width,
                             cfg.border_width,
                             g_cfg.screen_height / 2 + cfg.border_width,
-                            bg=(0, 0, 0, 0))
+                            bg=(0, 0, 0, 0),
+                            blocking=block_movement)
 
         panel = Panel(self.width, self.height)
         self.add_widget(panel, (0, 0))
@@ -130,7 +131,8 @@ class ElasticMessageDialog(Menu):
                             cfg.border_width,
                             g_cfg.screen_height - self.box_height\
                             + cfg.border_width,
-                            bg=(0, 0, 0, 0))
+                            bg=(0, 0, 0, 0),
+                            blocking=block_movement)
 
         panel = Panel(self.width, self.height)
         self.add_widget(panel, (0, 0))
@@ -168,7 +170,8 @@ class MultiMessageDialog(Menu):
                             g_cfg.screen_height / 2 - 2 * cfg.border_width,
                             cfg.border_width,
                             g_cfg.screen_height / 2 + cfg.border_width,
-                            bg=(0, 0, 0, 0))
+                            bg=(0, 0, 0, 0),
+                            blocking=block_movement)
 
         # Split into lines
         font = self.theme.get_font(cfg.font_size)
@@ -248,7 +251,8 @@ class ChoiceDialog(Menu):
                             g_cfg.screen_height / 2 - 2 * cfg.border_width,
                             cfg.border_width,
                             g_cfg.screen_height / 2 + cfg.border_width,
-                            bg=(0, 0, 0, 0))
+                            bg=(0, 0, 0, 0),
+                            blocking=block_movement)
 
         panel = Panel(self.width, self.height)
         self.add_widget(panel, (0, 0))
@@ -330,6 +334,7 @@ class ChoiceLabel(Label):
     def activate(self):
         self.menu.complete(self.index)
         self.menu.close()
+        return True
 
     def process_event(self, event):
         if event.type == KEYDOWN:

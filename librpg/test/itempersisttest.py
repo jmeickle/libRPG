@@ -155,7 +155,7 @@ class InventoryContext(CommandContext):
     def open_inventory(self):
         if self.any_menu_open():
             return False
-        self.item_menu = ItemMenu(self.inv, 300, 300, bg=(0, 0, 100, 128))
+        self.item_menu = MyItemMenu(self.inv)
         self.item_menu.open()
         return True
 
@@ -191,6 +191,13 @@ class InventoryContext(CommandContext):
         if self.item_menu is not None and not self.item_menu.is_done():
             return True
         return False
+
+
+class MyItemMenu(ItemMenu):
+
+    def __init__(self, inv):
+        ItemMenu.__init__(self, inv, 360, 260, x=20, y=20, bg=(0, 0, 100, 128))
+        self.config_action_dialog(bg=(0, 28, 0, 60))
 
 
 # Main

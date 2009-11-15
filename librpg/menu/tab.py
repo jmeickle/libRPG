@@ -91,3 +91,4 @@ class TabLabel(Label):
 
     def activate(self):
         self.tab_group.focus(self.id)
+        return True
