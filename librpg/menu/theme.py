@@ -61,6 +61,14 @@ class MenuTheme(object):
         """
         raise NotImplementedError('MenuTheme.draw_panel() is abstract')
 
+    def draw_scroll_area(self, rect):
+        """
+        *Abstract.*
+
+        Return an Image of a VerticalScrollArea delimited by *rect*.
+        """
+        raise NotImplementedError('MenuTheme.draw_scroll_area() is abstract')
+
     def draw_selected_tab(self, rect):
         """
         *Abstract.*
@@ -119,6 +127,12 @@ class DefaultMenuTheme(MenuTheme):
 
     def draw_panel(self, rect):
         DEFAULT_COLOR = (128, 0, 128, 128)
+        surface = pygame.Surface((rect.width, rect.height), SRCALPHA, 32)
+        pygame.draw.rect(surface, DEFAULT_COLOR, rect)
+        return Image(surface)
+
+    def draw_scroll_area(self, rect):
+        DEFAULT_COLOR = (128, 0, 0, 128)
         surface = pygame.Surface((rect.width, rect.height), SRCALPHA, 32)
         pygame.draw.rect(surface, DEFAULT_COLOR, rect)
         return Image(surface)

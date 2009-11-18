@@ -3,10 +3,10 @@
 import librpg
 from librpg.map import MapModel
 from librpg.mapobject import ScenarioMapObject
-from librpg.util import Position, IdFactory
+from librpg.util import Position
 from librpg.party import Character, CharacterReserve, Party
 from librpg.world import MicroWorld
-from librpg.item import OrdinaryInventory, OrdinaryItem
+from librpg.item import OrdinaryInventory
 from librpg.dialog import MessageDialog
 from librpg.collection.context import CommandContext
 from librpg.collection.menu import ItemMenu
@@ -15,29 +15,10 @@ from librpg.path import *
 from pygame.locals import *
 import os
 
+from itembase import *
+
+
 SAVE_FILE = "itempersisttest_save"
-
-# Items
-
-item_factory = IdFactory()
-
-
-class LogItem(OrdinaryItem):
-
-    id = 'log'
-
-    def __init__(self):
-        OrdinaryItem.__init__(self, 'Log')
-item_factory.register(LogItem)
-
-
-class LeafItem(OrdinaryItem):
-
-    id = 'leaf'
-
-    def __init__(self):
-        OrdinaryItem.__init__(self, 'Leaf')
-item_factory.register(LeafItem)
 
 
 # Map objects

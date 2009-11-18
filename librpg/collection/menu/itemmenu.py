@@ -1,4 +1,4 @@
-from librpg.menu import Menu, Label, Cursor, Panel, Div
+from librpg.menu import Menu, Label, Cursor, Panel, Div, VerticalScrollArea
 
 
 class ExitLabel(Label):
@@ -50,7 +50,7 @@ class ItemMenu(Menu):
     def build_inventory(self):
         if self.inventory_panel is not None:
             self.remove_widget(self.inventory_panel)
-        self.inventory_panel = Div(self.width, self.height - 40)
+        self.inventory_panel = VerticalScrollArea(self.width, self.height - 40)
         self.add_widget(self.inventory_panel, (0, 40))
 
         d = self.inventory.get_items_with_amounts()
