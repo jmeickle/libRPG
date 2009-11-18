@@ -50,6 +50,18 @@ class Tree(ScenarioMapObject):
         self.map.schedule_message(MessageDialog(msg))
 
 
+class PandoraBarrel(ScenarioMapObject):
+
+    def __init__(self, map):
+        ScenarioMapObject.__init__(self, map, 0, 4)
+
+    def activate(self, party_avatar, direction):
+        for id in item_factory.classes.keys():
+            party_avatar.party.inventory.add_item_by_id(id)
+        msg = 'Found a lot of stuff inside the barrel.'
+        self.map.schedule_message(MessageDialog(msg))
+
+
 class SavePoint(ScenarioMapObject):
 
     def __init__(self, map):
@@ -77,6 +89,7 @@ class PersistTestMap(MapModel):
     def initialize(self, local_state, global_state):
         self.add_object(LogPile(self), Position(4, 5))
         self.add_object(Tree(self), Position(6, 5))
+        self.add_object(PandoraBarrel(self), Position(5, 6))
         self.add_object(SavePoint(self), Position(5, 2))
 
         self.inventory_context = InventoryContext(self)
