@@ -50,14 +50,16 @@ class ItemMenu(Menu):
     def build_inventory(self):
         if self.inventory_panel is not None:
             self.remove_widget(self.inventory_panel)
-        self.inventory_panel = VerticalScrollArea(self.width, self.height - 40)
+        self.inventory_panel = VerticalScrollArea(self.width, self.height - 40,
+                                                  50)
         self.add_widget(self.inventory_panel, (0, 40))
 
         d = self.inventory.get_items_with_amounts()
         for i, pair in enumerate(d.iteritems()):
             item, qt = pair
             label = ItemLabel(item, qt, self.inventory)
-            self.inventory_panel.add_widget(label, (20, 10 + 25 * i))
+            l = self.inventory_panel.add_line()
+            self.inventory_panel[l].add_widget(label, (20, 10))
 
     def config_action_dialog(self, width=None, height=None, bg=None):
         if width is not None:

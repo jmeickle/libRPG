@@ -112,6 +112,10 @@ class Div(Widget):
     def get_contents(self):
         return [w.widget for w in self.widgets]
 
+    def clean(self):
+        for w in self.get_contents():
+            self.remove_widget(w)
+
 
 class WidgetGroup(Div):
 
