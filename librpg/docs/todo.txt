@@ -138,16 +138,19 @@ ok      0.5     Write animation docstrings
 ok      0.5     Include menu example in docs
 ok      0.5     Bind A* navigation to mouse
 ok      0.5.1   Code AnimatedImageWidget
-        0.5.1   Code ScrollArea basics
+ok      0.5.1   Code ScrollArea basics
 ok      0.5.1   Fix ScrollArea hold button bug
 ok      0.5.1   Fix ScrollArea cursor resize bug
-        0.5.1   Fix item reordering when using last item in a stack
+ok      0.5.1   Fix item reordering when using last item in a stack
         0.5.1   Decide if UsableItems should be kept
         0.5.1   Define item image system and API for menu
-        0.5.1   Code ItemMenu
+        0.5.1   Finish ItemMenu
         0.5.1   Define Character face system
+        0.5.1   Design PartyMenu
         0.5.1   Code PartyMenu
+        0.5.1   DesignSaveMenu
         0.5.1   Code SaveMenu
+        0.5.1   Design ShopMenu
         0.5.1   Code NumberSpinner
         0.5.1   Code ShopMenu
         0.5.2   Put sound effects in standard resources and use them in tests

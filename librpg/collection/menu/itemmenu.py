@@ -14,11 +14,11 @@ class ExitLabel(Label):
 class ItemLabel(Label):
 
     def __init__(self, item, quantity, inventory):
-        s = '%s x%d' % (item.name, quantity)
-        Label.__init__(self, s)
         self.item = item
         self.quantity = quantity
         self.inventory = inventory
+        s = self.create_string()
+        Label.__init__(self, s)
 
     def activate(self):
         dialog = self.menu.create_action_dialog(self)
@@ -26,8 +26,11 @@ class ItemLabel(Label):
         return True
 
     def refresh(self):
-        quantity = self.inventory.get_amount(self.item)
-        self.text = '%s x%d' % (self.item.name, quantity)
+        self.quantity = self.inventory.get_amount(self.item)
+        self.text = self.create_string()
+
+    def create_string(self):
+        return '%s x%d' % (self.item.name, self.quantity)
 
 
 class ItemMenu(Menu):
@@ -48,18 +51,23 @@ class ItemMenu(Menu):
         self.config_action_dialog(100, 60)
 
     def build_inventory(self):
+        inv = self.inventory
+
         if self.inventory_panel is not None:
             self.remove_widget(self.inventory_panel)
         self.inventory_panel = VerticalScrollArea(self.width, self.height - 40,
                                                   50)
         self.add_widget(self.inventory_panel, (0, 40))
 
-        d = self.inventory.get_items_with_amounts()
-        for i, pair in enumerate(d.iteritems()):
+        ordered = inv.get_ordered_list()
+        amounts = inv.get_items_with_amounts()
+
+        pairs = [(item, amounts[item]) for item in ordered]
+        for i, pair in enumerate(pairs):
             item, qt = pair
-            label = ItemLabel(item, qt, self.inventory)
-            l = self.inventory_panel.add_line()
-            self.inventory_panel[l].add_widget(label, (20, 10))
+            label = ItemLabel(item, qt, inv)
+            line = self.inventory_panel.add_line()
+            self.inventory_panel[line].add_widget(label, (20, 10))
 
     def config_action_dialog(self, width=None, height=None, bg=None):
         if width is not None:
@@ -80,6 +88,7 @@ class ItemMenu(Menu):
         return dialog
 
     def refresh(self):
+        #print 'refresh'
         self.build_inventory()
 
 

@@ -417,6 +417,12 @@ class OrdinaryItem(Item):
         #return "%s id=%s" % (self.name, str(self.id))
         return "%s" % (self.name)
 
+    def __cmp__(self, other):
+        return cmp(self.id, other.id)
+
+    def __hash__(self):
+        return hash(self.id)
+
 
 class UniqueItem(Item):
 
