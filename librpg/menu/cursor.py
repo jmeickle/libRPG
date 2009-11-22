@@ -60,9 +60,9 @@ class Cursor(object):
 
     def step(self, direction):
         if self.navigator is not None:
-            target = self.widget.step(direction, self.navigator)
+            target = self.widget.widget_step(direction, self.navigator)
         else:
-            target = self.widget.step(direction)
+            target = self.widget.widget_step(direction)
         if target is not None:
             self.widget = target
 

@@ -3,6 +3,7 @@ from pygame.locals import *
 
 from librpg.menu import Div, Widget
 from librpg.config import game_config
+from librpg.locals import *
 
 
 class VerticalScrollArea(Div):
@@ -95,27 +96,23 @@ class VerticalScrollArea(Div):
         Widget.render(self, screen, x_offset, y_offset)
         Div.render(self, screen, x_offset, y_offset)
 
-    def process_event(self, event):
-        if event.type == KEYDOWN:
-            if event.key in game_config.key_up:
-                cursor = self.menu.cursor
-                if (cursor is not None
-                    and cursor.widget in self.get_first_visible().get_contents()):
-                    scrolled = self.scroll_up()
-                    if scrolled:
-                        target_div = self.get_first_visible()
-                        cursor.move_to(target_div.get_contents()[0])
-                        return True
-            elif event.key in game_config.key_down:
-                cursor = self.menu.cursor
-                if (cursor is not None
-                    and cursor.widget in self.get_last_visible().get_contents()):
-                    scrolled = self.scroll_down()
-                    if scrolled:
-                        target_div = self.get_last_visible()
-                        cursor.move_to(target_div.get_contents()[0])
-                        return True
+    def step(self, direction):
+        if direction == UP:
+            cursor = self.menu.cursor
+            if (cursor is not None
+                and cursor.widget in self.get_first_visible().get_contents()):
+                scrolled = self.scroll_up()
+                if scrolled:
+                    target_div = self.get_first_visible()
+                    cursor.move_to(target_div.get_contents()[0])
+                    return True
+        elif direction == DOWN:
+            cursor = self.menu.cursor
+            if (cursor is not None
+                and cursor.widget in self.get_last_visible().get_contents()):
+                scrolled = self.scroll_down()
+                if scrolled:
+                    target_div = self.get_last_visible()
+                    cursor.move_to(target_div.get_contents()[0])
+                    return True
         return False
-
-    def update(self):
-        pass

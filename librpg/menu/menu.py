@@ -163,7 +163,7 @@ class MenuController(Context):
                     self.activate()
                     self.command_cooldown = MenuController.COMMAND_COOLDOWN
                 else:
-                    cursor.step(direction)
+                    self.step(direction)
                     self.command_cooldown = MenuController.COMMAND_COOLDOWN
             cursor.update()
         self.menu.update()
@@ -177,6 +177,21 @@ class MenuController(Context):
                 if w.activate():
                     return
                 w = w.parent
+
+    def step(self, direction):
+        cursor = self.menu.cursor
+        if cursor is not None:
+            w = cursor.widget
+            do_normal_step = True
+            while w is not None and do_normal_step:
+                if w.step(direction):
+                    do_normal_step = False
+                w = w.parent
+        else:
+            do_normal_step = False
+
+        if do_normal_step:
+            cursor.step(direction)
 
     def process_event(self, event):
         cursor = self.menu.cursor

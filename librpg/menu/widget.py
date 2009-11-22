@@ -113,10 +113,20 @@ class Widget(object):
         # print self, 'activated'
         return False
 
+    def step(self, direction):
+        """
+        *Virtual.*
+
+        Handle a step event triggered while the widget was focused.
+
+        Return whether the event was captured.
+        """
+        return False
+        
     def crystallize(self, widget_navigator=None):
         self.gateway.crystallize(widget_navigator)
 
-    def step(self, direction, widget_navigator=None):
+    def widget_step(self, direction, widget_navigator=None):
         return self.gateway.step(direction, widget_navigator)
 
     def get_menu_position(self):
