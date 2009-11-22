@@ -57,6 +57,20 @@ class VerticalScrollArea(Div):
         self.refresh()
         return len(self.contents) - 1
 
+    def remove_line(self, pos):
+        if self.menu is not None and self.menu.cursor is not None:
+            old = self.menu.cursor.widget
+        div = self.contents.pop(pos)
+        self.remove_widget(div)
+        self.refresh()
+        if self.menu is not None and self.menu.cursor is not None:
+            if old not in div.get_contents():
+                self.menu.cursor.move_to(old)
+            elif pos < len(self):
+                self.menu.cursor.move_to(self[pos].get_contents()[0])
+            elif pos > 0:
+                self.menu.cursor.move_to()
+
     def __len__(self):
         return len(self.contents)
 
@@ -77,13 +91,13 @@ class VerticalScrollArea(Div):
             return False
 
     def refresh(self):
-        if self.menu and self.menu.cursor:
+        if self.menu is not None and self.menu.cursor is not None:
             old = self.menu.cursor.widget
         self.clean()
         end = min(self.start + self.height_in_cells, len(self))
         for pos, i in enumerate(xrange(self.start, end)):
             self.add_widget(self.contents[i], (0, self.cell_height * pos))
-        if self.menu and self.menu.cursor:
+        if self.menu is not None and self.menu.cursor is not None:
             self.menu.cursor.move_to(old)
 
     def draw(self):

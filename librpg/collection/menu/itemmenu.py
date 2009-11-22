@@ -53,8 +53,6 @@ class ItemMenu(Menu):
     def build_inventory(self):
         inv = self.inventory
 
-        if self.inventory_panel is not None:
-            self.remove_widget(self.inventory_panel)
         self.inventory_panel = VerticalScrollArea(self.width, self.height - 40,
                                                   50)
         self.add_widget(self.inventory_panel, (0, 40))
@@ -87,9 +85,11 @@ class ItemMenu(Menu):
                               bg=self.action_dialog_bg)
         return dialog
 
-    def refresh(self):
-        #print 'refresh'
-        self.build_inventory()
+    def remove_line(self, item):
+        for i in xrange(len(self.inventory_panel)):
+            if self.inventory_panel[i].get_contents()[0].item == item:
+                self.inventory_panel.remove_line(i)
+                break
 
 
 # Action Dialog
@@ -107,7 +107,7 @@ class UseLabel(Label):
         print 'Used %s' % self.item.name
         self.inv.remove_item(self.item)
         if not self.inv.contains(self.item):
-            self.menu.item_menu.refresh()
+            self.menu.item_menu.remove_line(self.item)
             self.menu.close()
         else:
             self.item_label.refresh()
