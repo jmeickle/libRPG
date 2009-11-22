@@ -101,12 +101,20 @@ class VerticalScrollArea(Div):
                 cursor = self.menu.cursor
                 if (cursor is not None
                     and cursor.widget in self.get_first_visible().get_contents()):
-                    self.scroll_up()
+                    scrolled = self.scroll_up()
+                    if scrolled:
+                        target_div = self.get_first_visible()
+                        cursor.move_to(target_div.get_contents()[0])
+                        return True
             elif event.key in game_config.key_down:
                 cursor = self.menu.cursor
                 if (cursor is not None
                     and cursor.widget in self.get_last_visible().get_contents()):
-                    self.scroll_down()
+                    scrolled = self.scroll_down()
+                    if scrolled:
+                        target_div = self.get_last_visible()
+                        cursor.move_to(target_div.get_contents()[0])
+                        return True
         return False
 
     def update(self):
