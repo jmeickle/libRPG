@@ -66,7 +66,7 @@ class ItemMenu(Menu):
             item, qt = pair
             label = ItemLabel(item, qt, inv)
             line = self.inventory_panel.add_line()
-            self.inventory_panel[line].add_widget(label, (20, 5))
+            self.inventory_panel[line].add_widget(label, (20, 10))
 
     def config_action_dialog(self, width=None, height=None, bg=None):
         if width is not None:

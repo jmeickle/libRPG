@@ -10,6 +10,7 @@ from librpg.item import OrdinaryInventory
 from librpg.dialog import MessageDialog
 from librpg.collection.context import CommandContext
 from librpg.collection.menu import ItemMenu
+from librpg.collection.theme import ClassicMenuTheme
 from librpg.path import *
 
 from pygame.locals import *
@@ -202,6 +203,7 @@ if __name__ == '__main__':
                                          object_height=32,
                                          object_width=32,
                                          scale=2)
+    librpg.config.menu_config.config(theme=ClassicMenuTheme())
 
     world = MicroWorld(PersistTestMap(), char_factory, party_factory)
     if SAVE_FILE in os.listdir('.'):
