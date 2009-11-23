@@ -53,9 +53,10 @@ class ItemMenu(Menu):
     def build_inventory(self):
         inv = self.inventory
 
-        self.inventory_panel = VerticalScrollArea(self.width, self.height - 40,
-                                                  50)
-        self.add_widget(self.inventory_panel, (0, 40))
+        self.inventory_panel = VerticalScrollArea(self.width - 20,
+                                                  self.height - 50,
+                                                  24)
+        self.add_widget(self.inventory_panel, (10, 40))
 
         ordered = inv.get_ordered_list()
         amounts = inv.get_items_with_amounts()
@@ -65,7 +66,7 @@ class ItemMenu(Menu):
             item, qt = pair
             label = ItemLabel(item, qt, inv)
             line = self.inventory_panel.add_line()
-            self.inventory_panel[line].add_widget(label, (20, 10))
+            self.inventory_panel[line].add_widget(label, (20, 5))
 
     def config_action_dialog(self, width=None, height=None, bg=None):
         if width is not None:
