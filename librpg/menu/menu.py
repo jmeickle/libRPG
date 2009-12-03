@@ -5,6 +5,7 @@ from librpg.context import Context, Model, get_context_stack
 from librpg.virtualscreen import get_screen
 from librpg.config import game_config
 from librpg.util import check_direction, fill_with_surface, descale_point
+from librpg.image import Image
 from librpg.locals import *
 
 from librpg.menu.div import Div
@@ -43,7 +44,7 @@ class Menu(Model, Div):
     def __init__(self, width, height, x=0, y=0, theme=None, bg=None,
                  mouse_control=MOUSE_LOOSE, blocking=True):
         Model.__init__(self)
-        Div.__init__(self, width, height, theme)
+        Div.__init__(self, width, height, False, theme)
         self.x = x
         self.y = y
         self.cursor = None
@@ -60,20 +61,21 @@ class Menu(Model, Div):
         self.should_close = False
 
     def init_bg(self, bg):
-        self.bg = pygame.Surface((self.width, self.height), SRCALPHA, 32)\
-                  .convert_alpha()
         if bg is not None:
+            bg_surf = pygame.Surface((self.width, self.height), SRCALPHA, 32)\
+                      .convert_alpha()
             if isinstance(bg, tuple) and len(bg) >= 3:
-                self.bg.fill(bg)
+                bg_surf.fill(bg)
             else:
-                fill_with_surface(self.bg, bg)
+                fill_with_surface(bg_surf, bg)
+            self.bg = Image(bg_surf)
         else:
-            BLACK = (0, 0, 0, 255)
-            self.bg.fill(BLACK)
+            r = pygame.Rect(0, 0, self.width, self.height)
+            self.bg = self.theme.draw_menu_bg(r)
 
     def draw(self):
         scr = get_screen()
-        scr.blit(self.bg, (self.x, self.y))
+        scr.blit(self.bg.get_surface(), (self.x, self.y))
         Div.draw(self)
         Div.render(self, scr, self.x, self.y)
         if self.cursor is not None:

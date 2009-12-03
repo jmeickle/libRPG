@@ -53,6 +53,14 @@ class MenuTheme(object):
         """
         raise NotImplementedError('MenuTheme.get_font_color() is abstract')
 
+    def draw_menu_bg(self, rect):
+        """
+        *Virtual.*
+
+        Return an Image of a Menu background delimited by *rect*.
+        """
+        return self.draw_panel(rect)
+    
     def draw_panel(self, rect):
         """
         *Abstract.*

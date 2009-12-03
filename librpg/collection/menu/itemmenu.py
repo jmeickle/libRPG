@@ -48,7 +48,7 @@ class ItemMenu(Menu):
         cursor = Cursor()
         cursor.bind(self)
 
-        self.config_action_dialog(100, 60)
+        self.config_action_dialog(100, 60, None)
 
     def build_inventory(self):
         inv = self.inventory
@@ -73,8 +73,7 @@ class ItemMenu(Menu):
             self.action_dialog_width = width
         if height is not None:
             self.action_dialog_height = height
-        if bg is not None:
-            self.action_dialog_bg = bg
+        self.action_dialog_bg = bg
 
     def create_action_dialog(self, item_label):
         x, y = item_label.get_menu_position()
@@ -83,6 +82,7 @@ class ItemMenu(Menu):
                               item_label,
                               self.action_dialog_width,
                               self.action_dialog_height, x, y,
+                              theme=self.theme,
                               bg=self.action_dialog_bg)
         return dialog
 

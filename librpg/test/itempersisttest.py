@@ -191,8 +191,8 @@ class InventoryContext(CommandContext):
 class MyItemMenu(ItemMenu):
 
     def __init__(self, inv):
-        ItemMenu.__init__(self, inv, 360, 260, x=20, y=20, bg=(0, 0, 100, 128))
-        self.config_action_dialog(bg=(0, 28, 0, 60))
+        ItemMenu.__init__(self, inv, 360, 260, x=20, y=20)
+        #self.config_action_dialog(bg=(0, 28, 0, 60))
 
 
 # Main
