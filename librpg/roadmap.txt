@@ -23,33 +23,38 @@ An inventory stores the party's items, which are taken from map events. The item
 
 
 Version 0.5 (released on nov 2, 2009)
--------------------------------------------
+-------------------------------------
 Generic menu is implemented.
 
 
-Version 0.5.1 (to be released on dec, 2009)
--------------------------------------------
+Version 0.6 (to be released on dec, 2009)
+-----------------------------------------
 Party management, save and inventory sample menus done.
-
-
-Version 0.5.2 (to be released on dec, 2009)
--------------------------------------------
-Collection module expanded. Map view and charset builder tools. File specifications.
-
-
-Version 0.6
------------
-Synchronous events (scene module) and asynchronous events (context module) implemented.
-
-
-Version 0.6.1
--------------
-Support for animations. Example displays a mana bar on the screen, and binds keys to spells castable on the map.
 
 
 Version 0.7
 -----------
+Procedural maps and tilesets as an alternative to .map and .bnd files.
+
+
+Version 0.8
+-----------
+Collection module expanded. Map view and charset builder tools. File specifications.
+
+
+Version 0.9
+-----------
 Basic battle API implemented for turn based battles. Battle system implementation example.
+
+
+Version 0.10
+------------
+Synchronous events (scene module) and asynchronous events (context module) implemented.
+
+
+Version 0.11
+------------
+Support for animations. Example displays a mana bar on the screen, and binds keys to spells castable on the map.
 
 
 Version 1.0 

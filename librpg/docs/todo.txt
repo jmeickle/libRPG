@@ -137,40 +137,42 @@ ok      0.5     Implement animated themes
 ok      0.5     Write animation docstrings
 ok      0.5     Include menu example in docs
 ok      0.5     Bind A* navigation to mouse
-ok      0.5.1   Code AnimatedImageWidget
-ok      0.5.1   Code ScrollArea basics
-ok      0.5.1   Fix ScrollArea hold button bug
-ok      0.5.1   Fix ScrollArea cursor resize bug
-ok      0.5.1   Fix item reordering when using last item in a stack
-        0.5.1   Decide if UsableItems should be kept
-        0.5.1   Define item image system and API for menu
-        0.5.1   Finish ItemMenu
-        0.5.1   Define Character face system
-        0.5.1   Design PartyMenu
-        0.5.1   Code PartyMenu
-        0.5.1   DesignSaveMenu
-        0.5.1   Code SaveMenu
-        0.5.1   Design ShopMenu
-        0.5.1   Code NumberSpinner
-        0.5.1   Code ShopMenu
-        0.5.2   Put sound effects in standard resources and use them in tests
-        0.5.2   Write file specifications
-        0.5.2   Charset generating tool (clothes/hair/accessories layers, written in librpg itself)
-        0.5.2   Map viewer tool (writting in librpg)
-        0.5.2   Implement Chest, NPC and other MapObjects in collection
-        0.5.2   Join MapModel and WorldMap
-        0.5.2   Organize pacakges: open map package
-        0.5.2   Write a theme tester
-        0.6     Implement pictures (bound to map or to screen)
-        0.6     Write scene module
-        0.6.1   Write animation module
-        0.7     Define generic battle system
-        0.7     Write quest module
+ok      0.6     Code AnimatedImageWidget
+ok      0.6     Code ScrollArea basics
+ok      0.6     Fix ScrollArea hold button bug
+ok      0.6     Fix ScrollArea cursor resize bug
+ok      0.6     Fix item reordering when using last item in a stack
+        0.6     Decide if UsableItems should be kept
+        0.6     Define item image system and API for menu
+        0.6     Finish ItemMenu
+        0.6     Define Character face system
+        0.6     Design PartyMenu
+        0.6     Code PartyMenu
+        0.6     DesignSaveMenu
+        0.6     Code SaveMenu
+        0.6     Design ShopMenu
+        0.6     Code NumberSpinner
+        0.6     Code ShopMenu
+        0.7     Allow manual map building
+        0.7     Allow manual tileset building
+        0.8     Put sound effects in standard resources and use them in tests
+        0.8     Write file specifications
+        0.8     Charset generating tool (clothes/hair/accessories layers, written in librpg itself)
+        0.8     Map viewer tool (writting in librpg)
+        0.8     Implement Chest, NPC and other MapObjects in collection
+        0.8     Join MapModel and WorldMap
+        0.8     Organize pacakges: open map package
+        0.8     Write a theme tester
+        0.8     Boundaries file editing tool
+        0.9     Define generic battle system
+        0.10    Implement pictures (bound to map or to screen)
+        0.10    Write scene module
+        0.11    Write animation module
+        ?       Write quest module
         ?       Add on_object_touch events
         ?       Image management module (store the last x loaded images and the y most used images)
         ?       Bank module (stores money and items)
         ?       Split util module
-        ?       Boundaries file editing tool
         ?       Code slot interface
         ?       Implement HighlightCursor
         1.0     Write file types reference
