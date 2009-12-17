@@ -161,7 +161,7 @@ class DefaultMenuTheme(MenuTheme):
     def draw_unselected_tab(self, rect):
         DEFAULT_COLOR = (75, 0, 75, 128)
         border = 2
-        internal_rect = pygame.Rect((rect.top + border, rect.left + border),
+        internal_rect = pygame.Rect((rect.left + border, rect.top + border),
                                     (rect.w - 2 * border, rect.h - border))
         surface = pygame.Surface((rect.width, rect.height), SRCALPHA, 32)
         pygame.draw.rect(surface, DEFAULT_COLOR, internal_rect)
@@ -176,7 +176,7 @@ class DefaultMenuTheme(MenuTheme):
 
         border = 0 if (rect.width < 4 or rect.height < 4) else 1
         for i in xrange(border):
-            border_rect = pygame.Rect((rect.top + i, rect.left + i),
+            border_rect = pygame.Rect((rect.left + i, rect.top + i),
                                       (rect.width - 2 * i,
                                        rect.height - 2 * i))
             pygame.draw.rect(surface, WHITE, border_rect, 1)

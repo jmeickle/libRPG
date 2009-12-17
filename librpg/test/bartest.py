@@ -5,6 +5,7 @@ from librpg.menu import (Menu, Cursor, Bar, Grid, Panel, AlignTop,
                          AlignCenter, TabGroup, AnimatedImageWidget)
 from librpg.context import get_context_stack
 from librpg.animation import AnimatedImage
+from librpg.collection.theme import ClassicMenuTheme
 
 
 class CrazyBar(Bar):
@@ -32,6 +33,7 @@ class BarMenu(Menu):
 
     def __init__(self):
         Menu.__init__(self, 480, 320)
+        librpg.config.menu_config.config(theme=ClassicMenuTheme())
         tab_group = TabGroup(['Bars%d' % (i + 1) for i in xrange(self.TABS)],
                              480, 320, tab_height=30)
         self.add_widget(tab_group, AlignCenter())

@@ -142,6 +142,8 @@ ok      0.6     Code ScrollArea basics
 ok      0.6     Fix ScrollArea hold button bug
 ok      0.6     Fix ScrollArea cursor resize bug
 ok      0.6     Fix item reordering when using last item in a stack
+        0.6     Draw a decent theme
+        0.6     Create color constants
         0.6     Decide if UsableItems should be kept
         0.6     Define item image system and API for menu
         0.6     Finish ItemMenu

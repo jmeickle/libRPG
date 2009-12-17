@@ -7,6 +7,7 @@ from librpg.menu import (Menu, Panel, Label, Cursor,
                          AlignCenter, AlignTopLeft)
 from librpg.context import get_context_stack
 from librpg.path import data_path
+from librpg.collection.theme import ClassicMenuTheme
 
 
 class MenuLabel(Label):
@@ -104,6 +105,7 @@ class TestMenu(Menu):
 
 def main():
     librpg.init()
+    librpg.config.menu_config.config(theme=ClassicMenuTheme())
 
     get_context_stack().stack_model(TestMenu())
     get_context_stack().gameloop()
