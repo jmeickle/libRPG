@@ -2,6 +2,7 @@ from librpg.map import *
 from librpg.config import graphics_config as g_cfg
 from librpg.tile import *
 from librpg.locals import *
+from librpg.color import BLACK
 from librpg.virtualscreen import get_screen
 from librpg.util import descale_point
 
@@ -49,7 +50,6 @@ class MapView(object):
                              g_cfg.screen_height)
         background = pygame.Surface((background_width, background_height))
 
-        BLACK = (0, 0, 0)
         background.fill(BLACK)
 
         for y in xrange(self.map_model.height):

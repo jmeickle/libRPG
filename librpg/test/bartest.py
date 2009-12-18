@@ -33,7 +33,6 @@ class BarMenu(Menu):
 
     def __init__(self):
         Menu.__init__(self, 480, 320)
-        librpg.config.menu_config.config(theme=ClassicMenuTheme())
         tab_group = TabGroup(['Bars%d' % (i + 1) for i in xrange(self.TABS)],
                              480, 320, tab_height=30)
         self.add_widget(tab_group, AlignCenter())
@@ -76,6 +75,7 @@ class BarMenu(Menu):
 def main():
     librpg.init()
     graphics_config.config(screen_width=480, screen_height=320)
+    librpg.config.menu_config.config(theme=ClassicMenuTheme())
 
     get_context_stack().stack_model(BarMenu())
     get_context_stack().gameloop()

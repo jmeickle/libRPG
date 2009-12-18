@@ -22,8 +22,8 @@ The global configuration objects are:
 import pygame
 
 from librpg.locals import *
+from librpg.color import *
 from librpg import virtualscreen
-
 
 class Config(object):
 
@@ -242,10 +242,10 @@ class DialogConfig(Config):
     border_width = 15
     line_spacing = 2
     choice_line_spacing = 2
-    bg_color = (128, 0, 128, 128)
-    font_color = (255, 255, 255)
-    selected_font_color = (255, 0, 0)
-    not_selected_font_color = (128, 128, 128)
+    bg_color = transparency(PURPLE, 0.5)
+    font_color = WHITE
+    selected_font_color = RED
+    not_selected_font_color = GREY
 
 
 class GameConfig(Config):

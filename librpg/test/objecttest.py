@@ -252,7 +252,7 @@ class ObjectTestMap(MapModel):
 def char_factory(name):
     return librpg.party.Character('Andy', charset_path('naked_man.png'))
 
-if __name__ == '__main__':
+def main():
     librpg.init('Object Test')
     librpg.config.graphics_config.config(tile_size=32, object_height=32,
                                          object_width=32)
@@ -262,3 +262,6 @@ if __name__ == '__main__':
     world.gameloop()
 
     exit()
+
+if __name__ == '__main__':
+    main()

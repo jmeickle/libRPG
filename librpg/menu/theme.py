@@ -4,6 +4,7 @@ from pygame.locals import SRCALPHA
 from librpg.path import cursor_theme_path
 from librpg.image import Image
 from librpg.animation import AnimatedImage
+from librpg.color import *
 
 
 class MenuTheme(object):
@@ -130,23 +131,22 @@ class DefaultMenuTheme(MenuTheme):
         return ('sys', 'Verdana')
 
     def get_font_color(self):
-        WHITE = (255, 255, 255)
         return WHITE
 
     def draw_panel(self, rect):
-        DEFAULT_COLOR = (128, 0, 128, 128)
+        DEFAULT_COLOR = transparency(PURPLE, 0.5)
         surface = pygame.Surface((rect.width, rect.height), SRCALPHA, 32)
         pygame.draw.rect(surface, DEFAULT_COLOR, rect)
         return Image(surface)
 
     def draw_scroll_area(self, rect):
-        DEFAULT_COLOR = (128, 0, 0, 128)
+        DEFAULT_COLOR = transparency(DARK_RED, 0.5)
         surface = pygame.Surface((rect.width, rect.height), SRCALPHA, 32)
         pygame.draw.rect(surface, DEFAULT_COLOR, rect)
         return Image(surface)
 
     def draw_selected_tab(self, rect):
-        DEFAULT_COLOR = (128, 0, 128, 128)
+        DEFAULT_COLOR = transparency(PURPLE, 0.5)
         surfaces = []
         for i in xrange(2):
             border = 2 + i
@@ -159,7 +159,7 @@ class DefaultMenuTheme(MenuTheme):
         return AnimatedImage(surfaces, 10)
 
     def draw_unselected_tab(self, rect):
-        DEFAULT_COLOR = (75, 0, 75, 128)
+        DEFAULT_COLOR = transparency(DARKER_MAGENTA, 0.5)
         border = 2
         internal_rect = pygame.Rect((rect.left + border, rect.top + border),
                                     (rect.w - 2 * border, rect.h - border))
@@ -168,9 +168,6 @@ class DefaultMenuTheme(MenuTheme):
         return Image(surface)
 
     def draw_bar(self, rect, filled=1.0):
-        TRANSPARENT = (0, 0, 0, 0)
-        WHITE = (255, 255, 255, 255)
-
         surface = pygame.Surface((rect.width, rect.height), SRCALPHA, 32)
         surface.fill(TRANSPARENT)
 
@@ -235,8 +232,8 @@ class DefaultCursorTheme(CursorTheme):
             width = target_rect.w + 2 * (self.BORDER + self.HORIZONTAL_OFFSET)
             height = target_rect.h + 2 * (self.BORDER + self.VERTICAL_OFFSET)
             s = pygame.Surface((width, height), SRCALPHA, 32).convert_alpha()
-            s.fill((255 - 64 * i, 0, 0, 255))
-            pygame.draw.rect(s, (0, 0, 0, 0),
+            s.fill((255 - 64 * i, 0, 0))
+            pygame.draw.rect(s, TRANSPARENT,
                              pygame.Rect((self.BORDER, self.BORDER),
                              (target_rect.w + 2 * self.HORIZONTAL_OFFSET,
                               target_rect.h + 2 * self.VERTICAL_OFFSET)))

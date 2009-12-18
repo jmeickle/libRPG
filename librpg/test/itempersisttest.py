@@ -197,7 +197,7 @@ class MyItemMenu(ItemMenu):
 
 # Main
 
-if __name__ == '__main__':
+def main():
     librpg.init('Item Persist Test')
     librpg.config.graphics_config.config(tile_size=32,
                                          object_height=32,
@@ -215,3 +215,6 @@ if __name__ == '__main__':
                              party=['Andy'])
     world.gameloop()
     exit()
+
+if __name__ == '__main__':
+    main()

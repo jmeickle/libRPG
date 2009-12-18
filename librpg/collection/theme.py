@@ -5,7 +5,7 @@ from pygame.locals import *
 
 from librpg.menu import MenuTheme, CursorTheme
 from librpg.image import Image
-
+from librpg.color import *
 
 class ClassicMenuTheme(MenuTheme):
 
@@ -13,9 +13,9 @@ class ClassicMenuTheme(MenuTheme):
     A simple opaque, color-configurable old school theme.
     """
 
-    def __init__(self, color=(0, 0, 128), border=2,
-                 border_color=(255, 255, 255),
-                 unselected_tab_color=(0, 0, 64),
+    def __init__(self, color=DARK_BLUE, border=2,
+                 border_color=WHITE,
+                 unselected_tab_color=DARKER_BLUE,
                  round_corners=10):
         self.color = color
         self.border = border
@@ -27,10 +27,9 @@ class ClassicMenuTheme(MenuTheme):
         return ('sys', 'Verdana')
 
     def get_font_color(self):
-        return (255, 255, 255)
+        return WHITE
 
     def draw_menu_bg(self, rect):
-        BLACK = (0, 0, 0)
         surface = pygame.Surface((rect.width, rect.height), SRCALPHA, 32)
         pygame.draw.rect(surface, BLACK, rect)
         return Image(surface)
@@ -64,9 +63,6 @@ class ClassicMenuTheme(MenuTheme):
         return Image(surface)
 
     def draw_bar(self, rect, filled=1.0):
-        TRANSPARENT = (0, 0, 0, 0)
-        WHITE = (255, 255, 255, 255)
-
         surface = pygame.Surface((rect.width, rect.height), SRCALPHA, 32)
         surface.fill(TRANSPARENT)
 
@@ -104,7 +100,6 @@ class ClassicMenuTheme(MenuTheme):
         H_MIDDLE = rect.height - 2 * BORDER
         
         # Circle to be cut
-        TRANSPARENT = (0, 0, 0, 0)
         circle = pygame.Surface((2 * BORDER + 1,
                                  2 * BORDER), SRCALPHA, 32)
         circle.fill(TRANSPARENT)
@@ -153,7 +148,6 @@ class ClassicMenuTheme(MenuTheme):
 
     def draw_round_border_rect(self, rect,
                                border_flags=(None, True, True, True, True)):
-        TRANSPARENT = (0, 0, 0, 0)
         surface = pygame.Surface((rect.width, rect.height), SRCALPHA, 32)
         surface.fill(TRANSPARENT)
         

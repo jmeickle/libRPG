@@ -7,6 +7,7 @@ are a tool for displaying conversations, questions, etc.
 import pygame
 
 from librpg.locals import *
+from librpg.color import TRANSPARENT
 from librpg.context import get_context_stack
 from librpg.config import dialog_config as cfg
 from librpg.config import graphics_config as g_cfg
@@ -72,7 +73,7 @@ class MessageDialog(Menu):
                             g_cfg.screen_height / 2 - 2 * cfg.border_width,
                             cfg.border_width,
                             g_cfg.screen_height / 2 + cfg.border_width,
-                            bg=(0, 0, 0, 0),
+                            bg=TRANSPARENT,
                             blocking=block_movement)
 
         panel = Panel(self.width, self.height)
@@ -131,7 +132,7 @@ class ElasticMessageDialog(Menu):
                             cfg.border_width,
                             g_cfg.screen_height - self.box_height\
                             + cfg.border_width,
-                            bg=(0, 0, 0, 0),
+                            bg=TRANSPARENT,
                             blocking=block_movement)
 
         panel = Panel(self.width, self.height)
@@ -170,7 +171,7 @@ class MultiMessageDialog(Menu):
                             g_cfg.screen_height / 2 - 2 * cfg.border_width,
                             cfg.border_width,
                             g_cfg.screen_height / 2 + cfg.border_width,
-                            bg=(0, 0, 0, 0),
+                            bg=TRANSPARENT,
                             blocking=block_movement)
 
         # Split into lines
@@ -251,7 +252,7 @@ class ChoiceDialog(Menu):
                             g_cfg.screen_height / 2 - 2 * cfg.border_width,
                             cfg.border_width,
                             g_cfg.screen_height / 2 + cfg.border_width,
-                            bg=(0, 0, 0, 0),
+                            bg=TRANSPARENT,
                             blocking=block_movement)
 
         panel = Panel(self.width, self.height)
