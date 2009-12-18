@@ -1,4 +1,5 @@
 from librpg.menu import Menu, Label, Cursor, Panel, Div, VerticalScrollArea
+from librpg.color import TRANSPARENT
 
 
 class ExitLabel(Label):
@@ -48,7 +49,7 @@ class ItemMenu(Menu):
         cursor = Cursor()
         cursor.bind(self)
 
-        self.config_action_dialog(100, 60, None)
+        self.config_action_dialog(100, 60, TRANSPARENT)
 
     def build_inventory(self):
         inv = self.inventory
@@ -118,7 +119,7 @@ class UseLabel(Label):
 class ActionDialog(Menu):
 
     def __init__(self, item_menu, item, quantity, item_label, width, height,
-                 x=0, y=0, theme=None, bg=None,
+                 x=0, y=0, theme=None, bg=TRANSPARENT,
                  mouse_control=Menu.MOUSE_LOOSE):
         Menu.__init__(self, width, height, x, y, theme, bg, mouse_control)
         self.item_menu = item_menu
@@ -126,12 +127,15 @@ class ActionDialog(Menu):
         self.item = item
         self.quantity = quantity
 
+        self.panel = Panel(width, height)
+        self.add_widget(self.panel, (0, 0))
+        
         self.use_label = UseLabel(self.item, self.item_menu.inventory, None,
                                   item_label)
-        self.add_widget(self.use_label, (20, 12))
+        self.panel.add_widget(self.use_label, (20, 12))
 
         self.exit_label = ExitLabel()
-        self.add_widget(self.exit_label, (20, 36))
+        self.panel.add_widget(self.exit_label, (20, 36))
 
         cursor = Cursor()
         cursor.bind(self)
