@@ -30,9 +30,7 @@ class ClassicMenuTheme(MenuTheme):
         return WHITE
 
     def draw_menu_bg(self, rect):
-        surface = pygame.Surface((rect.width, rect.height), SRCALPHA, 32)
-        pygame.draw.rect(surface, BLACK, rect)
-        return Image(surface)
+        return self.draw_round_border_rect(rect)
 
     def draw_panel(self, rect):
         return self.draw_round_border_rect(rect)
