@@ -1,5 +1,5 @@
 import librpg
-from librpg.locals import *
+from librpg.locals import K_w, K_a, K_s, K_d, K_e, K_q
 
 
 def char_factory(name):

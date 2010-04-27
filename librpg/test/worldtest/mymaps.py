@@ -4,8 +4,8 @@ from librpg.maparea import RectangleArea, MapArea
 from librpg.util import Position
 from librpg.movement import Face, Wait
 from librpg.dialog import MessageDialog
-from librpg.locals import *
-from librpg.path import *
+from librpg.locals import RIGHT, DOWN, LEFT, UP
+from librpg.path import tileset_path, charset_path
 from librpg.collection.maparea import RelativeTeleportArea
 
 SAVE_FILE = 'save'

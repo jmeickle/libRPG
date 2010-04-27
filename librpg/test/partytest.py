@@ -1,4 +1,4 @@
-from librpg.party import *
+from librpg.party import Character, CharacterReserve, Party
 
 
 def test_add(p, r, char):

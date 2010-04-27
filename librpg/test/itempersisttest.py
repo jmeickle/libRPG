@@ -4,19 +4,19 @@ import librpg
 from librpg.map import MapModel
 from librpg.mapobject import ScenarioMapObject
 from librpg.util import Position
-from librpg.party import Character, CharacterReserve, Party
+from librpg.party import Character, Party
 from librpg.world import MicroWorld
 from librpg.item import OrdinaryInventory
 from librpg.dialog import MessageDialog
 from librpg.collection.context import CommandContext
 from librpg.collection.menu import ItemMenu
 from librpg.collection.theme import ClassicMenuTheme
-from librpg.path import *
+from librpg.path import charset_path, tileset_path
 
-from pygame.locals import *
+from pygame.locals import K_i, K_p, K_a, K_b, K_c, K_d
 import os
 
-from itembase import *
+import itembase
 
 
 SAVE_FILE = "itempersisttest_save"
@@ -57,7 +57,7 @@ class PandoraBarrel(ScenarioMapObject):
         ScenarioMapObject.__init__(self, map, 0, 4)
 
     def activate(self, party_avatar, direction):
-        for id in item_factory.classes.keys():
+        for id in itembase.item_factory.classes.keys():
             party_avatar.party.inventory.add_item_by_id(id)
         msg = 'Found a lot of stuff inside the barrel.'
         self.map.schedule_message(MessageDialog(msg))
@@ -103,7 +103,7 @@ class TestParty(Party):
 
     def __init__(self, reserve):
         Party.__init__(self, reserve)
-        self.inventory = OrdinaryInventory(item_factory)
+        self.inventory = OrdinaryInventory(itembase.item_factory)
 
     def custom_save(self):
         return self.inventory.save_state()

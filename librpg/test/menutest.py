@@ -1,5 +1,5 @@
 import pygame
-from pygame import *
+from pygame import KEYDOWN, MOUSEBUTTONDOWN
 
 import librpg
 from librpg.menu import (Menu, Panel, Label, Cursor,

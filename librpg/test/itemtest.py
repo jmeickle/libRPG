@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-from librpg.item import *
+from librpg.item import OrdinaryItem, OrdinaryInventory
 from librpg.util import IdFactory
 
 item_factory = IdFactory()

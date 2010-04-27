@@ -1,9 +1,9 @@
 from librpg.world import World
+from librpg.party import Character
+from librpg.path import charset_path
 from librpg.util import Position
-from librpg.party import Character, Party
-from librpg.path import *
 
-from worldtest.mymaps import *
+from worldtest.mymaps import Map1, Map2, Map3
 
 def char_factory(name):
     return Character('Andy', charset_path('naked_man.png'))

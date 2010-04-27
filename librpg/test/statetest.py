@@ -1,4 +1,4 @@
-from librpg.state import *
+from librpg.state import State
 
 s = State()
 

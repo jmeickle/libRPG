@@ -4,20 +4,18 @@
 from random import choice, randint
 
 import librpg
-import pygame
 
 from librpg.map import MapModel
 from librpg.mapobject import MapObject, ScenarioMapObject
 from librpg.world import MicroWorld
 from librpg.util import Position, inverse
-from librpg.party import Character, CharacterReserve
 from librpg.movement import Step, ForcedStep, Face, Wait, Slide, PathMovement
 from librpg.dialog import (MessageDialog, ChoiceDialog, MultiMessageDialog,
                            ElasticMessageDialog)
 from librpg.sound import play_sfx
 from librpg.image import ObjectImage
-from librpg.locals import *
-from librpg.path import *
+from librpg.locals import UP, DOWN, RIGHT, LEFT
+from librpg.path import charset_path, tileset_path
 
 
 class ObjectTestNPC(MapObject):
@@ -30,7 +28,7 @@ class ObjectTestNPC(MapObject):
 
     def activate(self, party_avatar, direction):
         print 'Activated NPC'
-        for i in xrange(2):
+        for _ in xrange(2):
             step = Step(inverse(direction), back=True)
             party_avatar.schedule_movement(step)
 
@@ -62,7 +60,7 @@ class ObjectTestRock(ScenarioMapObject):
 
     def activate(self, party_avatar, direction):
         print 'Activated rock'
-        for i in xrange(3):
+        for _ in xrange(3):
             self.schedule_movement(Step(direction))
         self.schedule_movement(Face(inverse(direction)))
 
@@ -232,7 +230,7 @@ class ObjectTestMap(MapModel):
         lower_bnd_file = tileset_path('town2.bnd')
         upper_tile_image = tileset_path('world_upper.png')
         upper_bnd_file = tileset_path('world_upper.bnd')
-        MapModel.__init__(self, 'objecttest.map',
+        MapModel.__init__(self, map_file,
                           (lower_tile_image, lower_bnd_file),
                           [(upper_tile_image, upper_bnd_file), ])
 

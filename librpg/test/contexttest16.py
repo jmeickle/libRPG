@@ -4,13 +4,12 @@ import pygame
 from librpg.map import MapModel
 from librpg.mapobject import MapObject, ScenarioMapObject
 from librpg.util import Position, inverse
-from librpg.party import Character, CharacterReserve
-from librpg.movement import Slide, Wait, ForcedStep, Face
+from librpg.movement import Slide, Wait, ForcedStep
 from librpg.dialog import MessageDialog
 from librpg.config import dialog_config, game_config
 from librpg.context import Context
 from librpg.virtualscreen import get_screen
-from librpg.locals import *
+from librpg.locals import LEFT, DOWN, RIGHT, UP
 
 
 class ObjectTestNPC(MapObject):
