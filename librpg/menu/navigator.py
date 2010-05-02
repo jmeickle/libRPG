@@ -1,6 +1,6 @@
 import math
 
-from librpg.locals import *
+from librpg.locals import UP, DOWN, RIGHT, LEFT 
 
 
 class WidgetNavigator(object):

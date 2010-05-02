@@ -1,6 +1,3 @@
-import pygame
-
-from librpg.menu.theme import MenuTheme
 from librpg.config import menu_config
 
 

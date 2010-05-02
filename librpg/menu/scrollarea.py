@@ -1,9 +1,7 @@
 import pygame
-from pygame.locals import *
 
 from librpg.menu import Div, Widget
-from librpg.config import game_config
-from librpg.locals import *
+from librpg.locals import UP, DOWN
 
 
 class VerticalScrollArea(Div):

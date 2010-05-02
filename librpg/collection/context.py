@@ -1,5 +1,5 @@
 from librpg.context import Context
-from pygame.locals import *
+from pygame.locals import KEYDOWN
 
 
 class CommandContext(Context):

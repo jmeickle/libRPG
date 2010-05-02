@@ -1,5 +1,3 @@
-import pygame
-
 from librpg.menu.widget import Widget
 from librpg.image import Image
 

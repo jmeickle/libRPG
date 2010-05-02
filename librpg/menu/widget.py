@@ -1,6 +1,5 @@
 import math
 import pygame
-from pygame.locals import SRCALPHA
 
 from librpg.config import menu_config
 from librpg.menu.navigator import WidgetGateway

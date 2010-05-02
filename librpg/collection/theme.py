@@ -1,9 +1,7 @@
-import math
-
 import pygame
-from pygame.locals import *
+from pygame.locals import SRCALPHA
 
-from librpg.menu import MenuTheme, CursorTheme
+from librpg.menu import MenuTheme
 from librpg.image import Image
 from librpg.color import *
 
