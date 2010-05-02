@@ -9,8 +9,10 @@ in pieces of the same size.
 
 import pygame
 
-from librpg.locals import *
-from librpg.config import *
+from librpg.locals import (UP, RIGHT, DOWN, LEFT,
+                           DEFAULT_OBJECT_IMAGE_BASIC_ANIMATION,
+                           SPEEDS, NORMAL_SPEED)
+from librpg.config import graphics_config
 
 
 class Image(object):

@@ -5,9 +5,8 @@ which is the MapObject controlled by the player that represents the Party
 in the map.
 """
 
-import pygame
-
-from librpg.locals import *
+from librpg.locals import (DEFAULT_OBJECT_IMAGE_BASIC_ANIMATION, DOWN,
+                           NORMAL_SPEED)
 from librpg.movement import MovementQueue, MovementCycle
 from librpg.image import ObjectImage
 

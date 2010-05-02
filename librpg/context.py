@@ -10,7 +10,7 @@ context.get_context_stack().
 
 import pygame
 
-from librpg.locals import *
+from librpg.locals import QUIT
 from librpg.config import game_config
 from librpg.virtualscreen import get_screen
 from librpg.animation import get_metronome

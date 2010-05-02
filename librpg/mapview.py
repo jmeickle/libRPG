@@ -1,10 +1,11 @@
-from librpg.map import *
+import pygame
+
 from librpg.config import graphics_config as g_cfg
-from librpg.tile import *
-from librpg.locals import *
+from librpg.tile import Tile
+from librpg.locals import UP, RIGHT, DOWN, LEFT, ANIMATION_PERIOD, SRCALPHA
 from librpg.color import BLACK
 from librpg.virtualscreen import get_screen
-from librpg.util import descale_point
+from librpg.util import descale_point, Position
 
 
 class MapView(object):

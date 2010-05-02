@@ -8,11 +8,9 @@ import gc
 
 from librpg.map import MapModel
 from librpg.state import State
-from librpg.maparea import MapArea
-from librpg.util import Position
-from librpg.context import ContextStack, get_context_stack
+from librpg.context import get_context_stack
 from librpg.party import CharacterReserve, default_party_factory
-from librpg.locals import *
+from librpg.locals import DOWN, PARTY_POSITION_LOCAL_STATE
 
 
 class BaseWorld(object):
@@ -91,7 +89,7 @@ class BaseWorld(object):
         self.state.update(self.reserve.save_state())
         self.state.save(filename)
 
-    def gameloop():
+    def gameloop(self):
         """
         *Abstract.*
 

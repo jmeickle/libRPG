@@ -3,8 +3,8 @@ The :mod:`util` module has assorted functions and classes for various
 purposes.
 """
 
-from librpg.locals import *
-from librpg.config import *
+from librpg.locals import UP, DOWN, LEFT, RIGHT
+from librpg.config import graphics_config, game_config
 
 
 class Position(object):

@@ -19,10 +19,9 @@ The global configuration objects are:
         MenuConfig object
 """
 
-import pygame
-
-from librpg.locals import *
-from librpg.color import *
+from librpg.locals import (K_UP, K_DOWN, K_LEFT, K_RIGHT, K_ESCAPE, K_SPACE,
+                           K_RETURN)
+from librpg.color import transparency, PURPLE, WHITE, RED, GREY
 from librpg import virtualscreen
 
 class Config(object):

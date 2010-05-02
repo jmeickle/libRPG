@@ -38,14 +38,6 @@ class ScaledScreen(pygame.Surface):
                                self.real_screen)
         pygame.display.flip()
 
-    def init_real_screen(real_screen_dimensions, display_mode):
-        return pygame.display.set_mode(real_screen_dimensions,
-                                       display_mode)
-
-    def init_virtual_screen(screen_dimensions, final_screen, scale):
-        return virtualscreen.ScaledScreen(screen_dimensions, final_screen,
-                                           scale, depth=32)
-
 
 class VirtualScreen(object):
 

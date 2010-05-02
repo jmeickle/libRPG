@@ -4,14 +4,17 @@ the definition of MapModel, which is the class representing a map in
 which a party will walk, act, etc.
 """
 
-from librpg.mapobject import *
+import csv
+
+from librpg.mapobject import PartyAvatar
 from librpg.mapview import MapView
 from librpg.sound import MapMusic
-from librpg.util import *
-from librpg.image import *
-from librpg.tile import *
-from librpg.config import *
-from librpg.locals import *
+from librpg.util import (check_direction, determine_facing, Position,
+                         Matrix, inverse)
+from librpg.tile import Tileset
+from librpg.config import game_config
+from librpg.locals import (ACTIVATE, KEYDOWN, KEYUP, MOUSEBUTTONDOWN, DOWN,
+                           NORMAL_SPEED, PARTY_POSITION_LOCAL_STATE)
 from librpg.movement import Step, PathMovement
 from librpg.context import Context, Model, get_context_stack
 from librpg.dialog import MessageQueue
@@ -31,16 +34,16 @@ class MapController(Context):
                                   self.map_model.global_state)
         self.map_view = MapView(self.map_model)
         self.map_music = MapMusic(self.map_model)
-        self.moving_sync = False
+        self.__moving_sync = False
         self.message_queue = MessageQueue(self)
 
     def initialize(self):
         map_model = self.map_model
-        self.map_view_draw = self.map_view.draw
+        self.__map_view_draw = self.map_view.draw
         self.party_avatar = map_model.party_avatar
         self.party_movement = map_model.party_movement
-        self.party_movement_append = self.party_movement.append
-        self.party_movement_remove = self.party_movement.remove
+        self.__party_movement_append = self.party_movement.append
+        self.__party_movement_remove = self.party_movement.remove
 
         # Initialize contexts
         context_stack = get_context_stack()
@@ -53,7 +56,7 @@ class MapController(Context):
             self.map_model.pause_delay -= 1
             return False
 
-        if self.moving_sync:
+        if self.__moving_sync:
             sync_stopped = self.sync_movement_step()
             if not sync_stopped:
                 return False
@@ -75,7 +78,7 @@ class MapController(Context):
         return False
 
     def draw(self):
-        self.map_view_draw()
+        self.__map_view_draw()
         self.map_music.update()
 
     def process_event(self, event):
@@ -83,7 +86,7 @@ class MapController(Context):
             direction = check_direction(event.key)
             if direction is not None and\
                not direction in self.map_model.party_movement:
-                self.party_movement_append(direction)
+                self.__party_movement_append(direction)
                 return True
             elif event.key in game_config.key_action:
                 if not ACTIVATE in self.party_movement:
@@ -96,11 +99,11 @@ class MapController(Context):
             direction = check_direction(event.key)
             if direction is not None and\
                direction in self.map_model.party_movement:
-                self.party_movement_remove(direction)
+                self.__party_movement_remove(direction)
                 return True
             elif event.key in game_config.key_action \
                  and ACTIVATE in self.party_movement:
-                self.party_movement_remove(ACTIVATE)
+                self.__party_movement_remove(ACTIVATE)
                 return True
         if (game_config.map_mouse_enabled
             and event.type == MOUSEBUTTONDOWN
@@ -150,14 +153,14 @@ class MapController(Context):
                                  avatar.position, coming_from_outside)
 
     def sync_movement(self, objects):
-        self.sync_objects = objects
-        self.moving_sync = True
+        self.__sync_objects = objects
+        self.__moving_sync = True
 
     def sync_movement_step(self):
-        if all([not o.scheduled_movement for o in self.sync_objects]):
-            self.moving_sync = False
+        if all([not o.scheduled_movement for o in self.__sync_objects]):
+            self.__moving_sync = False
             return True
-        for o in self.sync_objects:
+        for o in self.__sync_objects:
             o.flow()
         return False
 
@@ -479,7 +482,6 @@ class MapModel(Model):
         return False
 
     def direction_obstructed(self, terrain, scenario_list, direction):
-        bridge = False
         for scenario in reversed(scenario_list):
             if scenario.cannot_be_entered(direction)\
                or scenario.is_obstacle():

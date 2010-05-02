@@ -3,7 +3,7 @@ import pygame
 
 from librpg.image import TileImage, SlicedImage
 from librpg.config import graphics_config
-from librpg.locals import *
+from librpg.locals import ANIMATION_PERIOD
 
 
 class Tile(object):

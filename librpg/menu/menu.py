@@ -1,12 +1,13 @@
 import pygame
-from pygame.locals import *
 
 from librpg.context import Context, Model, get_context_stack
 from librpg.virtualscreen import get_screen
 from librpg.config import game_config
 from librpg.util import check_direction, fill_with_surface, descale_point
 from librpg.image import Image
-from librpg.locals import *
+from librpg.locals import (SRCALPHA, MOUSE_ACTIVATE, ACTIVATE,
+                           MOUSEBUTTONDOWN, MOUSEBUTTONUP,
+                           MOUSEMOTION, KEYDOWN, KEYUP)
 
 from librpg.menu.div import Div
 
@@ -205,27 +206,27 @@ class MenuController(Context):
                 w = w.parent
         if self.menu.process_event(event):
             return True
-        return self.menu_process_event(event)
+        return self.__menu_process_event(event)
 
-    def menu_process_event(self, event):
+    def __menu_process_event(self, event):
         if event.type == KEYDOWN:
-            if self.process_key_down(event):
+            if self.__process_key_down(event):
                 return True
         elif event.type == KEYUP:
-            if self.process_key_up(event):
+            if self.__process_key_up(event):
                 return True
         elif event.type == MOUSEMOTION:
-            if self.process_mouse_motion(event):
+            if self.__process_mouse_motion(event):
                 return True
         elif event.type == MOUSEBUTTONDOWN:
-            if self.process_mouse_down(event):
+            if self.__process_mouse_down(event):
                 return True
         elif event.type == MOUSEBUTTONUP:
-            if self.process_mouse_up(event):
+            if self.__process_mouse_up(event):
                 return True
         return False
 
-    def process_key_down(self, event):
+    def __process_key_down(self, event):
         direction = check_direction(event.key)
         if direction is not None and\
            not direction in self.command_queue:
@@ -240,7 +241,7 @@ class MenuController(Context):
             return True
         return False
 
-    def process_key_up(self, event):
+    def __process_key_up(self, event):
         direction = check_direction(event.key)
         if direction is not None and\
            direction in self.command_queue:
@@ -252,7 +253,7 @@ class MenuController(Context):
             return True
         return False
 
-    def process_mouse_down(self, event):
+    def __process_mouse_down(self, event):
         if event.button == 1:
             if self.menu.cursor is not None:
                 w = self.menu.cursor.widget
@@ -276,14 +277,14 @@ class MenuController(Context):
                         return True
         return False
 
-    def process_mouse_up(self, event):
+    def __process_mouse_up(self, event):
         if event.button == 1:
             if MOUSE_ACTIVATE in self.command_queue:
                 self.command_queue.remove(MOUSE_ACTIVATE)
                 return True
         return False
 
-    def process_mouse_motion(self, event):
+    def __process_mouse_motion(self, event):
         if self.menu.mouse_control == Menu.MOUSE_OFF:
             return False
 

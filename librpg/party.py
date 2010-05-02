@@ -3,10 +3,8 @@ The :mod:`party` module provides functions to manage character groups
 and pools of characters that can be picked to join a group.
 """
 
-import pygame
-
 from librpg.image import ObjectImage
-from librpg.locals import *
+from librpg.locals import PARTIES_LOCAL_STATE, CHARACTERS_LOCAL_STATE
 
 
 def default_party_factory(reserve):

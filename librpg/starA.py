@@ -1,5 +1,5 @@
 import heapq
-from librpg.locals import *
+from librpg.locals import UP, DOWN, LEFT, RIGHT
 
 
 class StarA(object):
