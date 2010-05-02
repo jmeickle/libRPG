@@ -1,4 +1,4 @@
-from librpg.menu import Menu, Label, Cursor, Panel, Div, VerticalScrollArea
+from librpg.menu import Menu, Label, Cursor, Panel, VerticalScrollArea
 from librpg.color import TRANSPARENT
 
 
@@ -23,7 +23,7 @@ class ItemLabel(Label):
 
     def activate(self):
         dialog = self.menu.create_action_dialog(self)
-        dialog.open()
+        dialog.sync_open()
         return True
 
     def refresh(self):

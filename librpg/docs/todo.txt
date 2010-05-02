@@ -143,6 +143,9 @@ ok      0.6     Fix ScrollArea hold button bug
 ok      0.6     Fix ScrollArea cursor resize bug
 ok      0.6     Fix item reordering when using last item in a stack
 ok      0.6     Create color constants
+ok      0.6     Allow nested gameloops
+        0.6     Implement synchronous contexts
+        0.6     Refactor dialogs and menus that should be synchronous
         0.6     Draw a decent theme
         0.6     Decide if UsableItems should be kept
         0.6     Define item image system and API for menu

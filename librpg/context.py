@@ -85,7 +85,7 @@ class ContextStack(object):
             if possible_child.parent is context:
                 self.remove_context(possible_child)
 
-    def gameloop(self):
+    def gameloop(self, current=None):
         """
         This method transfers the control flow to the ContextStack,
         which will keep its stacked Contexts running until one of them
@@ -110,6 +110,7 @@ class ContextStack(object):
         4) If anyone called ContextStack.stop() or if there are no
            Contexts in the stack, stop.
         """
+#        print 'gameloop started'
         self.keep_going = True
         self.clock = pygame.time.Clock()
         while self.stack and self.keep_going:
@@ -134,18 +135,27 @@ class ContextStack(object):
 
             # Distribute pygame events to contexts
             self.__process_events()
+            
+            if current is not None and current not in self.stack:
+                self.keep_going = False
+#        print 'gameloop ended'
+        self.keep_going = True
+
 
     def __process_events(self):
         for event in pygame.event.get():
-            # print 'processing', event
+#            if event.type != MOUSEMOTION: 
+#                print 'processing', event
             if event.type == QUIT:
                 self.stop()
                 break
             for context in reversed(self.stack):
-                # print 'offering to', context
+#                if event.type != MOUSEMOTION:
+#                    print 'offering to', context
                 consumed_event = context.process_event(event)
                 if consumed_event:
-                    # print context, 'consumed the event'
+#                    if event.type != MOUSEMOTION:
+#                        print context, 'consumed the event'
                     break
 
     def stack_model(self, model):
@@ -295,6 +305,11 @@ class Model(object):
         if self.controller is None:
             self.controller = self.create_controller()
         return self.controller
+    
+    def sync_open(self):
+        stack = get_context_stack()
+        stack.stack_model(self)
+        stack.gameloop(self.get_controller())
 
 
 context_stack = ContextStack()

@@ -280,7 +280,7 @@ class MenuController(Context):
         if event.button == 1:
             if MOUSE_ACTIVATE in self.command_queue:
                 self.command_queue.remove(MOUSE_ACTIVATE)
-            return True
+                return True
         return False
 
     def process_mouse_motion(self, event):
