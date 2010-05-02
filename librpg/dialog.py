@@ -4,16 +4,13 @@ the use of MessageQueue, which is built-in MapModels. These dialogs
 are a tool for displaying conversations, questions, etc.
 """
 
-import pygame
-
-from librpg.locals import *
+from librpg.locals import KEYDOWN
 from librpg.color import TRANSPARENT
 from librpg.context import get_context_stack
 from librpg.config import dialog_config as cfg
 from librpg.config import graphics_config as g_cfg
 from librpg.config import game_config as m_cfg
 from librpg.config import menu_config
-from librpg.virtualscreen import get_screen
 from librpg.context import Context
 from librpg.menu import (Menu, Label, Panel, Cursor, ArrowCursorTheme)
 
@@ -114,7 +111,8 @@ class ElasticMessageDialog(Menu):
         self.block_movement = block_movement
 
         # Split into lines
-        font = menu_config.theme.get_font(cfg.font_size)
+        theme = menu_config.theme
+        font = theme.get_font(cfg.font_size)
         box_width = g_cfg.screen_width - 4 * cfg.border_width
         lines = build_lines(self.text,
                             box_width,

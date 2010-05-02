@@ -4,11 +4,6 @@ the definition of MapModel, which is the class representing a map in
 which a party will walk, act, etc.
 """
 
-import csv
-import operator
-
-import pygame
-
 from librpg.mapobject import *
 from librpg.mapview import MapView
 from librpg.sound import MapMusic

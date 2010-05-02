@@ -63,7 +63,7 @@ class ItemMenu(Menu):
         amounts = inv.get_items_with_amounts()
 
         pairs = [(item, amounts[item]) for item in ordered]
-        for i, pair in enumerate(pairs):
+        for _, pair in enumerate(pairs):
             item, qt = pair
             label = ItemLabel(item, qt, inv)
             line = self.inventory_panel.add_line()
