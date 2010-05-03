@@ -107,6 +107,25 @@ class UseLabel(Label):
 
     def activate(self):
         print 'Used %s' % self.item.name
+        self.item.use()
+        self.inv.remove_item(self.item)
+        if not self.inv.contains(self.item):
+            self.menu.item_menu.remove_line(self.item)
+            self.menu.close()
+        else:
+            self.item_label.refresh()
+        return True
+
+class TrashLabel(Label):
+
+    def __init__(self, item, inv, item_label):
+        Label.__init__(self, 'Trash')
+        self.item = item
+        self.inv = inv
+        self.item_label = item_label
+
+    def activate(self):
+        print 'Trashed %s' % self.item.name
         self.inv.remove_item(self.item)
         if not self.inv.contains(self.item):
             self.menu.item_menu.remove_line(self.item)
@@ -130,8 +149,12 @@ class ActionDialog(Menu):
         self.panel = Panel(width, height)
         self.add_widget(self.panel, (0, 0))
         
-        self.use_label = UseLabel(self.item, self.item_menu.inventory, None,
-                                  item_label)
+        if hasattr(item, 'use'):
+            self.use_label = UseLabel(self.item, self.item_menu.inventory, None,
+                                      item_label)
+        else:
+            self.use_label = TrashLabel(self.item, self.item_menu.inventory, 
+                                        item_label)
         self.panel.add_widget(self.use_label, (20, 12))
 
         self.exit_label = ExitLabel()

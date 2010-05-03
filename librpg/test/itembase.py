@@ -1,5 +1,6 @@
 from librpg.util import IdFactory
-from librpg.item import OrdinaryItem
+from librpg.item import OrdinaryItem, UsableOrdinaryItem
+from librpg.dialog import ChoiceDialog
 
 
 item_factory = IdFactory()
@@ -23,12 +24,18 @@ class LeafItem(OrdinaryItem):
 item_factory.register(LeafItem)
 
 
-class PotionItem(OrdinaryItem):
+class PotionItem(UsableOrdinaryItem):
 
     id = 'potion'
 
     def __init__(self):
-        OrdinaryItem.__init__(self, 'Potion')
+        UsableOrdinaryItem.__init__(self, 'Potion')
+
+    def use(self):
+        dialog = ChoiceDialog('Use on whom?', ['1', '2', '3'])
+        dialog.sync_open()
+        print 'Using on %d' % (dialog.result + 1)
+    
 item_factory.register(PotionItem)
 
 
