@@ -32,22 +32,27 @@ class ObjectTestNPC(MapObject):
             step = Step(inverse(direction), back=True)
             party_avatar.schedule_movement(step)
 
-        dialog = MessageDialog(u"Ouch!", block_movement=False)
-        self.map.schedule_message(dialog)
+        dialog = MessageDialog(u"Ouch!", block_movement=True)
+        dialog.sync_open()
 
         dialog = MessageDialog(u"Hey, why are you hitting me?",
-                               block_movement=False)
-        self.map.schedule_message(dialog)
+                               block_movement=True)
+        dialog.sync_open()
 
         def on_choice(user_data, choice):
             map = user_data
-            map.schedule_message(MessageDialog('Chose %d' % (choice + 1)))
+            msg = MessageDialog('on_choice got %d' % (choice + 1))
+            map.schedule_message(msg)
         dialog = ChoiceDialog(u"Choose NOW:",
                               ["Choice 1", "Choice 2", "Choice 3", "Choice 4"],
                               user_data=self.map,
                               completion_callback=on_choice,
-                              block_movement=False)
-        self.map.schedule_message(dialog)
+                              block_movement=True)
+        dialog.sync_open()
+
+        dialog = MessageDialog(u"Chose %d" % (dialog.result + 1),
+                               block_movement=True)
+        dialog.sync_open()
 
         movement = PathMovement(self.map, party_avatar, Position(9, 4))
         party_avatar.schedule_movement(movement)

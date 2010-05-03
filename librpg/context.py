@@ -42,6 +42,7 @@ class ContextStack(object):
 
         This method causes the Context to be initialized.
         """
+        #print 'stack_context(%s)' % context
         self.stack.append(context)
         self.__inserted_context(context)
 
@@ -52,6 +53,7 @@ class ContextStack(object):
 
         This method causes the Context to be initialized.
         """
+        #print 'insert_context(%s, %d)' % (context, index)
         self.stack.insert(index, context)
         self.__inserted_context(context)
 
@@ -62,6 +64,7 @@ class ContextStack(object):
         This method causes the Context and all Contexts that were created
         as its child to be destroyed.
         """
+        #print 'remove_context(%s)' % context
         try:
             self.stack.remove(context)
         except ValueError:
@@ -110,7 +113,7 @@ class ContextStack(object):
         4) If anyone called ContextStack.stop() or if there are no
            Contexts in the stack, stop.
         """
-#        print 'gameloop started'
+        #print 'gameloop(%s)' % current
         self.keep_going = True
         self.clock = pygame.time.Clock()
         while self.stack and self.keep_going:
@@ -118,13 +121,17 @@ class ContextStack(object):
             self.clock.tick(game_config.fps)
             get_metronome().step()
 
-            # Update contexts in reverse order
-            stop = False
-            for context in reversed(self.stack):
-                if context.active:
-                    stop = context.update()
-                if stop:
-                    break
+            if current is not None:
+                current.update()
+            else:
+                # Update contexts in reverse order
+                stop = False
+                for context in reversed(self.stack):
+                    if context.active:
+                        #print 'updating %s' % context
+                        stop = context.update()
+                    if stop:
+                        break
 
             # Draw active contexts in normal order
             for context in self.stack:

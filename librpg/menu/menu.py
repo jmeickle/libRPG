@@ -314,3 +314,6 @@ class MenuController(Context):
 
     def is_done(self):
         return self.done
+
+    def __repr__(self):
+        return '<MenuController of %s>' % self.menu

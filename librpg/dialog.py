@@ -296,14 +296,14 @@ class ChoiceDialog(Menu):
             self.choice_lines.extend(choice_line)
 
     def complete(self, choice):
+        self.result = choice
         if self.completion_callback is not None:
             self.completion_callback(self.user_data, choice)
-        else:
-            self.on_choice(self.user_data, choice)
+        self.on_choice(self.user_data, choice)
 
     def on_choice(self, user_data, choice):
         """
-        *Abstract.*
+        *Virtual.*
 
         Execute an action depending on what the player chose.
 
@@ -316,9 +316,7 @@ class ChoiceDialog(Menu):
         *choice* is the index of the choice. The first option is 0, the
         second is 1, and so on.
         """
-        raise NotImplementedError('Either completion_callback has to be '
-                                  'specified in constructor or on_choice()'
-                                  'has to be implemented.')
+        pass
 
     def process_event(self, event):
         return False
@@ -358,7 +356,7 @@ class MessageQueue(Context):
     def pop_next(self):
         if self.current is None and self.queue:
             self.current = self.queue.pop(0)
-            get_context_stack().stack_model(self.current)
+            self.current.open()
             self.controller = self.current.get_controller()
 
     def push(self, message):
