@@ -446,7 +446,7 @@ class UniqueItem(Item):
 
 class UsableItem(Item):
 
-    def use(self):
+    def use(self, party):
         raise NotImplementedError('UsableItem.use() is abstract')
 
 

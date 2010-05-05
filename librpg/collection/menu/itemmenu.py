@@ -36,9 +36,10 @@ class ItemLabel(Label):
 
 class ItemMenu(Menu):
 
-    def __init__(self, inventory, width, height, x=0, y=0, theme=None, bg=None,
-                 mouse_control=Menu.MOUSE_LOOSE):
+    def __init__(self, inventory, party, width, height, x=0, y=0, theme=None,
+                 bg=None, mouse_control=Menu.MOUSE_LOOSE):
         self.inventory = inventory
+        self.party = party
         Menu.__init__(self, width, height, x, y, theme, bg, mouse_control)
 
         self.exit_label = ExitLabel()
@@ -107,7 +108,7 @@ class UseLabel(Label):
 
     def activate(self):
         print 'Used %s' % self.item.name
-        self.item.use()
+        self.item.use(self.party)
         self.inv.remove_item(self.item)
         if not self.inv.contains(self.item):
             self.menu.item_menu.remove_line(self.item)
@@ -150,8 +151,8 @@ class ActionDialog(Menu):
         self.add_widget(self.panel, (0, 0))
         
         if hasattr(item, 'use'):
-            self.use_label = UseLabel(self.item, self.item_menu.inventory, None,
-                                      item_label)
+            self.use_label = UseLabel(self.item, self.item_menu.inventory,
+                                      self.item_menu.party, item_label)
         else:
             self.use_label = TrashLabel(self.item, self.item_menu.inventory, 
                                         item_label)

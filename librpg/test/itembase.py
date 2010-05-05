@@ -31,10 +31,12 @@ class PotionItem(UsableOrdinaryItem):
     def __init__(self):
         UsableOrdinaryItem.__init__(self, 'Potion')
 
-    def use(self):
-        dialog = ChoiceDialog('Use on whom?', ['1', '2', '3'])
+    def use(self, party):
+        dialog = ChoiceDialog('Use on whom?', party.chars)
         dialog.sync_open()
-        print 'Using on %d' % (dialog.result + 1)
+        
+        target = party.chars[dialog.result]
+        print 'Using on %s' % (target)
     
 item_factory.register(PotionItem)
 
