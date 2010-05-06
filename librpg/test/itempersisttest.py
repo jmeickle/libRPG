@@ -32,9 +32,9 @@ class LogPile(ScenarioMapObject):
     def activate(self, party_avatar, direction):
         added = party_avatar.party.inventory.add_item_by_id('log')
         if added:
-            self.map.schedule_message(MessageDialog("Got a Log."))
+            MessageDialog("Got a Log.").sync_open()
         else:
-            self.map.schedule_message(MessageDialog("Inventory full of Logs."))
+            MessageDialog("Inventory full of Logs.").sync_open()
 
 
 class Tree(ScenarioMapObject):
@@ -48,7 +48,7 @@ class Tree(ScenarioMapObject):
             msg = "Got a Leaf."
         else:
             msg = "Inventory full of Leaves."
-        self.map.schedule_message(MessageDialog(msg))
+        MessageDialog(msg).sync_open()
 
 
 class PandoraBarrel(ScenarioMapObject):
@@ -59,8 +59,7 @@ class PandoraBarrel(ScenarioMapObject):
     def activate(self, party_avatar, direction):
         for id in itembase.item_factory.classes.keys():
             party_avatar.party.inventory.add_item_by_id(id)
-        msg = 'Found a lot of stuff inside the barrel.'
-        self.map.schedule_message(MessageDialog(msg))
+        MessageDialog('Found a lot of stuff inside the barrel.').sync_open()
 
 
 class SavePoint(ScenarioMapObject):
@@ -69,11 +68,10 @@ class SavePoint(ScenarioMapObject):
         ScenarioMapObject.__init__(self, map, 0, 1)
 
     def activate(self, party_avatar, direction):
-        self.map.schedule_message(MessageDialog('You game will be saved to %s.'
-                                  % SAVE_FILE, block_movement=True))
+        MessageDialog('You game will be saved to %s.' % SAVE_FILE,
+                      block_movement=True).sync_open()
         self.map.save_world(SAVE_FILE)
-        self.map.schedule_message(MessageDialog('Game saved.',
-                                                block_movement=True))
+        MessageDialog('Game saved.', block_movement=True).sync_open()
 
 
 # Map
@@ -148,24 +146,18 @@ class InventoryContext(CommandContext):
         self.item_menu = None
 
     def open_inventory(self):
-        if self.any_menu_open():
-            return False
         self.item_menu = MyItemMenu(self.inv, self.party)
-        self.item_menu.open()
+        self.item_menu.sync_open()
         return True
 
     def open_party(self):
-        if self.any_menu_open():
-            return False
         msg = 'Party:' + str(self.party)
-        self.map.schedule_message(MessageDialog(msg))
+        MessageDialog(msg).sync_open()
         msg = 'Reserve:' + str(self.reserve.get_names())
-        self.map.schedule_message(MessageDialog(msg))
+        MessageDialog(msg).sync_open()
         return True
 
     def switch_char(self, char):
-        if self.any_menu_open():
-            return False
         if char in self.party.chars:
             if (len(self.party.chars) > 1
                 and self.party.remove_char(char)):
@@ -177,15 +169,8 @@ class InventoryContext(CommandContext):
                 msg = 'Added %s.' % char
             else:
                 msg = 'Could not add %s.' % char
-        self.map.schedule_message(MessageDialog(msg))
+        MessageDialog(msg).sync_open()
         return True
-
-    def any_menu_open(self):
-        if self.map.controller.message_queue.is_active():
-            return True
-        if self.item_menu is not None and not self.item_menu.is_done():
-            return True
-        return False
 
 
 class MyItemMenu(ItemMenu):
