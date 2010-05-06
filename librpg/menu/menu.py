@@ -189,14 +189,14 @@ class MenuController(Context):
     def __update_input(self):
         print '__update_input'
         for key in game_config.key_cancel:
-            if Input.down_unset(key):
+            if Input.down_unset(key) is not None:
                 print 'cancel'
                 self.menu.close()
                 self.command_cooldown = MenuController.COMMAND_COOLDOWN
                 return
             
         for key in game_config.key_action:
-            if Input.down_unset(key):
+            if Input.down_unset(key) is not None:
                 print 'action'
                 self.activate()
                 self.command_cooldown = MenuController.COMMAND_COOLDOWN
@@ -232,19 +232,21 @@ class MenuController(Context):
         self.__update_mouse_input()
 
     def __update_mouse_input(self):
-        if Input.down_unset('MB1'):
+        evt = Input.down_unset('MB1') 
+        if evt is not None:
             if self.menu.cursor is not None:
                 w = self.menu.cursor.widget
                 if w is not None:
-                    x, y = descale_point(Input.event('MB1').pos)
+                    x, y = descale_point(evt.pos)
                     widget_x, widget_y = w.get_menu_position()
                     w.left_click(x - widget_x, y - widget_y)
 
-        if Input.down_unset('MB3'):
+        evt = Input.down_unset('MB3') 
+        if evt is not None:
             if self.menu.cursor is not None:
                 w = self.menu.cursor.widget
                 if w is not None:
-                    x, y = descale_point(Input.event('MB3').pos)
+                    x, y = descale_point(evt.pos)
                     widget_x, widget_y = w.get_menu_position()
                     w.left_click(x - widget_x, y - widget_y)
 

@@ -1,5 +1,5 @@
 from librpg.context import Context
-from pygame.locals import KEYDOWN
+from librpg.input import Input
 
 
 class CommandContext(Context):
@@ -18,10 +18,9 @@ class CommandContext(Context):
         Context.__init__(self, parent)
         self.mapping = mapping
 
-    def process_event(self, event):
-        if event.type == KEYDOWN:
-            command = self.mapping.get(event.key, None)
-            if command is not None:
+    def update(self):
+        for key, command in self.mapping.iteritems():
+            if Input.down_unset(key) is not None:
                 if hasattr(command, '__getitem__'):
                     return command[0](*command[1:])
                 else:

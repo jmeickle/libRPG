@@ -219,7 +219,8 @@ class Input(object):
         Did the user press the key or button now
         """
         if Input.stat(name) == Input.DOWN:
+            evt = Input.event(name)
             del Input.events[name]
-            return True
+            return evt
         else:
-            return False
+            return None
