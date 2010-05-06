@@ -211,3 +211,15 @@ class Input(object):
             #print Input.events[i]
         if len(Input.events) > 0:
             print Input.events
+ 
+    @classmethod
+    def down_unset(cls, name):
+        """
+        Is the event in a down state.
+        Did the user press the key or button now
+        """
+        if Input.stat(name) == Input.DOWN:
+            del Input.events[name]
+            return True
+        else:
+            return False

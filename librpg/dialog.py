@@ -90,12 +90,8 @@ class MessageDialog(Menu):
                               cfg.border_width + y_acc))
             y_acc += line[0] + cfg.line_spacing
 
-    def process_event(self, event):
-        if event.type == KEYDOWN:
-            if event.key in m_cfg.key_action:
-                self.close()
-                return True
-        return False
+    def activate(self):
+        self.close()
 
 
 class ElasticMessageDialog(Menu):

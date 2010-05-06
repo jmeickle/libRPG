@@ -73,12 +73,12 @@ class MapController(Context):
 
     def __update_input(self):
         for key in game_config.key_cancel:
-            if Input.down(key):
+            if Input.down_unset(key):
                 get_context_stack().stop()
                 return
             
         for key in game_config.key_action:
-            if Input.down(key):
+            if Input.down_unset(key):
                 self.map_model.party_action()
                 return
         
@@ -103,10 +103,9 @@ class MapController(Context):
                 return
 
         if (game_config.map_mouse_enabled
-            and Input.down('MB1')):
-            print 'mouse'
+            and Input.down_unset('MB1')):
             if not self.party_avatar.scheduled_movement:
-                self.mouse_movement(Input.get('MB1')[0].pos)
+                self.mouse_movement(Input.event('MB1').pos)
                 return
 
     def draw(self):

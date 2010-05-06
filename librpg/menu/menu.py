@@ -5,9 +5,10 @@ from librpg.virtualscreen import get_screen
 from librpg.config import game_config
 from librpg.util import check_direction, fill_with_surface, descale_point
 from librpg.image import Image
+from librpg.input import Input
 from librpg.locals import (SRCALPHA, MOUSE_ACTIVATE, ACTIVATE,
                            MOUSEBUTTONDOWN, MOUSEBUTTONUP,
-                           MOUSEMOTION, KEYDOWN, KEYUP)
+                           MOUSEMOTION, KEYDOWN, KEYUP, UP, DOWN, LEFT, RIGHT)
 
 from librpg.menu.div import Div
 
@@ -116,17 +117,11 @@ class Menu(Model, Div):
         """
         self.should_close = True
 
-    def process_event(self, event):
+    def activate(self):
         """
         *Virtual.*
-
-        Handle the incoming event. Return True if it should NOT be passed
-        down to the lower Contexts (that is, if it should be captured).
-        Return False if it should be passed down.
-
-        By default, process_event() returns False.
         """
-        return False
+        pass
 
     def create_controller(self):
         return MenuController(self, self.controller_parent)
@@ -156,19 +151,12 @@ class MenuController(Context):
             self.done = True
             self.stop()
             return False
-        cursor = self.menu.cursor
-        if cursor is not None:
-            if self.command_cooldown > 0:
-                self.command_cooldown -= 1
-            elif self.command_queue:
-                direction = self.command_queue[0]
-                if direction == ACTIVATE or direction == MOUSE_ACTIVATE:
-                    self.activate()
-                    self.command_cooldown = MenuController.COMMAND_COOLDOWN
-                else:
-                    self.step(direction)
-                    self.command_cooldown = MenuController.COMMAND_COOLDOWN
-            cursor.update()
+        if self.command_cooldown > 0:
+            self.command_cooldown -= 1
+        else:
+            self.__update_input()
+        if self.menu.cursor is not None:
+            self.menu.cursor.update()
         self.menu.update()
         return self.menu.blocking
 
@@ -180,6 +168,8 @@ class MenuController(Context):
                 if w.activate():
                     return
                 w = w.parent
+        else:
+            self.menu.activate()
 
     def step(self, direction):
         cursor = self.menu.cursor
@@ -196,95 +186,71 @@ class MenuController(Context):
         if do_normal_step:
             cursor.step(direction)
 
-    def process_event(self, event):
-        cursor = self.menu.cursor
-        if cursor is not None:
-            w = cursor.widget
-            while w is not None:
-                if w.process_event(event):
-                    return True
-                w = w.parent
-        if self.menu.process_event(event):
-            return True
-        return self.__menu_process_event(event)
+    def __update_input(self):
+        print '__update_input'
+        for key in game_config.key_cancel:
+            if Input.down_unset(key):
+                print 'cancel'
+                self.menu.close()
+                self.command_cooldown = MenuController.COMMAND_COOLDOWN
+                return
+            
+        for key in game_config.key_action:
+            if Input.down_unset(key):
+                print 'action'
+                self.activate()
+                self.command_cooldown = MenuController.COMMAND_COOLDOWN
+                return
+        
+        if self.menu.cursor is None:
+                return
+        
+        for key in game_config.key_up:
+            if Input.motion(key):
+                self.step(UP)
+                self.command_cooldown = MenuController.COMMAND_COOLDOWN
+                return
 
-    def __menu_process_event(self, event):
-        if event.type == KEYDOWN:
-            if self.__process_key_down(event):
-                return True
-        elif event.type == KEYUP:
-            if self.__process_key_up(event):
-                return True
-        elif event.type == MOUSEMOTION:
-            if self.__process_mouse_motion(event):
-                return True
-        elif event.type == MOUSEBUTTONDOWN:
-            if self.__process_mouse_down(event):
-                return True
-        elif event.type == MOUSEBUTTONUP:
-            if self.__process_mouse_up(event):
-                return True
-        return False
+        for key in game_config.key_down:
+            if Input.motion(key):
+                self.step(DOWN)
+                self.command_cooldown = MenuController.COMMAND_COOLDOWN
+                return
 
-    def __process_key_down(self, event):
-        direction = check_direction(event.key)
-        if direction is not None and\
-           not direction in self.command_queue:
-            self.command_queue.append(direction)
-            return True
-        elif event.key in game_config.key_action:
-            if not ACTIVATE in self.command_queue:
-                self.command_queue.insert(0, ACTIVATE)
-            return True
-        elif event.key in game_config.key_cancel:
-            self.menu.close()
-            return True
-        return False
+        for key in game_config.key_left:
+            if Input.motion(key):
+                self.step(LEFT)
+                self.command_cooldown = MenuController.COMMAND_COOLDOWN
+                return
 
-    def __process_key_up(self, event):
-        direction = check_direction(event.key)
-        if direction is not None and\
-           direction in self.command_queue:
-            self.command_queue.remove(direction)
-            return True
-        elif event.key in game_config.key_action \
-             and ACTIVATE in self.command_queue:
-            self.command_queue.remove(ACTIVATE)
-            return True
-        return False
+        for key in game_config.key_right:
+            if Input.motion(key):
+                self.step(RIGHT)
+                self.command_cooldown = MenuController.COMMAND_COOLDOWN
+                return
 
-    def __process_mouse_down(self, event):
-        if event.button == 1:
+        self.__update_mouse_input()
+
+    def __update_mouse_input(self):
+        if Input.down_unset('MB1'):
             if self.menu.cursor is not None:
                 w = self.menu.cursor.widget
                 if w is not None:
-                    x, y = descale_point(event.pos)
+                    x, y = descale_point(Input.event('MB1').pos)
                     widget_x, widget_y = w.get_menu_position()
-                    captured = w.left_click(x - widget_x, y - widget_y)
-                    if captured:
-                        return True
-            if not MOUSE_ACTIVATE in self.command_queue:
-                self.command_queue.insert(0, MOUSE_ACTIVATE)
-            return True
-        if event.button == 3:
+                    w.left_click(x - widget_x, y - widget_y)
+
+        if Input.down_unset('MB3'):
             if self.menu.cursor is not None:
                 w = self.menu.cursor.widget
                 if w is not None:
-                    x, y = descale_point(event.pos)
+                    x, y = descale_point(Input.event('MB3').pos)
                     widget_x, widget_y = w.get_menu_position()
-                    captured = w.right_click(x - widget_x, y - widget_y)
-                    if captured:
-                        return True
-        return False
+                    w.left_click(x - widget_x, y - widget_y)
 
-    def __process_mouse_up(self, event):
-        if event.button == 1:
-            if MOUSE_ACTIVATE in self.command_queue:
-                self.command_queue.remove(MOUSE_ACTIVATE)
-                return True
-        return False
-
-    def __process_mouse_motion(self, event):
+        self.__update_mouse_motion()
+        
+    def __update_mouse_motion(self):
         if self.menu.mouse_control == Menu.MOUSE_OFF:
             return False
 
@@ -292,25 +258,26 @@ class MenuController(Context):
         if cursor is None:
             return False
 
-        pos = descale_point(event.pos)
-
-        if self.menu.mouse_control == Menu.MOUSE_STRICT:
-            if cursor.widget.contains_point(pos):
-                return False
-            for w in self.menu.all_widgets:
-                if w.focusable and w.contains_point(pos):
-                    cursor.move_to(w)
-                    return False
-        else:
-            best = (None, 999999)
-            for w in self.menu.all_widgets:
-                if w.focusable:
-                    dist = w.distance_to_point(pos)
-                    if dist < best[1]:
-                        best = (w, dist)
-            if best[0] is not None:
-                cursor.move_to(best[0])
-        return True
+        event= Input.event(MOUSEMOTION)
+        if event is not None:
+            pos = descale_point(event.pos)
+    
+            if self.menu.mouse_control == Menu.MOUSE_STRICT:
+                if cursor.widget.contains_point(pos):
+                    return
+                for w in self.menu.all_widgets:
+                    if w.focusable and w.contains_point(pos):
+                        cursor.move_to(w)
+                        return
+            else:
+                best = (None, 999999)
+                for w in self.menu.all_widgets:
+                    if w.focusable:
+                        dist = w.distance_to_point(pos)
+                        if dist < best[1]:
+                            best = (w, dist)
+                if best[0] is not None:
+                    cursor.move_to(best[0])
 
     def is_done(self):
         return self.done
