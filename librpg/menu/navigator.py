@@ -184,7 +184,7 @@ class LineNavigator(DistanceNavigator):
 
     def calc_distance(self, start, end, direction, width, height):
         start_axis, start1, start2 = self.calc_skeleton(start)
-        end_axis, end1, end2 = self.calc_skeleton(end)
+        _, end1, end2 = self.calc_skeleton(end)
 
         d = [None] * 4
         d[0] = self.perpedicular_distance(start1, start2, start_axis, end1,

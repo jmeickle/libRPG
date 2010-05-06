@@ -4,7 +4,8 @@ from pygame.locals import SRCALPHA
 from librpg.path import cursor_theme_path
 from librpg.image import Image
 from librpg.animation import AnimatedImage
-from librpg.color import *
+from librpg.color import (transparency, WHITE, DARK_RED, PURPLE,
+                          DARKER_MAGENTA, TRANSPARENT)
 
 
 class MenuTheme(object):

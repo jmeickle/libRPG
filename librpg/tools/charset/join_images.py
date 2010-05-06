@@ -15,7 +15,6 @@ def check_parameters():
 
 
 def parse_parameters():
-    argc = len(argv)
     return argv[1], int(argv[2]), [s for s in argv[3:]]
 
 

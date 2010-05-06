@@ -6,7 +6,6 @@ are a tool for displaying conversations, questions, etc.
 
 from librpg.locals import KEYDOWN
 from librpg.color import TRANSPARENT
-from librpg.context import get_context_stack
 from librpg.config import dialog_config as cfg
 from librpg.config import graphics_config as g_cfg
 from librpg.config import game_config as m_cfg

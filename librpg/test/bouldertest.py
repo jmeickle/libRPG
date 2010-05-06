@@ -3,11 +3,9 @@ import librpg
 from librpg.map import MapModel
 from librpg.mapobject import ScenarioMapObject
 from librpg.util import Position
-from librpg.party import Character, CharacterReserve
 from librpg.movement import Slide
 from librpg.dialog import MessageDialog
-from librpg.world import MicroWorld
-from librpg.path import *
+from librpg.path import charset_path, tileset_path
 
 
 class Boulder(ScenarioMapObject):

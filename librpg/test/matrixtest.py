@@ -1,4 +1,4 @@
-from librpg.util import *
+from librpg.util import Matrix
 
 
 def test_set(x, y, value):

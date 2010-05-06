@@ -1,6 +1,3 @@
-from librpg.party import *
-from librpg.map import *
-
 class Life(object):
 
     def __init__(self):

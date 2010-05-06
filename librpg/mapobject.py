@@ -168,8 +168,6 @@ class MapObject(object):
         return self.image.get_surface(self)
 
     def flow(self):
-        just_completed_movement = False
-
         if self.movement_phase == 1:
             self.just_completed_movement = True
 

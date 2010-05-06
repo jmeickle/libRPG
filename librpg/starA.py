@@ -19,7 +19,7 @@ class StarA(object):
         while len(self.open) > 0:
 
             least = heapq.heappop(self.open)
-            prediction, value, x, _ = least
+            _, value, x, _ = least
 
             if x == self.goal:
 

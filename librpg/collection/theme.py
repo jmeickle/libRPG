@@ -3,7 +3,7 @@ from pygame.locals import SRCALPHA
 
 from librpg.menu import MenuTheme
 from librpg.image import Image
-from librpg.color import *
+from librpg.color import (DARK_BLUE, DARKER_BLUE, TRANSPARENT, WHITE)
 
 class ClassicMenuTheme(MenuTheme):
 
