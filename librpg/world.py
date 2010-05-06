@@ -152,7 +152,6 @@ class World(BaseWorld):
     def gameloop(self):
         assert not self.party.empty(), 'Party is empty'
         prev_facing = None
-        prev_party_movement = []
         self.schedule_teleport(self.party_pos[1], self.party_pos[0])
 
         while self.scheduled_teleport:
@@ -169,7 +168,6 @@ class World(BaseWorld):
                 else:
                     prev_facing = DOWN
             map_model.add_party(self.party, position, prev_facing)
-            map_model.party_movement = prev_party_movement
             local_state = self.state.load_local(map_id)
 
             # Transfer control to map
@@ -182,7 +180,6 @@ class World(BaseWorld):
             local_state = map_model.save_state()
             self.state.save_local(map_id, local_state)
             prev_facing = map_model.party_avatar.facing
-            prev_party_movement = map_model.party_movement
             map_model.remove_party()
 
             gc.collect()

@@ -14,10 +14,12 @@ from librpg.util import (check_direction, determine_facing, Position,
 from librpg.tile import Tileset
 from librpg.config import game_config
 from librpg.locals import (ACTIVATE, KEYDOWN, KEYUP, MOUSEBUTTONDOWN, DOWN,
-                           NORMAL_SPEED, PARTY_POSITION_LOCAL_STATE)
+                           NORMAL_SPEED, PARTY_POSITION_LOCAL_STATE, UP,
+                           LEFT, RIGHT)
 from librpg.movement import Step, PathMovement
 from librpg.context import Context, Model, get_context_stack
 from librpg.dialog import MessageQueue
+from librpg.input import Input
 
 
 class MapController(Context):
@@ -41,9 +43,6 @@ class MapController(Context):
         map_model = self.map_model
         self.__map_view_draw = self.map_view.draw
         self.party_avatar = map_model.party_avatar
-        self.party_movement = map_model.party_movement
-        self.__party_movement_append = self.party_movement.append
-        self.__party_movement_remove = self.party_movement.remove
 
         # Initialize contexts
         context_stack = get_context_stack()
@@ -65,54 +64,54 @@ class MapController(Context):
             self.flow_object_movement()
             self.update_objects()
 
-        if self.party_movement and not self.party_avatar.scheduled_movement \
+        if not self.party_avatar.scheduled_movement \
            and not self.party_avatar.movement_phase \
            and not self.message_queue.is_busy():
-            action = self.party_movement[0]
-            if action == ACTIVATE:
-                del self.party_movement[0]
-                self.map_model.party_action()
-            else:
-                self.party_avatar.schedule_movement(Step(action))
+                self.__update_input()
 
         return False
+
+    def __update_input(self):
+        for key in game_config.key_cancel:
+            if Input.down(key):
+                get_context_stack().stop()
+                return
+            
+        for key in game_config.key_action:
+            if Input.down(key):
+                self.map_model.party_action()
+                return
+        
+        for key in game_config.key_up:
+            if Input.motion(key):
+                self.party_avatar.schedule_movement(Step(UP))
+                return
+
+        for key in game_config.key_down:
+            if Input.motion(key):
+                self.party_avatar.schedule_movement(Step(DOWN))
+                return
+
+        for key in game_config.key_left:
+            if Input.motion(key):
+                self.party_avatar.schedule_movement(Step(LEFT))
+                return
+
+        for key in game_config.key_right:
+            if Input.motion(key):
+                self.party_avatar.schedule_movement(Step(RIGHT))
+                return
+
+        if (game_config.map_mouse_enabled
+            and Input.down('MB1')):
+            print 'mouse'
+            if not self.party_avatar.scheduled_movement:
+                self.mouse_movement(Input.get('MB1')[0].pos)
+                return
 
     def draw(self):
         self.__map_view_draw()
         self.map_music.update()
-
-    def process_event(self, event):
-        if event.type == KEYDOWN:
-            direction = check_direction(event.key)
-            if direction is not None and\
-               not direction in self.map_model.party_movement:
-                self.__party_movement_append(direction)
-                return True
-            elif event.key in game_config.key_action:
-                if not ACTIVATE in self.party_movement:
-                    self.party_movement.insert(0, ACTIVATE)
-                return True
-            elif event.key in game_config.key_cancel:
-                get_context_stack().stop()
-                return True
-        elif event.type == KEYUP:
-            direction = check_direction(event.key)
-            if direction is not None and\
-               direction in self.map_model.party_movement:
-                self.__party_movement_remove(direction)
-                return True
-            elif event.key in game_config.key_action \
-                 and ACTIVATE in self.party_movement:
-                self.__party_movement_remove(ACTIVATE)
-                return True
-        if (game_config.map_mouse_enabled
-            and event.type == MOUSEBUTTONDOWN
-            and event.button == 1):
-            if (not self.party_movement
-                and not self.party_avatar.scheduled_movement):
-                self.mouse_movement(event.pos)
-                return True
-        return False
 
     def flow_object_movement(self):
         party_avatar = self.map_model.party_avatar
@@ -217,7 +216,6 @@ class MapModel(Model):
         # Set up party
         self.party = None
         self.party_avatar = None
-        self.party_movement = []
 
         # Load file data
         self.map_file = map_file

@@ -10,10 +10,11 @@ context.get_context_stack().
 
 import pygame
 
-from librpg.locals import QUIT
+from librpg.locals import QUIT, K_END
 from librpg.config import game_config
 from librpg.virtualscreen import get_screen
 from librpg.animation import get_metronome
+from librpg.input import Input
 
 
 class ContextStack(object):
@@ -121,6 +122,9 @@ class ContextStack(object):
             self.clock.tick(game_config.fps)
             get_metronome().step()
 
+            Input.update_mouse(pygame.mouse.get_pressed(), pygame.mouse.get_pos())
+            Input.add_events(pygame.event.get())
+        
             if current is not None:
                 current.update()
             else:
@@ -136,12 +140,17 @@ class ContextStack(object):
             # Draw active contexts in normal order
             for context in self.stack:
                 context.draw()
+                
+            if Input.isset('QUIT'):
+                exit()
+            
+            Input.update()
 
             # Flip display
             get_screen().flip()
 
             # Distribute pygame events to contexts
-            self.__process_events()
+            #self.__process_events()
             
             if current is not None and current not in self.stack:
                 self.keep_going = False
