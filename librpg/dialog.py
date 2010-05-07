@@ -306,9 +306,6 @@ class ChoiceDialog(Menu):
         """
         pass
 
-    #def process_event(self, event):
-    #    return False
-
 
 class ChoiceLabel(Label):
 

@@ -149,30 +149,10 @@ class ContextStack(object):
             # Flip display
             get_screen().flip()
 
-            # Distribute pygame events to contexts
-            #self.__process_events()
-            
             if current is not None and current not in self.stack:
                 self.keep_going = False
 #        print 'gameloop ended'
         self.keep_going = True
-
-
-    def __process_events(self):
-        for event in pygame.event.get():
-#            if event.type != MOUSEMOTION: 
-#                print 'processing', event
-            if event.type == QUIT:
-                self.stop()
-                break
-            for context in reversed(self.stack):
-#                if event.type != MOUSEMOTION:
-#                    print 'offering to', context
-                consumed_event = context.process_event(event)
-                if consumed_event:
-#                    if event.type != MOUSEMOTION:
-#                        print context, 'consumed the event'
-                    break
 
     def stack_model(self, model):
         """
@@ -208,23 +188,6 @@ class Context(object):
         """
         self.active = True
         self.parent = parent
-
-    # Virtual
-    def process_event(self, event):
-        """
-        *Virtual.*
-
-        Handle the incoming event. Return True if it should NOT be passed
-        down to the lower Contexts (that is, if it should be captured).
-        Return False if it should be passed down.
-
-        Note that not passing down events of a certain type (eg. direction
-        key presses) will deprive lower Contexts of that event, which can
-        be used to block movement for example.
-
-        By default, process_event() returns False.
-        """
-        return False
 
     # Virtual
     def update(self):
