@@ -8,6 +8,7 @@ from librpg.menu import (Menu, Panel, Label, Cursor,
 from librpg.context import get_context_stack
 from librpg.path import data_path
 from librpg.collection.theme import ClassicMenuTheme
+from librpg.input import Input
 
 
 class MenuLabel(Label):
@@ -19,20 +20,14 @@ class MenuLabel(Label):
         print 'MenuLabel activated'
         return True
 
-    def process_event(self, event):
-        if event.type == KEYDOWN:
-            print 'MenuLabel captured key press %d' % event.key
-        return False
-
 
 class AdjustableBar(Bar):
 
-    def process_event(self, event):
-        if event.type == MOUSEBUTTONDOWN:
-            if event.button == 1 or event.button == 4:
-                self.filled += 0.05
-            if event.button == 3 or event.button == 5:
-                self.filled -= 0.05
+    def update_input(self):
+        if Input.was_pressed('MB1') or Input.was_pressed('MB4'): 
+            self.filled += 0.05
+        if Input.was_pressed('MB3') or Input.was_pressed('MB5'): 
+            self.filled -= 0.05
 
 
 class AdjustableVerticalGrid(VerticalGrid):
@@ -44,12 +39,11 @@ class AdjustableVerticalGrid(VerticalGrid):
             label = Label('SidePanel%d' % i)
             self[i].add_widget(label, AlignCenter())
 
-    def process_event(self, event):
-        if event.type == MOUSEBUTTONDOWN:
-            if event.button == 1 or event.button == 4:
-                self.add_line()
-            if event.button == 3 or event.button == 5:
-                self.remove_line()
+    def update_input(self):
+        if Input.was_pressed('MB1') or Input.was_pressed('MB4'): 
+            self.add_line()
+        if Input.was_pressed('MB3') or Input.was_pressed('MB5'): 
+            self.remove_line()
 
     def add_line(self):
         if self.height_in_cells < self.max_height:

@@ -71,6 +71,9 @@ class Widget(object):
         """
         pass
 
+    def update_input(self):
+        pass
+
     def left_click(self, x, y):
         """
         *Virtual.*

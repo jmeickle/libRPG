@@ -20,7 +20,7 @@ class CommandContext(Context):
 
     def update(self):
         for key, command in self.mapping.iteritems():
-            if Input.down_unset(key) is not None:
+            if Input.was_pressed(key) is not None:
                 if hasattr(command, '__getitem__'):
                     return command[0](*command[1:])
                 else:

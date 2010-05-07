@@ -60,6 +60,7 @@ class Input(object):
             10: "MB10",
     }
     events = {}
+    pressed = set()
  
     button_state = ()
     mouse_pos = ()
@@ -83,10 +84,12 @@ class Input(object):
         """
         if event.type == KEYDOWN:
             Input.events.update({event.key: [event, Input.DOWN]})
+            Input.pressed.add(event.key)
         elif event.type == KEYUP:
             Input.events.update({event.key: [event, Input.UP]})
         elif event.type == MOUSEBUTTONDOWN:
             Input.events.update({Input.butt[event.button]: [event, Input.DOWN]})
+            Input.pressed.add(Input.butt[event.button])
         elif event.type == MOUSEBUTTONUP:
             Input.events.update({Input.butt[event.button]: [event, Input.UP]})
         elif event.type == MOUSEMOTION:
@@ -201,6 +204,8 @@ class Input(object):
  
         for i in flag:
             del Input.events[i]
+            
+        Input.pressed.clear()
  
     @classmethod
     def tostring(cls):
@@ -213,12 +218,13 @@ class Input(object):
             print Input.events
  
     @classmethod
-    def down_unset(cls, name):
+    def was_pressed(cls, name):
         """
         Is the event in a down state.
         Did the user press the key or button now
         """
-        if Input.stat(name) == Input.DOWN:
+        if name in Input.pressed:
+            Input.pressed.remove(name)
             evt = Input.event(name)
             del Input.events[name]
             return evt

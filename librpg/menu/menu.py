@@ -128,6 +128,14 @@ class Menu(Model, Div):
 
     def is_done(self):
         return self.controller.is_done()
+    
+    def update_input(self):
+        cursor = self.menu.cursor
+        if cursor is not None:
+            w = cursor.widget
+            while w.parent is not None:
+                w.update_input()
+                w = w.parent
 
 
 class MenuController(Context):
@@ -154,6 +162,7 @@ class MenuController(Context):
         if self.menu.cursor is not None:
             self.menu.cursor.update()
         self.menu.update()
+        self.menu.update_input()
         if self.command_cooldown > 0:
             self.command_cooldown -= 1
         else:
@@ -189,13 +198,13 @@ class MenuController(Context):
     def __update_input(self):
         #print '__update_input'
         for key in game_config.key_cancel:
-            if Input.down_unset(key) is not None:
+            if Input.was_pressed(key) is not None:
                 self.menu.close()
                 self.command_cooldown = MenuController.COMMAND_COOLDOWN
                 return
             
         for key in game_config.key_action:
-            if Input.down_unset(key) is not None:
+            if Input.was_pressed(key) is not None:
                 self.activate()
                 self.command_cooldown = MenuController.COMMAND_COOLDOWN
                 return
@@ -230,7 +239,7 @@ class MenuController(Context):
         self.__update_mouse_input()
 
     def __update_mouse_input(self):
-        evt = Input.down_unset('MB1')
+        evt = Input.was_pressed('MB1')
         if evt is not None:
             if self.menu.cursor is not None:
                 w = self.menu.cursor.widget
@@ -241,7 +250,7 @@ class MenuController(Context):
                     if not captured:
                         self.activate()
 
-        evt = Input.down_unset('MB3')
+        evt = Input.was_pressed('MB3')
         if evt is not None:
             if self.menu.cursor is not None:
                 w = self.menu.cursor.widget
