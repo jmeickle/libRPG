@@ -20,8 +20,9 @@ __author__="Thadeus Burgess &lt;thadeusb@thadeusb.com&gt;"
 __date__ ="$Mar 23, 2009 12:20:34 AM$"
  
 import pygame
-from pygame.locals import *
- 
+from pygame.locals import (MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION,
+                           KEYDOWN, KEYUP)
+
 class Input(object):
     """
     Wrapper for the pygame input module

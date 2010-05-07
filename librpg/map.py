@@ -15,7 +15,7 @@ from librpg.tile import Tileset
 from librpg.config import game_config
 from librpg.locals import (ACTIVATE, KEYDOWN, KEYUP, MOUSEBUTTONDOWN, DOWN,
                            NORMAL_SPEED, PARTY_POSITION_LOCAL_STATE, UP,
-                           LEFT, RIGHT)
+                           LEFT, RIGHT, M_1)
 from librpg.movement import Step, PathMovement
 from librpg.context import Context, Model, get_context_stack
 from librpg.dialog import MessageQueue
@@ -117,7 +117,7 @@ class MapController(Context):
                 return
 
         if game_config.map_mouse_enabled:
-            evt = Input.was_pressed('MB1')
+            evt = Input.was_pressed(M_1)
             if evt is not None:
                 if not self.party_avatar.scheduled_movement:
                     self.mouse_movement(evt.pos)

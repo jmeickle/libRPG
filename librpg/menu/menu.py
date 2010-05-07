@@ -8,7 +8,8 @@ from librpg.image import Image
 from librpg.input import Input
 from librpg.locals import (SRCALPHA, MOUSE_ACTIVATE, ACTIVATE,
                            MOUSEBUTTONDOWN, MOUSEBUTTONUP,
-                           MOUSEMOTION, KEYDOWN, KEYUP, UP, DOWN, LEFT, RIGHT)
+                           MOUSEMOTION, KEYDOWN, KEYUP, UP, DOWN, LEFT, RIGHT,
+                           M_1, M_3)
 
 from librpg.menu.div import Div
 
@@ -239,7 +240,7 @@ class MenuController(Context):
         self.__update_mouse_input()
 
     def __update_mouse_input(self):
-        evt = Input.was_pressed('MB1')
+        evt = Input.was_pressed(M_1)
         if evt is not None:
             if self.menu.cursor is not None:
                 w = self.menu.cursor.widget
@@ -250,7 +251,7 @@ class MenuController(Context):
                     if not captured:
                         self.activate()
 
-        evt = Input.was_pressed('MB3')
+        evt = Input.was_pressed(M_3)
         if evt is not None:
             if self.menu.cursor is not None:
                 w = self.menu.cursor.widget

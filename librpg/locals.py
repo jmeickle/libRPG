@@ -34,3 +34,16 @@ PARTIES_LOCAL_STATE = '__PARTIES_LOCAL_STATE'
 # Animated tiles
 
 ANIMATION_PERIOD = 12
+
+# Input
+
+M_1 = 'MB1'
+M_2 = 'MB2'
+M_3 = 'MB3'
+M_4 = 'MB4'
+M_5 = 'MB5'
+M_6 = 'MB6'
+M_7 = 'MB7'
+M_8 = 'MB8'
+M_9 = 'MB9'
+M_10 = 'MB10'

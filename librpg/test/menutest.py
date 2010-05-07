@@ -9,6 +9,8 @@ from librpg.context import get_context_stack
 from librpg.path import data_path
 from librpg.collection.theme import ClassicMenuTheme
 from librpg.input import Input
+from librpg.locals import (M_1, M_4, M_3,
+                           M_5)
 
 
 class MenuLabel(Label):
@@ -24,9 +26,9 @@ class MenuLabel(Label):
 class AdjustableBar(Bar):
 
     def update_input(self):
-        if Input.was_pressed('MB1') or Input.was_pressed('MB4'): 
+        if Input.was_pressed(M_1) or Input.was_pressed(M_4): 
             self.filled += 0.05
-        if Input.was_pressed('MB3') or Input.was_pressed('MB5'): 
+        if Input.was_pressed(M_3) or Input.was_pressed(M_5): 
             self.filled -= 0.05
 
 
@@ -40,9 +42,9 @@ class AdjustableVerticalGrid(VerticalGrid):
             self[i].add_widget(label, AlignCenter())
 
     def update_input(self):
-        if Input.was_pressed('MB1') or Input.was_pressed('MB4'): 
+        if Input.was_pressed(M_1) or Input.was_pressed(M_4): 
             self.add_line()
-        if Input.was_pressed('MB3') or Input.was_pressed('MB5'): 
+        if Input.was_pressed(M_3) or Input.was_pressed(M_5): 
             self.remove_line()
 
     def add_line(self):
