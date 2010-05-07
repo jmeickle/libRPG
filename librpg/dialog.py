@@ -12,6 +12,7 @@ from librpg.config import game_config as m_cfg
 from librpg.config import menu_config
 from librpg.context import Context
 from librpg.menu import (Menu, Label, Panel, Cursor, ArrowCursorTheme)
+from librpg.input import Input
 
 
 def build_lines(text, box_width, font):
@@ -140,12 +141,8 @@ class ElasticMessageDialog(Menu):
                               cfg.border_width + y_acc))
             y_acc += line[0] + cfg.line_spacing
 
-    def process_event(self, event):
-        if event.type == KEYDOWN:
-            if event.key in m_cfg.key_action:
-                self.close()
-                return True
-        return False
+    def activate(self):
+        self.close()
 
 
 class MultiMessageDialog(Menu):
@@ -201,14 +198,10 @@ class MultiMessageDialog(Menu):
             self.current_panel = self.panels.pop(0)
             self.add_widget(self.current_panel, (0, 0))
 
-    def process_event(self, event):
-        if event.type == KEYDOWN:
-            if event.key in m_cfg.key_action:
-                self.advance_panel()
-                if self.current_panel is None:
-                    self.close()
-                return True
-        return False
+    def activate(self):
+        self.advance_panel()
+        if self.current_panel is None:
+            self.close()
 
 
 class ChoiceDialog(Menu):
@@ -313,8 +306,8 @@ class ChoiceDialog(Menu):
         """
         pass
 
-    def process_event(self, event):
-        return False
+    #def process_event(self, event):
+    #    return False
 
 
 class ChoiceLabel(Label):
@@ -328,10 +321,9 @@ class ChoiceLabel(Label):
         self.menu.close()
         return True
 
-    def process_event(self, event):
-        if event.type == KEYDOWN:
-            if event.key in m_cfg.key_left or event.key in m_cfg.key_right:
-                return True
+    def update_input(self):
+        for key in m_cfg.key_left.union(m_cfg.key_right):
+            Input.was_pressed(key)
 
 
 class MessageQueue(Context):

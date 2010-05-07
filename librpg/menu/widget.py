@@ -94,16 +94,6 @@ class Widget(object):
         """
         return False
 
-    def process_event(self, event):
-        """
-        *Virtual.*
-
-        Handle an event triggered while the widget was focused.
-
-        Return whether the event was captured.
-        """
-        return False
-
     def activate(self):
         """
         *Virtual.*
