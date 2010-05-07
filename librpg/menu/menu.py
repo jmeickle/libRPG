@@ -230,8 +230,8 @@ class MenuController(Context):
         self.__update_mouse_input()
 
     def __update_mouse_input(self):
+        evt = Input.down_unset('MB1')
         if evt is not None:
-            print 'MB1'
             if self.menu.cursor is not None:
                 w = self.menu.cursor.widget
                 if w is not None:
@@ -241,6 +241,7 @@ class MenuController(Context):
                     if not captured:
                         self.activate()
 
+        evt = Input.down_unset('MB3')
         if evt is not None:
             if self.menu.cursor is not None:
                 w = self.menu.cursor.widget
