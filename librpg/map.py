@@ -9,12 +9,10 @@ import csv
 from librpg.mapobject import PartyAvatar
 from librpg.mapview import MapView
 from librpg.sound import MapMusic
-from librpg.util import (check_direction, determine_facing, Position,
-                         Matrix, inverse)
+from librpg.util import (determine_facing, Position, Matrix, inverse)
 from librpg.tile import Tileset
 from librpg.config import game_config
-from librpg.locals import (ACTIVATE, KEYDOWN, KEYUP, MOUSEBUTTONDOWN, DOWN,
-                           NORMAL_SPEED, PARTY_POSITION_LOCAL_STATE, UP,
+from librpg.locals import (DOWN, NORMAL_SPEED, PARTY_POSITION_LOCAL_STATE, UP,
                            LEFT, RIGHT, M_1)
 from librpg.movement import Step, PathMovement
 from librpg.context import Context, Model, get_context_stack

@@ -4,7 +4,6 @@ the use of MessageQueue, which is built-in MapModels. These dialogs
 are a tool for displaying conversations, questions, etc.
 """
 
-from librpg.locals import KEYDOWN
 from librpg.color import TRANSPARENT
 from librpg.config import dialog_config as cfg
 from librpg.config import graphics_config as g_cfg

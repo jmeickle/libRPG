@@ -3,12 +3,10 @@ import pygame
 from librpg.context import Context, Model, get_context_stack
 from librpg.virtualscreen import get_screen
 from librpg.config import game_config
-from librpg.util import check_direction, fill_with_surface, descale_point
+from librpg.util import fill_with_surface, descale_point
 from librpg.image import Image
 from librpg.input import Input
-from librpg.locals import (SRCALPHA, MOUSE_ACTIVATE, ACTIVATE,
-                           MOUSEBUTTONDOWN, MOUSEBUTTONUP,
-                           MOUSEMOTION, KEYDOWN, KEYUP, UP, DOWN, LEFT, RIGHT,
+from librpg.locals import (SRCALPHA, MOUSEMOTION, UP, DOWN, LEFT, RIGHT,
                            M_1, M_3)
 
 from librpg.menu.div import Div
