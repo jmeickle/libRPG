@@ -38,6 +38,8 @@ class MapController(Context):
         self.map_music = MapMusic(self.map_model)
         self.__moving_sync = False
         self.message_queue = MessageQueue(self)
+        self.do_cancel = False
+        self.do_action = False
 
     def initialize(self):
         map_model = self.map_model
@@ -64,24 +66,36 @@ class MapController(Context):
             self.flow_object_movement()
             self.update_objects()
 
-        if not self.party_avatar.scheduled_movement \
-           and not self.party_avatar.movement_phase \
-           and not self.message_queue.is_busy():
-                self.__update_input()
+        self.__update_input()
 
         return False
 
     def __update_input(self):
         for key in game_config.key_cancel:
             if Input.was_pressed(key) is not None:
-                get_context_stack().stop()
+                self.do_cancel = True
                 return
             
         for key in game_config.key_action:
             if Input.was_pressed(key) is not None:
-                self.map_model.party_action()
+                self.do_action = True
                 return
+
+        if self.party_avatar.scheduled_movement \
+           or self.party_avatar.movement_phase \
+           or self.message_queue.is_busy():
+            return
         
+        if self.do_cancel:
+            self.do_cancel = False
+            get_context_stack().stop()
+            return
+            
+        if self.do_action:
+            self.do_action = False
+            self.map_model.party_action()
+            return
+
         for key in game_config.key_up:
             if Input.motion(key):
                 self.party_avatar.schedule_movement(Step(UP))
