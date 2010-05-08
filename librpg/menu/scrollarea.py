@@ -1,7 +1,9 @@
 import pygame
 
 from librpg.menu import Div, Widget
-from librpg.locals import UP, DOWN
+from librpg.locals import UP, DOWN, M_4, M_5
+from librpg.input import Input
+from librpg.util import descale_point
 
 
 class VerticalScrollArea(Div):
@@ -95,7 +97,9 @@ class VerticalScrollArea(Div):
         end = min(self.start + self.height_in_cells, len(self))
         for pos, i in enumerate(xrange(self.start, end)):
             self.add_widget(self.contents[i], (0, self.cell_height * pos))
-        if self.menu is not None and self.menu.cursor is not None:
+        if (self.menu is not None
+            and self.menu.cursor is not None
+            and old in self.menu.get_tree()):
             self.menu.cursor.move_to(old)
 
     def draw(self):
@@ -128,3 +132,14 @@ class VerticalScrollArea(Div):
                     cursor.move_to(target_div.get_contents()[0])
                     return True
         return False
+
+    def update_input(self):
+        scrolled = False
+        if Input.was_pressed(M_4):
+            scrolled = self.scroll_up()
+        elif Input.was_pressed(M_5):
+            scrolled = self.scroll_down()
+
+        if scrolled:
+            pos = descale_point(Input.mouse_pos)
+            self.menu.reposition_cursor(pos)

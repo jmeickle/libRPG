@@ -133,8 +133,35 @@ class Menu(Model, Div):
         if cursor is not None:
             w = cursor.widget
             while w.parent is not None:
+                #print 'update_input %s' % w
                 w.update_input()
                 w = w.parent
+
+    def reposition_cursor(self, pos):
+        if self.menu.mouse_control == Menu.MOUSE_STRICT:
+            self.menu.__reposition_cursor_strict(pos)
+        else:
+            self.menu.__reposition_cursor_loose(pos)
+
+    def __reposition_cursor_strict(self, pos):
+        cursor = self.cursor
+        if cursor.widget.contains_point(pos):
+            return
+        for w in self.all_widgets:
+            if w.focusable and w.contains_point(pos):
+                cursor.move_to(w)
+                return
+
+    def __reposition_cursor_loose(self, pos):
+        cursor = self.cursor
+        best = (None, 999999)
+        for w in self.all_widgets:
+            if w.focusable:
+                dist = w.distance_to_point(pos)
+                if dist < best[1]:
+                    best = (w, dist)
+        if best[0] is not None:
+            cursor.move_to(best[0])
 
 
 class MenuController(Context):
@@ -271,23 +298,7 @@ class MenuController(Context):
         event = Input.event(MOUSEMOTION)
         if event is not None:
             pos = descale_point(event.pos)
-    
-            if self.menu.mouse_control == Menu.MOUSE_STRICT:
-                if cursor.widget.contains_point(pos):
-                    return
-                for w in self.menu.all_widgets:
-                    if w.focusable and w.contains_point(pos):
-                        cursor.move_to(w)
-                        return
-            else:
-                best = (None, 999999)
-                for w in self.menu.all_widgets:
-                    if w.focusable:
-                        dist = w.distance_to_point(pos)
-                        if dist < best[1]:
-                            best = (w, dist)
-                if best[0] is not None:
-                    cursor.move_to(best[0])
+            self.menu.reposition_cursor(pos)
 
     def is_done(self):
         return self.done
