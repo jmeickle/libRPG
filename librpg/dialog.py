@@ -12,6 +12,7 @@ from librpg.config import menu_config
 from librpg.context import Context
 from librpg.menu import (Menu, Label, Panel, Cursor, ArrowCursorTheme)
 from librpg.input import Input
+from librpg.locals import M_1
 
 
 def build_lines(text, box_width, font):
@@ -93,6 +94,10 @@ class MessageDialog(Menu):
     def activate(self):
         self.close()
 
+    def update_input(self):
+        if Input.was_pressed(M_1):
+            self.close()
+
 
 class ElasticMessageDialog(Menu):
 
@@ -142,6 +147,10 @@ class ElasticMessageDialog(Menu):
 
     def activate(self):
         self.close()
+
+    def update_input(self):
+        if Input.was_pressed(M_1):
+            self.close()
 
 
 class MultiMessageDialog(Menu):
@@ -201,6 +210,10 @@ class MultiMessageDialog(Menu):
         self.advance_panel()
         if self.current_panel is None:
             self.close()
+
+    def update_input(self):
+        if Input.was_pressed(M_1):
+            self.activate()
 
 
 class ChoiceDialog(Menu):
