@@ -5,7 +5,7 @@ from librpg.path import cursor_theme_path
 from librpg.image import Image
 from librpg.animation import AnimatedImage
 from librpg.color import (transparency, WHITE, DARK_RED, PURPLE,
-                          DARKER_MAGENTA, TRANSPARENT)
+                          DARKER_MAGENTA, TRANSPARENT, BLUE)
 
 
 class MenuTheme(object):
@@ -121,7 +121,7 @@ class MenuTheme(object):
         """
         return Image(image)
 
-    def draw_scroll_bar(self, height, displayed_elements, total_elements):
+    def draw_scroll_bar(self, height, start, end, total):
         """
         *Abstract.*
 
@@ -129,10 +129,14 @@ class MenuTheme(object):
         rendered.
 
         The scroll bar should represent a ScrollArea displaying
-        *displayed_elements* out of *total_elements* elements.
+        *start* to *end* elements out of *total* elements.
         """
         surface = pygame.Surface((12, height), SRCALPHA, 32)
         surface.fill(PURPLE)
+        
+        r = pygame.Rect((1, height * start / total),
+                        (10, (end - start) * height / total))
+        pygame.draw.rect(surface, BLUE, r)
         return surface
         #raise NotImplementedError('MenuTheme.draw_scroll_bar() is abstract')
 

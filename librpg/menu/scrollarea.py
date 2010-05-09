@@ -103,7 +103,11 @@ class VerticalScrollArea(Div):
 
     def draw(self):
         if self.image is None:
-            self.scroll_bar_img = self.theme.draw_scroll_bar(self.height, 0, 0)
+            end = self.start + self.height_in_cells
+            self.scroll_bar_img = self.theme.draw_scroll_bar(self.height,
+                                                             self.start,
+                                                             end,
+                                                             len(self))
             r = pygame.Rect(0, 0, self.width - self.scroll_bar_img.get_width(),
                             self.height)
             self.scroll_area_img = self.theme.draw_scroll_area(r)
