@@ -69,7 +69,6 @@ class Cursor(object):
     def draw(self):
 #        For drawing the cursor only when its widget changes 
 #        if self.drawn_widget != self.widget:
-        print 'Now drawing %s' % self.widget
         widget = self.widget
         rect = widget.get_menu_rect()
         self.image, self.target_pos = self.theme.draw_cursor(rect)
