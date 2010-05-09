@@ -6,12 +6,12 @@ GRAY = (128, 128, 128)
 BLACK = (0, 0, 0)
 
 RED = (255, 0, 0)
-BLUE = (0, 255, 0)
-GREEN = (0, 0, 255)
+GREEN = (0, 255, 0)
+BLUE = (0, 0, 255)
 
 DARK_RED = (128, 0, 0)
-DARK_BLUE = (0, 0, 128)
 DARK_GREEN = (0, 128, 0)
+DARK_BLUE = (0, 0, 128)
 
 DARKER_RED = (64, 0, 0)
 DARKER_GREEN = (0, 64, 0)
