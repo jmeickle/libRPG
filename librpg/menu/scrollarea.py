@@ -1,9 +1,9 @@
 import pygame
 
 from librpg.menu import Div, Widget
-from librpg.locals import UP, DOWN, M_4, M_5
+from librpg.locals import UP, DOWN, M_4, M_5, SRCALPHA
 from librpg.input import Input
-
+from librpg.image import Image
 
 class VerticalScrollArea(Div):
 
@@ -102,9 +102,17 @@ class VerticalScrollArea(Div):
             self.menu.cursor.move_to(old)
 
     def draw(self):
-        r = pygame.Rect(0, 0, self.width, self.height)
         if self.image is None:
-            self.image = self.theme.draw_scroll_area(r)
+            self.scroll_bar_img = self.theme.draw_scroll_bar(self.height, 0, 0)
+            r = pygame.Rect(0, 0, self.width - self.scroll_bar_img.get_width(),
+                            self.height)
+            self.scroll_area_img = self.theme.draw_scroll_area(r)
+            
+            surf = pygame.Surface((self.width, self.height), SRCALPHA, 32)
+            surf.blit(self.scroll_area_img.get_surface(), (0, 0))
+            surf.blit(self.scroll_bar_img,
+                            (self.scroll_area_img.get_width(), 0))
+            self.image = Image(surf)
         Div.draw(self)
 
     def render(self, screen, x_offset, y_offset):

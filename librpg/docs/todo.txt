@@ -147,7 +147,7 @@ ok      0.6     Allow nested gameloops
 ok      0.6     Implement synchronous contexts
 ok      0.6     Refactor dialogs and menus that should be synchronous
 ok      0.6     Rework input
-        0.6     Improve mouse interface to replace descale_point
+ok      0.6     Improve mouse interface to replace descale_point
         0.6     Implement scroll bar
         0.6     Decide if UsableItems should be kept
         0.6     Define item image system and API for menu

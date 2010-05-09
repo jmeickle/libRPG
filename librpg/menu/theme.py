@@ -121,6 +121,21 @@ class MenuTheme(object):
         """
         return Image(image)
 
+    def draw_scroll_bar(self, height, displayed_elements, total_elements):
+        """
+        *Abstract.*
+
+        Return an Image with how a scroll bar with height *height* should be
+        rendered.
+
+        The scroll bar should represent a ScrollArea displaying
+        *displayed_elements* out of *total_elements* elements.
+        """
+        surface = pygame.Surface((12, height), SRCALPHA, 32)
+        surface.fill(PURPLE)
+        return surface
+        #raise NotImplementedError('MenuTheme.draw_scroll_bar() is abstract')
+
 
 class DefaultMenuTheme(MenuTheme):
 
