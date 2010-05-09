@@ -183,7 +183,7 @@ class Input(object):
         Updates the mouse postion and the three main buttons state.
         pygame.mouse.get_pos() and pygame.mouse.get_pressed()
         """
-        Input.mouse_pos = pos
+        Input.mouse_pos = descale_point(pos)
         Input.button_state = buttons
  
     @classmethod
