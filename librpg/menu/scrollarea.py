@@ -21,6 +21,7 @@ class VerticalScrollArea(Div):
         self.start = 0
         self.height_in_cells = height / cell_height
         self.refresh()
+        self.changed = False
 
     def __getitem__(self, pos):
         return self.contents[pos]
@@ -100,9 +101,10 @@ class VerticalScrollArea(Div):
             and self.menu.cursor is not None
             and old in self.menu.get_tree()):
             self.menu.cursor.move_to(old)
+        self.changed = True
 
     def draw(self):
-        if self.image is None:
+        if self.image is None or self.changed:
             end = self.start + self.height_in_cells
             self.scroll_bar_img = self.theme.draw_scroll_bar(self.height,
                                                              self.start,
@@ -117,6 +119,7 @@ class VerticalScrollArea(Div):
             surf.blit(self.scroll_bar_img,
                             (self.scroll_area_img.get_width(), 0))
             self.image = Image(surf)
+            self.changed = False
         Div.draw(self)
 
     def render(self, screen, x_offset, y_offset):
