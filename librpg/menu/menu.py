@@ -3,7 +3,7 @@ import pygame
 from librpg.context import Context, Model, get_context_stack
 from librpg.virtualscreen import get_screen
 from librpg.config import game_config
-from librpg.util import fill_with_surface, descale_point
+from librpg.util import fill_with_surface
 from librpg.image import Image
 from librpg.input import Input
 from librpg.locals import (SRCALPHA, MOUSEMOTION, UP, DOWN, LEFT, RIGHT,
@@ -270,7 +270,7 @@ class MenuController(Context):
             if self.menu.cursor is not None:
                 w = self.menu.cursor.widget
                 if w is not None:
-                    x, y = descale_point(evt.pos)
+                    x, y = evt.pos
                     widget_x, widget_y = w.get_menu_position()
                     captured = w.left_click(x - widget_x, y - widget_y)
                     if not captured:
@@ -281,7 +281,7 @@ class MenuController(Context):
             if self.menu.cursor is not None:
                 w = self.menu.cursor.widget
                 if w is not None:
-                    x, y = descale_point(evt.pos)
+                    x, y = evt.pos
                     widget_x, widget_y = w.get_menu_position()
                     captured = w.right_click(x - widget_x, y - widget_y)
 
@@ -297,7 +297,7 @@ class MenuController(Context):
 
         event = Input.event(MOUSEMOTION)
         if event is not None:
-            pos = descale_point(event.pos)
+            pos = event.pos
             self.menu.reposition_cursor(pos)
 
     def is_done(self):

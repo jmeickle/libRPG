@@ -3,7 +3,6 @@ import pygame
 from librpg.menu import Div, Widget
 from librpg.locals import UP, DOWN, M_4, M_5
 from librpg.input import Input
-from librpg.util import descale_point
 
 
 class VerticalScrollArea(Div):
@@ -141,5 +140,5 @@ class VerticalScrollArea(Div):
             scrolled = self.scroll_down()
 
         if scrolled:
-            pos = descale_point(Input.mouse_pos)
+            pos = Input.mouse_pos
             self.menu.reposition_cursor(pos)

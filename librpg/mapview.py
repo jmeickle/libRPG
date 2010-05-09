@@ -5,7 +5,7 @@ from librpg.tile import Tile
 from librpg.locals import UP, RIGHT, DOWN, LEFT, ANIMATION_PERIOD, SRCALPHA
 from librpg.color import BLACK
 from librpg.virtualscreen import get_screen
-from librpg.util import descale_point, Position
+from librpg.util import Position
 
 
 class MapView(object):
@@ -162,7 +162,7 @@ class MapView(object):
         return obj_x_offset, obj_y_offset
 
     def calc_pos_from_mouse(self, pos):
-        scr_x, scr_y = descale_point(pos)
+        scr_x, scr_y = pos
         x = int((scr_x + self.bg_topleft[0] - g_cfg.map_border_width)
                 / g_cfg.tile_size)
         y = int((scr_y + self.bg_topleft[1] - g_cfg.map_border_height)

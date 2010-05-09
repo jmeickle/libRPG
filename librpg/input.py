@@ -15,6 +15,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see /www.gnu.org/licenses/>
+from librpg.util import descale_point
  
 __author__="Thadeus Burgess &lt;thadeusb@thadeusb.com&gt;"
 __date__ ="$Mar 23, 2009 12:20:34 AM$"
@@ -89,11 +90,18 @@ class Input(object):
         elif event.type == KEYUP:
             Input.events.update({event.key: [event, Input.UP]})
         elif event.type == MOUSEBUTTONDOWN:
+            d = {'pos': descale_point(event.pos), 'button': event.button}
+            event = pygame.event.Event(MOUSEBUTTONDOWN, d)
             Input.events.update({Input.butt[event.button]: [event, Input.DOWN]})
             Input.pressed.add(Input.butt[event.button])
         elif event.type == MOUSEBUTTONUP:
+            d = {'pos': descale_point(event.pos), 'button': event.button}
+            event = pygame.event.Event(MOUSEBUTTONUP, d)
             Input.events.update({Input.butt[event.button]: [event, Input.UP]})
         elif event.type == MOUSEMOTION:
+            d = {'pos': descale_point(event.pos), 'buttons': event.buttons,
+                 'rel': descale_point(event.rel)}
+            event = pygame.event.Event(MOUSEMOTION, d)
             Input.events.update({MOUSEMOTION: [event, Input.MOTION]})
         elif event.type == pygame.QUIT:
             Input.events.update({'QUIT': [event, True]}) # Fix by Gautham (comment on the blog)
