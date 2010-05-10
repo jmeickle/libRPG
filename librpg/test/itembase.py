@@ -1,12 +1,12 @@
 from librpg.util import IdFactory
-from librpg.item import OrdinaryItem, UsableOrdinaryItem
+from librpg.item import OrdinaryItem, Usable
 from librpg.dialog import ChoiceDialog, MessageDialog
 
 
 item_factory = IdFactory()
 
 
-class SinglePartyTargetItem(UsableOrdinaryItem):
+class SinglePartyTargetItem(OrdinaryItem, Usable):
     
     def use(self, party):
         dialog = ChoiceDialog('Use on whom?', party.chars)

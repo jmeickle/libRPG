@@ -444,19 +444,7 @@ class UniqueItem(Item):
         return "%s" % (self.name)
 
 
-class UsableItem(Item):
+class Usable(object):
 
     def use(self, party):
-        raise NotImplementedError('UsableItem.use() is abstract')
-
-
-class UsableOrdinaryItem(UsableItem, OrdinaryItem):
-
-    def __init__(self, name, weight=0):
-        OrdinaryItem.__init__(self, name, weight)
-
-
-class UsableUniqueItem(UsableItem, UniqueItem):
-
-    def __init__(self, name, weight=0):
-        UniqueItem.__init__(self, name, weight)
+        raise NotImplementedError('Usable.use() is abstract')
