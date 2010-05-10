@@ -27,8 +27,8 @@ Version 0.5 (released on nov 2, 2009)
 Generic menu is implemented.
 
 
-Version 0.6 (to be released on dec, 2009)
------------------------------------------
+Version 0.6
+-----------
 Party management, save and inventory sample menus done.
 
 

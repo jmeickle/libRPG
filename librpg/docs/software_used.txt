@@ -1,17 +1,39 @@
-Core
-----
-* Python - Implementation language
-* Pygame - Game programming framework
+Platform
+--------
+* Python
+    Implementation language
+    http://www.python.org/
+* Pygame
+    Game programming framework
+    http://www.pygame.org/
 
 Editors
 -------
-* GIMP - Image editor
-* Notepad++ - Source code editor in Windows
-* Kate - Source code editor in Linux
+* GIMP
+    Image editor
+    http://www.gimp.org/
+* Notepad++
+    Source code editor in Windows
+    http://notepad-plus.sourceforge.net/
+* Kate
+    Source code editor in Linux
+    http://kate-editor.org/
+* Eclipse with PyDev
+    Cross-platform IDE
+    http://www.eclipse.org/
+    http://pydev.org/ 
 
 Tools
 -----
-* Mercurial - Distributed version control
-* Sphinx - Documentation generator
-* pep8 - PEP-8 style checker
-* TortoiseHg - Mercurial graphical front-end
+* Mercurial
+    Distributed version control
+    http://mercurial.selenic.com/
+* Sphinx
+    Documentation generator
+    http://sphinx.pocoo.org/
+* pep8
+    PEP-8 style checker
+    http://pypi.python.org/pypi/pep8
+* TortoiseHg
+    Mercurial graphical front-end
+    http://tortoisehg.bitbucket.org/
