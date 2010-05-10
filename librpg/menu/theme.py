@@ -131,18 +131,7 @@ class MenuTheme(object):
         The scroll bar should represent a ScrollArea displaying
         *start* to *end* elements out of *total* elements.
         """
-        WIDTH = 12
-        internal_height = height - 2
-        internal_width = WIDTH - 2
-        
-        surface = pygame.Surface((WIDTH, height), SRCALPHA, 32)
-        surface.fill(PURPLE)
-        
-        r = pygame.Rect((1, 1 + internal_height * start / total),
-                        (internal_width, (end - start) * internal_height / total))
-        pygame.draw.rect(surface, BLUE, r)
-        return surface
-        #raise NotImplementedError('MenuTheme.draw_scroll_bar() is abstract')
+        raise NotImplementedError('MenuTheme.draw_scroll_bar() is abstract')
 
 
 class DefaultMenuTheme(MenuTheme):
@@ -215,6 +204,19 @@ class DefaultMenuTheme(MenuTheme):
                               rect.bottom - 1 - border),
                              1)
         return Image(surface)
+
+    def draw_scroll_bar(self, height, start, end, total):
+        WIDTH = 12
+        internal_height = height - 2
+        internal_width = WIDTH - 2
+        
+        surface = pygame.Surface((WIDTH, height), SRCALPHA, 32)
+        surface.fill(PURPLE)
+        
+        r = pygame.Rect((1, 1 + internal_height * start / total),
+                        (internal_width, (end - start) * internal_height / total))
+        pygame.draw.rect(surface, BLUE, r)
+        return surface
 
 
 class CursorTheme(object):

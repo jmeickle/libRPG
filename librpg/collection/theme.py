@@ -28,13 +28,13 @@ class ClassicMenuTheme(MenuTheme):
         return WHITE
 
     def draw_menu_bg(self, rect):
-        return self.draw_round_border_rect(rect)
+        return self.draw_round_border_rect_image(rect)
 
     def draw_panel(self, rect):
-        return self.draw_round_border_rect(rect)
+        return self.draw_round_border_rect_image(rect)
 
     def draw_scroll_area(self, rect):
-        return self.draw_round_border_rect(rect)
+        return self.draw_round_border_rect_image(rect)
 
     def draw_selected_tab(self, rect):
         surface = pygame.Surface((rect.width, rect.height), SRCALPHA, 32)
@@ -83,9 +83,9 @@ class ClassicMenuTheme(MenuTheme):
                              1)
         return Image(surface)
 
-    def draw_rounded_rect(self, surface, rect, color,
-                          border_flags):
-        BORDER = self.round_corners
+    def draw_rounded_rect(self, surface, rect, color, round_corners,
+                          border_flags=(None, True, True, True, True)):
+        BORDER = round_corners
         Y_0 = rect.top
         Y_1 = rect.top + BORDER
         Y_2 = rect.top + rect.height - BORDER
@@ -147,12 +147,47 @@ class ClassicMenuTheme(MenuTheme):
         surface = pygame.Surface((rect.width, rect.height), SRCALPHA, 32)
         surface.fill(TRANSPARENT)
         
-        self.draw_rounded_rect(surface, rect, self.border_color, border_flags)
+        self.draw_rounded_rect(surface, rect, self.border_color,
+                               self.round_corners, border_flags)
         
         inner_rect = pygame.Rect((rect.left + self.border,
                                   rect.top + self.border),
                                  (rect.width - 2 * self.border,
                                   rect.height - 2 * self.border))
-        self.draw_rounded_rect(surface, inner_rect, self.color, border_flags)
+        self.draw_rounded_rect(surface, inner_rect, self.color,
+                               self.round_corners, border_flags)
         
+        return surface
+
+    def draw_round_border_rect_image(self, rect,
+                               border_flags=(None, True, True, True, True)):
+        surface = self.draw_round_border_rect(rect, border_flags)
         return Image(surface)
+
+    def draw_scroll_bar(self, height, start, end, total):
+        width = 12
+        
+        surface = pygame.Surface((width, height), SRCALPHA, 32)
+        surface.fill(DARK_BLUE)
+        
+        r = pygame.Rect((0, 0), (width, height))
+        self.draw_rounded_rect(surface, r, self.border_color, r.w / 2)
+        
+        r.x += 2
+        r.y += 2
+        r.w -= 4
+        r.h -= 4
+        self.draw_rounded_rect(surface, r, self.color, r.w / 2)
+        
+        r.x += 1
+        r.y += 1
+        r.w -= 2
+        r.h -= 2
+        r.y = r.y + start * r.h / total
+        r.h = (end - start) * r.h / total
+        self.draw_rounded_rect(surface, r, self.border_color, r.w / 2)
+        
+#        r = pygame.Rect((1, 1 + internal_height * start / total),
+#                        (internal_width, (end - start) * internal_height / total))
+#        pygame.draw.rect(surface, WHITE, r)
+        return surface
