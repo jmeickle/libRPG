@@ -45,30 +45,15 @@ class ItemMenu(Menu):
         self.exit_label = ExitLabel()
         self.add_widget(self.exit_label, (20, 12))
 
-        self.inventory_panel = None
-        self.build_inventory()
+        self.inventory_panel = ItemScrollArea(self.inventory, self.width - 20,
+                                              self.height - 50,
+                                              24, (20, 10))
+        self.add_widget(self.inventory_panel, (10, 40))
+        
         cursor = Cursor()
         cursor.bind(self)
 
         self.config_action_dialog(100, 60, TRANSPARENT)
-
-    def build_inventory(self):
-        inv = self.inventory
-
-        self.inventory_panel = VerticalScrollArea(self.width - 20,
-                                                  self.height - 50,
-                                                  24)
-        self.add_widget(self.inventory_panel, (10, 40))
-
-        ordered = inv.get_ordered_list()
-        amounts = inv.get_items_with_amounts()
-
-        pairs = [(item, amounts[item]) for item in ordered]
-        for _, pair in enumerate(pairs):
-            item, qt = pair
-            label = ItemLabel(item, qt, inv)
-            line = self.inventory_panel.add_line()
-            self.inventory_panel[line].add_widget(label, (20, 10))
 
     def config_action_dialog(self, width=None, height=None, bg=None):
         if width is not None:
@@ -93,6 +78,23 @@ class ItemMenu(Menu):
             if self.inventory_panel[i].get_contents()[0].item == item:
                 self.inventory_panel.remove_line(i)
                 break
+
+
+class ItemScrollArea(VerticalScrollArea):
+    
+    def __init__(self, inventory, width, height, cell_height,
+                 label_pos_inside_cell):
+        VerticalScrollArea.__init__(self, width, height, cell_height)
+        self.inventory = inventory
+        
+        ordered = inventory.get_ordered_list()
+        amounts = inventory.get_items_with_amounts()
+        pairs = [(item, amounts[item]) for item in ordered]
+        for pair in pairs:
+            item, qt = pair
+            label = ItemLabel(item, qt, inventory)
+            line = self.add_line()
+            self[line].add_widget(label, label_pos_inside_cell)
 
 
 # Action Dialog

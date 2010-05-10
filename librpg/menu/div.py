@@ -71,7 +71,8 @@ class Div(Widget):
                 widget_and_children = w.widget.get_tree()
                 for x in widget_and_children:
                     x.menu = None
-                    self.menu.unregister_widget(x)
+                    if self.menu is not None:
+                        self.menu.unregister_widget(x)
                 return True
         return False
 
