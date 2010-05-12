@@ -50,7 +50,7 @@ class ItemMenu(Menu):
                                               24, (20, 10))
         self.add_widget(self.inventory_panel, (10, 40))
         
-        self.info_panel = Panel(self.width * 0.4, self.height * 0.5)
+        self.info_panel = ItemInfoPanel(self.width * 0.4, self.height * 0.5)
         inv_space = (self.inventory_panel.position[0]
                            + self.inventory_panel.width)
         spacing = (self.width - inv_space - self.info_panel.width) / 2
@@ -175,3 +175,21 @@ class ActionDialog(Menu):
 
         cursor = Cursor()
         cursor.bind(self)
+
+
+class ItemInfoPanel(Panel):
+
+    def __init__(self, width, height):
+        Panel.__init__(self, width, height, focusable=False)
+        self.item_name = Label("", focusable=False)
+        self.add_widget(self.item_name, (10, 10))
+
+    def update(self):
+        if hasattr(self.menu.cursor.widget, 'item'):
+            name = self.menu.cursor.widget.item.name
+        else:
+            name = ""
+        if self.item_name.text != name:
+            self.item_name.text = name
+
+        
