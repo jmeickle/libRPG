@@ -45,7 +45,7 @@ class ItemMenu(Menu):
         self.exit_label = ExitLabel()
         self.add_widget(self.exit_label, (20, 12))
 
-        self.inventory_panel = ItemScrollArea(self.inventory, self.width - 20,
+        self.inventory_panel = ItemScrollArea(self.inventory, self.width * 0.5,
                                               self.height - 50,
                                               24, (20, 10))
         self.add_widget(self.inventory_panel, (10, 40))
@@ -63,8 +63,9 @@ class ItemMenu(Menu):
         self.action_dialog_bg = bg
 
     def create_action_dialog(self, item_label):
-        x, y = item_label.get_menu_position()
-        x += item_label.width + 10
+        x = (self.menu.inventory_panel.get_menu_position()[0]
+             + self.menu.inventory_panel.width + 12) 
+        y = self.menu.y + 12
         dialog = ActionDialog(self, item_label.item, item_label.quantity,
                               item_label,
                               self.action_dialog_width,

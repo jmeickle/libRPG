@@ -152,6 +152,7 @@ ok      0.6     Implement scroll bar
 ok      0.6     Decide if UsableItems should be kept - made into a mixin
         0.6     Define item image system and API for menu
         0.6     Finish ItemMenu
+        0.6     Improve widget positioning system
         0.6     Define Character face system
         0.6     Design PartyMenu
         0.6     Code PartyMenu
