@@ -50,6 +50,14 @@ class ItemMenu(Menu):
                                               24, (20, 10))
         self.add_widget(self.inventory_panel, (10, 40))
         
+        self.info_panel = Panel(self.width * 0.4, self.height * 0.5)
+        inv_space = (self.inventory_panel.position[0]
+                           + self.inventory_panel.width)
+        spacing = (self.width - inv_space - self.info_panel.width) / 2
+        info_x = inv_space + spacing
+        info_y = self.height - self.info_panel.height - spacing
+        self.add_widget(self.info_panel, (info_x, info_y))
+        
         cursor = Cursor()
         cursor.bind(self)
 
@@ -63,8 +71,9 @@ class ItemMenu(Menu):
         self.action_dialog_bg = bg
 
     def create_action_dialog(self, item_label):
-        x = (self.menu.inventory_panel.get_menu_position()[0]
-             + self.menu.inventory_panel.width + 12) 
+        x = (self.inventory_panel.get_menu_position()[0]
+             + self.inventory_panel.width + 12)
+        print self.inventory_panel.get_menu_position()[0], self.inventory_panel.width 
         y = self.menu.y + 12
         dialog = ActionDialog(self, item_label.item, item_label.quantity,
                               item_label,

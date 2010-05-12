@@ -176,7 +176,10 @@ class InventoryContext(CommandContext):
 class MyItemMenu(ItemMenu):
 
     def __init__(self, inv, party):
-        ItemMenu.__init__(self, inv, party, 360, 260, x=20, y=20)
+        ItemMenu.__init__(self, inv, party,
+                          librpg.config.graphics_config.screen_width - 40,
+                          librpg.config.graphics_config.screen_height - 40,
+                          x=20, y=20)
         #self.config_action_dialog(bg=(0, 28, 0, 60))
 
 
@@ -187,7 +190,9 @@ def main():
     librpg.config.graphics_config.config(tile_size=32,
                                          object_height=32,
                                          object_width=32,
-                                         scale=2)
+                                         scale=2,
+                                         screen_width=480,
+                                         screen_height=320)
     librpg.config.menu_config.config(theme=ClassicMenuTheme())
 
     world = MicroWorld(PersistTestMap(), char_factory, party_factory)
