@@ -288,6 +288,9 @@ def descale_point(pos):
 def build_lines(text, box_width, font):
     lines = []
     words = text.split()
+    if not words:
+        return lines
+    
     cur_line = words[0]
     _, height = font.size(cur_line)
 

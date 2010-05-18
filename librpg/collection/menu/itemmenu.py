@@ -185,7 +185,7 @@ class ItemInfoPanel(Panel):
         self.item_name = Label("", focusable=False)
         self.add_widget(self.item_name, (10, 10))
         
-        self.item_description = Label("", focusable=False)
+        self.item_description = Label("", self.width - 20, size=10, focusable=False)
         self.add_widget(self.item_description, (10, 10 + self.item_name.height + 10))
 
     def update(self):

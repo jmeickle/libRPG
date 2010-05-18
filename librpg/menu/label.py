@@ -1,5 +1,9 @@
+import pygame
+
 from librpg.menu.widget import Widget
 from librpg.image import Image
+from librpg.util import build_lines
+from librpg.locals import SRCALPHA
 
 
 class Label(Widget):
@@ -32,21 +36,31 @@ class Label(Widget):
     def draw(self):
         if self.image is None or self.changed:
             self.changed = False
+            font = self.theme.get_font(self.size, self.bold, self.italic)
             if self.max_width is None:
-                self.__draw_one_line()
+                self.__draw_one_line(font)
             else:
-                self.__draw_multi_line()
+                self.__draw_multi_line(font)
+            self.width = self.image.width
+            self.height = self.image.height
 
-    def __draw_one_line(self):
-        font = self.theme.get_font(self.size, self.bold, self.italic)
-        self.image = Image(font.render(self.text,
+    def __draw_one_line(self, font):
+        self.image = Image(font.render(self._text,
                                        self.theme.get_font_anti_alias(),
                                        self.theme.get_font_color()))
-        self.width = self.image.width
-        self.height = self.image.height
         
-    def __draw_multi_line(self):
-        pass
+    def __draw_multi_line(self, font):
+        lines = build_lines(self.text, self.max_width, font)
+        total_height = sum([e[0] for e in lines])
+        s = pygame.Surface((self.max_width, total_height), SRCALPHA, 32)
+        y = 0
+        for h, line in lines:
+            line_surface = font.render(line,
+                                       self.theme.get_font_anti_alias(),
+                                       self.theme.get_font_color())
+            s.blit(line_surface, (0, y))
+            y += h
+        self.image = Image(s)
 
     def __repr__(self):
         return "Label('%s')" % self._text
