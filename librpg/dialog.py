@@ -13,24 +13,7 @@ from librpg.context import Context
 from librpg.menu import (Menu, Label, Panel, Cursor, ArrowCursorTheme)
 from librpg.input import Input
 from librpg.locals import M_1
-
-
-def build_lines(text, box_width, font):
-    lines = []
-    words = text.split()
-    cur_line = words[0]
-    _, height = font.size(cur_line)
-
-    for word in words[1:]:
-        projected_line = cur_line + ' ' + word
-        width, height = font.size(projected_line)
-        if width > box_width:
-            lines.append([height, cur_line])
-            cur_line = word
-        else:
-            cur_line += ' ' + word
-    lines.append([height, cur_line])
-    return lines
+from librpg.util import build_lines
 
 
 def split_boxes(lines, box_height, line_spacing):

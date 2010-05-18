@@ -283,3 +283,21 @@ def fill_with_surface(target, source):
 def descale_point(pos):
     return (pos[0] / float(graphics_config.scale),
             pos[1] / float(graphics_config.scale))
+
+
+def build_lines(text, box_width, font):
+    lines = []
+    words = text.split()
+    cur_line = words[0]
+    _, height = font.size(cur_line)
+
+    for word in words[1:]:
+        projected_line = cur_line + ' ' + word
+        width, height = font.size(projected_line)
+        if width > box_width:
+            lines.append([height, cur_line])
+            cur_line = word
+        else:
+            cur_line += ' ' + word
+    lines.append([height, cur_line])
+    return lines

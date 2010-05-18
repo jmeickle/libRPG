@@ -181,8 +181,12 @@ class ItemInfoPanel(Panel):
 
     def __init__(self, width, height):
         Panel.__init__(self, width, height, focusable=False)
+        
         self.item_name = Label("", focusable=False)
         self.add_widget(self.item_name, (10, 10))
+        
+        self.item_description = Label("", focusable=False)
+        self.add_widget(self.item_description, (10, 10 + self.item_name.height + 10))
 
     def update(self):
         if hasattr(self.menu.cursor.widget, 'item'):
@@ -191,5 +195,5 @@ class ItemInfoPanel(Panel):
             name = ""
         if self.item_name.text != name:
             self.item_name.text = name
-
+            self.item_description.text = 'Test description. Lorem ipsum dolor sit amet, consectetur adipisicing elit.'
         
