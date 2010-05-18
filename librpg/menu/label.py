@@ -10,11 +10,14 @@ class Label(Widget):
     *text* is a string with the text to be displayed in the label.
     *size*, *bold* and *italic* are font properties to render the label.
 
+    *max_width* and *max_height* specify the maximum dimensions of the label.
+    If any is None, that dimension will be unlimited.
+
     *focusable* and *theme* behave like in any other Widget.
     """
 
-    def __init__(self, text='', size=12, bold=False, italic=False,
-                 focusable=True, theme=None):
+    def __init__(self, text, max_width=None, max_height=None, size=12,
+                 bold=False, italic=False, focusable=True, theme=None):
         Widget.__init__(self, focusable=focusable, theme=theme)
         self._text = text
         self._size = size
@@ -22,17 +25,28 @@ class Label(Widget):
         self._italic = italic
         self.changed = False
         self.image = None
+        self.max_width = max_width
+        self.max_height = max_height
         self.draw()
 
     def draw(self):
         if self.image is None or self.changed:
             self.changed = False
-            font = self.theme.get_font(self.size, self.bold, self.italic)
-            self.image = Image(font.render(self.text,
-                                           self.theme.get_font_anti_alias(),
-                                           self.theme.get_font_color()))
-            self.width = self.image.width
-            self.height = self.image.height
+            if self.max_width is None:
+                self.__draw_one_line()
+            else:
+                self.__draw_multi_line()
+
+    def __draw_one_line(self):
+        font = self.theme.get_font(self.size, self.bold, self.italic)
+        self.image = Image(font.render(self.text,
+                                       self.theme.get_font_anti_alias(),
+                                       self.theme.get_font_color()))
+        self.width = self.image.width
+        self.height = self.image.height
+        
+    def __draw_multi_line(self):
+        pass
 
     def __repr__(self):
         return "Label('%s')" % self._text
@@ -84,3 +98,4 @@ class Label(Widget):
     """
     Whether the letters should be rendered as italic.
     """
+
