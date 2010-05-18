@@ -26,6 +26,10 @@ class LogItem(OrdinaryItem):
 
     def __init__(self):
         OrdinaryItem.__init__(self, 'Log')
+
+    def get_description(self):
+        return 'A small log of ash wood.' 
+
 item_factory.register(LogItem)
 
 
@@ -35,6 +39,10 @@ class LeafItem(OrdinaryItem):
 
     def __init__(self):
         OrdinaryItem.__init__(self, 'Leaf')
+        
+    def get_description(self):
+        return 'A big, green leaf.' 
+
 item_factory.register(LeafItem)
 
 
@@ -44,6 +52,9 @@ class PotionItem(SinglePartyTargetItem):
 
     def __init__(self):
         SinglePartyTargetItem.__init__(self, 'Potion')
+        
+    def get_description(self):
+        return 'Restores 100 HP in a single target.' 
 
     def use_on_party_member(self, character):
         msg = 'Using %s on %s' % (self.name, character)
@@ -60,6 +71,9 @@ class ElixirItem(SinglePartyTargetItem):
     def __init__(self):
         SinglePartyTargetItem.__init__(self, 'Elixir')
         
+    def get_description(self):
+        return 'Restores all HP and MP in a single target.' 
+
     def use_on_party_member(self, character):
         msg = 'Using %s on %s' % (self.name, character)
         dialog = MessageDialog(msg, True)
@@ -75,6 +89,9 @@ class FeatherItem(SinglePartyTargetItem):
     def __init__(self):
         SinglePartyTargetItem.__init__(self, 'Feather')
         
+    def get_description(self):
+        return 'An unknown bird\'s feather.' 
+
     def use_on_party_member(self, character):
         msg = 'Using %s on %s' % (self.name, character)
         dialog = MessageDialog(msg, True)
@@ -86,9 +103,13 @@ item_factory.register(FeatherItem)
 class EmptyVialItem(OrdinaryItem):
 
     id = 'empty vial'
+        
+    def get_description(self):
+        return 'A small vial that can be filled with liquids. Leak-proof.' 
 
     def __init__(self):
         OrdinaryItem.__init__(self, 'Empty Vial')
+
 item_factory.register(EmptyVialItem)
 
 
@@ -99,6 +120,9 @@ class LavenderItem(SinglePartyTargetItem):
     def __init__(self):
         SinglePartyTargetItem.__init__(self, 'Lavender')
         
+    def get_description(self):
+        return 'A bunch of lavender. Smells good.' 
+
     def use_on_party_member(self, character):
         msg = 'Using %s on %s' % (self.name, character)
         dialog = MessageDialog(msg, True)
@@ -114,6 +138,9 @@ class BasilItem(SinglePartyTargetItem):
     def __init__(self):
         SinglePartyTargetItem.__init__(self, 'Basil')
         
+    def get_description(self):
+        return 'A handful of basil, enough for one pizza.' 
+
     def use_on_party_member(self, character):
         msg = 'Using %s on %s' % (self.name, character)
         dialog = MessageDialog(msg, True)
@@ -128,7 +155,11 @@ class RosemaryItem(SinglePartyTargetItem):
 
     def __init__(self):
         SinglePartyTargetItem.__init__(self, 'Rosemary')
-        
+
+    def get_description(self):
+        return 'A twig of rosemary. It has a bitter, astringent taste and is \
+                highly aromatic, which complements a wide variety of foods.' 
+
     def use_on_party_member(self, character):
         msg = 'Using %s on %s' % (self.name, character)
         dialog = MessageDialog(msg, True)
@@ -143,4 +174,8 @@ class FangsItem(OrdinaryItem):
 
     def __init__(self):
         OrdinaryItem.__init__(self, 'Fangs')
+
+    def get_description(self):
+        return 'A wolf\'a canine.' 
+
 item_factory.register(FangsItem)

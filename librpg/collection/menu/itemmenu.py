@@ -190,10 +190,13 @@ class ItemInfoPanel(Panel):
 
     def update(self):
         if hasattr(self.menu.cursor.widget, 'item'):
-            name = self.menu.cursor.widget.item.name
+            item = self.menu.cursor.widget.item
+            name = item.name
+            description = item.get_description()
         else:
-            name = ""
+            name = ''
+            description = '' 
+            
         if self.item_name.text != name:
             self.item_name.text = name
-            self.item_description.text = 'Test description. Lorem ipsum dolor sit amet, consectetur adipisicing elit.'
-        
+            self.item_description.text = description

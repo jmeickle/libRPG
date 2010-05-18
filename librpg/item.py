@@ -391,6 +391,12 @@ class Item(object):
         self.name = name
         self.weight = weight
 
+    def get_description(self):
+        """
+        Should return a string with the item's description.
+        """ 
+        return ''
+
 
 class OrdinaryItem(Item):
 
