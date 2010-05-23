@@ -152,7 +152,8 @@ ok      0.6     Implement scroll bar
 ok      0.6     Decide if UsableItems should be kept - made into a mixin
 ok      0.6     Implement multiline Label
 ok      0.6     Allow align left/center/right in Label
-        0.6     Define item image system and API for menu
+ok      0.6     Define item image system and API for menu
+        0.6     Add icons to item labels
         0.6     Finish ItemMenu
         0.6     Improve widget positioning system - use anchors
         0.6     Improve widget positioning system - store widget position is it 

@@ -185,20 +185,21 @@ class ItemInfoPanel(Panel):
         Panel.__init__(self, width, height, focusable=False)
         
         self.item_icon = ImageWidget(None, focusable=False)
-        self.add_widget(self.item_icon, (10, 10))
+        x = 10
+        y = 10
+        self.add_widget(self.item_icon, (x, y))
 
         self.item_name = Label("", focusable=False)
         x = 10 + graphics_config.item_icon_width + 5
         y = 10 + (graphics_config.item_icon_height - self.item_name.height) / 2
-        self.add_widget(self.item_name,
-                        (x, y))
+        self.add_widget(self.item_name, (x, y))
         
         self.item_description = Label("", self.width - 20, size=10,
                                       focusable=False)
+        x = 10
         y = (10 + max(self.item_name.height, graphics_config.item_icon_height)
              + 10)
-        self.add_widget(self.item_description,
-                        (10, y))
+        self.add_widget(self.item_description, (x, y))
 
     def update(self):
         if hasattr(self.menu.cursor.widget, 'item'):
