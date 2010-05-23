@@ -2,6 +2,7 @@ from librpg.menu import (Menu, Label, Cursor, Panel, VerticalScrollArea,
                          ImageWidget)
 from librpg.color import TRANSPARENT
 from librpg.config import graphics_config
+from librpg.menu.div import WidgetGroup
 
 
 class ExitLabel(Label):
@@ -12,28 +13,6 @@ class ExitLabel(Label):
     def activate(self):
         self.menu.close()
         return True
-
-
-class ItemLabel(Label):
-
-    def __init__(self, item, quantity, inventory):
-        self.item = item
-        self.quantity = quantity
-        self.inventory = inventory
-        s = self.create_string()
-        Label.__init__(self, s)
-
-    def activate(self):
-        dialog = self.menu.create_action_dialog(self)
-        dialog.sync_open()
-        return True
-
-    def refresh(self):
-        self.quantity = self.inventory.get_amount(self.item)
-        self.text = self.create_string()
-
-    def create_string(self):
-        return '%s x%d' % (self.item.name, self.quantity)
 
 
 class ItemMenu(Menu):
@@ -49,7 +28,7 @@ class ItemMenu(Menu):
 
         self.inventory_panel = ItemScrollArea(self.inventory, self.width * 0.5,
                                               self.height - 50,
-                                              24, (20, 10))
+                                              36, (20, 10))
         self.add_widget(self.inventory_panel, (10, 40))
         
         self.info_panel = ItemInfoPanel(self.width * 0.4, self.height * 0.5)
@@ -72,13 +51,12 @@ class ItemMenu(Menu):
             self.action_dialog_height = height
         self.action_dialog_bg = bg
 
-    def create_action_dialog(self, item_label):
+    def create_action_dialog(self, item_entry):
         x = (self.inventory_panel.get_menu_position()[0]
-             + self.inventory_panel.width + 12)
-        print self.inventory_panel.get_menu_position()[0], self.inventory_panel.width 
+             + self.inventory_panel.width + 12) 
         y = self.menu.y + 12
-        dialog = ActionDialog(self, item_label.item, item_label.quantity,
-                              item_label,
+        dialog = ActionDialog(self, item_entry.item, item_entry.quantity,
+                              item_entry,
                               self.action_dialog_width,
                               self.action_dialog_height, x, y,
                               theme=self.theme,
@@ -100,25 +78,51 @@ class ItemScrollArea(VerticalScrollArea):
         self.inventory = inventory
         
         ordered = inventory.get_ordered_list()
-        amounts = inventory.get_items_with_amounts()
-        pairs = [(item, amounts[item]) for item in ordered]
-        for pair in pairs:
-            item, qt = pair
-            label = ItemLabel(item, qt, inventory)
+        BORDER = 12
+        for item in ordered:
+            group = ItemEntry(width - 10 - 2 * BORDER,
+                              self.cell_height - 2 * BORDER,
+                              item, inventory,
+                              (label_pos_inside_cell[0] - BORDER,
+                               label_pos_inside_cell[1] - BORDER))
             line = self.add_line()
-            self[line].add_widget(label, label_pos_inside_cell)
+            self[line].add_widget(group, (BORDER, BORDER))
+
+
+class ItemEntry(WidgetGroup):
+    
+    def __init__(self, width, height, item, inventory, label_pos):
+        WidgetGroup.__init__(self, width, height)
+        self.item = item
+        self.quantity = inventory.get_amount(item)
+        self.inventory = inventory
+        s = self.create_string()
+        self.label = Label(s)
+        self.add_widget(self.label, label_pos)
+
+    def activate(self):
+        dialog = self.menu.create_action_dialog(self)
+        dialog.sync_open()
+        return True
+
+    def refresh(self):
+        self.quantity = self.inventory.get_amount(self.item)
+        self.label.text = self.create_string()
+
+    def create_string(self):
+        return '%s x%d' % (self.item.name, self.quantity)
 
 
 # Action Dialog
 
 class UseLabel(Label):
 
-    def __init__(self, item, inv, party, item_label):
+    def __init__(self, item, inv, party, item_entry):
         Label.__init__(self, 'Use')
         self.item = item
         self.inv = inv
         self.party = party
-        self.item_label = item_label
+        self.item_entry = item_entry
 
     def activate(self):
         print 'Used %s' % self.item.name
@@ -128,16 +132,16 @@ class UseLabel(Label):
             self.menu.item_menu.remove_line(self.item)
             self.menu.close()
         else:
-            self.item_label.refresh()
+            self.item_entry.refresh()
         return True
 
 class TrashLabel(Label):
 
-    def __init__(self, item, inv, item_label):
+    def __init__(self, item, inv, item_entry):
         Label.__init__(self, 'Trash')
         self.item = item
         self.inv = inv
-        self.item_label = item_label
+        self.item_entry = item_entry
 
     def activate(self):
         print 'Trashed %s' % self.item.name
@@ -146,13 +150,13 @@ class TrashLabel(Label):
             self.menu.item_menu.remove_line(self.item)
             self.menu.close()
         else:
-            self.item_label.refresh()
+            self.item_entry.refresh()
         return True
 
 
 class ActionDialog(Menu):
 
-    def __init__(self, item_menu, item, quantity, item_label, width, height,
+    def __init__(self, item_menu, item, quantity, item_entry, width, height,
                  x=0, y=0, theme=None, bg=TRANSPARENT,
                  mouse_control=Menu.MOUSE_LOOSE):
         Menu.__init__(self, width, height, x, y, theme, bg, mouse_control)
@@ -166,10 +170,10 @@ class ActionDialog(Menu):
         
         if hasattr(item, 'use'):
             self.use_label = UseLabel(self.item, self.item_menu.inventory,
-                                      self.item_menu.party, item_label)
+                                      self.item_menu.party, item_entry)
         else:
             self.use_label = TrashLabel(self.item, self.item_menu.inventory, 
-                                        item_label)
+                                        item_entry)
         self.panel.add_widget(self.use_label, (20, 12))
 
         self.exit_label = ExitLabel()

@@ -8,7 +8,7 @@ from librpg.image import Image
 class VerticalScrollArea(Div):
 
     """
-    A VerticalScrollArea is a Div that it only partially displayed at each time.
+    A VerticalScrollArea is a Div that is only partially displayed at each time.
     The "window" through which its contents can be accessed 
     
     The Panel will be rendered with its theme's draw_panel() method.
