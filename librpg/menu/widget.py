@@ -48,7 +48,10 @@ class Widget(object):
         Return a pygame Surface with the widget's image as it should be
         rendered.
         """
-        return self.image.get_surface()
+        if self.image is not None:
+            return self.image.get_surface()
+        else:
+            return None
 
     def draw(self):
         """

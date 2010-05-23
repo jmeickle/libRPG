@@ -12,6 +12,7 @@ stacked, being stored in the inventory individually.
 
 from librpg.image import Image, SlicedImage
 from librpg.config import graphics_config as g_cfg
+import pygame
 
 
 class Inventory(object):
@@ -417,6 +418,9 @@ class Item(object):
         return None
     
     def get_icon(self):
+        """
+        Returns an Image with the item's icon.
+        """
         loc = self.get_icon_location()
         if loc is None:
             return None
@@ -424,9 +428,10 @@ class Item(object):
             raise Exception('%s.get_icon_location() should return a 2-tuple'
                             'or a 4-tuple')
         
+        image = pygame.image.load(loc[0])
         icon_w = g_cfg.item_icon_width if len(loc) <= 2 else loc[2]
         icon_h = g_cfg.item_icon_height if len(loc) <= 3 else loc[3]
-        sliced_img = SlicedImage(loc[0], icon_w, icon_h)
+        sliced_img = SlicedImage(image, icon_w, icon_h)
         return Image(sliced_img.get_slice(loc[1]))
 
 

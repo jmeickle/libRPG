@@ -11,17 +11,21 @@ class ImageWidget(Widget):
     *focusable* and *theme* behave like in any other Widget.
     """
 
-    def __init__(self, surface, focusable=True, theme=None):
+    def __init__(self, surface=None, focusable=True, theme=None):
         Widget.__init__(self, focusable=focusable, theme=theme)
         self.image = None
         self.surf = surface
 
     def draw(self):
-        if self.image is None or self.changed:
-            self.image = self.theme.draw_image(self._surf)
-            self.width = self.image.width
-            self.height = self.image.height
-            self.changed = False
+        
+        if (self.image is None and self.surf is not None) or self.changed:
+            if self.surf is None:
+                self.image = None
+            else:  
+                self.image = self.theme.draw_image(self._surf)
+                self.width = self.image.width
+                self.height = self.image.height
+                self.changed = False
 
     def __repr__(self):
         return "Image(%dx%d)" % (self.width, self.height)

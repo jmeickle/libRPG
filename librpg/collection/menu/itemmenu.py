@@ -1,5 +1,7 @@
-from librpg.menu import Menu, Label, Cursor, Panel, VerticalScrollArea
+from librpg.menu import (Menu, Label, Cursor, Panel, VerticalScrollArea,
+                         ImageWidget)
 from librpg.color import TRANSPARENT
+from librpg.config import graphics_config
 
 
 class ExitLabel(Label):
@@ -182,21 +184,37 @@ class ItemInfoPanel(Panel):
     def __init__(self, width, height):
         Panel.__init__(self, width, height, focusable=False)
         
+        self.item_icon = ImageWidget(None, focusable=False)
+        self.add_widget(self.item_icon, (10, 10))
+
         self.item_name = Label("", focusable=False)
-        self.add_widget(self.item_name, (10, 10))
+        x = 10 + graphics_config.item_icon_width + 5
+        y = 10 + (graphics_config.item_icon_height - self.item_name.height) / 2
+        self.add_widget(self.item_name,
+                        (x, y))
         
-        self.item_description = Label("", self.width - 20, size=10, focusable=False)
-        self.add_widget(self.item_description, (10, 10 + self.item_name.height + 10))
+        self.item_description = Label("", self.width - 20, size=10,
+                                      focusable=False)
+        y = (10 + max(self.item_name.height, graphics_config.item_icon_height)
+             + 10)
+        self.add_widget(self.item_description,
+                        (10, y))
 
     def update(self):
         if hasattr(self.menu.cursor.widget, 'item'):
             item = self.menu.cursor.widget.item
             name = item.name
             description = item.get_description()
+            icon = item.get_icon()
         else:
             name = ''
-            description = '' 
+            description = ''
+            icon = None
             
         if self.item_name.text != name:
             self.item_name.text = name
             self.item_description.text = description
+            if icon is not None:
+                self.item_icon.surf = icon.get_surface()
+            else:
+                self.item_icon.surf = None
