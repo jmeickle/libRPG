@@ -1,6 +1,7 @@
 from librpg.util import IdFactory
 from librpg.item import OrdinaryItem, Usable
 from librpg.dialog import ChoiceDialog, MessageDialog
+from librpg.path import tileset_path
 
 
 item_factory = IdFactory()
@@ -31,7 +32,7 @@ class LogItem(OrdinaryItem):
         return 'A small log of ash wood.'
     
     def get_icon_location(self):
-        return ('item_icons.png', 0)
+        return (tileset_path('world_upper.png'), 2)
 
 item_factory.register(LogItem)
 
@@ -42,7 +43,10 @@ class LeafItem(OrdinaryItem):
 
     def __init__(self):
         OrdinaryItem.__init__(self, 'Leaf')
-        
+
+    def get_icon_location(self):
+        return ('item_icons.png', 3)
+
     def get_description(self):
         return 'A big, green leaf.' 
 
@@ -58,6 +62,9 @@ class PotionItem(SinglePartyTargetItem):
         
     def get_description(self):
         return 'Restores 100 HP in a single target.' 
+
+    def get_icon_location(self):
+        return ('item_icons.png', 0)
 
     def use_on_party_member(self, character):
         msg = 'Using %s on %s' % (self.name, character)
