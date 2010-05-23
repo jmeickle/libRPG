@@ -18,17 +18,17 @@ from librpg.util import build_lines
 
 def split_boxes(lines, box_height, line_spacing):
     boxes = []
-    box_cur_height = lines[0][0]
+    box_cur_height = lines[0][1]
     box = [lines[0]]
 
     for line in lines[1:]:
-        if box_cur_height + line[0] + line_spacing > box_height:
+        if box_cur_height + line[1] + line_spacing > box_height:
             boxes.append(box)
-            box_cur_height = line[0]
+            box_cur_height = line[1]
             box = [line]
         else:
             box.append(line)
-            box_cur_height += line[0] + line_spacing
+            box_cur_height += line[1] + line_spacing
     if box:
         boxes.append(box)
 
@@ -68,11 +68,11 @@ class MessageDialog(Menu):
         # Draw message
         y_acc = 0
         for line in lines:
-            label = Label(line[1])
+            label = Label(line[2])
             panel.add_widget(label,
                              (cfg.border_width,
                               cfg.border_width + y_acc))
-            y_acc += line[0] + cfg.line_spacing
+            y_acc += line[1] + cfg.line_spacing
 
     def activate(self):
         self.close()
@@ -102,7 +102,7 @@ class ElasticMessageDialog(Menu):
                             font)
 
         # Calculate box size
-        self.box_height = (sum([line[0] for line in lines])
+        self.box_height = (sum([line[1] for line in lines])
                            + (len(lines) - 1) * cfg.line_spacing
                            + 4 * cfg.border_width)
         assert self.box_height < g_cfg.screen_height,\
@@ -122,7 +122,7 @@ class ElasticMessageDialog(Menu):
         # Draw message
         y_acc = 0
         for line in lines:
-            label = Label(line[1])
+            label = Label(line[2])
             panel.add_widget(label,
                              (cfg.border_width,
                               cfg.border_width + y_acc))
@@ -172,11 +172,11 @@ class MultiMessageDialog(Menu):
             panel = Panel(self.width, self.height)
             y_acc = 0
             for line in box:
-                label = Label(line[1])
+                label = Label(line[2])
                 panel.add_widget(label,
                                  (cfg.border_width,
                                   cfg.border_width + y_acc))
-                y_acc += line[0] + cfg.line_spacing
+                y_acc += line[1] + cfg.line_spacing
             self.panels.append(panel)
 
         self.advance_panel()
@@ -246,19 +246,19 @@ class ChoiceDialog(Menu):
         # Draw message
         y_acc = 0
         for line in self.lines:
-            label = Label(line[1], focusable=False)
+            label = Label(line[2], focusable=False)
             panel.add_widget(label,
                              (cfg.border_width,
                               cfg.border_width + y_acc))
-            y_acc += line[0] + cfg.line_spacing
+            y_acc += line[1] + cfg.line_spacing
 
         self.starting_option = None
         for index, line in enumerate(self.choice_lines):
-            label = ChoiceLabel(line[1], index)
+            label = ChoiceLabel(line[2], index)
             panel.add_widget(label,
                              (2 * cfg.border_width,
                               cfg.border_width + y_acc))
-            y_acc += line[0] + cfg.choice_line_spacing
+            y_acc += line[1] + cfg.choice_line_spacing
             if self.starting_option is None:
                 self.starting_option = label
 

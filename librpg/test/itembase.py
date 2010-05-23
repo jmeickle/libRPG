@@ -176,6 +176,6 @@ class FangsItem(OrdinaryItem):
         OrdinaryItem.__init__(self, 'Fangs')
 
     def get_description(self):
-        return 'A wolf\'a canine.' 
+        return 'A wolf\'s canine.' 
 
 item_factory.register(FangsItem)

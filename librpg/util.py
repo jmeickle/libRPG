@@ -292,15 +292,17 @@ def build_lines(text, box_width, font):
         return lines
     
     cur_line = words[0]
-    _, height = font.size(cur_line)
+    width, height = font.size(cur_line)
+    prev_width, prev_height = width, height
 
     for word in words[1:]:
         projected_line = cur_line + ' ' + word
+        prev_width, prev_height = width, height
         width, height = font.size(projected_line)
         if width > box_width:
-            lines.append([height, cur_line])
+            lines.append((prev_width, prev_height, cur_line))
             cur_line = word
         else:
             cur_line += ' ' + word
-    lines.append([height, cur_line])
+    lines.append((prev_width, prev_height, cur_line))
     return lines

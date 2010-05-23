@@ -54,7 +54,7 @@ class Label(Widget):
         total_height = sum([e[0] for e in lines])
         s = pygame.Surface((self.max_width, total_height), SRCALPHA, 32)
         y = 0
-        for h, line in lines:
+        for w, h, line in lines:
             line_surface = font.render(line,
                                        self.theme.get_font_anti_alias(),
                                        self.theme.get_font_color())
