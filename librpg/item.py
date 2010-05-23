@@ -10,6 +10,9 @@ UniqueItems (stored in UniquesInventories) are items that will not be
 stacked, being stored in the inventory individually.
 """
 
+from librpg.image import Image, SlicedImage
+from librpg.config import graphics_config as g_cfg
+
 
 class Inventory(object):
 
@@ -393,9 +396,38 @@ class Item(object):
 
     def get_description(self):
         """
+        *Virtual.*
+        
         Should return a string with the item's description.
         """ 
         return ''
+    
+    def get_icon_location(self):
+        """
+        *Virtual.*
+        
+        Should return a (filename, index) tuple indicating the file
+        containing the item's icon and the index within the file where the
+        icon is.
+        
+        If the item's icon has dimensions different from the ones configured
+        at graphics_config.item_icon_width and graphics_config.item_icon_height,
+        a tuple (filename, index, width, height) can be returned.
+        """
+        return None
+    
+    def get_icon(self):
+        loc = self.get_icon_location()
+        if loc is None:
+            return None
+        if not hasattr(loc, '__len__') or len(loc) not in (2, 4):
+            raise Exception('%s.get_icon_location() should return a 2-tuple'
+                            'or a 4-tuple')
+        
+        icon_w = g_cfg.item_icon_width if len(loc) <= 2 else loc[2]
+        icon_h = g_cfg.item_icon_height if len(loc) <= 3 else loc[3]
+        sliced_img = SlicedImage(loc[0], icon_w, icon_h)
+        return Image(sliced_img.get_slice(loc[1]))
 
 
 class OrdinaryItem(Item):

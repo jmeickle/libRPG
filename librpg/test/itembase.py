@@ -28,7 +28,10 @@ class LogItem(OrdinaryItem):
         OrdinaryItem.__init__(self, 'Log')
 
     def get_description(self):
-        return 'A small log of ash wood.' 
+        return 'A small log of ash wood.'
+    
+    def get_icon_location(self):
+        return ('item_icons.png', 0)
 
 item_factory.register(LogItem)
 

@@ -85,6 +85,12 @@ class GraphicsConfig(Config):
     :attr:`tile_size`
         Tiles' width and height in pixels.
 
+    :attr:`item_icon_width`
+        Item icons' width in pixels.
+
+    :attr:`item_icon_height`
+        Item icons' height in pixels.
+
     :attr:`scale`
         Zoom to use when drawing anything on the screen. When 1, it will be
         drawn in the normal scale, which will look very small for low
@@ -106,6 +112,8 @@ class GraphicsConfig(Config):
     _object_height = 32
     _object_width = 24
     _scale = 2
+    item_icon_width = 32
+    item_icon_height = 32
     camera_mode = None
     display_mode = 0
     animation_frame_period = 15
