@@ -3,7 +3,7 @@ import pygame
 from librpg.menu.widget import Widget
 from librpg.image import Image
 from librpg.util import build_lines
-from librpg.locals import SRCALPHA
+from librpg.locals import SRCALPHA, LEFT, RIGHT, CENTER
 
 
 class Label(Widget):
@@ -20,13 +20,14 @@ class Label(Widget):
     *focusable* and *theme* behave like in any other Widget.
     """
 
-    def __init__(self, text, max_width=None, max_height=None, size=12,
-                 bold=False, italic=False, focusable=True, theme=None):
+    def __init__(self, text, max_width=None, max_height=None, align=LEFT,
+                 size=12, bold=False, italic=False, focusable=True, theme=None):
         Widget.__init__(self, focusable=focusable, theme=theme)
         self._text = text
         self._size = size
         self._bold = bold
         self._italic = italic
+        self.align = align
         self.changed = False
         self.image = None
         self.max_width = max_width
@@ -58,7 +59,14 @@ class Label(Widget):
             line_surface = font.render(line,
                                        self.theme.get_font_anti_alias(),
                                        self.theme.get_font_color())
-            s.blit(line_surface, (0, y))
+            if self.align == LEFT:
+                x = 0
+            elif self.align == RIGHT:
+                x = self.max_width - w
+            elif self.align == CENTER:
+                x = (self.max_width - w) / 2
+
+            s.blit(line_surface, (x, y))
             y += h
         self.image = Image(s)
 
@@ -111,5 +119,20 @@ class Label(Widget):
     italic = property(get_italic, set_italic)
     """
     Whether the letters should be rendered as italic.
+    """
+
+    def get_align(self):
+        return self._align
+
+    def set_align(self, align):
+        assert align in (LEFT, RIGHT, CENTER), ('Label.set_align() should '
+                                                'take LEFT, CENTER or RIGHT '
+                                                'as first argument.')
+        self.changed = True
+        self._align = align
+
+    align = property(get_align, set_align)
+    """
+    How the text should be aligned horizontally - LEFT, CENTER or RIGHT.
     """
 

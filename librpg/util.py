@@ -304,5 +304,7 @@ def build_lines(text, box_width, font):
             cur_line = word
         else:
             cur_line += ' ' + word
-    lines.append((prev_width, prev_height, cur_line))
+            
+    width, height = font.size(cur_line)
+    lines.append((width, height, cur_line))
     return lines
