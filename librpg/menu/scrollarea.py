@@ -21,7 +21,8 @@ class VerticalScrollArea(Div):
         self.start = 0
         self.height_in_cells = height / cell_height
         self.refresh()
-        self.changed = False
+        self.changed = True
+        self.draw()
 
     def __getitem__(self, pos):
         return self.contents[pos]
@@ -110,17 +111,22 @@ class VerticalScrollArea(Div):
                                                              self.start,
                                                              end,
                                                              len(self))
-            r = pygame.Rect(0, 0, self.width - self.scroll_bar_img.get_width(),
-                            self.height)
-            self.scroll_area_img = self.theme.draw_scroll_area(r)
+            r = pygame.Rect(0, 0, self.get_cells_width(), self.height)
+            #self.scroll_area_img = self.theme.draw_scroll_area(r)
             
             surf = pygame.Surface((self.width, self.height), SRCALPHA, 32)
-            surf.blit(self.scroll_area_img.get_surface(), (0, 0))
+            #surf.blit(self.scroll_area_img.get_surface(), (0, 0))
             surf.blit(self.scroll_bar_img,
-                            (self.scroll_area_img.get_width(), 0))
+                            (r.w, 0))
             self.image = Image(surf)
             self.changed = False
         Div.draw(self)
+        
+    def get_scroll_bar_width(self):
+        return self.scroll_bar_img.get_width()
+
+    def get_cells_width(self):
+        return self.width - self.get_scroll_bar_width()
 
     def render(self, screen, x_offset, y_offset):
         Widget.render(self, screen, x_offset, y_offset)

@@ -183,8 +183,8 @@ class ClassicMenuTheme(MenuTheme):
         r.y += 1
         r.w -= 2
         r.h -= 2
-        r.y = r.y + start * r.h / total
-        r.h = (end - start) * r.h / total
+        r.y = r.y + start * r.h / total if total != 0 else 0
+        r.h = (end - start) * r.h / total if total != 0 else r.h
         self.draw_rounded_rect(surface, r, self.border_color, r.w / 2)
         
 #        r = pygame.Rect((1, 1 + internal_height * start / total),

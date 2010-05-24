@@ -5,10 +5,10 @@ from librpg.config import graphics_config
 from librpg.menu.div import WidgetGroup
 
 
-class ExitLabel(Label):
+class CloseLabel(Label):
 
-    def __init__(self):
-        Label.__init__(self, 'Exit')
+    def __init__(self, text='Close'):
+        Label.__init__(self, text)
 
     def activate(self):
         self.menu.close()
@@ -23,15 +23,21 @@ class ItemMenu(Menu):
         self.party = party
         Menu.__init__(self, width, height, x, y, theme, bg, mouse_control)
 
-        self.exit_label = ExitLabel()
-        self.add_widget(self.exit_label, (20, 12))
+        self.close_label = CloseLabel()
+        self.add_widget(self.close_label, (20, 12))
 
-        self.inventory_panel = ItemScrollArea(self.inventory, self.width * 0.5,
-                                              self.height - 50,
-                                              36, (20, 10))
-        self.add_widget(self.inventory_panel, (10, 40))
+        self.inventory_panel = Panel(self.width * 0.55, self.height - 50)
+        self.add_widget(self.inventory_panel, (16, 35))
         
-        self.info_panel = ItemInfoPanel(self.width * 0.4, self.height * 0.5)
+        self.inventory_scroll = ItemScrollArea(self.inventory,
+                                               self.inventory_panel.width - 10,
+                                               self.inventory_panel.height - 10,
+                                               graphics_config.item_icon_height
+                                               + 12,
+                                               (20, 10))
+        self.inventory_panel.add_widget(self.inventory_scroll, (5, 5))
+        
+        self.info_panel = ItemInfoPanel(self.width * 0.35, self.height * 0.55)
         inv_space = (self.inventory_panel.position[0]
                            + self.inventory_panel.width)
         spacing = (self.width - inv_space - self.info_panel.width) / 2
@@ -52,8 +58,8 @@ class ItemMenu(Menu):
         self.action_dialog_bg = bg
 
     def create_action_dialog(self, item_entry):
-        x = (self.inventory_panel.get_menu_position()[0]
-             + self.inventory_panel.width + 12) 
+        x = (self.inventory_scroll.get_menu_position()[0]
+             + self.inventory_scroll.width + 12) 
         y = self.menu.y + 12
         dialog = ActionDialog(self, item_entry.item, item_entry.quantity,
                               item_entry,
@@ -64,9 +70,9 @@ class ItemMenu(Menu):
         return dialog
 
     def remove_line(self, item):
-        for i in xrange(len(self.inventory_panel)):
-            if self.inventory_panel[i].get_contents()[0].item == item:
-                self.inventory_panel.remove_line(i)
+        for i in xrange(len(self.inventory_scroll)):
+            if self.inventory_scroll[i].get_contents()[0].item == item:
+                self.inventory_scroll.remove_line(i)
                 break
 
 
@@ -78,27 +84,38 @@ class ItemScrollArea(VerticalScrollArea):
         self.inventory = inventory
         
         ordered = inventory.get_ordered_list()
-        BORDER = 12
+        BORDER = 7
         for item in ordered:
-            group = ItemEntry(width - 10 - 2 * BORDER,
+            group = ItemEntry(self.get_cells_width() - 2 * BORDER - 2,
                               self.cell_height - 2 * BORDER,
                               item, inventory,
-                              (label_pos_inside_cell[0] - BORDER,
-                               label_pos_inside_cell[1] - BORDER))
+                              (label_pos_inside_cell[0] - BORDER))
             line = self.add_line()
             self[line].add_widget(group, (BORDER, BORDER))
 
 
 class ItemEntry(WidgetGroup):
     
-    def __init__(self, width, height, item, inventory, label_pos):
+    def __init__(self, width, height, item, inventory, label_x):
         WidgetGroup.__init__(self, width, height)
         self.item = item
         self.quantity = inventory.get_amount(item)
         self.inventory = inventory
+        
+        self.icon = ImageWidget()
+        i = item.get_icon()
+        if i is not None:
+            self.icon.surf = i.get_surface()
+        else:
+            self.icon.surf = None
+        self.add_widget(self.icon, (label_x, 0))
+        
         s = self.create_string()
         self.label = Label(s)
-        self.add_widget(self.label, label_pos)
+        label_y = height / 2 - self.label.height / 2
+        self.add_widget(self.label,
+                        (label_x + 5 + graphics_config.item_icon_width,
+                         label_y))
 
     def activate(self):
         dialog = self.menu.create_action_dialog(self)
@@ -176,8 +193,8 @@ class ActionDialog(Menu):
                                         item_entry)
         self.panel.add_widget(self.use_label, (20, 12))
 
-        self.exit_label = ExitLabel()
-        self.panel.add_widget(self.exit_label, (20, 36))
+        self.close_label = CloseLabel()
+        self.panel.add_widget(self.close_label, (20, 36))
 
         cursor = Cursor()
         cursor.bind(self)

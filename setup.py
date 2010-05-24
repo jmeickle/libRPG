@@ -1,8 +1,6 @@
 from distutils.core import setup
 import os
 import sys
-import glob
-import fnmatch
 from os.path import join
 
 NAME = 'LibRPG'
