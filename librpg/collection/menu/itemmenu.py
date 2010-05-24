@@ -88,15 +88,14 @@ class ItemScrollArea(VerticalScrollArea):
         for item in ordered:
             group = ItemEntry(self.get_cells_width() - 2 * BORDER - 2,
                               self.cell_height - 2 * BORDER,
-                              item, inventory,
-                              (label_pos_inside_cell[0] - BORDER))
+                              item, inventory)
             line = self.add_line()
             self[line].add_widget(group, (BORDER, BORDER))
 
 
 class ItemEntry(WidgetGroup):
     
-    def __init__(self, width, height, item, inventory, label_x):
+    def __init__(self, width, height, item, inventory):
         WidgetGroup.__init__(self, width, height)
         self.item = item
         self.quantity = inventory.get_amount(item)
@@ -108,14 +107,13 @@ class ItemEntry(WidgetGroup):
             self.icon.surf = i.get_surface()
         else:
             self.icon.surf = None
-        self.add_widget(self.icon, (label_x, 0))
+        self.add_widget(self.icon, (0, 0))
         
         s = self.create_string()
         self.label = Label(s)
         label_y = height / 2 - self.label.height / 2
         self.add_widget(self.label,
-                        (label_x + 5 + graphics_config.item_icon_width,
-                         label_y))
+                        (5 + graphics_config.item_icon_width, label_y))
 
     def activate(self):
         dialog = self.menu.create_action_dialog(self)
