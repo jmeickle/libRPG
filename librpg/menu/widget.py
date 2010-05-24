@@ -149,11 +149,11 @@ class Widget(object):
             else:
                 raise ValueError(Widget.__BAD_SET_POSITION_ARG_ERROR)
             
-            if anchor_y == LEFT:
+            if anchor_y == UP:
                 pass
             elif anchor_y == CENTER:
                 y -= self.height / 2
-            elif anchor_y == RIGHT:
+            elif anchor_y == DOWN:
                 y -= self.height
             else:
                 raise ValueError(Widget.__BAD_SET_POSITION_ARG_ERROR)

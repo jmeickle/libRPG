@@ -2,7 +2,8 @@ from librpg.menu import (Menu, Label, Cursor, Panel, VerticalScrollArea,
                          ImageWidget)
 from librpg.color import TRANSPARENT
 from librpg.config import graphics_config
-from librpg.menu.div import WidgetGroup
+from librpg.menu import WidgetGroup
+from librpg.locals import RIGHT, DOWN, LEFT
 
 
 class CloseLabel(Label):
@@ -27,7 +28,8 @@ class ItemMenu(Menu):
         self.add_widget(self.close_label, (20, 12))
 
         self.inventory_panel = Panel(self.width * 0.55, self.height - 50)
-        self.add_widget(self.inventory_panel, (16, 35))
+        self.add_widget(self.inventory_panel,
+                        (16, self.height - 16, LEFT, DOWN))
         
         self.inventory_scroll = ItemScrollArea(self.inventory,
                                                self.inventory_panel.width - 10,
@@ -38,11 +40,9 @@ class ItemMenu(Menu):
         self.inventory_panel.add_widget(self.inventory_scroll, (5, 5))
         
         self.info_panel = ItemInfoPanel(self.width * 0.35, self.height * 0.55)
-        panel_right = self.inventory_panel.right
-        spacing = (self.width - panel_right - self.info_panel.width) / 2
-        info_x = panel_right + spacing
-        info_y = self.height - self.info_panel.height - spacing
-        self.add_widget(self.info_panel, (info_x, info_y))
+        info_x = self.width - 16
+        info_y = self.height - 16
+        self.add_widget(self.info_panel, (info_x, info_y, RIGHT, DOWN))
         
         cursor = Cursor()
         cursor.bind(self)
