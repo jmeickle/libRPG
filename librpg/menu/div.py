@@ -45,7 +45,7 @@ class Div(Widget):
         except AttributeError:
             # position is not an Alignment
             widget.position = position
-
+        
         if self.menu is not None:
             for w in widget.get_tree():
                 if w.menu is not self.menu:

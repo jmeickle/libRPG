@@ -155,8 +155,8 @@ ok      0.6     Allow align left/center/right in Label
 ok      0.6     Define item image system and API for menu
 ok      0.6     Add icons to item labels
 ok      0.6     Finish ItemMenu
+ok      0.6     Improve widget positioning system - store widget position in it
         0.6     Improve widget positioning system - use anchors
-        0.6     Improve widget positioning system - store widget position is it 
         0.6     Define Character face system
         0.6     Design PartyMenu
         0.6     Code PartyMenu

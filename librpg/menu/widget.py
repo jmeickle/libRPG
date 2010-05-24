@@ -3,6 +3,7 @@ import pygame
 
 from librpg.config import menu_config
 from librpg.menu.navigator import WidgetGateway
+from librpg.locals import UP, DOWN, LEFT, RIGHT, CENTER
 
 
 class Widget(object):
@@ -35,7 +36,7 @@ class Widget(object):
         self.focusable = focusable
 
         self.parent = None
-        self.position = None
+        self._position = None
         self.menu = None
 
         self.gateway = WidgetGateway(self)
@@ -124,13 +125,47 @@ class Widget(object):
     def widget_step(self, direction, widget_navigator=None):
         return self.gateway.step(direction, widget_navigator)
 
-    def get_position(self):
-        """
-        Return the (x, y) widget position inside its Div.
-        
-        If the widget is not in any Div, the return is None.
-        """
-        return self.position
+    def __get_position(self):
+        return self._position
+
+    __BAD_SET_POSITION_ARG_ERROR = ('Widget.position has to take an (x, y[, '
+                                    'x_align, y_align]) tuple as parameter, '
+                                    'where x_align is in (LEFT, CENTER, RIGHT) '
+                                    'and y_align is in (UP, CENTER, DOWN).')
+
+    def __set_position(self, pos):
+        if pos is None or len(pos) == 2:
+            self._position = pos
+        else:
+            x, y = pos[:2]
+            anchor_x, anchor_y = pos[2:4]
+            
+            if anchor_x == LEFT:
+                pass
+            elif anchor_x == CENTER:
+                x -= self.width / 2
+            elif anchor_x == RIGHT:
+                x -= self.width
+            else:
+                raise ValueError(Widget.__BAD_SET_POSITION_ARG_ERROR)
+            
+            if anchor_y == LEFT:
+                pass
+            elif anchor_y == CENTER:
+                y -= self.height / 2
+            elif anchor_y == RIGHT:
+                y -= self.height
+            else:
+                raise ValueError(Widget.__BAD_SET_POSITION_ARG_ERROR)
+
+            self._position = x, y
+
+    position = property(__get_position, __set_position)
+    """
+    The (x, y) widget position inside its Div.
+    
+    If the widget is not in any Div, the value is None.
+    """
 
     def get_menu_position(self):
         """

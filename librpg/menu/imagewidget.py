@@ -17,7 +17,6 @@ class ImageWidget(Widget):
         self.surf = surface
 
     def draw(self):
-        
         if (self.image is None and self.surf is not None) or self.changed:
             if self.surf is None:
                 self.image = None
