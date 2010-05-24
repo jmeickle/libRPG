@@ -38,10 +38,9 @@ class ItemMenu(Menu):
         self.inventory_panel.add_widget(self.inventory_scroll, (5, 5))
         
         self.info_panel = ItemInfoPanel(self.width * 0.35, self.height * 0.55)
-        inv_space = (self.inventory_panel.position[0]
-                           + self.inventory_panel.width)
-        spacing = (self.width - inv_space - self.info_panel.width) / 2
-        info_x = inv_space + spacing
+        panel_right = self.inventory_panel.right
+        spacing = (self.width - panel_right - self.info_panel.width) / 2
+        info_x = panel_right + spacing
         info_y = self.height - self.info_panel.height - spacing
         self.add_widget(self.info_panel, (info_x, info_y))
         

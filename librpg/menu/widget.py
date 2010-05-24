@@ -166,6 +166,38 @@ class Widget(object):
     
     If the widget is not in any Div, the value is None.
     """
+    
+    def __get_left(self):
+        return self._position[0]
+
+    left = property(__get_left)
+    """
+    The left boundary of the widget relatively to its Div. 
+    """
+    
+    def __get_top(self):
+        return self._position[1]
+
+    top = property(__get_top)
+    """
+    The top boundary of the widget relatively to its Div. 
+    """
+    
+    def __get_right(self):
+        return self._position[0] + self.width
+
+    right = property(__get_right)
+    """
+    The right boundary of the widget relatively to its Div. 
+    """
+    
+    def __get_bottom(self):
+        return self._position[1] + self.height
+
+    bottom = property(__get_bottom)
+    """
+    The bottom boundary of the widget relatively to its Div. 
+    """
 
     def get_menu_position(self):
         """
@@ -180,8 +212,8 @@ class Widget(object):
                 return (self.x, self.y)
             else:
                 parent_pos = self.parent.get_menu_position()
-                x = parent_pos[0] + self.position[0]
-                y = parent_pos[1] + self.position[1]
+                x = parent_pos[0] + self.left
+                y = parent_pos[1] + self.top
                 return (x, y)
 
     def get_center(self):

@@ -86,8 +86,8 @@ class Div(Widget):
 
     def render(self, screen, x_offset, y_offset):
         for w in self.widgets:
-            x_pos = w.widget.position[0] + x_offset
-            y_pos = w.widget.position[1] + y_offset
+            x_pos = w.widget.left + x_offset
+            y_pos = w.widget.top + y_offset
             w.widget.render(screen, x_pos, y_pos)
 
     def crystallize(self, widget_navigator=None):
