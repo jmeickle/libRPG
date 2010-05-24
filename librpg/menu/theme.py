@@ -213,8 +213,11 @@ class DefaultMenuTheme(MenuTheme):
         surface = pygame.Surface((WIDTH, height), SRCALPHA, 32)
         surface.fill(PURPLE)
         
-        r = pygame.Rect((1, 1 + internal_height * start / total),
-                        (internal_width, (end - start) * internal_height / total))
+        if total != 0:
+            r = pygame.Rect((1, 1 + internal_height * start / total),
+                            (internal_width, (end - start) * internal_height / total))
+        else:
+            r = pygame.Rect((1, 1), (internal_width, internal_height))
         pygame.draw.rect(surface, BLUE, r)
         return surface
 

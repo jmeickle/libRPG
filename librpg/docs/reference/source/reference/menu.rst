@@ -35,6 +35,10 @@ Structural widgets
    :members:
    :show-inheritance:
 
+.. automodule:: librpg.menu.scrollarea
+   :members:
+   :show-inheritance:
+
 .. automodule:: librpg.menu.alignment
    :members:
    :show-inheritance:
