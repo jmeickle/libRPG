@@ -56,13 +56,13 @@ class MapController(Context):
             return False
 
         if self.__moving_sync:
-            sync_stopped = self.sync_movement_step()
+            sync_stopped = self.__sync_movement_step()
             if not sync_stopped:
                 return False
 
         if not self.message_queue.is_busy():
-            self.flow_object_movement()
-            self.update_objects()
+            self.__flow_object_movement()
+            self.__update_objects()
 
         self.__update_input()
 
@@ -118,14 +118,14 @@ class MapController(Context):
             evt = Input.was_pressed(M_1)
             if evt is not None:
                 if not self.party_avatar.scheduled_movement:
-                    self.mouse_movement(evt.pos)
+                    self.__mouse_movement(evt.pos)
                     return
 
     def draw(self):
         self.__map_view_draw()
         self.map_music.update()
 
-    def flow_object_movement(self):
+    def __flow_object_movement(self):
         party_avatar = self.map_model.party_avatar
 
         for o in self.map_model.objects:
@@ -133,9 +133,9 @@ class MapController(Context):
                 o.flow()
 
         party_avatar.flow()
-        self.trigger_collisions()
+        self.__trigger_collisions()
 
-    def trigger_collisions(self):
+    def __trigger_collisions(self):
         avatar = self.map_model.party_avatar
         if avatar.just_completed_movement:
             avatar.just_completed_movement = False
@@ -167,7 +167,7 @@ class MapController(Context):
         self.__sync_objects = objects
         self.__moving_sync = True
 
-    def sync_movement_step(self):
+    def __sync_movement_step(self):
         if all([not o.scheduled_movement for o in self.__sync_objects]):
             self.__moving_sync = False
             return True
@@ -175,14 +175,14 @@ class MapController(Context):
             o.flow()
         return False
 
-    def update_objects(self):
+    def __update_objects(self):
         for o in self.map_model.updatable_objects:
             o.update()
 
     def gameover(self):
         get_context_stack().stop()
 
-    def mouse_movement(self, pos):
+    def __mouse_movement(self, pos):
         target_x, target_y = self.map_view.calc_pos_from_mouse(pos)
         if self.map_model.terrain_layer.valid((target_x, target_y)):
             movement = PathMovement(self.map_model,

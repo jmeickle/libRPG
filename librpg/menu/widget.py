@@ -11,7 +11,7 @@ class Widget(object):
     A Widget is a menu component.
 
     Widgets are typically graphic components that can be added to menus,
-    tat may be interactive.
+    possibly interactive.
 
     *width* and *height* specify the widget's size in pixels.
 
