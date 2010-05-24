@@ -8,8 +8,7 @@ from librpg.context import get_context_stack
 from librpg.path import data_path
 from librpg.collection.theme import ClassicMenuTheme
 from librpg.input import Input
-from librpg.locals import (M_1, M_4, M_3,
-                           M_5)
+from librpg.locals import (M_1, M_4, M_3, M_5)
 
 
 class MenuLabel(Label):

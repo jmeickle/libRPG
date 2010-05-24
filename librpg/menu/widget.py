@@ -124,21 +124,54 @@ class Widget(object):
     def widget_step(self, direction, widget_navigator=None):
         return self.gateway.step(direction, widget_navigator)
 
+    def get_position(self):
+        """
+        Return the (x, y) widget position inside its Div.
+        
+        If the widget is not in any Div, the return is None.
+        """
+        return self.position
+
     def get_menu_position(self):
-        if self.parent is None:
-            return (self.x, self.y)
+        """
+        Return the (x, y) widget position inside its menu.
+        
+        If the widget is not in any menu, the return is None.
+        """
+        if self.menu is None:
+            return None
         else:
-            parent_pos = self.parent.get_menu_position()
-            x = parent_pos[0] + self.position[0]
-            y = parent_pos[1] + self.position[1]
-            return (x, y)
+            if self.parent is None:
+                return (self.x, self.y)
+            else:
+                parent_pos = self.parent.get_menu_position()
+                x = parent_pos[0] + self.position[0]
+                y = parent_pos[1] + self.position[1]
+                return (x, y)
 
     def get_center(self):
-        x, y = self.get_menu_position()
-        return (x + self.width / 2, y + self.height / 2)
+        """
+        Return the (x, y) widget center position inside its menu.
+        
+        If the widget is not in any menu, the return is None.
+        """
+        if self.menu is None:
+            return None
+        else:
+            x, y = self.get_menu_position()
+            return (x + self.width / 2, y + self.height / 2)
 
     def get_menu_rect(self):
-        return pygame.Rect(self.get_menu_position(), (self.width, self.height))
+        """
+        Return the pygame Rect representing the widget's dimensions in its
+        menu.
+        
+        If the widget is not in any menu, the return is None.
+        """
+        if self.menu is None:
+            return None
+        else:
+            return pygame.Rect(self.get_menu_position(), (self.width, self.height))
 
     def get_tree(self):
         return [self]
