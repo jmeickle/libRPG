@@ -15,7 +15,10 @@ class SinglePartyTargetItem(OrdinaryItem, Usable):
         
         target = party.chars[dialog.result]
         self.use_on_party_member(party.get_char(target))
-        
+
+    def get_icon_location(self):
+        return ('item_icons.png', 0)
+
     def use_on_party_member(self, character):
         raise NotImplementedError('SinglePartyTargetItem.\
                                    use_on_party_member() is abstract')
@@ -62,9 +65,6 @@ class PotionItem(SinglePartyTargetItem):
         
     def get_description(self):
         return 'Restores 100 HP in a single target.' 
-
-    def get_icon_location(self):
-        return ('item_icons.png', 0)
 
     def use_on_party_member(self, character):
         msg = 'Using %s on %s' % (self.name, character)
@@ -132,6 +132,9 @@ class LavenderItem(SinglePartyTargetItem):
         
     def get_description(self):
         return 'A bunch of lavender. Smells good.' 
+    
+    def get_icon_location(self):
+        return (tileset_path('city_upper.png'), 63)
 
     def use_on_party_member(self, character):
         msg = 'Using %s on %s' % (self.name, character)
@@ -151,6 +154,9 @@ class BasilItem(SinglePartyTargetItem):
     def get_description(self):
         return 'A handful of basil, enough for one pizza.' 
 
+    def get_icon_location(self):
+        return ('item_icons.png', 3)
+
     def use_on_party_member(self, character):
         msg = 'Using %s on %s' % (self.name, character)
         dialog = MessageDialog(msg, True)
@@ -169,6 +175,9 @@ class RosemaryItem(SinglePartyTargetItem):
     def get_description(self):
         return 'A twig of rosemary. It has a bitter, astringent taste and is \
                 highly aromatic, which complements a wide variety of foods.' 
+
+    def get_icon_location(self):
+        return ('item_icons.png', 3)
 
     def use_on_party_member(self, character):
         msg = 'Using %s on %s' % (self.name, character)
