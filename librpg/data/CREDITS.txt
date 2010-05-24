@@ -5,6 +5,7 @@ Downloaded from http://lorestrome.com/pixel_archive/main.htm
 
 tileset/town1.png
 tileset/town2.png
+item_icon/potions.png
 
 ===============================================================================
 

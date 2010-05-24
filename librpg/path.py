@@ -48,3 +48,12 @@ def cursor_theme_path(relative_path='.'):
     """
     path = os.path.join('cursor_theme', relative_path)
     return data_path(path)
+
+
+def item_icon_path(relative_path='.'):
+    """
+    Return the absolute file path of a file, specified by a *relative_path*
+    to the librpg data/item_icon directory.
+    """
+    path = os.path.join('item_icon', relative_path)
+    return data_path(path)

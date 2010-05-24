@@ -1,7 +1,7 @@
 from librpg.util import IdFactory
 from librpg.item import OrdinaryItem, Usable
 from librpg.dialog import ChoiceDialog, MessageDialog
-from librpg.path import tileset_path
+from librpg.path import tileset_path, item_icon_path
 
 
 item_factory = IdFactory()
@@ -66,6 +66,9 @@ class PotionItem(SinglePartyTargetItem):
     def get_description(self):
         return 'Restores 100 HP in a single target.' 
 
+    def get_icon_location(self):
+        return (item_icon_path('potions.png'), 3)
+
     def use_on_party_member(self, character):
         msg = 'Using %s on %s' % (self.name, character)
         dialog = MessageDialog(msg, True)
@@ -83,6 +86,9 @@ class ElixirItem(SinglePartyTargetItem):
         
     def get_description(self):
         return 'Restores all HP and MP in a single target.' 
+
+    def get_icon_location(self):
+        return (item_icon_path('potions.png'), 1)
 
     def use_on_party_member(self, character):
         msg = 'Using %s on %s' % (self.name, character)
@@ -116,6 +122,9 @@ class EmptyVialItem(OrdinaryItem):
         
     def get_description(self):
         return 'A small vial that can be filled with liquids. Leak-proof.' 
+
+    def get_icon_location(self):
+        return (item_icon_path('potions.png'), 0)
 
     def __init__(self):
         OrdinaryItem.__init__(self, 'Empty Vial')
