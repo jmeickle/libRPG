@@ -306,6 +306,9 @@ class MenuConfig(Config):
 
     :attr:`cursor_theme`
         DefaultMenuTheme to use for Cursors, except when explicitly specified.
+
+    :attr:`font_size`
+        Size to render the font in labels, unless another size is specified.
     """
 
     _theme = None
@@ -331,6 +334,7 @@ class MenuConfig(Config):
 
     cursor_theme = property(get_cursor_theme, set_cursor_theme)
 
+    font_size = 12
 
 graphics_config = GraphicsConfig()
 dialog_config = DialogConfig()

@@ -4,6 +4,7 @@ from librpg.menu.widget import Widget
 from librpg.image import Image
 from librpg.util import build_lines
 from librpg.locals import SRCALPHA, LEFT, RIGHT, CENTER
+from librpg.config import menu_config
 
 
 class Label(Widget):
@@ -21,7 +22,10 @@ class Label(Widget):
     """
 
     def __init__(self, text, max_width=None, max_height=None, align=LEFT,
-                 size=12, bold=False, italic=False, focusable=True, theme=None):
+                 size=None, bold=False, italic=False, focusable=True, theme=None):
+        if size is None:
+            size = menu_config.font_size
+        
         Widget.__init__(self, focusable=focusable, theme=theme)
         self._text = text
         self._size = size
