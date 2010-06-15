@@ -22,7 +22,8 @@ class Label(Widget):
     """
 
     def __init__(self, text, max_width=None, max_height=None, align=LEFT,
-                 size=None, bold=False, italic=False, focusable=True, theme=None):
+                 size=None, bold=False, italic=False, color=None,
+                 focusable=True, theme=None):
         if size is None:
             size = menu_config.font_size
         
@@ -31,6 +32,7 @@ class Label(Widget):
         self._size = size
         self._bold = bold
         self._italic = italic
+        self._color = color
         self.align = align
         self.changed = False
         self.image = None
@@ -52,7 +54,7 @@ class Label(Widget):
     def __draw_one_line(self, font):
         self.image = Image(font.render(self._text,
                                        self.theme.get_font_anti_alias(),
-                                       self.theme.get_font_color()))
+                                       self.color))
         
     def __draw_multi_line(self, font):
         lines = build_lines(self.text, self.max_width, font)
@@ -62,7 +64,7 @@ class Label(Widget):
         for w, h, line in lines:
             line_surface = font.render(line,
                                        self.theme.get_font_anti_alias(),
-                                       self.theme.get_font_color())
+                                       self.color)
             if self.align == LEFT:
                 x = 0
             elif self.align == RIGHT:
@@ -138,5 +140,20 @@ class Label(Widget):
     align = property(get_align, set_align)
     """
     How the text should be aligned horizontally - LEFT, CENTER or RIGHT.
+    """
+
+    def get_color(self):
+        if self._color is not None:
+            return self._color
+        else:
+            return self.theme.get_font_color()
+
+    def set_color(self, color=None):
+        self.changed = True
+        self._color = color
+
+    color = property(get_color, set_color)
+    """
+    The color to render the font. If None, the theme's color will be used.
     """
 
