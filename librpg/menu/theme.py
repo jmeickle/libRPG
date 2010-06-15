@@ -249,28 +249,30 @@ class DefaultCursorTheme(CursorTheme):
     The default CursorTheme. The cursor is rendered as a simple rectangle
     around the target.
     """
-
-    BORDER = 2
-    HORIZONTAL_OFFSET = 3
-    VERTICAL_OFFSET = 3
-    ANIMATION_PERIOD = 4
+    def __init__(self, border=2, horizontal_offset=3, vertical_offset=2,
+                 animation_period=4):
+        CursorTheme.__init__(self)
+        self.border = border
+        self.horizontal_offset = horizontal_offset
+        self.vertical_offset = vertical_offset
+        self.animation_period = animation_period
 
     def draw_cursor(self, target_rect):
         frames = []
         for i in xrange(2):
-            width = target_rect.w + 2 * (self.BORDER + self.HORIZONTAL_OFFSET)
-            height = target_rect.h + 2 * (self.BORDER + self.VERTICAL_OFFSET)
+            width = target_rect.w + 2 * (self.border + self.horizontal_offset)
+            height = target_rect.h + 2 * (self.border + self.vertical_offset)
             s = pygame.Surface((width, height), SRCALPHA, 32).convert_alpha()
             s.fill((255 - 64 * i, 0, 0))
             pygame.draw.rect(s, TRANSPARENT,
-                             pygame.Rect((self.BORDER, self.BORDER),
-                             (target_rect.w + 2 * self.HORIZONTAL_OFFSET,
-                              target_rect.h + 2 * self.VERTICAL_OFFSET)))
+                             pygame.Rect((self.border, self.border),
+                             (target_rect.w + 2 * self.horizontal_offset,
+                              target_rect.h + 2 * self.vertical_offset)))
             frames.append(s)
 
-        return AnimatedImage(frames, self.ANIMATION_PERIOD), \
-               (target_rect.left - self.BORDER - self.HORIZONTAL_OFFSET,
-                target_rect.top - self.BORDER - self.VERTICAL_OFFSET)
+        return AnimatedImage(frames, self.animation_period), \
+               (target_rect.left - self.border - self.horizontal_offset,
+                target_rect.top - self.border - self.vertical_offset)
 
 
 class PictureCursorTheme(CursorTheme):
