@@ -90,6 +90,14 @@ class VerticalScrollArea(Div):
             return True
         else:
             return False
+        
+    def go_to_start(self):
+        self.start = 0
+        self.refresh()
+        
+    def go_to_end(self):
+        self.start = max(0, len(self) - self.height_in_cells)
+        self.refresh()
 
     def refresh(self):
         if self.menu is not None and self.menu.cursor is not None:
