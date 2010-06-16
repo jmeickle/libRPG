@@ -260,14 +260,14 @@ class DefaultCursorTheme(CursorTheme):
     def draw_cursor(self, target_rect):
         frames = []
         for i in xrange(2):
-            width = target_rect.w + 2 * (self.border + self.horizontal_offset)
-            height = target_rect.h + 2 * (self.border + self.vertical_offset)
+            width = target_rect.w + 2 * (self.border + self.horizontal_offset) + 1
+            height = target_rect.h + 2 * (self.border + self.vertical_offset) + 1
             s = pygame.Surface((width, height), SRCALPHA, 32).convert_alpha()
             s.fill((255 - 64 * i, 0, 0))
             pygame.draw.rect(s, TRANSPARENT,
                              pygame.Rect((self.border, self.border),
-                             (target_rect.w + 2 * self.horizontal_offset,
-                              target_rect.h + 2 * self.vertical_offset)))
+                             (target_rect.w + 2 * self.horizontal_offset + 1,
+                              target_rect.h + 2 * self.vertical_offset + 1)))
             frames.append(s)
 
         return AnimatedImage(frames, self.animation_period), \
