@@ -55,7 +55,7 @@ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
         #     'a' : {5, 3, 5, 2}
 
         self.repl = {
-            'a' : (0, 0),
-            'q' : (1, 1),
-            'z' : (2, 2),
+            'a' : (9, 112),
+            'q' : (9, 112),
+            'z' : (9, 112),
         }
