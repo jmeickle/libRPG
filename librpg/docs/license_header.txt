@@ -1,5 +1,6 @@
 # LibRPG - Pygame RPG library
 # Copyright 2009 Henrique Nakashima, Victor Matheus
+# Continued in 2011 by Eronarn
 #
 # This file is part of LibRPG.
 #
