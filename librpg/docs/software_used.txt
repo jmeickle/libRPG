@@ -37,3 +37,6 @@ Tools
 * TortoiseHg
     Mercurial graphical front-end
     http://tortoisehg.bitbucket.org/
+* git
+    Version control system
+    http://git-scm.com/
