@@ -5,7 +5,7 @@ which a party will walk, act, etc.
 """
 
 from librpg.mapobject import PartyAvatar
-from librpg.mapfile import MapFile
+from librpg.maploader import MapLoader
 from librpg.mapview import MapView
 from librpg.sound import MapMusic
 from librpg.util import (determine_facing, Position, Matrix, inverse)
@@ -265,7 +265,7 @@ class MapModel(Model):
         self.contexts = []
 
     def load_from_map(self):
-        MapFile.process(self.map)
+        MapLoader.process(self.map)
         self.width = self.map.X
         self.height = self.map.Y
         self.scenario_number = self.map.scenario
