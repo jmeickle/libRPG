@@ -4,9 +4,8 @@ the definition of MapModel, which is the class representing a map in
 which a party will walk, act, etc.
 """
 
-import csv
-
 from librpg.mapobject import PartyAvatar
+from librpg.mapfile import MapFile
 from librpg.mapview import MapView
 from librpg.sound import MapMusic
 from librpg.util import (determine_facing, Position, Matrix, inverse)
@@ -18,7 +17,6 @@ from librpg.movement import Step, PathMovement
 from librpg.context import Context, Model, get_context_stack
 from librpg.dialog import MessageQueue
 from librpg.input import Input
-
 
 class MapController(Context):
 
@@ -200,7 +198,7 @@ class MapModel(Model):
     processes) may be added.
     """
 
-    def __init__(self, map_file, terrain_tileset_files,
+    def __init__(self, map, terrain_tileset_files,
                  scenario_tileset_files_list):
         """
         *Constructor:*
@@ -230,7 +228,7 @@ class MapModel(Model):
         self.party_avatar = None
 
         # Load file data
-        self.map_file = map_file
+        self.map = map
         self.terrain_tileset_files = terrain_tileset_files
         self.scenario_tileset_files_list = scenario_tileset_files_list
 
@@ -239,7 +237,7 @@ class MapModel(Model):
         self.scenario_tileset = [Tileset(i, j) for i, j in\
                                  self.scenario_tileset_files_list]
 
-        self.load_from_map_file()
+        self.load_from_map()
 
         # Set up local state
         self.local_state = None
@@ -266,41 +264,21 @@ class MapModel(Model):
         self.pause_delay = 0
         self.contexts = []
 
-    def load_from_map_file(self):
-        layout_file = open(self.map_file)
-        r = csv.reader(layout_file, delimiter=',')
-
-        first_line = r.next()
-        self.width = int(first_line[0])
-        self.height = int(first_line[1])
-        self.scenario_number = int(first_line[2])
+    def load_from_map(self):
+        MapFile.process(self.map)
+        self.width = self.map.X
+        self.height = self.map.Y
+        self.scenario_number = self.map.scenario
 
         self.terrain_layer = Matrix(self.width, self.height)
         self.scenario_layer = [Matrix(self.width, self.height) for i in\
                                range(self.scenario_number)]
 
-        y = 0
-        for line in r:
-            if len(line) == self.width:
-                for x, value in enumerate(line):
-                    self.terrain_layer[x, y] = self.terrain_tileset.\
-                                               tiles[int(value)]
-                y += 1
-            if y >= self.height:
-                break
-
-        for i in xrange(self.scenario_number):
-            y = 0
-            for line in r:
-                if len(line) == self.width:
-                    for x, value in enumerate(line):
-                        tile = self.scenario_tileset[i].tiles[int(value)]
-                        self.scenario_layer[i][x, y] = tile
-                    y += 1
-                if y >= self.height:
-                    break
-
-        layout_file.close()
+        for y in range(self.height):
+            for x in range(self.width):
+                self.terrain_layer[x, y] = self.terrain_tileset.tiles[self.map.data[y][x][0]]
+                for i in range(self.scenario_number):
+                    self.scenario_layer[i][x, y] = self.terrain_tileset.tiles[self.map.data[y][x][self.scenario_number]]
 
     # Virtual, should be implemented.
     def initialize(self, local_state, global_state):
