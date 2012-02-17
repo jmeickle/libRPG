@@ -1,3 +1,7 @@
+NOTE
+-------------------------------------
+This project was taken over by Eronarn on Feb 17, 2011 at Version 0.5. The roadmap described below may not hold.
+
 ##################
 # LibRPG Roadmap #
 ##################
