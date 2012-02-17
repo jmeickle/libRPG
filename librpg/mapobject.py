@@ -85,7 +85,7 @@ class MapObject(object):
 
         self.map = None
         self.position = None
-        self.prev_positon = None
+        self.prev_position = None
         self.obstacle = obstacle
 
         self.movement_phase = 0
