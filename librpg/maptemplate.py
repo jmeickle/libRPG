@@ -54,8 +54,12 @@ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
         #
         #     'a' : {5, 3, 5, 2}
 
-        self.repl = {
+        self.terrain = {
             'a' : (9, 112),
             'q' : (9, 112),
             'z' : (9, 112),
+        }
+
+        self.objects = {
+           'z' : None,
         }
