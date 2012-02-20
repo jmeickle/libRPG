@@ -198,7 +198,7 @@ class MapModel(Model):
     processes) may be added.
     """
 
-    def __init__(self, map, terrain_tileset_files,
+    def __init__(self, maploader, terrain_tileset_files,
                  scenario_tileset_files_list):
         """
         *Constructor:*
@@ -228,7 +228,7 @@ class MapModel(Model):
         self.party_avatar = None
 
         # Load file data
-        self.map = map
+        self.maploader = maploader
         self.terrain_tileset_files = terrain_tileset_files
         self.scenario_tileset_files_list = scenario_tileset_files_list
 
@@ -237,7 +237,7 @@ class MapModel(Model):
         self.scenario_tileset = [Tileset(i, j) for i, j in\
                                  self.scenario_tileset_files_list]
 
-        self.load_from_map()
+        self.get_terrain_from_maploader()
 
         # Set up local state
         self.local_state = None
@@ -264,11 +264,11 @@ class MapModel(Model):
         self.pause_delay = 0
         self.contexts = []
 
-    def load_from_map(self):
-        MapLoader.process(self.map)
-        self.width = self.map.X
-        self.height = self.map.Y
-        self.scenario_number = self.map.scenario
+    def get_terrain_from_maploader(self):
+        self.maploader.process_terrain()
+        self.width = self.maploader.X
+        self.height = self.maploader.Y
+        self.scenario_number = self.maploader.scenario
 
         self.terrain_layer = Matrix(self.width, self.height)
         self.scenario_layer = [Matrix(self.width, self.height) for i in\
@@ -276,9 +276,9 @@ class MapModel(Model):
 
         for y in range(self.height):
             for x in range(self.width):
-                self.terrain_layer[x, y] = self.terrain_tileset.tiles[self.map.data[y][x][0]]
+                self.terrain_layer[x, y] = self.terrain_tileset.tiles[self.maploader.terrain_data[y][x][0]]
                 for i in range(self.scenario_number):
-                    self.scenario_layer[i][x, y] = self.terrain_tileset.tiles[self.map.data[y][x][self.scenario_number]]
+                    self.scenario_layer[i][x, y] = self.terrain_tileset.tiles[self.maploader.terrain_data[y][x][self.scenario_number]]
 
     # Virtual, should be implemented.
     def initialize(self, local_state, global_state):
