@@ -221,14 +221,14 @@ class MapModel(Model):
         self.world = None
         self.id = None
 
-        self.music = None
+        # Set up local state
+        self.local_state = None
 
         # Set up party
         self.party = None
         self.party_avatar = None
 
-        # Load file data
-        self.maploader = maploader
+        # Set up tileset data
         self.terrain_tileset_files = terrain_tileset_files
         self.scenario_tileset_files_list = scenario_tileset_files_list
 
@@ -237,12 +237,17 @@ class MapModel(Model):
         self.scenario_tileset = [Tileset(i, j) for i, j in\
                                  self.scenario_tileset_files_list]
 
-        self.get_terrain_from_maploader()
+        # Load map from file
+        self.maploader = maploader(self)
+        self.maploader.process_textmap()
 
-        # Set up local state
-        self.local_state = None
+        # Set some derived/imported values
+        self.music = self.maploader.music
+        self.scenario_number = self.maploader.scenario
+        self.width = self.maploader.X
+        self.height = self.maploader.Y
 
-        # Set up objects
+        # Set up object layer
         self.objects = []
         self.below_objects = []
         self.obstacle_objects = []
@@ -253,7 +258,7 @@ class MapModel(Model):
             for y in range(self.height):
                 self.object_layer[x, y] = ObjectCell()
 
-        # Set up areas
+        # Set up area layer
         self.areas = []
         self.area_layer = Matrix(self.width, self.height)
         for x in range(self.width):
@@ -264,21 +269,16 @@ class MapModel(Model):
         self.pause_delay = 0
         self.contexts = []
 
-    def get_terrain_from_maploader(self):
+        # Final step in map setup: add terrain and objects.
+
+        # Call maploader hook here
         self.maploader.process_terrain()
-        self.width = self.maploader.X
-        self.height = self.maploader.Y
-        self.scenario_number = self.maploader.scenario
-
-        self.terrain_layer = Matrix(self.width, self.height)
-        self.scenario_layer = [Matrix(self.width, self.height) for i in\
-                               range(self.scenario_number)]
-
-        for y in range(self.height):
-            for x in range(self.width):
-                self.terrain_layer[x, y] = self.terrain_tileset.tiles[self.maploader.terrain_data[y][x][0]]
-                for i in range(self.scenario_number):
-                    self.scenario_layer[i][x, y] = self.terrain_tileset.tiles[self.maploader.terrain_data[y][x][self.scenario_number]]
+        # Call maploader hook here
+        self.maploader.process_objects()
+        if self.maploader.combat is True:
+            # Call maploader hook here
+            self.maploader.process_actors()
+            # Call maploader hook here
 
     # Virtual, should be implemented.
     def initialize(self, local_state, global_state):
